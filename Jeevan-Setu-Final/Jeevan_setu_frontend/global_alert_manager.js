@@ -5,6 +5,10 @@
  * and prolonged ready-to-transfer approval notifications across all Doctor
  * and Nurse pages without requiring navigation back to the dashboard.
  * 
+ * Role Access Rules:
+ * - Nurse: Review, View, Acknowledge/Dismiss ONLY. Never render or attach "Approve Transfer" controls.
+ * - Doctor/Admin: Review, View, Acknowledge/Dismiss, and Approve Transfer.
+ * 
  * Includes fully self-contained, isolated CSS styling to ensure flawless rendering
  * on any page regardless of whether Tailwind CDN or other stylesheets are present.
  */
@@ -371,8 +375,24 @@
             if (!data.success) return;
 
             const dismissed = getDismissedAlertIds();
-            const isDoctor = data.can_approve_transfers || data.role === 'doctor' || data.role === 'admin';
-            const isNurse = data.role === 'nurse';
+
+            // Strict Role Resolution
+            const pathLower = (window.location.pathname || '').toLowerCase();
+            const isNursePage = pathLower.includes('/nurse') || pathLower.includes('nurse_');
+            const isDoctorPage = pathLower.includes('/doctor') || pathLower.includes('doctor_');
+
+            let storedRole = '';
+            try {
+                const userObj = JSON.parse(localStorage.getItem('jeevan_setu_user') || sessionStorage.getItem('jeevan_setu_user') || '{}');
+                storedRole = (userObj.role || '').toLowerCase();
+            } catch (e) {}
+
+            const apiRole = (data.role || '').toLowerCase();
+
+            // Strict Role Enforcement: If on Nurse page, or user role is nurse, STRICTLY Nurse.
+            const isNurse = isNursePage || storedRole === 'nurse' || apiRole === 'nurse';
+            // Only Doctors / Admins outside of Nurse Portal can approve transfers
+            const isDoctor = !isNurse && (isDoctorPage || storedRole === 'doctor' || storedRole === 'admin' || apiRole === 'doctor' || apiRole === 'admin' || data.can_approve_transfers === true);
 
             // 1. Process CRITICAL Emergency Alerts (Render top 1 active modal at a time to prevent screen flooding)
             if (Array.isArray(data.emergency_alerts) && data.emergency_alerts.length > 0) {
@@ -418,6 +438,10 @@
 
     // Render CRITICAL Emergency Modal Popup with bulletproof styling
     function renderCriticalEmergencyPopup(alert, alertKey, isDoctor, isNurse, remainingCount = 0) {
+        if (isNurse) {
+            isDoctor = false;
+        }
+
         injectGlobalAlertStyles();
         const root = getOverlayContainer();
 
@@ -432,9 +456,9 @@
         const score = alert.value !== undefined ? alert.value : (alert.latest_ews_score || 8);
         const patientId = alert.patient_id;
 
-        let targetPatientUrl = `../Doctor_patient_reports/Doctor_patient_reports.html?patient_id=${patientId}`;
+        let targetPatientUrl = `/Doctor/Doctor_patient_reports/Doctor_patient_reports.html?patient_id=${patientId}`;
         if (isNurse) {
-            targetPatientUrl = `../Nurse_enter_vitals/Nurse_enter_vitals.html?patient_id=${patientId}`;
+            targetPatientUrl = `/Nurse/Nurse_enter_vitals/Nurse_enter_vitals.html?patient_id=${patientId}`;
         }
 
         const moreTag = remainingCount > 0 ? `<span class="js-alert-badge-tag">+${remainingCount} more</span>` : '';
@@ -508,6 +532,10 @@
 
     // Render Ready-to-Transfer Modal Popup with bulletproof styling
     function renderTransferAlertPopup(transfer, transferKey, isDoctor, isNurse, remainingCount = 0) {
+        if (isNurse) {
+            isDoctor = false;
+        }
+
         injectGlobalAlertStyles();
         const root = getOverlayContainer();
 
@@ -524,9 +552,9 @@
         const recId = transfer.recommendation_id;
         const transferId = transfer.transfer_id;
 
-        let targetPatientUrl = `../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}`;
+        let targetPatientUrl = `/Doctor/Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}`;
         if (isNurse) {
-            targetPatientUrl = `../Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+            targetPatientUrl = `/Nurse/Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
         }
 
         let actionButtonsHtml = '';
@@ -539,14 +567,10 @@
                 </button>
             `;
         } else {
+            // Nurse View: Review & Dismiss only. Strictly NO approval button rendered.
             actionButtonsHtml = `
-                <span class="js-badge-pending-doctor">
-                    ⏳ Doctor Approval Pending
-                </span>
                 <button type="button" class="js-btn js-btn-outline btn-dismiss-transfer">Dismiss</button>
-                <a href="${targetPatientUrl}" class="js-btn js-btn-critical" style="background:#0053db;">
-                    👁 View Patient
-                </a>
+                <a href="${targetPatientUrl}" class="js-btn js-btn-outline">Review</a>
             `;
         }
 
@@ -602,42 +626,46 @@
             setTimeout(fetchGlobalAlertFeed, 400);
         });
 
-        if (isDoctor) {
-            modal.querySelector('.btn-approve-transfer')?.addEventListener('click', async (e) => {
-                const btn = e.currentTarget;
-                btn.disabled = true;
-                btn.innerText = 'Approving...';
+        // Doctor only: Attach transfer approval action handler
+        if (isDoctor && !isNurse) {
+            const approveBtn = modal.querySelector('.btn-approve-transfer');
+            if (approveBtn) {
+                approveBtn.addEventListener('click', async (e) => {
+                    const btn = e.currentTarget;
+                    btn.disabled = true;
+                    btn.innerText = 'Approving...';
 
-                try {
-                    let approveUrl = transferId ? `/api/v1/transfers/${transferId}/approve` : (recId ? `/api/v1/decision/approve/${recId}` : null);
-                    const res = await fetch(approveUrl, {
-                        method: 'POST',
-                        headers: {
-                            ...getAuthHeaders(),
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ remarks: 'Approved via Global Emergency & Transfer Alert Layer' })
-                    });
+                    try {
+                        let approveUrl = transferId ? `/api/v1/transfers/${transferId}/approve` : (recId ? `/api/v1/decision/approve/${recId}` : null);
+                        const res = await fetch(approveUrl, {
+                            method: 'POST',
+                            headers: {
+                                ...getAuthHeaders(),
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ remarks: 'Approved via Global Emergency & Transfer Alert Layer' })
+                        });
 
-                    const json = await res.json();
-                    if (res.ok && json.success) {
-                        btn.innerText = '✓ Approved!';
-                        setTimeout(() => {
-                            markAlertDismissedInSession(transferKey);
-                            removeModalWithAnimation(transferKey);
-                            setTimeout(fetchGlobalAlertFeed, 400);
-                        }, 1000);
-                    } else {
-                        alert(json.error || 'Failed to approve transfer.');
+                        const json = await res.json();
+                        if (res.ok && json.success) {
+                            btn.innerText = '✓ Approved!';
+                            setTimeout(() => {
+                                markAlertDismissedInSession(transferKey);
+                                removeModalWithAnimation(transferKey);
+                                setTimeout(fetchGlobalAlertFeed, 400);
+                            }, 1000);
+                        } else {
+                            alert(json.error || 'Failed to approve transfer.');
+                            btn.disabled = false;
+                            btn.innerText = '✓ Approve Transfer';
+                        }
+                    } catch (err) {
+                        alert('Error approving transfer.');
                         btn.disabled = false;
                         btn.innerText = '✓ Approve Transfer';
                     }
-                } catch (err) {
-                    alert('Error approving transfer.');
-                    btn.disabled = false;
-                    btn.innerText = '✓ Approve Transfer';
-                }
-            });
+                });
+            }
         }
     }
 
