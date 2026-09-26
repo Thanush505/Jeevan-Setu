@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Jeevan Setu - Nurse Settings</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style data-purpose="custom-scrollbar">
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+  <style data-purpose="sidebar-layout">
+    .sidebar-gradient {
+      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    }
+    .active-nav-item {
+      background-color: #2563eb;
+      color: white;
+    }
+    /* Toggle switch transitions */
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #2563eb;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased">
+
+<!-- BEGIN: Toast Notifications Container -->
+<div id="settings-toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+<!-- BEGIN: Sidebar (Hydrated & Enhanced by nurse_navigation.js) -->
+<aside class="sidebar-gradient w-64 flex-shrink-0 flex flex-col h-full text-slate-300 fixed left-0 top-0 z-50 shadow-xl" data-purpose="sidebar">
+  <div class="p-4 flex items-center gap-3 border-b border-slate-700/50">
+    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1 shadow-sm flex-shrink-0">
+      <svg class="w-7 h-7 text-[#004ac6]" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+      </svg>
+    </div>
+    <div>
+      <h1 class="font-bold text-white text-sm tracking-wide leading-tight">JEEVAN SETU</h1>
+      <p class="text-[10px] text-slate-400 leading-tight">ICU to HDU Transfer Support System</p>
+    </div>
+  </div>
+  <nav class="flex-1 overflow-y-auto py-4 px-2 space-y-6">
+    <div>
+      <h2 class="px-3 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Patient Care</h2>
+      <div class="space-y-1">
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_dashboard/Nurse_dashboard.html">
+          <i class="w-4 h-4" data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_my_patients/Nurse_my_patients.html">
+          <i class="w-4 h-4" data-lucide="users"></i>
+          <span>My Patients</span>
+        </a>
+        <a class="flex items-center justify-between px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_alerts/Nurse_alerts.html">
+          <div class="flex items-center gap-3">
+            <i class="w-4 h-4" data-lucide="bell"></i>
+            <span>Alerts</span>
+          </div>
+          <span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">6</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../nurse_patient_monitoring/nurse_patient_monitoring.html">
+          <i class="w-4 h-4" data-lucide="monitor"></i>
+          <span>Patient Monitoring</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_enter_vitals/Nurse_enter_vitals.html">
+          <i class="w-4 h-4" data-lucide="activity"></i>
+          <span>Enter Vitals</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_nursing_notes/Nurse_nursing_notes.html">
+          <i class="w-4 h-4" data-lucide="file-text"></i>
+          <span>Nursing Notes</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+  <div class="mt-auto p-4 space-y-1 border-t border-slate-700/50">
+    <a class="active-nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors font-semibold" href="../Nurse_settings/Nurse_settings.html">
+      <i class="w-4 h-4" data-lucide="settings"></i>
+      <span>Settings</span>
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm text-red-400 hover:text-red-300 transition-colors" href="javascript:void(0);" onclick="window.logoutNurse();">
+      <i class="w-4 h-4" data-lucide="log-out"></i>
+      <span>Logout</span>
+    </a>
+  </div>
+</aside>
+<!-- END: Sidebar -->
+
+<!-- Main Content Area Container -->
+<div class="pl-0 md:pl-64 min-h-screen flex flex-col bg-slate-50">
+  
+  <!-- BEGIN: Top Navbar (Hydrated & Enhanced by nurse_navigation.js) -->
+  <header class="bg-white/95 backdrop-blur-md h-16 border-b border-slate-200 flex items-center justify-between px-6 fixed top-0 left-0 md:left-64 right-0 z-40">
+    <div class="flex items-center gap-4">
+      <button class="text-slate-500 hover:text-slate-700 md:hidden p-1 rounded-lg" onclick="window.toggleMobileNurseSidebar();" aria-label="Open menu">
+        <i class="w-6 h-6" data-lucide="menu"></i>
+      </button>
+      <div>
+        <h1 class="text-xl font-bold text-slate-900">Portal Settings</h1>
+        <p class="text-xs text-slate-500">Manage your profile, clinical preferences, and security credentials.</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="relative w-80 hidden md:block">
+        <input id="nurse-header-search" class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Search patient by name, ID or bed number..." type="text"/>
+        <i class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" data-lucide="search"></i>
+      </div>
+      <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
+        <div class="text-right hidden sm:block">
+          <p class="text-sm font-bold text-slate-900 leading-tight nurse-profile-name" id="topbar-nurse-name">Nurse Priya</p>
+          <p class="text-[10px] text-slate-500" id="topbar-nurse-ward">ICU Ward B</p>
+        </div>
+        <div class="w-10 h-10 rounded-full overflow-hidden border border-blue-200 bg-blue-50 flex items-center justify-center">
+          <img id="topbar-nurse-avatar" alt="Nurse Profile" class="w-full h-full object-cover" src="../nurse_avatar.jpg" onerror="this.onerror=null; this.src='../nurse_avatar.jpg';"/>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- END: Top Navbar -->
+
+  <!-- BEGIN: Main Page Content -->
+  <main class="pt-20 flex-1 p-4 md:p-8 space-y-6 max-w-6xl mx-auto w-full">
+    
+    <!-- Breadcrumb & Header Title -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200/80">
+      <div>
+        <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
+          <a href="../Nurse_dashboard/Nurse_dashboard.html" class="hover:text-blue-600 transition-colors">Nurse Station</a>
+          <span>/</span>
+          <span class="text-slate-800 font-semibold">Settings & Preferences</span>
+        </div>
+        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Nurse Account Settings</h2>
+        <p class="text-xs text-slate-500 mt-0.5">Customize your clinical notifications, update personal contact information, and manage credentials.</p>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="flex items-center gap-2.5">
+        <button id="refresh-settings-btn" onclick="loadUserSettings();" class="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 active:scale-95 text-slate-700 text-xs font-semibold rounded-lg shadow-xs transition-all cursor-pointer">
+          <i class="w-3.5 h-3.5" data-lucide="refresh-cw"></i>
+          <span>Reload</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Status & Error Alert Container -->
+    <div id="settings-status-banner" class="hidden"></div>
+
+    <!-- Main Grid: Navigation Tabs & Settings Cards -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- Left Column: Settings Tab Navigation -->
+      <div class="lg:col-span-3 bg-white p-3 rounded-xl shadow-sm border border-slate-200/80 space-y-1 sticky top-24">
+        <button onclick="switchTab('profile')" id="tab-btn-profile" class="settings-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-left transition-all bg-blue-50 text-blue-700 border border-blue-200">
+          <i class="w-4 h-4" data-lucide="user"></i>
+          <span>Profile Information</span>
+        </button>
+        <button onclick="switchTab('notifications')" id="tab-btn-notifications" class="settings-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-left transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-transparent">
+          <i class="w-4 h-4" data-lucide="bell"></i>
+          <span>Notification Preferences</span>
+        </button>
+        <button onclick="switchTab('security')" id="tab-btn-security" class="settings-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-left transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-transparent">
+          <i class="w-4 h-4" data-lucide="shield-check"></i>
+          <span>Security & Password</span>
+        </button>
+        <button onclick="switchTab('system')" id="tab-btn-system" class="settings-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-left transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-transparent">
+          <i class="w-4 h-4" data-lucide="info"></i>
+          <span>Account & System Info</span>
+        </button>
+      </div>
+
+      <!-- Right Column: Tab Panels -->
+      <div class="lg:col-span-9 space-y-6">
+
+        <!-- ─────────────────────────────────────────────────────────────
+             TAB 1: Profile Information
+        ───────────────────────────────────────────────────────────── -->
+        <div id="tab-panel-profile" class="settings-tab-panel space-y-6">
+          
+          <!-- Profile Card -->
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/50">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+                  <i class="w-5 h-5" data-lucide="user-check"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm">Personal & Clinical Identity</h3>
+                  <p class="text-xs text-slate-500">Your verified staff nurse profile details on Jeevan Setu.</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" id="profile-edit-toggle-btn" onclick="toggleProfileEditMode()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors">
+                  <i class="w-3.5 h-3.5" data-lucide="edit-3"></i>
+                  <span id="profile-edit-toggle-text">Edit Profile</span>
+                </button>
+              </div>
+            </div>
+
+            <form id="nurse-profile-form" onsubmit="handleSaveProfile(event)" class="p-6 space-y-6">
+              
+              <!-- Avatar Section -->
+              <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-xl bg-slate-50/60 border border-slate-100">
+                <div class="relative">
+                  <div class="w-20 h-20 rounded-full overflow-hidden ring-4 ring-white shadow-md bg-white flex items-center justify-center">
+                    <img id="profile-card-avatar" alt="Avatar" class="w-full h-full object-cover" src="../nurse_avatar.jpg" onerror="this.onerror=null; this.src='../nurse_avatar.jpg';"/>
+                  </div>
+                  <div class="absolute bottom-0 right-0 w-6 h-6 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center" title="Active Duty">
+                    <span class="w-2 h-2 bg-white rounded-full"></span>
+                  </div>
+                </div>
+                <div class="text-center sm:text-left flex-1">
+                  <h4 class="text-base font-bold text-slate-900" id="profile-display-name">Loading Profile...</h4>
+                  <p class="text-xs text-slate-500" id="profile-display-meta">—</p>
+                  <div class="mt-2 flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                    <span class="bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-0.5 rounded-full text-[11px] font-semibold" id="profile-badge-role">Nurse</span>
+                    <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full text-[11px] font-semibold" id="profile-badge-ward">Ward</span>
+                    <span class="bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full text-[11px] font-medium" id="profile-badge-status">● Duty: Active</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Profile Fields Form Grid -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                
+                <!-- Full Name (Editable) -->
+                <div>
+                  <label for="input-full-name" class="block text-xs font-bold text-slate-700 mb-1.5">Full Name <span class="text-red-500">*</span></label>
+                  <input type="text" id="input-full-name" required disabled
+                    class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 disabled:opacity-75 disabled:cursor-not-allowed focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    placeholder="Enter full name"/>
+                </div>
+
+                <!-- Email Address (Editable) -->
+                <div>
+                  <label for="input-email" class="block text-xs font-bold text-slate-700 mb-1.5">Email Address <span class="text-red-500">*</span></label>
+                  <input type="email" id="input-email" required disabled
+                    class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 disabled:opacity-75 disabled:cursor-not-allowed focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    placeholder="nurse@jeevansetu.in"/>
+                </div>
+
+                <!-- Username / Employee Code (Read-Only) -->
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Username / Staff ID</label>
+                    <span class="text-[10px] text-slate-400 font-semibold flex items-center gap-1"><i class="w-3 h-3" data-lucide="lock"></i> Admin Managed</span>
+                  </div>
+                  <input type="text" id="input-username" readonly disabled
+                    class="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 cursor-not-allowed"
+                    value="—"/>
+                </div>
+
+                <!-- Role / RBAC Category (Read-Only) -->
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <label class="block text-xs font-bold text-slate-700">System Role</label>
+                    <span class="text-[10px] text-slate-400 font-semibold flex items-center gap-1"><i class="w-3 h-3" data-lucide="lock"></i> RBAC Enforced</span>
+                  </div>
+                  <input type="text" id="input-role" readonly disabled
+                    class="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 cursor-not-allowed"
+                    value="Nurse"/>
+                </div>
+
+                <!-- Assigned Ward / Unit (Read-Only) -->
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Assigned Ward / Station</label>
+                    <span class="text-[10px] text-slate-400 font-semibold flex items-center gap-1"><i class="w-3 h-3" data-lucide="lock"></i> Ward Admin</span>
+                  </div>
+                  <input type="text" id="input-ward" readonly disabled
+                    class="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-lg text-xs font-medium text-slate-500 cursor-not-allowed"
+                    value="—"/>
+                </div>
+
+                <!-- Clinical Specialization (Editable) -->
+                <div>
+                  <label for="input-specialization" class="block text-xs font-bold text-slate-700 mb-1.5">Clinical Specialization</label>
+                  <input type="text" id="input-specialization" disabled
+                    class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 disabled:opacity-75 disabled:cursor-not-allowed focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    placeholder="e.g. Critical Care Nursing, HDU Support"/>
+                </div>
+
+                <!-- Qualification / Degree (Editable) -->
+                <div class="sm:col-span-2">
+                  <label for="input-qualification" class="block text-xs font-bold text-slate-700 mb-1.5">Academic / Professional Qualification</label>
+                  <input type="text" id="input-qualification" disabled
+                    class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 disabled:opacity-75 disabled:cursor-not-allowed focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    placeholder="e.g. B.Sc Nursing, Post-Basic Critical Care Diploma"/>
+                </div>
+
+              </div>
+
+              <!-- Form Actions -->
+              <div id="profile-actions-bar" class="hidden pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+                <button type="button" onclick="cancelProfileEdit()" class="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-lg transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" id="save-profile-btn" class="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold rounded-lg shadow-sm transition-all cursor-pointer">
+                  <i class="w-3.5 h-3.5" data-lucide="check"></i>
+                  <span>Save Changes</span>
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+
+        <!-- ─────────────────────────────────────────────────────────────
+             TAB 2: Notification Preferences
+        ───────────────────────────────────────────────────────────── -->
+        <div id="tab-panel-notifications" class="settings-tab-panel hidden space-y-6">
+          
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
+                  <i class="w-5 h-5" data-lucide="bell-ring"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm">Clinical Alert & Notification Rules</h3>
+                  <p class="text-xs text-slate-500">Configure how you receive real-time vitals and transfer warnings.</p>
+                </div>
+              </div>
+            </div>
+
+            <form id="nurse-preferences-form" onsubmit="handleSavePreferences(event)" class="p-6 space-y-6">
+              
+              <div class="space-y-4 divide-y divide-slate-100">
+                
+                <!-- In-App Notifications -->
+                <div class="pt-3 first:pt-0 flex items-center justify-between gap-4">
+                  <div class="space-y-0.5">
+                    <p class="text-xs font-bold text-slate-800">In-App Live Notifications</p>
+                    <p class="text-[11px] text-slate-500">Show notification bell badges and realtime dropdown updates in top bar.</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="pref-in-app" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  </label>
+                </div>
+
+                <!-- Critical Patient Alerts -->
+                <div class="pt-4 flex items-center justify-between gap-4">
+                  <div class="space-y-0.5">
+                    <div class="flex items-center gap-2">
+                      <p class="text-xs font-bold text-slate-800">Critical Patient Alerts</p>
+                      <span class="bg-red-50 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded border border-red-100">High Priority</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Receive instant high-priority notifications when assigned patient vitals breach limits.</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="pref-critical" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  </label>
+                </div>
+
+                <!-- EWS Risk Calculation Alerts -->
+                <div class="pt-4 flex items-center justify-between gap-4">
+                  <div class="space-y-0.5">
+                    <div class="flex items-center gap-2">
+                      <p class="text-xs font-bold text-slate-800">EWS Score Escalation Alerts</p>
+                      <span class="bg-amber-50 text-amber-600 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-100">Risk Assessment</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Alert when calculated EWS score reaches Moderate (3-4) or High (5+) tier.</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="pref-ews" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  </label>
+                </div>
+
+                <!-- Today's Priority Tasks -->
+                <div class="pt-4 flex items-center justify-between gap-4">
+                  <div class="space-y-0.5">
+                    <p class="text-xs font-bold text-slate-800">Task & Medication Due Reminders</p>
+                    <p class="text-[11px] text-slate-500">Reminders for scheduled vitals recording, nursing notes, and IV medication administration.</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="pref-tasks" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  </label>
+                </div>
+
+                <!-- Sound Alerts -->
+                <div class="pt-4 flex items-center justify-between gap-4">
+                  <div class="space-y-0.5">
+                    <p class="text-xs font-bold text-slate-800">Audio Alarm Beep</p>
+                    <p class="text-[11px] text-slate-500">Play subtle auditory alert sound on incoming urgent clinical notifications.</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="pref-sound" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  </label>
+                </div>
+
+              </div>
+
+              <!-- Preferences Form Action -->
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-end">
+                <button type="submit" id="save-pref-btn" class="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold rounded-lg shadow-sm transition-all cursor-pointer">
+                  <i class="w-3.5 h-3.5" data-lucide="save"></i>
+                  <span>Save Notification Preferences</span>
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+
+        <!-- ─────────────────────────────────────────────────────────────
+             TAB 3: Security & Password Change
+        ───────────────────────────────────────────────────────────── -->
+        <div id="tab-panel-security" class="settings-tab-panel hidden space-y-6">
+          
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
+                  <i class="w-5 h-5" data-lucide="key-round"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm">Security & Password Management</h3>
+                  <p class="text-xs text-slate-500">Update your clinical account password with secure cryptographic hashing.</p>
+                </div>
+              </div>
+            </div>
+
+            <form id="nurse-password-form" onsubmit="handleChangePassword(event)" class="p-6 space-y-5">
+              
+              <!-- Current Password -->
+              <div>
+                <label for="input-current-password" class="block text-xs font-bold text-slate-700 mb-1.5">Current Password <span class="text-red-500">*</span></label>
+                <div class="relative">
+                  <input type="password" id="input-current-password" required
+                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all pr-10"
+                    placeholder="Enter your current password"/>
+                  <button type="button" onclick="togglePasswordVisibility('input-current-password')" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600">
+                    <i class="w-4 h-4" data-lucide="eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- New Password -->
+              <div>
+                <label for="input-new-password" class="block text-xs font-bold text-slate-700 mb-1.5">New Password <span class="text-red-500">*</span></label>
+                <div class="relative">
+                  <input type="password" id="input-new-password" required minlength="6"
+                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all pr-10"
+                    placeholder="Enter new password (minimum 6 characters)"/>
+                  <button type="button" onclick="togglePasswordVisibility('input-new-password')" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600">
+                    <i class="w-4 h-4" data-lucide="eye"></i>
+                  </button>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-1">Must be at least 6 characters long with letters and numbers.</p>
+              </div>
+
+              <!-- Confirm Password -->
+              <div>
+                <label for="input-confirm-password" class="block text-xs font-bold text-slate-700 mb-1.5">Confirm New Password <span class="text-red-500">*</span></label>
+                <div class="relative">
+                  <input type="password" id="input-confirm-password" required minlength="6"
+                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all pr-10"
+                    placeholder="Re-type new password to confirm"/>
+                  <button type="button" onclick="togglePasswordVisibility('input-confirm-password')" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600">
+                    <i class="w-4 h-4" data-lucide="eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Form Action -->
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                  <i class="w-3.5 h-3.5 text-emerald-600" data-lucide="shield"></i> Encrypted with SHA-256 / Werkzeug
+                </span>
+                <button type="submit" id="change-pwd-btn" class="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold rounded-lg shadow-sm transition-all cursor-pointer">
+                  <i class="w-3.5 h-3.5" data-lucide="lock"></i>
+                  <span>Update Password</span>
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+
+        <!-- ─────────────────────────────────────────────────────────────
+             TAB 4: Account & System Information
+        ───────────────────────────────────────────────────────────── -->
+        <div id="tab-panel-system" class="settings-tab-panel hidden space-y-6">
+          
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center flex-shrink-0">
+                  <i class="w-5 h-5" data-lucide="server"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm">Session & Hospital System Metadata</h3>
+                  <p class="text-xs text-slate-500">Read-only diagnostic and access authority credentials.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Account Role</p>
+                  <p class="text-sm font-bold text-slate-900" id="sys-account-role">Staff Nurse (Nurse Station Access)</p>
+                </div>
+
+                <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Session Status</p>
+                  <p class="text-sm font-bold text-emerald-600 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Active Authenticated Session
+                  </p>
+                </div>
+
+                <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Clinical Station</p>
+                  <p class="text-sm font-bold text-slate-900" id="sys-account-ward">ICU - Clinical Station</p>
+                </div>
+
+                <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Staff ID / Username</p>
+                  <p class="text-sm font-bold text-slate-900" id="sys-account-username">—</p>
+                </div>
+
+                <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Nursing License</p>
+                  <p class="text-sm font-bold text-slate-900" id="sys-account-license">NMC Verified</p>
+                </div>
+
+                <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Assigned Shift & Experience</p>
+                  <p class="text-sm font-bold text-slate-900" id="sys-account-shift">Rotating Shift</p>
+                </div>
+
+                <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1 sm:col-span-2">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Jeevan Setu Platform</p>
+                  <p class="text-sm font-bold text-slate-900">v2.4.0 (EWS Decision Engine & Real-time Vitals Enabled)</p>
+                </div>
+
+              </div>
+
+              <div class="p-4 rounded-lg bg-blue-50/50 border border-blue-100 flex items-start gap-3">
+                <i class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" data-lucide="info"></i>
+                <div class="text-xs text-slate-700 leading-relaxed">
+                  <p class="font-bold text-blue-900">Hospital RBAC Notice:</p>
+                  <p class="mt-0.5">Role allocations, doctor authorizations, ward assignments, and patient transfers are managed by Hospital Administration. If you require duty ward changes or elevated access, please contact the Clinical Administrator.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-6 border-t border-slate-200 text-center">
+      <p class="text-[10px] text-slate-400">© 2025 Jeevan Setu - Intelligent Patient Transfer Decision Support System. All rights reserved.</p>
+    </footer>
+
+  </main>
+</div>
+
+<!-- Scripts -->
+<script data-purpose="icon-init">
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<script data-purpose="nurse-settings-logic">
+  let currentUserData = null;
+
+  function getActiveToken() {
+    let token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || '';
+    if (token) {
+      try {
+        const parts = token.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1]));
+          // If token explicitly has a non-nurse role, ignore and clear it in the Nurse portal
+          if (payload.role && payload.role.toLowerCase() !== 'nurse') {
+            console.warn('Clearing non-nurse JWT token from nurse settings page:', payload.role);
+            localStorage.removeItem('jeevan_setu_token');
+            sessionStorage.removeItem('jeevan_setu_token');
+            token = '';
+          }
+        }
+      } catch (e) {}
+    }
+    return token;
+  }
+
+  function getAuthHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    const token = getActiveToken();
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    return headers;
+  }
+
+  // Toast Notification System
+  function showToast(message, type = 'success') {
+    const container = document.getElementById('settings-toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-emerald-600 text-white' : type === 'error' ? 'bg-red-600 text-white' : 'bg-slate-800 text-white';
+    const icon = type === 'success' 
+      ? `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`
+      : `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
+
+    toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-lg text-xs font-semibold ${bgColor} transition-all duration-300 transform translate-y-2 opacity-0`;
+    toast.innerHTML = `
+      ${icon}
+      <span>${escapeHtml(message)}</span>
+    `;
+
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.remove('translate-y-2', 'opacity-0');
+    }, 10);
+
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'translate-y-2');
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"']/g, function(m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+    });
+  }
+
+  // Tab Switching
+  function switchTab(tabId) {
+    document.querySelectorAll('.settings-tab-btn').forEach(btn => {
+      btn.className = 'settings-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-left transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-transparent';
+    });
+    document.querySelectorAll('.settings-tab-panel').forEach(panel => {
+      panel.classList.add('hidden');
+    });
+
+    const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+    if (activeBtn) {
+      activeBtn.className = 'settings-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-left transition-all bg-blue-50 text-blue-700 border border-blue-200';
+    }
+
+    const activePanel = document.getElementById(`tab-panel-${tabId}`);
+    if (activePanel) {
+      activePanel.classList.remove('hidden');
+    }
+  }
+
+  // Password Visibility Toggle
+  function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  // Toggle Profile Edit Mode
+  function toggleProfileEditMode() {
+    const nameInput = document.getElementById('input-full-name');
+    if (!nameInput) return;
+    const isEditing = !nameInput.disabled;
+    setProfileEditingState(!isEditing);
+  }
+
+  function setProfileEditingState(editing) {
+    const nameInput = document.getElementById('input-full-name');
+    const emailInput = document.getElementById('input-email');
+    const specInput = document.getElementById('input-specialization');
+    const qualInput = document.getElementById('input-qualification');
+    const actionsBar = document.getElementById('profile-actions-bar');
+    const toggleBtnText = document.getElementById('profile-edit-toggle-text');
+
+    if (nameInput) nameInput.disabled = !editing;
+    if (emailInput) emailInput.disabled = !editing;
+    if (specInput) specInput.disabled = !editing;
+    if (qualInput) qualInput.disabled = !editing;
+
+    if (actionsBar) {
+      actionsBar.classList.toggle('hidden', !editing);
+    }
+    if (toggleBtnText) {
+      toggleBtnText.textContent = editing ? 'Editing...' : 'Edit Profile';
+    }
+
+    if (editing && nameInput) {
+      nameInput.focus();
+    }
+  }
+
+  function cancelProfileEdit() {
+    setProfileEditingState(false);
+    if (currentUserData) {
+      populateProfileFields(currentUserData);
+    }
+  }
+
+  // Status Banner Rendering
+  function renderLoadingState() {
+    const statusBox = document.getElementById('settings-status-banner');
+    if (!statusBox) return;
+    statusBox.className = 'mb-6 p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 flex items-center justify-between gap-3 shadow-sm';
+    statusBox.innerHTML = `
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 animate-spin">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-blue-950">Loading Profile...</p>
+          <p class="text-[11px] text-blue-700">Retrieving authenticated nurse credentials from registry...</p>
+        </div>
+      </div>
+    `;
+    statusBox.classList.remove('hidden');
+  }
+
+  function renderErrorState(message, isAuthError = false) {
+    const statusBox = document.getElementById('settings-status-banner');
+    if (!statusBox) return;
+    statusBox.className = 'mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm';
+    statusBox.innerHTML = `
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-red-100 text-red-700 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-red-950">Unable to load your profile.</p>
+          <p class="text-xs text-red-800">${escapeHtml(message)}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <button onclick="loadUserSettings()" class="px-3 py-1.5 bg-white border border-red-200 hover:bg-red-50 text-red-700 rounded-lg text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span>Retry</span>
+        </button>
+        ${isAuthError ? `<a href="../../Login/Login.html" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition-colors">Sign in as Nurse</a>` : ''}
+      </div>
+    `;
+    statusBox.classList.remove('hidden');
+
+    const dispName = document.getElementById('profile-display-name');
+    if (dispName && !currentUserData) dispName.textContent = 'Unable to load profile';
+  }
+
+  function hideStatusBanner() {
+    const statusBox = document.getElementById('settings-status-banner');
+    if (statusBox) statusBox.classList.add('hidden');
+  }
+
+  // Role Access Notice
+  function renderRoleNotice(user) {
+    const statusBox = document.getElementById('settings-status-banner');
+    if (!statusBox) return;
+
+    const roleName = (user.role || 'Guest').toUpperCase();
+    const userName = user.full_name || user.username || 'User';
+
+    statusBox.className = 'mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm';
+    statusBox.innerHTML = `
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-amber-950">Portal Role Mismatch</p>
+          <p class="text-xs text-amber-800">You are currently authenticated as <strong>${escapeHtml(userName)}</strong> (Role: <span class="font-semibold">${escapeHtml(roleName)}</span>). This page is configured for Nurse accounts.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <a href="../../Login/Login.html" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-semibold transition-colors">Sign in as Nurse</a>
+      </div>
+    `;
+    statusBox.classList.remove('hidden');
+  }
+
+  // Populate Nurse Profile Fields
+  function populateProfileFields(user) {
+    currentUserData = user;
+
+    const fullName = user.full_name || user.name || user.username || '';
+    const email = user.email || '';
+    const username = user.username || '';
+    const roleLabel = (user.role && user.role.toLowerCase() === 'nurse') ? 'Staff Nurse' : (user.role || 'Nurse');
+    
+    // Nurse-specific details
+    const nd = user.nurse_details || {};
+    const ward = nd.ward_assignment || user.department || user.ward || 'ICU Ward';
+    const spec = nd.specialization || user.specialization || '';
+    const qual = nd.qualification || user.qualification || '';
+    const license = nd.license_number || 'NMC Verified';
+    const shift = nd.shift || 'Rotating';
+    const exp = nd.experience_years ? `${nd.experience_years} Years` : 'Active';
+    const avatar = user.avatar || user.profile_picture || '../nurse_avatar.jpg';
+
+    // Update form inputs
+    const elName = document.getElementById('input-full-name');
+    if (elName) elName.value = fullName;
+    const elEmail = document.getElementById('input-email');
+    if (elEmail) elEmail.value = email;
+    const elUser = document.getElementById('input-username');
+    if (elUser) elUser.value = username || 'Not provided';
+    const elRole = document.getElementById('input-role');
+    if (elRole) elRole.value = 'Nurse';
+    const elWard = document.getElementById('input-ward');
+    if (elWard) elWard.value = ward;
+
+    const elSpec = document.getElementById('input-specialization');
+    if (elSpec) {
+      elSpec.value = spec;
+      elSpec.placeholder = spec ? 'Clinical Specialization' : 'Not provided';
+    }
+
+    const elQual = document.getElementById('input-qualification');
+    if (elQual) {
+      elQual.value = qual;
+      elQual.placeholder = qual ? 'Academic / Professional Qualification' : 'Not provided';
+    }
+
+    // Update display labels
+    const dispName = document.getElementById('profile-display-name');
+    if (dispName) dispName.textContent = fullName || username || 'Nurse Profile';
+    const dispMeta = document.getElementById('profile-display-meta');
+    if (dispMeta) dispMeta.textContent = `${roleLabel} • ${ward}`;
+    const badgeRole = document.getElementById('profile-badge-role');
+    if (badgeRole) badgeRole.textContent = roleLabel;
+    const badgeWard = document.getElementById('profile-badge-ward');
+    if (badgeWard) badgeWard.textContent = ward;
+
+    const profileAvatar = document.getElementById('profile-card-avatar');
+    if (profileAvatar) profileAvatar.src = avatar;
+
+    const topbarAvatar = document.getElementById('topbar-nurse-avatar');
+    if (topbarAvatar) topbarAvatar.src = avatar;
+
+    const topbarName = document.getElementById('topbar-nurse-name');
+    if (topbarName) topbarName.textContent = fullName || username || 'Nurse';
+    const topbarWard = document.getElementById('topbar-nurse-ward');
+    if (topbarWard) topbarWard.textContent = ward;
+
+    // Tab 4 elements
+    const sysRole = document.getElementById('sys-account-role');
+    if (sysRole) sysRole.textContent = 'Staff Nurse (Nurse Station Access)';
+    const sysWard = document.getElementById('sys-account-ward');
+    if (sysWard) sysWard.textContent = `${ward} - Clinical Station`;
+    const sysUser = document.getElementById('sys-account-username');
+    if (sysUser) sysUser.textContent = username;
+    const sysLicense = document.getElementById('sys-account-license');
+    if (sysLicense) sysLicense.textContent = license;
+    const sysShift = document.getElementById('sys-account-shift');
+    if (sysShift) sysShift.textContent = `${shift} Shift (${exp})`;
+
+    // Preferences
+    if (user.preferences) {
+      const p = user.preferences;
+      if (document.getElementById('pref-in-app')) document.getElementById('pref-in-app').checked = p.in_app_notifications !== false;
+      if (document.getElementById('pref-critical')) document.getElementById('pref-critical').checked = p.critical_patient_alerts !== false;
+      if (document.getElementById('pref-ews')) document.getElementById('pref-ews').checked = p.ews_alerts !== false;
+      if (document.getElementById('pref-tasks')) document.getElementById('pref-tasks').checked = p.task_notifications !== false;
+      if (document.getElementById('pref-sound')) document.getElementById('pref-sound').checked = p.sound_alerts !== false;
+    }
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  // Load User Data from API
+  async function loadUserSettings() {
+    renderLoadingState();
+    try {
+      const res = await fetch('/api/v1/auth/me', {
+        headers: getAuthHeaders(),
+        credentials: 'same-origin'
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          const u = json.data;
+          
+          // Strict Role Verification
+          if (u.role && u.role.toLowerCase() !== 'nurse') {
+            renderRoleNotice(u);
+            return;
+          }
+
+          hideStatusBanner();
+          populateProfileFields(u);
+
+          // Update stored user for navigation sync
+          try {
+            localStorage.setItem('jeevan_setu_user', JSON.stringify(u));
+          } catch (err) {}
+          return;
+        }
+      } else if (res.status === 401) {
+        // Check if there is cached nurse user in localStorage
+        const stored = localStorage.getItem('jeevan_setu_user') || sessionStorage.getItem('jeevan_setu_user');
+        if (stored) {
+          try {
+            const u = JSON.parse(stored);
+            if (u.role && u.role.toLowerCase() === 'nurse') {
+              hideStatusBanner();
+              populateProfileFields(u);
+              return;
+            }
+          } catch(e){}
+        }
+        renderErrorState('Session expired or authentication required. Please log in again.', true);
+        return;
+      } else if (res.status === 403) {
+        renderErrorState('Access forbidden. Nurse credentials required.', true);
+        return;
+      } else {
+        renderErrorState(`Server returned an error (${res.status}). Please retry.`, false);
+        return;
+      }
+    } catch (err) {
+      console.warn('API /api/v1/auth/me error:', err);
+      
+      // Check stored cache
+      try {
+        const stored = localStorage.getItem('jeevan_setu_user') || sessionStorage.getItem('jeevan_setu_user');
+        if (stored) {
+          const u = JSON.parse(stored);
+          if (u.role && u.role.toLowerCase() === 'nurse') {
+            hideStatusBanner();
+            populateProfileFields(u);
+            return;
+          }
+        }
+      } catch (e) {}
+
+      renderErrorState('Network error while connecting to server. Please check your connection and retry.', false);
+    }
+  }
+
+  // Save Profile Handler
+  async function handleSaveProfile(e) {
+    e.preventDefault();
+    const saveBtn = document.getElementById('save-profile-btn');
+    const originalHtml = saveBtn.innerHTML;
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></span> Saving...`;
+
+    const payload = {
+      full_name: document.getElementById('input-full-name').value.trim(),
+      email: document.getElementById('input-email').value.trim(),
+      specialization: document.getElementById('input-specialization').value.trim(),
+      qualification: document.getElementById('input-qualification').value.trim()
+    };
+
+    try {
+      const res = await fetch('/api/v1/auth/profile', {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
+
+      const json = await res.json();
+      if (res.ok && json.success) {
+        showToast('Profile updated successfully!', 'success');
+        setProfileEditingState(false);
+        
+        // Reload data to reflect across components
+        await loadUserSettings();
+        if (window.syncLiveNurseHeader) window.syncLiveNurseHeader();
+      } else {
+        showToast(json.error || 'Failed to update profile. Please try again.', 'error');
+      }
+    } catch (err) {
+      console.error('Save profile error:', err);
+      showToast('Network error while saving profile.', 'error');
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = originalHtml;
+    }
+  }
+
+  // Save Notification Preferences Handler
+  async function handleSavePreferences(e) {
+    e.preventDefault();
+    const btn = document.getElementById('save-pref-btn');
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></span> Saving...`;
+
+    const payload = {
+      in_app_notifications: document.getElementById('pref-in-app').checked,
+      critical_patient_alerts: document.getElementById('pref-critical').checked,
+      ews_alerts: document.getElementById('pref-ews').checked,
+      task_notifications: document.getElementById('pref-tasks').checked,
+      sound_alerts: document.getElementById('pref-sound').checked
+    };
+
+    try {
+      const res = await fetch('/api/v1/auth/preferences', {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
+
+      const json = await res.json();
+      if (res.ok && json.success) {
+        showToast('Notification preferences saved successfully!', 'success');
+      } else {
+        showToast(json.error || 'Failed to save preferences.', 'error');
+      }
+    } catch (err) {
+      console.error('Save preferences error:', err);
+      showToast('Network error while saving preferences.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+  }
+
+  // Change Password Handler
+  async function handleChangePassword(e) {
+    e.preventDefault();
+    const btn = document.getElementById('change-pwd-btn');
+    const currentPw = document.getElementById('input-current-password').value;
+    const newPw = document.getElementById('input-new-password').value;
+    const confirmPw = document.getElementById('input-confirm-password').value;
+
+    if (newPw !== confirmPw) {
+      showToast('New passwords do not match!', 'error');
+      return;
+    }
+
+    if (newPw.length < 6) {
+      showToast('New password must be at least 6 characters long!', 'error');
+      return;
+    }
+
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></span> Updating...`;
+
+    try {
+      const res = await fetch('/api/v1/auth/change-password', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          current_password: currentPw,
+          new_password: newPw,
+          confirm_password: confirmPw
+        })
+      });
+
+      const json = await res.json();
+      if (res.ok && json.success) {
+        showToast('Password changed successfully!', 'success');
+        document.getElementById('nurse-password-form').reset();
+      } else {
+        showToast(json.error || 'Failed to update password. Please check your current password.', 'error');
+      }
+    } catch (err) {
+      console.error('Password change error:', err);
+      showToast('Network error while changing password.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    loadUserSettings();
+  });
+</script>
+
+<script src="../nurse_navigation.js"></script>
+  <script src="../global_alert_manager.js"></script>
+</body>
+</html>

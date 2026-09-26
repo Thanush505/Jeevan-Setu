@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+<html class="" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jeevan Setu - Patient Update</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>tailwind.config = {theme: {extend: {colors: {primary: "#004ac6", primaryLight: "#eff6ff", secondary: "#006591", warning: "#f59e0b", danger: "#ef4444", surface: "#f9f9ff", textMain: "#0f172a", textMuted: "#64748b", "on-primary-fixed-variant": "#003ea8", "surface-tint": "#0053db", tertiary: "#46566c", "on-secondary-fixed": "#001e2f", "on-primary-container": "#eeefff", "primary-fixed": "#dbe1ff", "inverse-primary": "#b4c5ff", outline: "#737686", "tertiary-fixed-dim": "#b7c8e1", "outline-variant": "#c3c6d7", "on-error": "#ffffff", "on-error-container": "#93000a", "on-tertiary-fixed": "#0b1c30", "on-primary": "#ffffff", "on-background": "#111c2d", background: "#f9f9ff", "on-tertiary-fixed-variant": "#38485d", "tertiary-container": "#5e6e85", "secondary-container": "#39b8fd", "primary-container": "#2563eb", "on-secondary-fixed-variant": "#004c6e", "on-tertiary-container": "#e9f0ff", "surface-variant": "#d8e3fb", "surface-container-highest": "#d8e3fb", "on-primary-fixed": "#00174b", "on-secondary": "#ffffff", "on-secondary-container": "#004666", "surface-container-lowest": "#ffffff", "surface-bright": "#f9f9ff", error: "#ba1a1a", "inverse-on-surface": "#ecf1ff", "surface-container-low": "#f0f3ff", "surface-container": "#e7eeff", "on-surface-variant": "#434655", "surface-container-high": "#dee8ff", "secondary-fixed-dim": "#89ceff", "error-container": "#ffdad6", "primary-fixed-dim": "#b4c5ff", "on-tertiary": "#ffffff", "surface-dim": "#cfdaf2", "secondary-fixed": "#c9e6ff", "inverse-surface": "#263143", "on-surface": "#111c2d", "tertiary-fixed": "#d3e4fe"}, fontFamily: {sans: ["Inter", "sans-serif"], "body-sm": ["Inter"], "body-md": ["Inter"], "headline-md": ["Poppins"], "headline-lg-mobile": ["Poppins"], "label-md": ["Inter"], "label-sm": ["Inter"], "body-lg": ["Inter"], "headline-lg": ["Poppins"], display: ["Poppins"], "headline-sm": ["Poppins"]}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, fontSize: {"body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "500"}], "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "600"}], "label-md": ["14px", {lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "600"}], "label-sm": ["12px", {lineHeight: "16px", fontWeight: "600"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", fontWeight: "600"}], display: ["48px", {lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600"}], "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "500"}]}, spacing: {"margin-mobile": "16px", "margin-desktop": "32px", sm: "8px", lg: "24px", xs: "4px", md: "16px", gutter: "16px", xl: "32px", base: "4px"}}}};</script>
+<style data-purpose="custom-styles">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      /* Simulating mobile device constraint for presentation */
+      max-width: 420px;
+      margin: 0 auto;
+      border: 1px solid #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Hide scrollbar for a cleaner mobile look */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    .shadow-card {
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    }
+    
+    .shadow-soft {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-textMain relative pb-20">
+<!-- BEGIN: Top Bar & Header -->
+<header class="pt-12 pb-4 px-5 bg-white sticky top-0 z-10">
+<div class="flex items-center justify-between mb-4">
+<!-- Hamburger Menu -->
+<button class="p-2 -ml-2 text-primary">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- Logo & Title -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primaryLight flex items-center justify-center text-primary relative">
+<!-- Heart/ECG Icon representation -->
+<svg class="w-5 h-5 text-red-500 absolute" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"></path>
+</svg>
+<svg class="w-6 h-6 text-primary absolute z-10" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h1 class="text-primary font-bold text-lg leading-tight uppercase">Jeevan Setu</h1>
+<p class="text-[10px] text-textMuted uppercase tracking-wide">ICU to HDU Transfer Support</p>
+</div>
+</div>
+<!-- Notifications -->
+<button class="p-2 -mr-2 text-primary relative">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="absolute top-1.5 right-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white border-2 border-white">3</span>
+</button>
+</div>
+</header>
+<!-- END: Top Bar & Header -->
+<main class="flex-1 px-5 pb-6 space-y-6">
+<!-- BEGIN: Greeting Banner -->
+<section class="bg-primaryLight rounded-card p-4 relative overflow-hidden flex items-center justify-between">
+<div class="z-10 w-2/3">
+<h2 id="attendant-greeting-name" class="text-xl font-bold text-primary mb-1">Hello, Attendant 👋</h2>
+<p class="text-sm text-textMain mb-3">Here's your patient's<br/>current update.</p>
+<p class="text-xs font-medium text-textMain">Patient ID: <span id="attendant-patient-uhid" class="text-blue-600 font-semibold font-mono">--</span></p>
+</div>
+<!-- Illustration Placeholder - using shapes as instructed not to invent URLs -->
+<div class="w-1/3 h-24 relative opacity-80">
+<div class="absolute inset-0 flex items-center justify-center">
+<!-- Simulated Illustration -->
+<div class="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center relative">
+<div class="w-12 h-16 bg-blue-300 rounded-t-full absolute bottom-0 right-2"></div>
+<div class="w-8 h-10 bg-green-200 rounded-t-full absolute bottom-0 -left-2"></div>
+<div class="w-20 h-4 bg-gray-200 rounded absolute bottom-0 left-1/2 transform -translate-x-1/2"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Greeting Banner -->
+<!-- BEGIN: Patient Profile Card -->
+<section class="bg-white border border-gray-100 rounded-card p-4 shadow-sm flex items-center gap-4">
+<div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+<svg class="w-10 h-10 text-blue-500" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 id="attendant-patient-name" class="text-lg font-bold text-primary">Ravi Kumar</h3>
+<span id="attendant-condition-badge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 border border-green-200 text-xs font-semibold text-secondary">
+<svg class="h-1.5 w-1.5 fill-current" viewbox="0 0 2 2"><circle cx="1" cy="1" r="1"></circle></svg>
+            <span id="attendant-condition-text">Stable</span>
+          </span>
+</div>
+<p id="attendant-patient-age-gender" class="text-sm text-textMuted mb-0.5">Age: 45 Y <span class="mx-1">|</span> Male</p>
+<p id="attendant-patient-admitted" class="text-xs text-textMuted mb-1">Admitted on: 20 May 2025</p>
+<div class="flex justify-between items-center mt-2 pt-2 border-t border-gray-100/80">
+  <div>
+    <p class="text-[10px] text-textMuted uppercase font-semibold tracking-wider">Current Unit</p>
+    <p class="text-xs font-bold text-primary"><span id="attendant-patient-unit">ICU-01</span></p>
+  </div>
+  <!-- EWS Score in place of View Details -->
+  <div id="attendant-ews-badge" class="px-3.5 py-2.5 rounded-xl bg-blue-50 border border-blue-100 flex items-center gap-3 min-h-[48px]">
+    <div class="flex flex-col items-end text-right justify-center">
+      <span class="text-[10px] font-bold text-blue-800 tracking-wider uppercase">EWS Score</span>
+      <span id="attendant-ews-condition" class="text-[11px] font-semibold text-secondary leading-tight">( Stable )</span>
+    </div>
+    <span id="attendant-ews-score" class="text-3xl font-black text-primary leading-none">--</span>
+  </div>
+</div>
+</div>
+</section>
+<!-- END: Patient Profile Card -->
+<!-- BEGIN: Current Status Grid -->
+<section>
+<div class="flex justify-between items-center mb-3">
+<h3 class="text-base font-bold text-primary">Current Status</h3>
+<div class="flex items-center gap-1 text-xs font-medium text-secondary">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm14.25 6a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 4.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" fill-rule="evenodd"></path>
+</svg>
+          Live
+        </div>
+</div>
+<div class="grid grid-cols-2 gap-3 mb-3">
+<!-- 1. Heart Rate -->
+<div class="bg-green-50/50 border border-green-100 rounded-xl p-3 flex flex-col items-center text-center">
+<h4 class="text-xs font-semibold text-green-700 mb-1">Heart Rate</h4>
+<div class="flex items-baseline gap-1 mb-2">
+<span id="attendant-hr-val" class="text-3xl font-bold text-gray-800 leading-none">--</span>
+<span class="text-[10px] text-gray-500 font-medium">bpm</span>
+</div>
+<svg class="w-6 h-6 text-green-600 mt-auto" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"></path>
+</svg>
+</div>
+<!-- 2. Blood Pressure -->
+<div class="bg-orange-50/50 border border-orange-100 rounded-xl p-3 flex flex-col items-center text-center">
+<h4 class="text-xs font-semibold text-gray-700 mb-1">Blood Pressure</h4>
+<div class="flex items-baseline gap-1 mb-2">
+<span id="attendant-bp-val" class="text-3xl font-bold text-gray-800 leading-none">--</span>
+<span class="text-[10px] text-gray-500 font-medium">mmHg</span>
+</div>
+<div class="mt-auto relative w-5 h-6 flex items-center justify-center">
+<svg class="w-6 h-6 text-orange-500" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2C7.58172 2 4 5.58172 4 10C4 16 12 22 12 22C12 22 20 16 20 10C20 5.58172 16.4183 2 12 2Z"></path>
+</svg>
+<span class="absolute text-[8px] font-bold text-white bottom-1">BP</span>
+</div>
+</div>
+<!-- 3. Temperature -->
+<div class="bg-purple-50/50 border border-purple-100 rounded-xl p-3 flex flex-col items-center text-center">
+<h4 class="text-xs font-semibold text-purple-700 mb-1">Temperature</h4>
+<div class="flex items-baseline gap-1 mb-2">
+<span id="attendant-temp-val" class="text-3xl font-bold text-gray-800 leading-none">--</span>
+<span class="text-[10px] text-gray-500 font-medium">°C</span>
+</div>
+<svg class="w-6 h-6 text-purple-500 mt-auto" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.006 14.5c.34-.637.534-1.37.534-2.146V5a3.5 3.5 0 10-7 0v7.354c0 .776.195 1.51.534 2.146.438.824.966 1.705 1.488 2.502.138.21.272.417.402.618a3.5 3.5 0 003.11 1.62c.983 0 1.94-.403 2.62-1.118a3.504 3.504 0 00.91-2.482c0-.528-.152-1.04-.42-1.487l-.004-.006-.403-.618c-.522-.797-1.05-1.678-1.488-2.502zM12 3a2 2 0 012 2v7.354a5.023 5.023 0 01-1.05 3.197L12.5 16.25a.75.75 0 01-1 0l-.45-.699a5.023 5.023 0 01-1.05-3.197V5a2 2 0 012-2z"></path>
+<path d="M12 15a1 1 0 100-2 1 1 0 000 2z"></path>
+<path d="M12 11.5a.75.75 0 01-.75-.75V7a.75.75 0 011.5 0v3.75a.75.75 0 01-.75.75z"></path>
+</svg>
+</div>
+<!-- 4. Respiratory Rate -->
+<div class="bg-cyan-50/50 border border-cyan-100 rounded-xl p-3 flex flex-col items-center text-center">
+<h4 class="text-xs font-semibold text-cyan-800 mb-1">Respiratory Rate</h4>
+<div class="flex items-baseline gap-1 mb-2">
+<span id="attendant-rr-val" class="text-3xl font-bold text-gray-800 leading-none">--</span>
+<span class="text-[10px] text-gray-500 font-medium">/min</span>
+</div>
+<svg class="w-6 h-6 text-cyan-600 mt-auto" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 3v13m0 0l-3-3m3 3l3-3M5 10a7 7 0 0114 0c0 4.97-3.134 9-7 9s-7-4.03-7-9z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M9 13.5c1 .5 2 .5 3 0s2-.5 3 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Stable Banner -->
+<div id="attendant-banner-box" class="bg-green-50 border border-green-100 rounded-xl p-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0 text-white">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<div>
+<h4 id="attendant-status-heading" class="text-sm font-bold text-green-800">Patient is Stable</h4>
+<p id="attendant-status-desc" class="text-xs text-textMuted leading-relaxed">All recorded vital parameters are within normal recovery range.<br/>Attendant updates will refresh in real time.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Current Status Grid -->
+<!-- BEGIN: Transfer Status -->
+<section>
+<h3 class="text-base font-bold text-primary mb-3">Transfer Status</h3>
+<div class="border border-gray-100 rounded-xl p-4 shadow-sm bg-white">
+<!-- Timeline Visual -->
+<div class="flex items-center justify-between mb-2 relative">
+<!-- Connector Line Background -->
+<div class="absolute top-1/2 left-8 right-8 h-1 -translate-y-1/2 bg-gray-200 border-t border-dashed border-gray-300 z-0"></div>
+<!-- Active Line -->
+<div class="absolute top-1/2 left-8 w-1/2 h-1 -translate-y-1/2 bg-secondary z-0"></div>
+<!-- ICU Node -->
+<div class="flex flex-col items-center z-10 bg-white px-1">
+<div class="w-10 h-10 rounded-full bg-green-50 text-secondary flex items-center justify-center mb-1 border border-green-100">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.25 3v1.5H9.75v3h3V6h-1.5V3h-1.5z"></path>
+<path clip-rule="evenodd" d="M3 4.5A1.5 1.5 0 014.5 3h1.5a.75.75 0 010 1.5H4.5v12h15V4.5h-1.5a.75.75 0 010-1.5h1.5A1.5 1.5 0 0121 4.5v15a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 19.5v-15zm4.5 6a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-1.5 1.5a3 3 0 013-3h6a3 3 0 013 3v4.5a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V12z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<span class="text-[10px] font-bold text-secondary">ICU</span>
+</div>
+<!-- Checkmark Node -->
+<div class="z-10 bg-white px-1 -ml-4">
+<div class="w-5 h-5 rounded-full bg-secondary text-white flex items-center justify-center">
+<svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" fill-rule="evenodd"></path>
+</svg>
+</div>
+</div>
+<!-- Evaluation Node -->
+<div class="flex flex-col items-center z-10 bg-white px-1">
+<div class="w-6 h-6 rounded-full bg-warning text-white flex items-center justify-center mb-1 ring-4 ring-white">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" fill-rule="evenodd"></path>
+</svg>
+</div>
+</div>
+<!-- HDU Node -->
+<div class="flex flex-col items-center z-10 bg-white px-1">
+<div class="w-10 h-10 rounded-full bg-gray-50 text-gray-400 flex items-center justify-center mb-1 border border-gray-200">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.25 3v1.5H9.75v3h3V6h-1.5V3h-1.5z"></path>
+<path clip-rule="evenodd" d="M3 4.5A1.5 1.5 0 014.5 3h1.5a.75.75 0 010 1.5H4.5v12h15V4.5h-1.5a.75.75 0 010-1.5h1.5A1.5 1.5 0 0121 4.5v15a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 19.5v-15zm4.5 6a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-1.5 1.5a3 3 0 013-3h6a3 3 0 013 3v4.5a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V12z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<span class="text-[10px] font-medium text-gray-500">HDU</span>
+</div>
+</div>
+<div class="text-center mt-2">
+<h4 class="text-xs font-bold text-textMain mb-0.5">Under Evaluation</h4>
+<p class="text-[11px] text-secondary font-medium">No transfer recommended at this time.</p>
+</div>
+</div>
+</section>
+<!-- END: Transfer Status -->
+<!-- BEGIN: Recent Updates -->
+<section>
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-base font-bold text-primary">Recent Updates</h3>
+<a class="text-xs font-semibold text-blue-600 hover:underline" href="#">View All</a>
+</div>
+<div class="space-y-4 pl-2 relative before:absolute before:inset-y-0 before:left-5 before:w-0.5 before:bg-gray-100">
+<!-- Update Item 1 -->
+<div class="relative flex gap-4">
+<div class="w-7 h-7 rounded-full bg-secondary flex items-center justify-center text-white ring-4 ring-white z-10 flex-shrink-0">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<div class="flex-1 pb-1">
+<div class="flex justify-between items-start mb-0.5">
+<h4 class="text-sm font-semibold text-textMain">Vitals recorded</h4>
+<span class="text-[10px] text-textMuted">10:30 AM</span>
+</div>
+<p class="text-xs text-textMuted">Heart Rate, BP, SpO₂, Temp updated</p>
+</div>
+</div>
+<!-- Update Item 2 -->
+<div class="relative flex gap-4">
+<div class="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 ring-4 ring-white z-10 flex-shrink-0">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 3v2.25H6.75V3h-1.5v2.25H3V6.75h2.25v1.5H3v1.5h2.25v1.5H3v1.5h2.25v1.5H3v1.5h2.25V18h1.5v-2.25h1.5V18h1.5v-2.25h1.5V18h1.5v-2.25h1.5V18h1.5v-2.25H21v-1.5h-2.25v-1.5H21v-1.5h-2.25v-1.5H21v-1.5h-2.25V6.75H21V5.25h-2.25V3h-1.5v2.25h-1.5V3h-1.5v2.25h-1.5V3H9zm1.5 8.25h-1.5v-1.5h1.5v1.5zm0 3h-1.5v-1.5h1.5v1.5zm3-3h-1.5v-1.5h1.5v1.5zm0 3h-1.5v-1.5h1.5v1.5zm3-3h-1.5v-1.5h1.5v1.5zm0 3h-1.5v-1.5h1.5v1.5z"></path>
+</svg>
+</div>
+<div class="flex-1 pb-1">
+<div class="flex justify-between items-start mb-0.5">
+<h4 class="text-sm font-semibold text-textMain">EWS Score calculated</h4>
+<span class="text-[10px] text-textMuted">10:30 AM</span>
+</div>
+<p class="text-xs text-textMuted">Score: 3 (Low Risk)</p>
+</div>
+</div>
+<!-- Update Item 3 -->
+<div class="relative flex gap-4">
+<div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white ring-4 ring-white z-10 flex-shrink-0">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-0.5">
+<h4 class="text-sm font-semibold text-textMain">Patient stable in ICU</h4>
+<span class="text-[10px] text-textMuted">10:28 AM</span>
+</div>
+<p class="text-xs text-textMuted">Monitoring will continue</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Recent Updates -->
+<!-- BEGIN: Support Action -->
+<section class="bg-primaryLight rounded-xl p-3 flex items-center justify-between border border-blue-100 mt-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h4 class="text-sm font-bold text-blue-800">Need Help?</h4>
+<p class="text-xs text-blue-600">Contact hospital staff</p>
+</div>
+</div>
+<button class="bg-white border border-blue-200 text-blue-600 font-semibold text-xs px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm hover:bg-gray-50">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" fill-rule="evenodd"></path>
+</svg>
+        Call Nurse
+      </button>
+</section>
+<!-- END: Support Action -->
+</main>
+<!-- BEGIN: Bottom Navigation -->
+<nav class="fixed bottom-0 w-full max-w-[420px] bg-white border-t border-gray-200 flex justify-around items-center pb-safe pt-2 pb-2 z-50">
+<a class="flex flex-col items-center p-2 text-blue-600 w-16" href="#">
+<svg class="w-6 h-6 mb-1" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.47 3.84a.75.75 0 011.06 0l8.99 9a.75.75 0 11-1.06 1.06l-4.69-4.69V21a.75.75 0 01-.75.75h-3.6V16a1 1 0 00-1-1h-2a1 1 0 00-1 1v5.75H4.5A.75.75 0 013.75 21v-11.78l-4.69 4.69a.75.75 0 11-1.06-1.06l8.99-9z"></path>
+</svg>
+<span class="text-[10px] font-semibold">Home</span>
+</a>
+<a class="flex flex-col items-center p-2 text-gray-400 hover:text-gray-600 w-16" href="#">
+<svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[10px] font-medium">Patient Info</span>
+</a>
+<a class="flex flex-col items-center p-2 text-gray-400 hover:text-gray-600 w-16" href="#">
+<svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[10px] font-medium">Reports</span>
+</a>
+<a class="flex flex-col items-center p-2 text-gray-400 hover:text-gray-600 w-16" href="#">
+<svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[10px] font-medium">More</span>
+</a>
+</nav>
+<!-- END: Bottom Navigation -->
+
+<script>
+(function(){
+  // Wire hamburger/menu to go back to attendant login
+  var btns = document.querySelectorAll('button, a');
+  for (var i = 0; i < btns.length; i++) {
+    var svg = btns[i].querySelector('svg path');
+    // Look for the hamburger icon (3 horizontal lines)
+    if (svg) {
+      var d = svg.getAttribute('d') || '';
+      if (d.indexOf('M4 6h16') !== -1 || d.indexOf('M3 12') !== -1) {
+        btns[i].addEventListener('click', function(){
+          if (confirm('Return to login?')) {
+            window.location.href = '../attendant_login_mobile_revised/attendant_login_mobile_revised.html';
+          }
+        });
+        break;
+      }
+    }
+  }
+  // Wire bottom nav "Home" to self
+  var navLinks = document.querySelectorAll('a[href="#"]');
+  for (var j = 0; j < navLinks.length; j++) {
+    var txt = (navLinks[j].textContent || '').trim();
+    if (txt === 'Home') {
+      navLinks[j].href = '#top';
+    }
+  }
+
+  // ─── Jeevan Setu: Authoritative Attendant Live View Integration ───
+  var urlParams = new URLSearchParams(window.location.search);
+  var paramId = urlParams.get('patient_id') || urlParams.get('id');
+  var urlToken = urlParams.get('session_token') || urlParams.get('token') || urlParams.get('auth_token');
+  
+  if (urlToken) {
+    try {
+      sessionStorage.setItem('jeevan_setu_token', urlToken);
+      localStorage.setItem('jeevan_setu_token', urlToken);
+    } catch(e) {}
+  }
+  
+  if (paramId) {
+    try {
+      sessionStorage.setItem('jeevan_setu_attendant_patient_id', paramId);
+    } catch(e) {}
+  }
+
+  var PATIENT_ID = paramId ? parseInt(paramId) : (sessionStorage.getItem('jeevan_setu_attendant_patient_id') ? parseInt(sessionStorage.getItem('jeevan_setu_attendant_patient_id')) : 1);
+  
+  var attendantName = sessionStorage.getItem('jeevan_setu_attendant_name') || '';
+  if (attendantName) {
+    var greetingEl = document.getElementById('attendant-greeting-name');
+    if (greetingEl) greetingEl.textContent = 'Hello, ' + attendantName + ' 👋';
+  }
+
+  var AUTH_TOKEN = urlToken || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('jeevan_setu_token') || '';
+
+  function getHeaders() {
+    var headers = { 'Content-Type': 'application/json' };
+    if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    return headers;
+  }
+
+  function getConditionColor(condition) {
+    if (condition === 'Stable') return { bg: 'bg-green-50', border: 'border-green-100', text: 'text-green-800', badgeBg: 'bg-green-50', badgeBorder: 'border-green-200', badgeText: 'text-secondary' };
+    if (condition === 'Moderate Risk') return { bg: 'bg-yellow-50', border: 'border-yellow-100', text: 'text-yellow-800', badgeBg: 'bg-yellow-50', badgeBorder: 'border-yellow-200', badgeText: 'text-yellow-700' };
+    return { bg: 'bg-red-50', border: 'border-red-100', text: 'text-red-800', badgeBg: 'bg-red-50', badgeBorder: 'border-red-200', badgeText: 'text-red-700' };
+  }
+
+  async function refreshAttendantView() {
+    try {
+      // 1. Fetch authoritative attendant patient data
+      var res = await fetch('/api/v1/attendant/patient?patient_id=' + PATIENT_ID, { headers: getHeaders() });
+      if (!res.ok) {
+        // Fallback to patient route if staff viewing
+        res = await fetch('/api/v1/patients/' + PATIENT_ID, { headers: getHeaders() });
+      }
+
+      if (!res.ok) return;
+      var json = await res.json();
+      if (!json.success || !json.data) return;
+
+      var p = json.data;
+
+      // Update name & greeting
+      if (p.attendant_name && !attendantName) {
+        var gEl = document.getElementById('attendant-greeting-name');
+        if (gEl) gEl.textContent = 'Hello, ' + p.attendant_name + ' 👋';
+      }
+
+      var uhidEl = document.getElementById('attendant-patient-uhid');
+      if (uhidEl) uhidEl.textContent = p.patient_code || ('UHID-' + String(p.patient_id).padStart(5, '0'));
+
+      var nameEl = document.getElementById('attendant-patient-name');
+      if (nameEl) nameEl.textContent = p.name || p.patient_name || 'Patient';
+
+      var ageGenEl = document.getElementById('attendant-patient-age-gender');
+      if (ageGenEl) ageGenEl.textContent = 'Age: ' + (p.age || '--') + ' Y | ' + (p.gender === 'Female' ? 'Female' : 'Male');
+
+      var unitEl = document.getElementById('attendant-patient-unit');
+      if (unitEl) unitEl.textContent = p.bed_number ? (p.ward_type + ' · Bed ' + p.bed_number) : (p.ward_type || 'Inpatient');
+
+      if (p.admission_date) {
+        var admEl = document.getElementById('attendant-patient-admitted');
+        var d = new Date(p.admission_date);
+        if (admEl) admEl.textContent = 'Admitted: ' + d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      }
+
+      // Condition & EWS
+      var condition = p.condition || (p.total_score >= 7 ? 'Critical Care' : (p.total_score >= 4 ? 'Moderate Risk' : 'Stable'));
+      var colors = getConditionColor(condition);
+
+      var condBadge = document.getElementById('attendant-condition-badge');
+      var condText = document.getElementById('attendant-condition-text');
+      if (condBadge) condBadge.className = 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ' + colors.badgeBg + ' ' + colors.badgeBorder + ' ' + colors.badgeText;
+      if (condText) condText.textContent = condition;
+
+      var ewsScoreEl = document.getElementById('attendant-ews-score');
+      var ewsCondEl = document.getElementById('attendant-ews-condition');
+      var ewsBadgeEl = document.getElementById('attendant-ews-badge');
+      if (ewsScoreEl) ewsScoreEl.textContent = p.total_score !== undefined ? p.total_score : (p.latest_vitals?.ews_score ?? 0);
+      if (ewsCondEl) ewsCondEl.textContent = '( ' + condition + ' )';
+      if (ewsBadgeEl) ewsBadgeEl.className = 'px-3.5 py-2.5 rounded-xl border flex items-center gap-3 min-h-[48px] ' + colors.badgeBg + ' ' + colors.badgeBorder;
+
+      // Vitals metrics (4 physiological parameters)
+      var vitals = p.latest_vitals;
+      if (vitals) {
+        var hrEl = document.getElementById('attendant-hr-val');
+        var bpEl = document.getElementById('attendant-bp-val');
+        var tempEl = document.getElementById('attendant-temp-val');
+        var rrEl = document.getElementById('attendant-rr-val');
+        if (hrEl) hrEl.textContent = vitals.heart_rate !== null && vitals.heart_rate !== undefined ? vitals.heart_rate : '--';
+        if (bpEl) bpEl.textContent = vitals.blood_pressure || (vitals.systolic_bp ? String(vitals.systolic_bp) : '--');
+        if (tempEl) tempEl.textContent = vitals.temperature !== null && vitals.temperature !== undefined ? vitals.temperature : '--';
+        if (rrEl) rrEl.textContent = vitals.respiratory_rate !== null && vitals.respiratory_rate !== undefined ? vitals.respiratory_rate : '--';
+      }
+
+      // Status banner
+      var headingEl = document.getElementById('attendant-status-heading');
+      var descEl = document.getElementById('attendant-status-desc');
+      var bannerBox = document.getElementById('attendant-banner-box');
+      if (bannerBox) bannerBox.className = 'border rounded-xl p-3 flex items-center gap-3 ' + colors.bg + ' ' + colors.border;
+      if (headingEl) {
+        headingEl.textContent = 'Patient is ' + condition;
+        headingEl.className = 'text-sm font-bold ' + colors.text;
+      }
+      if (descEl) {
+        if (condition === 'Stable') {
+          descEl.textContent = 'All recorded vital parameters are within normal recovery range. Attendant updates refresh in real time.';
+        } else if (condition === 'Moderate Risk') {
+          descEl.textContent = 'Some vital parameters require close medical observation. Clinical team is monitoring.';
+        } else {
+          descEl.textContent = 'Patient requires intensive clinical care and continuous monitoring.';
+        }
+      }
+
+    } catch (e) {
+      console.warn('[Jeevan Setu] Attendant refresh error:', e);
+    }
+  }
+
+  // Initial fetch + auto-refresh every 8 seconds
+  refreshAttendantView();
+  setInterval(refreshAttendantView, 8000);
+})();
+</script>
+</body></html>

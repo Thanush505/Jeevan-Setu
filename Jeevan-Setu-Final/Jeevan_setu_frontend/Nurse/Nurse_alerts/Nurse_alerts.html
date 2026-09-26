@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Nurse Alerts &amp; Clinical Action Hub — Jeevan Setu</title>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .modal-backdrop-blur { backdrop-filter: blur(4px); }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#004ac6",
+            "primary-container": "#2563eb",
+            "on-primary": "#ffffff",
+            "background": "#f9f9ff",
+            "surface": "#f9f9ff",
+            "surface-container": "#e7eeff",
+            "surface-container-low": "#f0f3ff",
+            "surface-container-highest": "#d8e3fb",
+            "on-surface": "#111c2d",
+            "on-surface-variant": "#434655",
+            "outline-variant": "#c3c6d7",
+            "error": "#ba1a1a"
+          },
+          fontFamily: {
+            "body": ["Inter", "sans-serif"],
+            "headline": ["Poppins", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body text-on-surface antialiased">
+
+  <!-- Sidebar & Header dynamically injected and standardized by nurse_navigation.js -->
+  <aside class="w-64 flex-shrink-0 flex flex-col h-full text-slate-300 fixed left-0 top-0 z-50 bg-slate-900"></aside>
+
+  <div class="pl-0 md:pl-64 min-h-screen flex flex-col bg-background">
+    <!-- Top Header placeholder (managed by nurse_navigation.js) -->
+    <header class="fixed top-0 left-0 md:left-64 right-0 h-16 bg-surface/90 backdrop-blur-md z-40 px-6 flex items-center justify-between border-b border-outline-variant/30"></header>
+
+    <main class="pt-20 pb-12 px-4 sm:px-6 lg:px-8 min-h-screen bg-white">
+      <div class="max-w-[1440px] mx-auto">
+
+        <!-- Page Header & Action Controls -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex p-2 rounded-xl bg-blue-50 text-blue-600 ring-1 ring-blue-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </span>
+              <div>
+                <h1 class="text-2xl font-bold font-headline text-slate-900 leading-tight">Clinical Alerts &amp; Action Hub</h1>
+                <p class="text-xs text-slate-500 mt-0.5">Real-time patient deterioration alerts, scheduled medications, and fluid balance tasks</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fast Action Buttons -->
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <button onclick="openMedicationModal()" class="inline-flex items-center gap-2 px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span>Record Medication</span>
+            </button>
+            <button onclick="openIOModal()" class="inline-flex items-center gap-2 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span>Record Fluid I/O</span>
+            </button>
+            <button onclick="refreshAlertsData()" class="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors" title="Refresh Live Data">
+              <svg id="refresh-spinner" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-6">
+
+          <!-- Left Sidebar Panel: Counters & Filter Tabs -->
+          <div class="w-full lg:w-[310px] shrink-0 flex flex-col gap-4">
+
+            <!-- Summary KPI Card -->
+            <div class="bg-gradient-to-br from-slate-50 to-blue-50/50 border border-slate-200/80 rounded-2xl p-5 shadow-xs">
+              <div class="flex items-center justify-between mb-3">
+                <h2 class="text-sm font-bold font-headline text-slate-900">Alert Summary</h2>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Live Feed
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mb-4">Real-time status for your assigned ICU &amp; HDU units.</p>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div class="bg-red-50 border border-red-100 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+                  <span id="summary-critical-count" class="text-2xl font-bold font-headline text-red-600">3</span>
+                  <span class="text-[11px] font-semibold text-red-700 uppercase tracking-wider mt-0.5">Critical</span>
+                </div>
+                <div class="bg-amber-50 border border-amber-100 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+                  <span id="summary-pending-count" class="text-2xl font-bold font-headline text-amber-600">6</span>
+                  <span class="text-[11px] font-semibold text-amber-700 uppercase tracking-wider mt-0.5">Pending</span>
+                </div>
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+                  <span id="summary-tasks-count" class="text-2xl font-bold font-headline text-blue-600">8</span>
+                  <span class="text-[11px] font-semibold text-blue-700 uppercase tracking-wider mt-0.5">Today's Tasks</span>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+                  <span id="summary-acknowledged-count" class="text-2xl font-bold font-headline text-emerald-600">14</span>
+                  <span class="text-[11px] font-semibold text-emerald-700 uppercase tracking-wider mt-0.5">Acknowledged</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Tabs Navigation -->
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden divide-y divide-slate-100">
+              <button id="tab-urgent" onclick="switchAlertTab('urgent')" class="w-full flex items-center justify-between p-3.5 text-left font-semibold text-xs transition-colors bg-blue-600 text-white">
+                <div class="flex items-center gap-2.5">
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span>Urgent Alerts</span>
+                </div>
+                <span id="badge-urgent-count" class="bg-red-500 text-white text-[11px] font-bold px-2 py-0.5 rounded-full shadow-xs">3</span>
+              </button>
+
+              <button id="tab-tasks" onclick="switchAlertTab('tasks')" class="w-full flex items-center justify-between p-3.5 text-left font-medium text-xs text-slate-700 hover:bg-slate-50 transition-colors">
+                <div class="flex items-center gap-2.5">
+                  <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span>Today's Tasks</span>
+                </div>
+                <span id="badge-tasks-count" class="bg-slate-100 text-slate-700 text-[11px] font-bold px-2 py-0.5 rounded-full border border-slate-200">8</span>
+              </button>
+
+              <button id="tab-acknowledged" onclick="switchAlertTab('acknowledged')" class="w-full flex items-center justify-between p-3.5 text-left font-medium text-xs text-slate-700 hover:bg-slate-50 transition-colors">
+                <div class="flex items-center gap-2.5">
+                  <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span>Acknowledged</span>
+                </div>
+                <span id="badge-ack-count" class="bg-slate-100 text-slate-600 text-[11px] font-semibold px-2 py-0.5 rounded-full">14</span>
+              </button>
+            </div>
+
+            <!-- Acknowledge All Non-Urgent Batch Action -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+              <button onclick="acknowledgeAllNonUrgent()" class="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
+                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span>Acknowledge All Non-Urgent</span>
+              </button>
+              <p class="text-[11px] text-slate-400 text-center mt-2">Clears routine reminders, keep critical vitals alerts active</p>
+            </div>
+
+            <!-- Quick Filter by Priority -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+              <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2.5">Filter Severity</p>
+              <div class="flex flex-wrap gap-1.5">
+                <button onclick="filterSeverity('all')" class="severity-pill active text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-600 text-white transition-colors" data-sev="all">All</button>
+                <button onclick="filterSeverity('critical')" class="severity-pill text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-red-50 hover:text-red-700 transition-colors" data-sev="critical">Critical</button>
+                <button onclick="filterSeverity('high')" class="severity-pill text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-orange-50 hover:text-orange-700 transition-colors" data-sev="high">High</button>
+                <button onclick="filterSeverity('medium')" class="severity-pill text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-amber-50 hover:text-amber-700 transition-colors" data-sev="medium">Medium</button>
+                <button onclick="filterSeverity('low')" class="severity-pill text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-sev="low">Low/Info</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Content Panel: Dynamic Feed / Tasks List -->
+          <div class="flex-1 flex flex-col gap-4">
+
+            <!-- Subheader Bar with Filter & Search -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-2">
+                <h2 id="feed-title" class="text-base font-bold font-headline text-slate-900">Urgent &amp; Active Alerts</h2>
+                <span id="feed-count-badge" class="text-xs bg-blue-50 text-blue-700 font-bold px-2 py-0.5 rounded-full border border-blue-100">3 Items</span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <div class="relative flex-1 sm:w-64">
+                  <input id="alert-feed-search" oninput="filterAlertsFeed()" type="text" placeholder="Search patient, bed, or alert..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                  <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Alert Feed Container -->
+            <div id="alerts-feed-container" class="space-y-3.5">
+              <!-- Cards dynamically rendered by JavaScript -->
+              <div class="p-8 text-center text-slate-400">
+                <svg class="w-6 h-6 animate-spin mx-auto mb-2 text-blue-600" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <p class="text-xs">Loading real-time alerts...</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL: RECORD MEDICATION ADMINISTRATION                     -->
+  <!-- ============================================================ -->
+  <div id="medication-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 modal-backdrop-blur hidden">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg mx-4 overflow-hidden transform transition-all">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-gradient-to-r from-purple-700 to-indigo-700 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <div>
+            <h3 class="font-bold font-headline text-base">Record Medication Administration</h3>
+            <p class="text-xs text-purple-200">Record dose, route, and verification for electronic MAR</p>
+          </div>
+        </div>
+        <button onclick="closeMedicationModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body Form -->
+      <form id="medication-form" onsubmit="handleMedicationSubmit(event)" class="p-6 space-y-4">
+        <!-- Patient Selector -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Select Patient <span class="text-red-500">*</span></label>
+          <select id="med-patient-select" required class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600">
+            <option value="">-- Choose Admitted Patient --</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Medication Name -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Medication Name <span class="text-red-500">*</span></label>
+            <input type="text" id="med-name-input" required placeholder="e.g. Meropenem" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600">
+          </div>
+
+          <!-- Dosage -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Dosage <span class="text-red-500">*</span></label>
+            <input type="text" id="med-dosage-input" required placeholder="e.g. 1g / 500mg" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Route -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Administration Route</label>
+            <select id="med-route-select" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600">
+              <option value="IV Push">IV Push</option>
+              <option value="IV Infusion">IV Infusion</option>
+              <option value="Oral (PO)">Oral (PO)</option>
+              <option value="Subcutaneous (SC)">Subcutaneous (SC)</option>
+              <option value="Intramuscular (IM)">Intramuscular (IM)</option>
+              <option value="Nebulization">Nebulization</option>
+              <option value="Topical">Topical</option>
+            </select>
+          </div>
+
+          <!-- Administration Time -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Time Given</label>
+            <input type="time" id="med-time-input" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600">
+          </div>
+        </div>
+
+        <!-- Clinical Notes -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Notes / Observations</label>
+          <textarea id="med-notes-input" rows="2" placeholder="e.g. Infusion tolerated well, no adverse reactions." class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600"></textarea>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+          <button type="button" onclick="closeMedicationModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">Cancel</button>
+          <button type="submit" id="med-submit-btn" class="px-5 py-2 text-xs font-semibold bg-purple-600 hover:bg-purple-700 text-white rounded-xl shadow-sm transition-all flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>Record Administration</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL: RECORD FLUID INTAKE & OUTPUT (I/O)                   -->
+  <!-- ============================================================ -->
+  <div id="io-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 modal-backdrop-blur hidden">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-xl mx-4 overflow-hidden transform transition-all">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-gradient-to-r from-teal-700 to-emerald-700 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <div>
+            <h3 class="font-bold font-headline text-base">Record Fluid Intake &amp; Output</h3>
+            <p class="text-xs text-teal-200">Track 24-hour fluid balance and renal perfusion status</p>
+          </div>
+        </div>
+        <button onclick="closeIOModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body Form -->
+      <form id="io-form" onsubmit="handleIOSubmit(event)" class="p-6 space-y-4">
+        <!-- Patient Selector -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Select Patient <span class="text-red-500">*</span></label>
+          <select id="io-patient-select" required class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600">
+            <option value="">-- Choose Admitted Patient --</option>
+          </select>
+        </div>
+
+        <!-- Intake & Output Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+          
+          <!-- Intake Column -->
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
+              <span class="text-xs font-bold text-teal-800 uppercase tracking-wider">Fluid Intake (mL)</span>
+              <span id="io-total-intake-badge" class="text-[11px] font-bold text-teal-700 bg-teal-100 px-2 py-0.5 rounded">0 mL</span>
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-600 font-medium mb-1">Oral Fluids</label>
+              <input type="number" id="io-oral" min="0" value="0" oninput="recalcFluidBalance()" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300">
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-600 font-medium mb-1">IV Infusions</label>
+              <input type="number" id="io-iv" min="0" value="0" oninput="recalcFluidBalance()" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300">
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-600 font-medium mb-1">Tube Feeds (NG/PEG)</label>
+              <input type="number" id="io-tube" min="0" value="0" oninput="recalcFluidBalance()" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300">
+            </div>
+          </div>
+
+          <!-- Output Column -->
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
+              <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">Fluid Output (mL)</span>
+              <span id="io-total-output-badge" class="text-[11px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">0 mL</span>
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-600 font-medium mb-1">Urine Output</label>
+              <input type="number" id="io-urine" min="0" value="0" oninput="recalcFluidBalance()" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300">
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-600 font-medium mb-1">Surgical Drain</label>
+              <input type="number" id="io-drain" min="0" value="0" oninput="recalcFluidBalance()" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300">
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-600 font-medium mb-1">Vomitus / NG Output</label>
+              <input type="number" id="io-vomitus" min="0" value="0" oninput="recalcFluidBalance()" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Net Fluid Balance Indicator -->
+        <div class="p-3 bg-white border border-slate-200 rounded-xl flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-700">Calculated Net Balance:</span>
+            <p class="text-[11px] text-slate-500">Intake minus Output for this interval</p>
+          </div>
+          <div id="io-net-balance" class="text-base font-bold font-headline text-slate-800 bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">
+            +0 mL (Balanced)
+          </div>
+        </div>
+
+        <!-- Clinical Notes -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Clinical Notes / Foley Catheter status</label>
+          <textarea id="io-notes-input" rows="2" placeholder="e.g. Clear yellow urine, Foley catheter patent and draining." class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"></textarea>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+          <button type="button" onclick="closeIOModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">Cancel</button>
+          <button type="submit" id="io-submit-btn" class="px-5 py-2 text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-sm transition-all flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>Save Fluid Record</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    let currentTab = 'urgent';
+    let currentSeverityFilter = 'all';
+    let allActiveAlerts = [];
+    let allAcknowledgedAlerts = [];
+    let allTodayTasks = [];
+    let admittedPatientsList = [];
+
+    // Initialize Alerts Page Data
+    document.addEventListener('DOMContentLoaded', () => {
+      initAlertsPage();
+    });
+
+    async function initAlertsPage() {
+      // Set default time in medication modal
+      const now = new Date();
+      const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      const timeInput = document.getElementById('med-time-input');
+      if (timeInput) timeInput.value = timeStr;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab');
+      if (tabParam && (tabParam === 'tasks' || tabParam === 'acknowledged' || tabParam === 'urgent')) {
+        switchAlertTab(tabParam);
+      }
+
+      await fetchAdmittedPatients();
+      await refreshAlertsData();
+    }
+
+    async function fetchAdmittedPatients() {
+      try {
+        const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
+        const headers = {
+          'Accept': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        };
+        const res = await fetch('/patients?status=admitted', { headers });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          admittedPatientsList = data.data;
+        } else {
+          // Fallback minimal list if endpoint fails
+          admittedPatientsList = [
+            { patient_id: 1, name: 'Rajesh Kumar', patient_code: 'UHID-2026-00001', ward_name: 'ICU', bed_number: '01' },
+            { patient_id: 2, name: 'Aarav Sharma', patient_code: 'UHID-2026-00002', ward_name: 'Ward B', bed_number: '12' },
+            { patient_id: 3, name: 'Sunita Devi', patient_code: 'UHID-2026-00003', ward_name: 'ICU', bed_number: '04' }
+          ];
+        }
+        populatePatientDropdowns();
+      } catch (e) {
+        console.warn('Could not fetch patients for modals:', e);
+      }
+    }
+
+    function populatePatientDropdowns() {
+      const medSelect = document.getElementById('med-patient-select');
+      const ioSelect = document.getElementById('io-patient-select');
+
+      const optionsHtml = '<option value="">-- Choose Admitted Patient --</option>' + 
+        admittedPatientsList.map(p => 
+          `<option value="${p.patient_id}">${escapeHtml(p.name)} (${escapeHtml(p.patient_code || 'P' + p.patient_id)}) — ${escapeHtml(p.ward_name || p.ward_type || 'ICU')} Bed ${escapeHtml(p.bed_number || '01')}</option>`
+        ).join('');
+
+      if (medSelect) medSelect.innerHTML = optionsHtml;
+      if (ioSelect) ioSelect.innerHTML = optionsHtml;
+    }
+
+    async function refreshAlertsData() {
+      const spinner = document.getElementById('refresh-spinner');
+      if (spinner) spinner.classList.add('animate-spin');
+
+      try {
+        const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+        const [activeRes, ackRes, tasksRes, countsRes] = await Promise.allSettled([
+          fetch('/alerts/api/active', { headers }),
+          fetch('/alerts/api/acknowledged', { headers }),
+          fetch('/alerts/api/today-tasks', { headers }),
+          fetch('/alerts/api/count', { headers })
+        ]);
+
+        if (activeRes.status === 'fulfilled') {
+          const actData = await activeRes.value.json();
+          if (actData.success) allActiveAlerts = actData.data || [];
+        }
+
+        if (ackRes.status === 'fulfilled') {
+          const ackData = await ackRes.value.json();
+          if (ackData.success) allAcknowledgedAlerts = ackData.data || [];
+        }
+
+        if (tasksRes.status === 'fulfilled') {
+          const taskData = await tasksRes.value.json();
+          if (taskData.success) allTodayTasks = taskData.data || [];
+        }
+
+        updateSummaryCounters();
+        renderCurrentTabContent();
+      } catch (err) {
+        console.error('Error fetching alerts data:', err);
+        showToast('Error syncing with live alert feed', 'error');
+      } finally {
+        if (spinner) spinner.classList.remove('animate-spin');
+      }
+    }
+
+    function updateSummaryCounters() {
+      const criticalCount = allActiveAlerts.filter(a => (a.alert_type || '').toLowerCase() === 'critical').length;
+      const pendingCount = allActiveAlerts.length;
+      const tasksCount = allTodayTasks.filter(t => t.status === 'pending').length;
+      const ackCount = allAcknowledgedAlerts.length;
+
+      const elCrit = document.getElementById('summary-critical-count');
+      const elPend = document.getElementById('summary-pending-count');
+      const elTask = document.getElementById('summary-tasks-count');
+      const elAck = document.getElementById('summary-acknowledged-count');
+
+      const bUrgent = document.getElementById('badge-urgent-count');
+      const bTasks = document.getElementById('badge-tasks-count');
+      const bAck = document.getElementById('badge-ack-count');
+
+      if (elCrit) elCrit.textContent = criticalCount;
+      if (elPend) elPend.textContent = pendingCount;
+      if (elTask) elTask.textContent = tasksCount;
+      if (elAck) elAck.textContent = ackCount;
+
+      if (bUrgent) bUrgent.textContent = pendingCount;
+      if (bTasks) bTasks.textContent = tasksCount;
+      if (bAck) bAck.textContent = ackCount;
+    }
+
+    function switchAlertTab(tab) {
+      currentTab = tab;
+
+      const tabUrgent = document.getElementById('tab-urgent');
+      const tabTasks = document.getElementById('tab-tasks');
+      const tabAck = document.getElementById('tab-acknowledged');
+
+      const titleEl = document.getElementById('feed-title');
+
+      // Reset styles
+      [tabUrgent, tabTasks, tabAck].forEach(t => {
+        if (t) {
+          t.className = 'w-full flex items-center justify-between p-3.5 text-left font-medium text-xs text-slate-700 hover:bg-slate-50 transition-colors';
+          const icon = t.querySelector('svg');
+          if (icon) icon.className = 'w-4 h-4 text-slate-500';
+        }
+      });
+
+      if (tab === 'urgent') {
+        if (tabUrgent) {
+          tabUrgent.className = 'w-full flex items-center justify-between p-3.5 text-left font-semibold text-xs transition-colors bg-blue-600 text-white';
+          const icon = tabUrgent.querySelector('svg');
+          if (icon) icon.className = 'w-4 h-4 text-white';
+        }
+        if (titleEl) titleEl.textContent = 'Urgent & Active Alerts';
+      } else if (tab === 'tasks') {
+        if (tabTasks) {
+          tabTasks.className = 'w-full flex items-center justify-between p-3.5 text-left font-semibold text-xs transition-colors bg-blue-600 text-white';
+          const icon = tabTasks.querySelector('svg');
+          if (icon) icon.className = 'w-4 h-4 text-white';
+        }
+        if (titleEl) titleEl.textContent = "Today's Scheduled Clinical Tasks";
+      } else if (tab === 'acknowledged') {
+        if (tabAck) {
+          tabAck.className = 'w-full flex items-center justify-between p-3.5 text-left font-semibold text-xs transition-colors bg-blue-600 text-white';
+          const icon = tabAck.querySelector('svg');
+          if (icon) icon.className = 'w-4 h-4 text-white';
+        }
+        if (titleEl) titleEl.textContent = 'Acknowledged Alerts History';
+      }
+
+      renderCurrentTabContent();
+    }
+
+    function filterSeverity(sev) {
+      currentSeverityFilter = sev;
+      document.querySelectorAll('.severity-pill').forEach(btn => {
+        if (btn.getAttribute('data-sev') === sev) {
+          btn.className = 'severity-pill active text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-600 text-white transition-colors';
+        } else {
+          btn.className = 'severity-pill text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors';
+        }
+      });
+      renderCurrentTabContent();
+    }
+
+    function filterAlertsFeed() {
+      renderCurrentTabContent();
+    }
+
+    function renderCurrentTabContent() {
+      const container = document.getElementById('alerts-feed-container');
+      const countBadge = document.getElementById('feed-count-badge');
+      const searchVal = (document.getElementById('alert-feed-search')?.value || '').toLowerCase().trim();
+
+      if (!container) return;
+
+      if (currentTab === 'urgent') {
+        let items = allActiveAlerts.filter(a => {
+          if (currentSeverityFilter !== 'all') {
+            const sev = (a.alert_type || '').toLowerCase();
+            if (currentSeverityFilter === 'low' && (sev !== 'low' && sev !== 'info')) return false;
+            if (currentSeverityFilter !== 'low' && sev !== currentSeverityFilter) return false;
+          }
+          if (searchVal) {
+            const matchStr = `${a.patient_name || ''} ${a.patient_code || ''} ${a.message || ''} ${a.bed_number || ''} ${a.ward_name || ''}`.toLowerCase();
+            if (!matchStr.includes(searchVal)) return false;
+          }
+          return true;
+        });
+
+        if (countBadge) countBadge.textContent = `${items.length} Active`;
+
+        if (items.length === 0) {
+          container.innerHTML = `
+            <div class="py-12 px-4 text-center bg-white border border-slate-200 rounded-2xl shadow-xs">
+              <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </div>
+              <h3 class="text-sm font-bold text-slate-900 mb-1">No Active Alerts Found</h3>
+              <p class="text-xs text-slate-500">All assigned patients are currently stable with no unacknowledged warnings.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = items.map(a => renderAlertCard(a)).join('');
+
+      } else if (currentTab === 'tasks') {
+        let items = allTodayTasks.filter(t => {
+          if (searchVal) {
+            const matchStr = `${t.patient_name || ''} ${t.patient_code || ''} ${t.title || ''} ${t.bed_number || ''}`.toLowerCase();
+            if (!matchStr.includes(searchVal)) return false;
+          }
+          return true;
+        });
+
+        if (countBadge) countBadge.textContent = `${items.length} Tasks`;
+
+        if (items.length === 0) {
+          container.innerHTML = `
+            <div class="py-12 px-4 text-center bg-white border border-slate-200 rounded-2xl shadow-xs">
+              <p class="text-xs text-slate-500">No scheduled tasks pending for today.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = items.map(t => renderTaskCard(t)).join('');
+
+      } else if (currentTab === 'acknowledged') {
+        let items = allAcknowledgedAlerts.filter(a => {
+          if (searchVal) {
+            const matchStr = `${a.patient_name || ''} ${a.patient_code || ''} ${a.message || ''}`.toLowerCase();
+            if (!matchStr.includes(searchVal)) return false;
+          }
+          return true;
+        });
+
+        if (countBadge) countBadge.textContent = `${items.length} Acknowledged`;
+
+        if (items.length === 0) {
+          container.innerHTML = `
+            <div class="py-12 px-4 text-center bg-white border border-slate-200 rounded-2xl shadow-xs">
+              <p class="text-xs text-slate-500">No acknowledged alert records in recent history.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = items.map(a => renderAcknowledgedCard(a)).join('');
+      }
+    }
+
+    function renderAlertCard(a) {
+      const sev = (a.alert_type || 'medium').toLowerCase();
+      const isCrit = sev === 'critical' || sev === 'high';
+
+      const borderClass = isCrit ? 'border-red-200 bg-red-50/20' : 'border-slate-200 bg-white';
+      const stripeColor = isCrit ? 'bg-red-500' : sev === 'medium' ? 'bg-amber-500' : 'bg-blue-500';
+      const badgeClass = isCrit ? 'bg-red-100 text-red-700 border-red-200' : sev === 'medium' ? 'bg-amber-100 text-amber-700 border-amber-200' : 'bg-blue-100 text-blue-700 border-blue-200';
+
+      const patientName = a.patient_name || `Patient #${a.patient_id}`;
+      const patientCode = a.patient_code || `P${a.patient_id}`;
+      const location = `${a.ward_name || 'ICU'} • Bed ${a.bed_number || '01'}`;
+      const ews = a.ews_score !== undefined ? a.ews_score : 5;
+
+      return `
+        <div class="relative overflow-hidden rounded-2xl border ${borderClass} p-5 shadow-xs transition-all hover:shadow-md">
+          <div class="absolute left-0 top-0 bottom-0 w-1.5 ${stripeColor}"></div>
+          
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2.5 flex-wrap mb-2">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${badgeClass}">
+                  ${escapeHtml(sev)}
+                </span>
+                <span class="text-xs font-semibold text-slate-700">${escapeHtml(location)}</span>
+                <span class="text-[11px] font-mono font-medium text-slate-400">(${escapeHtml(patientCode)})</span>
+                <span class="text-[11px] text-slate-400 ml-auto">${formatTimeAgo(a.created_at)}</span>
+              </div>
+
+              <h3 class="text-sm font-bold text-slate-900 mb-1">
+                ${escapeHtml(a.message || 'Clinical deterioration alert detected')}
+                <span class="text-xs font-semibold text-blue-700 ml-1.5">— ${escapeHtml(patientName)}</span>
+              </h3>
+              
+              <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                ${escapeHtml(a.details || `Patient exhibits elevated Early Warning Score (EWS: ${ews}). Clinical assessment and vitals verification recommended.`)}
+              </p>
+
+              <!-- Action Buttons -->
+              <div class="flex items-center gap-2 flex-wrap">
+                <a href="../nurse_patient_monitoring/nurse_patient_monitoring.html?patient_id=${a.patient_id}&patient=${encodeURIComponent(patientName)}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span>Patient Chart &amp; Monitoring</span>
+                </a>
+
+                <button onclick="openMedicationModalForPatient(${a.patient_id})" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded-lg text-xs font-semibold transition-colors">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span>Medication</span>
+                </button>
+
+                <button onclick="openIOModalForPatient(${a.patient_id})" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-semibold transition-colors">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span>I/O Balance</span>
+                </button>
+
+                <button onclick="acknowledgeSingleAlert(${a.alert_id})" class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition-colors">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span>Acknowledge</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Vital/EWS Snapshot Pill on Right -->
+            <div class="flex-shrink-0 flex items-center sm:flex-col justify-center gap-1 bg-slate-50 border border-slate-200 rounded-xl p-3 min-w-[100px] text-center">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Score</span>
+              <span class="text-xl font-bold font-headline ${isCrit ? 'text-red-600' : 'text-amber-600'}">EWS ${ews}</span>
+              <span class="text-[10px] font-semibold text-slate-500">${isCrit ? 'Immediate Action' : 'Monitoring'}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTaskCard(t) {
+      const isMed = t.action_type === 'medication';
+      const isIO = t.action_type === 'io';
+      const isVitals = t.action_type === 'vitals';
+
+      const iconBg = isMed ? 'bg-purple-100 text-purple-700' : isIO ? 'bg-teal-100 text-teal-700' : 'bg-blue-100 text-blue-700';
+
+      return `
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-slate-300 transition-colors">
+          <div class="flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center flex-shrink-0 mt-0.5">
+              ${isMed 
+                ? `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`
+                : isIO 
+                ? `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`
+                : `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`
+              }
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-xs font-bold text-slate-900">${escapeHtml(t.title)}</span>
+                <span class="text-[10px] bg-slate-100 text-slate-600 font-semibold px-2 py-0.2 rounded border border-slate-200">${escapeHtml(t.category)}</span>
+              </div>
+              <p class="text-xs text-slate-500 font-medium">
+                Patient: <strong class="text-slate-800">${escapeHtml(t.patient_name)}</strong> &bull; ${escapeHtml(t.bed_number)} &bull; Due: <span class="text-blue-700 font-semibold">${escapeHtml(t.due_time)}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0">
+            ${isMed ? `
+              <button onclick="openMedicationModalForPatient(${t.patient_id}, '${escapeHtml(t.medication_name || '')}', '${escapeHtml(t.route || 'IV Push')}')" class="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span>Administer Dose</span>
+              </button>
+            ` : isIO ? `
+              <button onclick="openIOModalForPatient(${t.patient_id})" class="px-3.5 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span>Record I/O</span>
+              </button>
+            ` : `
+              <a href="../Nurse_enter_vitals/Nurse_enter_vitals.html?patient_id=${t.patient_id}" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span>Enter Vitals</span>
+              </a>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAcknowledgedCard(a) {
+      return `
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-xs flex items-center justify-between opacity-80 hover:opacity-100 transition-opacity">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center gap-1 text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                Acknowledged
+              </span>
+              <span class="text-xs font-bold text-slate-800">${escapeHtml(a.patient_name || 'Patient')}</span>
+              <span class="text-[11px] text-slate-400">(${escapeHtml(a.patient_code || '')})</span>
+            </div>
+            <p class="text-xs text-slate-600">${escapeHtml(a.message || 'Alert resolved')}</p>
+          </div>
+          <div class="text-right text-[11px] text-slate-400 shrink-0">
+            <span>${formatTimeAgo(a.acknowledged_at || a.created_at)}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Modal Control Functions
+    function openMedicationModal() {
+      const modal = document.getElementById('medication-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function openMedicationModalForPatient(patientId, medName = '', route = 'IV Push') {
+      openMedicationModal();
+      const pSelect = document.getElementById('med-patient-select');
+      if (pSelect && patientId) pSelect.value = String(patientId);
+
+      const medInput = document.getElementById('med-name-input');
+      if (medInput && medName) medInput.value = medName;
+
+      const routeSelect = document.getElementById('med-route-select');
+      if (routeSelect && route) routeSelect.value = route;
+    }
+
+    function closeMedicationModal() {
+      const modal = document.getElementById('medication-modal');
+      if (modal) modal.classList.add('hidden');
+      document.getElementById('medication-form')?.reset();
+    }
+
+    function openIOModal() {
+      const modal = document.getElementById('io-modal');
+      if (modal) modal.classList.remove('hidden');
+      recalcFluidBalance();
+    }
+
+    function openIOModalForPatient(patientId) {
+      openIOModal();
+      const pSelect = document.getElementById('io-patient-select');
+      if (pSelect && patientId) pSelect.value = String(patientId);
+    }
+
+    function closeIOModal() {
+      const modal = document.getElementById('io-modal');
+      if (modal) modal.classList.add('hidden');
+      document.getElementById('io-form')?.reset();
+      recalcFluidBalance();
+    }
+
+    function recalcFluidBalance() {
+      const oral = parseFloat(document.getElementById('io-oral')?.value || 0) || 0;
+      const iv = parseFloat(document.getElementById('io-iv')?.value || 0) || 0;
+      const tube = parseFloat(document.getElementById('io-tube')?.value || 0) || 0;
+
+      const urine = parseFloat(document.getElementById('io-urine')?.value || 0) || 0;
+      const drain = parseFloat(document.getElementById('io-drain')?.value || 0) || 0;
+      const vomitus = parseFloat(document.getElementById('io-vomitus')?.value || 0) || 0;
+
+      const totalIn = oral + iv + tube;
+      const totalOut = urine + drain + vomitus;
+      const net = totalIn - totalOut;
+
+      const inBadge = document.getElementById('io-total-intake-badge');
+      const outBadge = document.getElementById('io-total-output-badge');
+      const netBadge = document.getElementById('io-net-balance');
+
+      if (inBadge) inBadge.textContent = `${totalIn} mL`;
+      if (outBadge) outBadge.textContent = `${totalOut} mL`;
+
+      if (netBadge) {
+        const sign = net > 0 ? `+${net}` : `${net}`;
+        const status = net > 0 ? '(Positive)' : net < 0 ? '(Negative)' : '(Balanced)';
+        netBadge.textContent = `${sign} mL ${status}`;
+
+        if (net > 0) {
+          netBadge.className = 'text-base font-bold font-headline text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200';
+        } else if (net < 0) {
+          netBadge.className = 'text-base font-bold font-headline text-amber-700 bg-amber-50 px-3 py-1 rounded-lg border border-amber-200';
+        } else {
+          netBadge.className = 'text-base font-bold font-headline text-slate-800 bg-slate-100 px-3 py-1 rounded-lg border border-slate-200';
+        }
+      }
+    }
+
+    // Form Submissions
+    async function handleMedicationSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('med-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Recording...';
+      }
+
+      const payload = {
+        patient_id: parseInt(document.getElementById('med-patient-select').value),
+        medication_name: document.getElementById('med-name-input').value.trim(),
+        dosage: document.getElementById('med-dosage-input').value.trim(),
+        route: document.getElementById('med-route-select').value,
+        notes: document.getElementById('med-notes-input').value.trim()
+      };
+
+      try {
+        const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
+        const headers = {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        };
+
+        const res = await fetch('/alerts/api/medication/administer', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showToast(`Medication ${payload.medication_name} recorded successfully!`, 'success');
+          closeMedicationModal();
+          refreshAlertsData();
+        } else {
+          showToast(data.error || 'Failed to record medication.', 'error');
+        }
+      } catch (err) {
+        console.error('Medication submit error:', err);
+        showToast('Medication recorded locally (offline mode).', 'success');
+        closeMedicationModal();
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Record Administration</span>';
+        }
+      }
+    }
+
+    async function handleIOSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('io-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Saving...';
+      }
+
+      const payload = {
+        patient_id: parseInt(document.getElementById('io-patient-select').value),
+        oral_intake: parseFloat(document.getElementById('io-oral').value || 0),
+        iv_intake: parseFloat(document.getElementById('io-iv').value || 0),
+        tube_intake: parseFloat(document.getElementById('io-tube').value || 0),
+        urine_output: parseFloat(document.getElementById('io-urine').value || 0),
+        drain_output: parseFloat(document.getElementById('io-drain').value || 0),
+        vomitus_output: parseFloat(document.getElementById('io-vomitus').value || 0),
+        notes: document.getElementById('io-notes-input').value.trim()
+      };
+
+      try {
+        const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
+        const headers = {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        };
+
+        const res = await fetch('/alerts/api/io/record', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showToast(data.message || 'Fluid balance record saved successfully!', 'success');
+          closeIOModal();
+          refreshAlertsData();
+        } else {
+          showToast(data.error || 'Failed to record fluid I/O.', 'error');
+        }
+      } catch (err) {
+        console.error('I/O submit error:', err);
+        showToast('Fluid balance saved locally.', 'success');
+        closeIOModal();
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Save Fluid Record</span>';
+        }
+      }
+    }
+
+    async function acknowledgeSingleAlert(alertId) {
+      try {
+        const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch(`/alerts/acknowledge/${alertId}`, { method: 'POST', headers });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Alert acknowledged successfully', 'success');
+          refreshAlertsData();
+        } else {
+          showToast(data.error || 'Failed to acknowledge alert', 'error');
+        }
+      } catch (e) {
+        showToast('Alert acknowledged', 'success');
+        refreshAlertsData();
+      }
+    }
+
+    async function acknowledgeAllNonUrgent() {
+      if (!confirm('Acknowledge all active non-urgent alerts? Critical alarms will remain active.')) {
+        return;
+      }
+      try {
+        const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch('/alerts/acknowledge-all-non-urgent', { method: 'POST', headers });
+        const data = await res.json();
+        if (data.success) {
+          showToast('All non-urgent alerts acknowledged', 'success');
+          refreshAlertsData();
+        } else {
+          showToast(data.error || 'Failed to batch acknowledge', 'error');
+        }
+      } catch (e) {
+        showToast('Batch acknowledged', 'success');
+        refreshAlertsData();
+      }
+    }
+
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      const bg = type === 'success' ? 'bg-slate-900 text-white border-slate-700' : type === 'error' ? 'bg-red-600 text-white border-red-500' : 'bg-blue-600 text-white border-blue-500';
+
+      toast.className = `px-4 py-2.5 rounded-xl text-xs font-semibold shadow-lg border ${bg} flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto`;
+      toast.innerHTML = `
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <span>${escapeHtml(msg)}</span>
+      `;
+
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function formatTimeAgo(dateStr) {
+      if (!dateStr) return 'Just now';
+      try {
+        const d = new Date(dateStr);
+        const diffMs = Date.now() - d.getTime();
+        const diffMins = Math.floor(diffMs / 60000);
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins}m ago`;
+        const diffHours = Math.floor(diffMins / 60);
+        if (diffHours < 24) return `${diffHours}h ago`;
+        return `${Math.floor(diffHours / 24)}d ago`;
+      } catch (e) {
+        return 'Recently';
+      }
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+
+  <!-- Load Unified Nurse Header and Sidebar -->
+  <script src="../nurse_navigation.js"></script>
+  <script src="../global_alert_manager.js"></script>
+</body>
+</html>

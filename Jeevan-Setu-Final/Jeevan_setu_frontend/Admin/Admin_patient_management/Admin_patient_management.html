@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <style>
+    @layer base {
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overscroll-behavior: none;
+      }
+
+      main>:first-child {
+        margin-top: 0 !important;
+      }
+
+      main>:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sidebar-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Poppins:wght@500;600&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script
+    id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "primary": "#004ac6", "on-primary-fixed": "#00174b", "surface-container-low": "#f0f3ff", "error-container": "#ffdad6", "background": "#f9f9ff", "on-surface-variant": "#434655", "on-error": "#ffffff", "primary-fixed-dim": "#b4c5ff", "on-background": "#111c2d", "on-secondary-fixed-variant": "#004c6e", "tertiary": "#46566c", "secondary-fixed": "#c9e6ff", "on-surface": "#111c2d", "surface-container-high": "#dee8ff", "primary-container": "#2563eb", "on-primary-container": "#eeefff", "on-primary": "#ffffff", "secondary-fixed-dim": "#89ceff", "inverse-surface": "#263143", "surface-container-lowest": "#ffffff", "surface-variant": "#d8e3fb", "secondary": "#006591", "surface-tint": "#0053db", "inverse-primary": "#b4c5ff", "surface-bright": "#f9f9ff", "on-secondary-container": "#004666", "on-tertiary-fixed": "#0b1c30", "tertiary-container": "#5e6e85", "surface-container-highest": "#d8e3fb", "inverse-on-surface": "#ecf1ff", "surface": "#f9f9ff", "on-secondary": "#ffffff", "on-secondary-fixed": "#001e2f", "error": "#ba1a1a", "on-tertiary-container": "#e9f0ff", "surface-container": "#e7eeff", "primary-fixed": "#dbe1ff", "outline-variant": "#c3c6d7", "on-error-container": "#93000a", "on-tertiary-fixed-variant": "#38485d", "tertiary-fixed": "#d3e4fe", "on-tertiary": "#ffffff", "secondary-container": "#39b8fd", "surface-dim": "#cfdaf2", "outline": "#737686", "on-primary-fixed-variant": "#003ea8", "tertiary-fixed-dim": "#b7c8e1" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "sm": "8px", "xs": "4px", "gutter": "16px", "margin-desktop": "32px", "md": "16px", "lg": "24px", "margin-mobile": "16px", "base": "4px", "xl": "32px" }, "fontFamily": { "body-lg": ["Inter"], "headline-lg": ["Poppins"], "label-md": ["Inter"], "label-sm": ["Inter"], "headline-md": ["Poppins"], "display": ["Poppins"], "headline-lg-mobile": ["Poppins"], "headline-sm": ["Poppins"], "body-sm": ["Inter"], "body-md": ["Inter"] }, "fontSize": { "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }], "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600" }], "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "500" }], "display": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }], "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }] } } } }</script>
+</head>
+
+<body class="bg-background font-body-md text-on-surface">
+  <aside class="w-64 bg-[#0a1e4d] text-white flex flex-col flex-shrink-0 h-full overflow-y-auto fixed left-0 top-0 z-50"
+    data-purpose="sidebar">
+    <div class="p-6 flex items-center space-x-3">
+      <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+        <svg class="w-8 h-8 text-[#0a1e4d]" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z">
+          </path>
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-lg font-bold leading-none">JEEVAN SETU</h1>
+        <p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider">Intelligent Transfer System</p>
+      </div>
+    </div>
+    <nav class="flex-1 px-4 py-4 space-y-8">
+      <!-- Main Section -->
+      <div>
+        <a class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 transition-colors font-medium"
+          href="../Administrator_dashboard_/Administrator_dashboard_.html">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <span class="">Dashboard</span>
+        </a>
+      </div>
+      <!-- Management Section -->
+      <div>
+        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Management</p>
+        <ul class="space-y-2">
+          <li class=""><a
+              class="flex items-center space-x-3 bg-blue-600 px-4 py-2 rounded-lg text-white transition-colors"
+              href="../Admin_patient_management/Admin_patient_management.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span class="">Patients</span></a></li>
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_beds_wards/Admin_beds_wards.html"><svg class="w-5 h-5" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span class="">Beds &amp; Wards</span></a></li>
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_users_roles/Admin_users_roles.html"><svg class="w-5 h-5" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span class="">Users &amp; Roles</span></a></li>
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_attendant_access/Admin_attendant_access.html"><svg class="w-5 h-5" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span class="">Attendants (QR Access)</span></a></li>
+        </ul>
+      </div>
+      <!-- Monitoring Section -->
+      <div>
+        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Monitoring &amp; Analytics
+        </p>
+        <ul class="space-y-2">
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_ews_analytics/Admin_ews_analytics.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span class="">EWS Analytics</span></a></li>
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_resource_utilization/Admin_resource_utilization.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2"></path>
+              </svg><span class="">Resource Utilization</span></a></li>
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_clinical_reports/Admin_clinical_reports.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span class="">Reports</span></a></li>
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_audit_logs/Admin_audit_logs.html"><svg class="w-5 h-5" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span class="">Audit Logs</span></a></li>
+        </ul>
+      </div>
+      <!-- System Settings Section -->
+      <div>
+        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">System Settings</p>
+        <ul class="space-y-2">
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_system_settings/Admin_system_settings.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2"></path>
+              </svg><span class="">System Settings</span></a></li>
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_notification_settings/Admin_notification_settings.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span class="">Notifications</span></a></li>
+          <li class=""><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_backup_restore/Admin_backup_restore.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span class="">Backup &amp; Restore</span></a></li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Sidebar User Profile -->
+    <div class="p-4 border-t border-white/10">
+      <div class="bg-white/5 rounded-xl p-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-slate-300 overflow-hidden ring-2 ring-blue-500/50">
+            <img alt="Admin Avatar" class="w-full h-full object-cover"
+              src="../admin_avatar.jpg">
+          </div>
+          <div>
+            <p class="text-xs font-bold">Admin User</p>
+            <p class="text-[10px] text-slate-400">Administrator</p>
+          </div>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="w-2 h-2 bg-green-500 rounded-full mb-1"></span>
+          <span class="text-[8px] text-slate-400 uppercase">Online</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Logout Button -->
+    <div class="px-4 pb-4">
+      <a href="../../Login/Login.html"
+        class="flex items-center space-x-3 px-4 py-2 hover:bg-red-500/20 rounded-lg text-red-300 hover:text-red-200 transition-colors border border-red-500/30">
+        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+        </svg>
+        <span class="font-medium text-sm">Logout</span>
+      </a>
+    </div>
+
+  </aside>
+  <div class="pl-64">
+    <header
+      class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl z-40 flex items-center justify-between px-margin-desktop border-b border-surface-variant/30">
+      <div class="flex items-center flex-1 max-w-md bg-surface-container px-4 py-2 rounded-full"><span
+          class="material-symbols-outlined text-outline text-[20px] mr-2">search</span><input
+          class="bg-transparent border-none outline-none w-full text-body-sm text-on-surface placeholder:text-outline-variant"
+          placeholder="Search patients, beds, or staff..." type="text"></div>
+      <div class="flex items-center gap-6"><button
+          class="relative p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors"><span
+            class="material-symbols-outlined">notifications</span><span
+            class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface-container-lowest"></span></button>
+        <div class="flex items-center gap-3 pl-4 border-l border-surface-variant/50">
+          <div class="text-right hidden sm:block">
+            <p class="text-label-md text-on-surface leading-none">Admin User</p>
+            <p class="text-label-sm text-on-surface-variant leading-none mt-1">Super Administrator</p>
+          </div>
+          <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center"><span
+              class="material-symbols-outlined text-on-primary text-[20px]">person</span></div>
+        </div>
+      </div>
+    </header>
+    <main class="pt-16 min-h-screen bg-background">
+      <div class="flex flex-col w-full p-margin-desktop gap-margin-desktop">
+        <div
+          class="flex flex-wrap gap-4 items-center justify-between bg-surface-container-low p-6 rounded-xl shadow-sm">
+          <div class="flex flex-col gap-1 min-w-0">
+            <h1 class="font-headline-lg text-headline-lg text-on-surface truncate">Patient Roster</h1>
+            <p class="font-body-sm text-body-sm text-on-surface-variant truncate">Centralized view of all admitted
+              patients across units.</p>
+          </div>
+          <div class="flex flex-wrap gap-4">
+            <div
+              class="bg-surface-container-high rounded-lg p-4 flex flex-col gap-1 min-w-[150px] shadow-sm transition-transform hover:-translate-y-1">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[20px]">group</span>
+                <span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total
+                  Census</span>
+              </div>
+              <span id="census-total" class="font-display text-display text-on-surface">--</span>
+            </div>
+            <div
+              class="bg-error-container rounded-lg p-4 flex flex-col gap-1 min-w-[150px] shadow-sm transition-transform hover:-translate-y-1">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-error text-[20px]">monitor_heart</span>
+                <span class="font-label-md text-label-md text-on-error-container uppercase tracking-wider">ICU
+                  Active</span>
+              </div>
+              <span id="census-icu" class="font-display text-display text-on-error-container">--</span>
+            </div>
+            <div
+              class="bg-secondary-container rounded-lg p-4 flex flex-col gap-1 min-w-[150px] shadow-sm transition-transform hover:-translate-y-1">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-on-secondary-container text-[20px]">local_hospital</span>
+                <span class="font-label-md text-label-md text-on-secondary-container uppercase tracking-wider">HDU
+                  Active</span>
+              </div>
+              <span id="census-hdu" class="font-display text-display text-on-secondary-container">--</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col bg-surface-container-lowest rounded-xl shadow-md overflow-hidden">
+          <div
+            class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 gap-4 bg-surface-container-low border-b border-surface-variant/30">
+            <div class="relative w-full sm:w-96">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">search</span>
+              <input id="admin-patient-search-input"
+                class="w-full bg-surface-container pl-10 pr-4 py-2.5 rounded-lg text-body-sm font-body-sm text-on-surface placeholder:text-outline-variant focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all border border-surface-variant/50"
+                placeholder="Search by ID, Name, or Unit..." type="text">
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <button
+                class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md border border-surface-variant/50">
+                <span class="material-symbols-outlined text-[18px]">filter_list</span>
+                Filter Unit
+              </button>
+              <button
+                class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md border border-surface-variant/50">
+                <span class="material-symbols-outlined text-[18px]">sort</span>
+                Sort Status
+              </button>
+              <button id="btn-open-admit-modal"
+                class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary/90 transition-colors font-label-md text-label-md shadow-sm ml-auto sm:ml-4 cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                Admit Patient
+              </button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-surface-container-low/50 border-b border-surface-variant/30">
+                  <th class="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                    Patient ID</th>
+                  <th class="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                    Name</th>
+                  <th class="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                    Unit &amp; Bed</th>
+                  <th class="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                    Age/Sex</th>
+                  <th class="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                    Admission</th>
+                  <th class="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                    Status</th>
+                  <th
+                    class="py-3 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider text-right">
+                    Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-patient-tbody" class="font-body-sm text-body-sm text-on-surface">
+                <tr
+                  class="hover:bg-surface-container-low transition-colors group cursor-pointer border-b border-surface-variant/10">
+                  <td class="py-3 px-4 font-mono text-outline">JS-2023-891</td>
+                  <td class="py-3 px-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-md font-bold">
+                        AK</div>
+                      <span class="font-headline-sm text-on-surface">Arjun Kapoor</span>
+                    </div>
+                  </td>
+                  <td class="py-3 px-4">
+                    <div class="flex flex-col">
+                      <span class="font-label-md text-on-surface">ICU-A</span>
+                      <span class="text-on-surface-variant text-xs">Bed 04</span>
+                    </div>
+                  </td>
+                  <td class="py-3 px-4 text-on-surface-variant">45 / M</td>
+                  <td class="py-3 px-4 text-on-surface-variant">12 Oct 2023</td>
+                  <td class="py-3 px-4">
+                    <span
+                      class="inline-flex items-center px-2 py-1 rounded-full bg-error-container text-on-error-container text-[10px] font-bold uppercase tracking-wide">
+                      Critical
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 text-right">
+                    <div class="flex items-center justify-end gap-1"><button
+                        class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                        title="View Details"><span
+                          class="material-symbols-outlined text-[20px]">visibility</span></button><button
+                        class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                        title="Manage Transfer"><span
+                          class="material-symbols-outlined text-[20px]">swap_horiz</span></button><button
+                        class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                        title="Edit Patient"><span
+                          class="material-symbols-outlined text-[20px]">edit</span></button><button
+                        class="p-2 rounded-full text-error hover:bg-error-container transition-colors"
+                        title="Discharge"><span class="material-symbols-outlined text-[20px]">logout</span></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="hover:bg-surface-container-low transition-colors group cursor-pointer border-b border-surface-variant/10 bg-surface-bright">
+                  <td class="py-3 px-4 font-mono text-outline">JS-2023-892</td>
+                  <td class="py-3 px-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md font-bold">
+                        SM</div>
+                      <span class="font-headline-sm text-on-surface">Sunita Menon</span>
+                    </div>
+                  </td>
+                  <td class="py-3 px-4">
+                    <div class="flex flex-col">
+                      <span class="font-label-md text-on-surface">HDU-B</span>
+                      <span class="text-on-surface-variant text-xs">Bed 12</span>
+                    </div>
+                  </td>
+                  <td class="py-3 px-4 text-on-surface-variant">62 / F</td>
+                  <td class="py-3 px-4 text-on-surface-variant">14 Oct 2023</td>
+                  <td class="py-3 px-4">
+                    <span
+                      class="inline-flex items-center px-2 py-1 rounded-full bg-tertiary-container text-on-tertiary-container text-[10px] font-bold uppercase tracking-wide">
+                      Observation
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 text-right">
+                    <div class="flex items-center justify-end gap-1"><button
+                        class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                        title="View Details"><span
+                          class="material-symbols-outlined text-[20px]">visibility</span></button><button
+                        class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                        title="Manage Transfer"><span
+                          class="material-symbols-outlined text-[20px]">swap_horiz</span></button><button
+                        class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                        title="Edit Patient"><span
+                          class="material-symbols-outlined text-[20px]">edit</span></button><button
+                        class="p-2 rounded-full text-error hover:bg-error-container transition-colors"
+                        title="Discharge"><span class="material-symbols-outlined text-[20px]">logout</span></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="hover:bg-surface-container-low transition-colors group cursor-pointer border-b border-surface-variant/10">
+                  <td class="py-3 px-4 font-mono text-outline">JS-2023-895</td>
+                  <td class="py-3 px-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded-full bg-surface-variant text-on-surface flex items-center justify-center font-label-md font-bold">
+                        RD</div>
+                      <span class="font-headline-sm text-on-surface">Rahul Desai</span>
+                    </div>
+                  </td>
+                  <td class="py-3 px-4">
+                    <div class="flex flex-col">
+                      <span class="font-label-md text-on-surface">HDU-A</span>
+                      <span class="text-on-surface-variant text-xs">Bed 02</span>
+                    </div>
+                  </td>
+                  <td class="py-3 px-4 text-on-surface-variant">28 / M</td>
+                  <td class="py-3 px-4 text-on-surface-variant">15 Oct 2023</td>
+                  <td class="py-3 px-4">
+                    <span
+                      class="inline-flex items-center px-2 py-1 rounded-full bg-surface-container-highest text-on-surface text-[10px] font-bold uppercase tracking-wide">
+                      Stable
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 text-right">
+                    <div class="flex items-center justify-end gap-1"><button
+                        class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                        title="View Details"><span
+                          class="material-symbols-outlined text-[20px]">visibility</span></button><button
+                        class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                        title="Manage Transfer"><span
+                          class="material-symbols-outlined text-[20px]">swap_horiz</span></button><button
+                        class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                        title="Edit Patient"><span
+                          class="material-symbols-outlined text-[20px]">edit</span></button><button
+                        class="p-2 rounded-full text-error hover:bg-error-container transition-colors"
+                        title="Discharge"><span class="material-symbols-outlined text-[20px]">logout</span></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            class="p-4 border-t border-surface-variant/30 flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant bg-surface-container-low/30">
+            <span id="admin-patient-count-text">Showing entries</span>
+            <div class="flex gap-1">
+              <button class="p-1 rounded hover:bg-surface-container-high disabled:opacity-50" disabled=""><span
+                  class="material-symbols-outlined text-[20px]">chevron_left</span></button>
+              <button
+                class="w-8 h-8 rounded bg-primary text-on-primary font-label-md flex items-center justify-center">1</button>
+              <button class="p-1 rounded hover:bg-surface-container-high"><span
+                  class="material-symbols-outlined text-[20px]">chevron_right</span></button>
+            </div>
+          </div>
+        </div>
+    </main>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- ADMIT PATIENT MODAL                                                 -->
+  <!-- =================================================================== -->
+  <div id="admit-patient-modal"
+    class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
+    <div
+      class="bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl max-w-3xl w-full border border-surface-variant/40 overflow-hidden transform transition-all my-8">
+
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-[#0a1e4d] text-white flex items-center justify-between border-b border-white/10">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md">
+            <span class="material-symbols-outlined text-[24px]">person_add</span>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold font-headline-md leading-tight text-white">Admit New Patient</h2>
+            <p class="text-xs text-blue-200">Patient intake, ward allocation & medical staff assignment</p>
+          </div>
+        </div>
+        <button id="btn-close-admit-modal" type="button"
+          class="text-white/70 hover:text-white hover:bg-white/10 p-2 rounded-full transition-colors">
+          <span class="material-symbols-outlined text-[22px]">close</span>
+        </button>
+      </div>
+
+      <!-- Modal Form Body -->
+      <form id="admit-patient-form" class="p-6 space-y-6 max-h-[calc(85vh-140px)] overflow-y-auto">
+
+        <!-- Error / Alert Banner -->
+        <div id="admit-form-error"
+          class="hidden p-3.5 rounded-xl bg-error-container text-on-error-container text-sm flex items-start space-x-2 border border-error/20">
+          <span class="material-symbols-outlined text-[20px] text-error flex-shrink-0">error</span>
+          <span id="admit-form-error-msg" class="leading-snug"></span>
+        </div>
+
+        <!-- SECTION A: Patient Information -->
+        <div class="bg-surface-container-low p-4 rounded-xl border border-surface-variant/40 space-y-4">
+          <div class="flex items-center justify-between border-b border-surface-variant/30 pb-2">
+            <h3 class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[18px]">badge</span>
+              Patient Information
+            </h3>
+            <!-- Auto-generated UHID badge -->
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-on-surface-variant">Patient ID / UHID:</span>
+              <span id="admit-uhid-badge"
+                class="px-2.5 py-1 bg-primary/10 text-primary font-mono text-xs font-bold rounded-lg border border-primary/20 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]" id="uhid-spinner">tag</span>
+                <span id="admit-uhid-display">Generating...</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Full Name <span
+                  class="text-error">*</span></label>
+              <input type="text" id="admit-name" required placeholder="e.g. Ramesh Chandra"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Age (Years) <span
+                    class="text-error">*</span></label>
+                <input type="number" id="admit-age" required min="0" max="130" placeholder="e.g. 54"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Gender <span
+                    class="text-error">*</span></label>
+                <select id="admit-gender" required
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Diagnosis / Admitting Reason <span
+                  class="text-error">*</span></label>
+              <input type="text" id="admit-diagnosis" required placeholder="e.g. Acute Respiratory Distress Syndrome"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Blood Group</label>
+              <select id="admit-blood-group"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                <option value="">Select (Optional)</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION B: Admission & Hospital Assignment -->
+        <div class="bg-surface-container-low p-4 rounded-xl border border-surface-variant/40 space-y-4">
+          <div class="flex items-center justify-between border-b border-surface-variant/30 pb-2">
+            <h3 class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary text-[18px]">bed</span>
+              Admission & Hospital Assignment
+            </h3>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Admission Date & Time</label>
+              <input type="datetime-local" id="admit-datetime"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 text-on-surface" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Ward / Unit <span
+                  class="text-error">*</span></label>
+              <select id="admit-ward-select" required
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                <option value="">Loading wards...</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Bed Number <span
+                  class="text-error">*</span></label>
+              <select id="admit-bed-select" required
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                <option value="">Select Ward first...</option>
+              </select>
+            </div>
+          </div>
+          <div id="bed-status-hint" class="text-xs text-on-surface-variant flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+            <span>Only currently available beds from MySQL are displayed. Occupied beds are excluded.</span>
+          </div>
+        </div>
+
+        <!-- SECTION C: Medical Staff Assignment -->
+        <div class="bg-surface-container-low p-4 rounded-xl border border-surface-variant/40 space-y-4">
+          <div class="flex items-center justify-between border-b border-surface-variant/30 pb-2">
+            <h3 class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[18px]">medical_services</span>
+              Medical Staff Assignment
+            </h3>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Assigned Doctor <span
+                  class="text-error">*</span></label>
+              <select id="admit-doctor-select" required
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                <option value="">Loading available doctors...</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Assigned Nurse <span
+                  class="text-error">*</span></label>
+              <select id="admit-nurse-select" required
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                <option value="">Loading available nurses...</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION D: Attendant Information -->
+        <div class="bg-surface-container-low p-4 rounded-xl border border-surface-variant/40 space-y-4">
+          <div class="flex items-center justify-between border-b border-surface-variant/30 pb-2">
+            <h3 class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
+              <span class="material-symbols-outlined text-tertiary text-[18px]">family_restroom</span>
+              Attendant Information
+            </h3>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Attendant Name <span
+                  class="text-error">*</span></label>
+              <input type="text" id="admit-attendant-name" required placeholder="e.g. Suman Kumar"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Relationship <span
+                  class="text-error">*</span></label>
+              <select id="admit-attendant-rel" required
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                <option value="Spouse">Spouse</option>
+                <option value="Son">Son</option>
+                <option value="Daughter">Daughter</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Brother">Brother</option>
+                <option value="Sister">Sister</option>
+                <option value="Guardian">Guardian</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Contact Number <span
+                  class="text-error">*</span></label>
+              <input type="tel" id="admit-attendant-contact" required placeholder="e.g. 9876543210"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Modal Footer Actions -->
+      <div
+        class="px-6 py-4 bg-surface-container-low border-t border-surface-variant/30 flex items-center justify-end gap-3">
+        <button type="button" id="btn-cancel-admit"
+          class="px-5 py-2.5 rounded-lg border border-surface-variant text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-sm font-medium">
+          Cancel
+        </button>
+        <button type="button" id="btn-submit-admit"
+          class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-on-primary transition-colors font-label-md text-sm font-semibold shadow-md flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]" id="submit-admit-icon">how_to_reg</span>
+          <span id="submit-admit-text">Admit Patient</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- ADMISSION SUCCESS MODAL                                             -->
+  <!-- =================================================================== -->
+  <div id="admit-success-modal"
+    class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div
+      class="bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl max-w-md w-full p-6 text-center border border-green-500/30 space-y-4 my-8">
+      <div
+        class="w-14 h-14 mx-auto rounded-full bg-green-100 text-green-600 flex items-center justify-center shadow-inner">
+        <span class="material-symbols-outlined text-[32px]">check_circle</span>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-on-surface">Patient Admitted Successfully!</h3>
+        <p class="text-xs text-on-surface-variant mt-1" id="success-patient-desc">Patient record created and bed
+          allocated in MySQL database.</p>
+      </div>
+
+      <div
+        class="bg-surface-container-low p-3.5 rounded-xl text-left text-xs space-y-2 border border-surface-variant/40">
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Patient ID / UHID:</span>
+          <span class="font-mono font-bold text-primary text-sm" id="success-uhid-val">--</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Allocated Unit & Bed:</span>
+          <span class="font-semibold text-on-surface" id="success-bed-val">--</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Assigned Doctor:</span>
+          <span class="font-semibold text-on-surface" id="success-doc-val">--</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Assigned Nurse:</span>
+          <span class="font-semibold text-on-surface" id="success-nurse-val">--</span>
+        </div>
+        <div class="flex justify-between pt-2 border-t border-surface-variant/30 items-center">
+          <span class="text-on-surface-variant">Attendant Access Code:</span>
+          <span class="font-mono font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded text-xs"
+            id="success-access-code">--</span>
+        </div>
+      </div>
+
+      <button id="btn-success-close" type="button"
+        class="w-full py-2.5 bg-primary hover:bg-primary/90 text-white rounded-xl font-medium text-sm transition-colors shadow">
+        Continue to Patient Roster
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const PATIENT_API = '/api/v1/patients';
+    const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
+    let currentAdminPatientSearch = '';
+    let admissionOptionsData = null;
+
+    function getAuthHeaders() {
+      const headers = { 'Content-Type': 'application/json' };
+      if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+      return headers;
+    }
+
+    async function refreshAdminPatients(searchQuery) {
+      if (searchQuery !== undefined) {
+        currentAdminPatientSearch = searchQuery;
+      }
+      try {
+        let url = `${PATIENT_API}?limit=100`;
+        if (currentAdminPatientSearch && currentAdminPatientSearch.trim()) {
+          url += `&search=${encodeURIComponent(currentAdminPatientSearch.trim())}`;
+        }
+
+        const res = await fetch(url, { headers: getAuthHeaders() });
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!json.success || !json.data) return;
+
+        const tbody = document.getElementById('admin-patient-tbody');
+        if (!tbody) return;
+
+        // Update census counters dynamically
+        const totalPatients = json.data.length;
+        let icuCount = 0;
+        let hduCount = 0;
+        json.data.forEach(p => {
+          const wt = (p.ward_type || '').toUpperCase();
+          if (wt.includes('ICU')) icuCount++;
+          else if (wt.includes('HDU')) hduCount++;
+        });
+
+        const totalEl = document.getElementById('census-total');
+        const icuEl = document.getElementById('census-icu');
+        const hduEl = document.getElementById('census-hdu');
+        if (totalEl) totalEl.textContent = totalPatients;
+        if (icuEl) icuEl.textContent = icuCount;
+        if (hduEl) hduEl.textContent = hduCount;
+
+        const countSpan = document.getElementById('admin-patient-count-text');
+        if (countSpan) countSpan.textContent = `Showing 1 to ${json.data.length} of ${json.data.length} entries`;
+
+        tbody.innerHTML = '';
+        if (json.data.length === 0) {
+          tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-8 text-center text-on-surface-variant">
+              <span class="material-symbols-outlined text-[36px] text-outline-variant block mb-2">person_search</span>
+              <p class="font-label-md">No patients found</p>
+              <p class="text-xs text-outline mt-1">Try searching by a different name, patient ID, diagnosis, or unit.</p>
+            </td>
+          </tr>
+        `;
+          return;
+        }
+
+        json.data.forEach(p => {
+          const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
+          const bedStr = (p.ward_type || 'ICU') + ' • Bed ' + (p.bed_number || '01');
+          const ewsScore = p.ews_score !== undefined ? p.ews_score : (p.latest_vitals ? p.latest_vitals.ews_score : 0);
+          const condition = p.condition || (ewsScore >= 5 ? 'Critical' : ewsScore >= 3 ? 'Observation' : 'Stable');
+          const admissionDate = p.admission_date ? new Date(p.admission_date).toLocaleDateString() : (p.admitted_at ? new Date(p.admitted_at).toLocaleDateString() : 'Active');
+          const initials = p.name ? p.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'PT';
+
+          let badgeBg = 'bg-[#DCFCE7] text-[#166534]';
+          let avatarBg = 'bg-primary-container text-on-primary-container';
+          if (ewsScore >= 5) {
+            badgeBg = 'bg-error-container text-on-error-container';
+            avatarBg = 'bg-error-container text-on-error-container';
+          } else if (ewsScore >= 3) {
+            badgeBg = 'bg-secondary-container text-on-secondary-container';
+            avatarBg = 'bg-secondary-container text-on-secondary-container';
+          }
+
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-surface-container-low transition-colors group cursor-pointer border-b border-surface-variant/10';
+          tr.innerHTML = `
+          <td class="py-3 px-4 font-mono text-outline">#${pCode}</td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full ${avatarBg} flex items-center justify-center font-label-md font-bold">${initials}</div>
+              <div class="flex flex-col">
+                <span class="font-headline-sm text-on-surface font-semibold">${p.name}</span>
+                <span class="text-[11px] text-on-surface-variant truncate max-w-[180px]">${p.diagnosis || 'Admitted Patient'}</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4">
+            <div class="flex flex-col">
+              <span class="font-label-md text-on-surface">${p.ward_type || 'ICU'}</span>
+              <span class="text-on-surface-variant text-xs font-mono">Bed ${p.bed_number || '--'}</span>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-on-surface-variant">${p.age || '--'} / ${p.gender === 'Female' ? 'F' : 'M'}</td>
+          <td class="py-3 px-4 text-on-surface-variant text-xs">${admissionDate}</td>
+          <td class="py-3 px-4">
+            <span class="inline-flex items-center px-2 py-1 rounded-full ${badgeBg} text-[10px] font-bold uppercase tracking-wide">
+              ${condition} (EWS: ${ewsScore})
+            </span>
+          </td>
+          <td class="py-3 px-4 text-right">
+            <div class="flex items-center justify-end gap-1">
+              <a href="../Admin_patient_management/Admin_patient_management.html" class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors" title="View Details">
+                <span class="material-symbols-outlined text-[20px]">visibility</span>
+              </a>
+            </div>
+          </td>
+        `;
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        console.error('[Jeevan Setu] Admin patient search error:', e);
+      }
+    }
+
+    // Check URL params for prefilled search
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search') || urlParams.get('q');
+    const searchInput = document.getElementById('admin-patient-search-input');
+    if (searchParam && searchInput) {
+      searchInput.value = searchParam;
+      currentAdminPatientSearch = searchParam;
+    }
+
+    if (searchInput) {
+      let debounceTimer;
+      searchInput.addEventListener('input', function (e) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          refreshAdminPatients(e.target.value);
+        }, 300);
+      });
+      searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          clearTimeout(debounceTimer);
+          refreshAdminPatients(this.value);
+        }
+      });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // ADMIT PATIENT MODAL & WORKFLOW
+    // ═══════════════════════════════════════════════════════════
+    const admitModal = document.getElementById('admit-patient-modal');
+    const admitForm = document.getElementById('admit-patient-form');
+    const btnOpenAdmit = document.getElementById('btn-open-admit-modal');
+    const btnCloseAdmit = document.getElementById('btn-close-admit-modal');
+    const btnCancelAdmit = document.getElementById('btn-cancel-admit');
+    const btnSubmitAdmit = document.getElementById('btn-submit-admit');
+    const admitErrorBox = document.getElementById('admit-form-error');
+    const admitErrorMsg = document.getElementById('admit-form-error-msg');
+    const wardSelect = document.getElementById('admit-ward-select');
+    const bedSelect = document.getElementById('admit-bed-select');
+    const docSelect = document.getElementById('admit-doctor-select');
+    const nurseSelect = document.getElementById('admit-nurse-select');
+    const uhidDisplay = document.getElementById('admit-uhid-display');
+    const datetimeInput = document.getElementById('admit-datetime');
+
+    const successModal = document.getElementById('admit-success-modal');
+    const btnSuccessClose = document.getElementById('btn-success-close');
+
+    function showFormError(msg) {
+      if (admitErrorBox && admitErrorMsg) {
+        admitErrorMsg.textContent = msg;
+        admitErrorBox.classList.remove('hidden');
+      }
+    }
+
+    function hideFormError() {
+      if (admitErrorBox) {
+        admitErrorBox.classList.add('hidden');
+      }
+    }
+
+    async function openAdmitModal() {
+      hideFormError();
+      admitForm.reset();
+      uhidDisplay.textContent = 'Generating...';
+
+      // Show modal
+      admitModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      // Fetch dynamic admission options from backend
+      try {
+        const res = await fetch(`${PATIENT_API}/admission-options`, { headers: getAuthHeaders() });
+        if (!res.ok) {
+          throw new Error(`Server returned ${res.status}`);
+        }
+        const json = await res.json();
+        if (!json.success || !json.data) {
+          throw new Error(json.error || 'Failed to load options');
+        }
+
+        admissionOptionsData = json.data;
+
+        // 1. Auto-generate UHID
+        uhidDisplay.textContent = admissionOptionsData.next_uhid || 'UHID-2026-00001';
+
+        // 2. Admission DateTime
+        if (admissionOptionsData.admission_datetime) {
+          datetimeInput.value = admissionOptionsData.admission_datetime;
+        }
+
+        // 3. Populate Wards
+        wardSelect.innerHTML = '<option value="">-- Select Available Ward --</option>';
+        (admissionOptionsData.wards || []).forEach(w => {
+          const avail = w.available_beds !== undefined ? w.available_beds : 0;
+          const total = w.total_beds || 20;
+          const opt = document.createElement('option');
+          opt.value = w.ward_id;
+          opt.textContent = `${w.name} (${w.ward_type}) — ${avail} Beds Available (Capacity: ${total})`;
+          wardSelect.appendChild(opt);
+        });
+
+        // 4. Populate Doctors
+        docSelect.innerHTML = '<option value="">-- Select Available Doctor --</option>';
+        (admissionOptionsData.doctors || []).forEach(d => {
+          const opt = document.createElement('option');
+          opt.value = d.user_id;
+          const spec = d.specialization ? ` • ${d.specialization}` : '';
+          const statusText = (d.is_active === 0 || d.is_active === false) ? 'Unavailable' : 'Available';
+          opt.textContent = `${d.full_name} — ${statusText} — ${d.workload} Patient${d.workload === 1 ? '' : 's'}${spec}`;
+          if (statusText === 'Unavailable') opt.disabled = true;
+          docSelect.appendChild(opt);
+        });
+
+        // 5. Populate Nurses
+        nurseSelect.innerHTML = '<option value="">-- Select Available Nurse --</option>';
+        (admissionOptionsData.nurses || []).forEach(n => {
+          const opt = document.createElement('option');
+          opt.value = n.user_id;
+          const spec = n.specialization ? ` • ${n.specialization}` : (n.ward_assignment ? ` • Ward ${n.ward_assignment}` : '');
+          const statusText = (n.is_active === 0 || n.is_active === false) ? 'Unavailable' : 'Available';
+          opt.textContent = `${n.full_name} — ${statusText} — ${n.workload} Patient${n.workload === 1 ? '' : 's'}${spec}`;
+          if (statusText === 'Unavailable') opt.disabled = true;
+          nurseSelect.appendChild(opt);
+        });
+
+        // Reset Bed dropdown
+        bedSelect.innerHTML = '<option value="">Select a ward to see available beds...</option>';
+
+        // Auto-select first ward with available beds
+        const firstAvailWard = (admissionOptionsData.wards || []).find(w => (w.available_beds || 0) > 0);
+        if (firstAvailWard) {
+          wardSelect.value = firstAvailWard.ward_id;
+          updateAvailableBeds(firstAvailWard.ward_id);
+        } else if (wardSelect.options.length > 1) {
+          wardSelect.selectedIndex = 1;
+          updateAvailableBeds(wardSelect.value);
+        }
+
+      } catch (e) {
+        console.error('[Jeevan Setu] Error opening admission modal:', e);
+        showFormError('Could not connect to hospital server to fetch live bed & staff availability. ' + e.message);
+      }
+    }
+
+    function updateAvailableBeds(selectedWardId) {
+      const filteredBeds = (admissionOptionsData && admissionOptionsData.available_beds) 
+        ? admissionOptionsData.available_beds.filter(b => String(b.ward_id) === String(selectedWardId)) 
+        : [];
+
+      bedSelect.innerHTML = '<option value="">-- Select Available Bed --</option>';
+      if (filteredBeds.length === 0) {
+        bedSelect.innerHTML = '<option value="" disabled selected>No available beds in this ward</option>';
+      } else {
+        filteredBeds.forEach(b => {
+          const opt = document.createElement('option');
+          opt.value = b.bed_id;
+          opt.textContent = `${b.bed_number} — Available Bed`;
+          bedSelect.appendChild(opt);
+        });
+        // Auto-select first available bed
+        if (filteredBeds.length > 0) {
+          bedSelect.selectedIndex = 1;
+        }
+      }
+    }
+
+    function closeAdmitModal() {
+      admitModal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    wardSelect.addEventListener('change', function () {
+      updateAvailableBeds(this.value);
+    });
+
+    if (btnOpenAdmit) btnOpenAdmit.addEventListener('click', openAdmitModal);
+    if (btnCloseAdmit) btnCloseAdmit.addEventListener('click', closeAdmitModal);
+    if (btnCancelAdmit) btnCancelAdmit.addEventListener('click', closeAdmitModal);
+
+    // Close on Escape or Backdrop click
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !admitModal.classList.contains('hidden')) {
+        closeAdmitModal();
+      }
+    });
+    admitModal.addEventListener('click', (e) => {
+      if (e.target === admitModal) closeAdmitModal();
+    });
+
+    // SUBMIT ADMISSION
+    async function submitAdmitPatient() {
+      hideFormError();
+
+      const name = document.getElementById('admit-name').value.trim();
+      const age = parseInt(document.getElementById('admit-age').value, 10);
+      const gender = document.getElementById('admit-gender').value;
+      const diagnosis = document.getElementById('admit-diagnosis').value.trim();
+      const bloodGroup = document.getElementById('admit-blood-group').value;
+      const wardId = wardSelect.value;
+      const bedId = bedSelect.value;
+      const doctorId = docSelect.value;
+      const nurseId = nurseSelect.value;
+      const attendantName = document.getElementById('admit-attendant-name').value.trim();
+      const attendantRel = document.getElementById('admit-attendant-rel').value;
+      const attendantContact = document.getElementById('admit-attendant-contact').value.trim();
+      const admDateTime = datetimeInput.value;
+      const uhid = uhidDisplay.textContent.trim();
+
+      // Frontend validation
+      if (!name || name.length < 2) {
+        showFormError('Please enter a valid Patient Full Name (at least 2 letters).');
+        return;
+      }
+      if (isNaN(age) || age < 0 || age > 130) {
+        showFormError('Please enter a valid Age (0-130).');
+        return;
+      }
+      if (!diagnosis || diagnosis.length < 2) {
+        showFormError('Please enter a valid Diagnosis / Admitting Reason.');
+        return;
+      }
+      if (!wardId) {
+        showFormError('Please select a Ward / Unit.');
+        return;
+      }
+      if (!bedId) {
+        showFormError('Please select an available Bed Number.');
+        return;
+      }
+      if (!doctorId) {
+        showFormError('Please assign an available Doctor.');
+        return;
+      }
+      if (!nurseId) {
+        showFormError('Please assign an available Nurse.');
+        return;
+      }
+      if (!attendantName || attendantName.length < 2) {
+        showFormError('Please enter the Attendant Full Name.');
+        return;
+      }
+      if (!attendantRel) {
+        showFormError('Please select Relationship with Patient.');
+        return;
+      }
+      if (!attendantContact || attendantContact.length < 7) {
+        showFormError('Please enter a valid Attendant Contact Number.');
+        return;
+      }
+
+      const payload = {
+        patient_code: uhid.startsWith('UHID-') ? uhid : undefined,
+        name: name,
+        age: age,
+        gender: gender,
+        diagnosis: diagnosis,
+        blood_group: bloodGroup || undefined,
+        ward_id: parseInt(wardId, 10),
+        bed_id: parseInt(bedId, 10),
+        assigned_doctor: parseInt(doctorId, 10),
+        assigned_nurse: parseInt(nurseId, 10),
+        attendant_name: attendantName,
+        attendant_relationship: attendantRel,
+        attendant_contact: attendantContact,
+        admission_date: admDateTime || undefined
+      };
+
+      const submitBtn = document.getElementById('btn-submit-admit');
+      const submitText = document.getElementById('submit-admit-text');
+      const submitIcon = document.getElementById('submit-admit-icon');
+
+      try {
+        submitBtn.disabled = true;
+        submitText.textContent = 'Admitting Patient...';
+        submitIcon.textContent = 'sync';
+        submitIcon.classList.add('animate-spin');
+
+        const res = await fetch(`${PATIENT_API}/admit`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(payload)
+        });
+
+        const json = await res.json();
+
+        if (!res.ok || !json.success) {
+          throw new Error(json.error || 'Failed to admit patient');
+        }
+
+        // Successful Admission!
+        closeAdmitModal();
+
+        // Show Success Modal
+        document.getElementById('success-uhid-val').textContent = json.data.patient_code || json.data.patient.patient_code;
+        document.getElementById('success-bed-val').textContent = `${json.data.ward} • Bed ${json.data.bed}`;
+        document.getElementById('success-doc-val').textContent = json.data.assigned_doctor;
+        document.getElementById('success-nurse-val').textContent = json.data.assigned_nurse;
+        document.getElementById('success-access-code').textContent = json.data.attendant.access_code;
+        document.getElementById('success-patient-desc').textContent = `${json.data.patient.name} has been admitted and assigned to Bed ${json.data.bed}.`;
+
+        successModal.classList.remove('hidden');
+
+        // Refresh table immediately
+        refreshAdminPatients();
+
+      } catch (err) {
+        console.error('[Jeevan Setu] Admission submission error:', err);
+        showFormError(err.message || 'An error occurred during patient admission.');
+      } finally {
+        submitBtn.disabled = false;
+        submitText.textContent = 'Admit Patient';
+        submitIcon.textContent = 'how_to_reg';
+        submitIcon.classList.remove('animate-spin');
+      }
+    }
+
+    btnSubmitAdmit.addEventListener('click', submitAdmitPatient);
+
+    btnSuccessClose.addEventListener('click', () => {
+      successModal.classList.add('hidden');
+    });
+
+    // Initial load
+    refreshAdminPatients();
+  </script>
+  <script src="../admin_navigation.js"></script>
+</body>
+
+</html>

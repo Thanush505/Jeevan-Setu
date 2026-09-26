@@ -1,0 +1,469 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-secondary-fixed-variant": "#004c6e",
+                "surface-dim": "#cfdaf2",
+                "on-secondary": "#ffffff",
+                "tertiary": "#46566c",
+                "on-secondary-container": "#004666",
+                "surface-bright": "#f9f9ff",
+                "on-primary-fixed-variant": "#003ea8",
+                "secondary-fixed-dim": "#89ceff",
+                "on-secondary-fixed": "#001e2f",
+                "on-primary": "#ffffff",
+                "inverse-on-surface": "#ecf1ff",
+                "primary-fixed-dim": "#b4c5ff",
+                "surface-variant": "#d8e3fb",
+                "error-container": "#ffdad6",
+                "on-surface-variant": "#434655",
+                "primary-container": "#2563eb",
+                "on-tertiary-fixed": "#0b1c30",
+                "surface-container-high": "#dee8ff",
+                "on-tertiary": "#ffffff",
+                "on-error-container": "#93000a",
+                "background": "#f9f9ff",
+                "tertiary-container": "#5e6e85",
+                "on-primary-fixed": "#00174b",
+                "surface-container-highest": "#d8e3fb",
+                "tertiary-fixed-dim": "#b7c8e1",
+                "surface": "#f9f9ff",
+                "surface-tint": "#0053db",
+                "surface-container": "#e7eeff",
+                "error": "#ba1a1a",
+                "surface-container-low": "#f0f3ff",
+                "secondary-fixed": "#c9e6ff",
+                "outline-variant": "#c3c6d7",
+                "on-background": "#111c2d",
+                "on-tertiary-container": "#e9f0ff",
+                "outline": "#737686",
+                "on-primary-container": "#eeefff",
+                "inverse-primary": "#b4c5ff",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed": "#d3e4fe",
+                "inverse-surface": "#263143",
+                "secondary": "#006591",
+                "on-surface": "#111c2d",
+                "on-error": "#ffffff",
+                "primary-fixed": "#dbe1ff",
+                "secondary-container": "#39b8fd",
+                "primary": "#004ac6",
+                "on-tertiary-fixed-variant": "#38485d"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "lg": "24px",
+                "gutter": "16px",
+                "sm": "8px",
+                "base": "4px",
+                "margin-mobile": "16px",
+                "xs": "4px",
+                "margin-desktop": "32px",
+                "md": "16px",
+                "xl": "32px"
+        },
+        "fontFamily": {
+                "body-lg": [
+                        "Inter"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "headline-lg-mobile": [
+                        "Poppins"
+                ],
+                "label-md": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Poppins"
+                ],
+                "display": [
+                        "Poppins"
+                ],
+                "label-sm": [
+                        "Inter"
+                ],
+                "headline-sm": [
+                        "Poppins"
+                ],
+                "body-sm": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Poppins"
+                ]
+        },
+        "fontSize": {
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "display": [
+                        "48px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-sm": [
+                        "20px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-sm": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "fontWeight": "600"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-surface"><aside class="w-64 bg-[#0f172a] text-white flex-shrink-0 flex flex-col overflow-y-auto fixed left-0 top-0 h-full z-50"><div class="p-6 flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-white rounded flex items-center justify-center flex-shrink-0"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIKtYfe4pufT_t0RZFGMY3qzlixbBTw6VECdU7XoehqB_dfXbbH7YgsFB9-KswGfZ11LnqRJPL9hvKLw83ohw3yv0qfm4umRXb03j1l7Cy4PDct_JmS5BEYAEdhK_pswRMuTnssvR0gSpokm44B5Vtqpc0qSoA1TLRUgaPtZEX7F60mjaQaiF7P-ot_1pUwQfOojMIDbJpILxPzet_IrtjFZMzgMpUdlM38HyB_7VMaeV5QYAuo-fHmBpgs3J_Cwy1" class="w-8 h-8 object-contain" alt="Logo"></div><div><h1 class="font-bold text-lg leading-none tracking-tight">JEEVAN SETU</h1><p class="text-[8px] leading-tight mt-1 opacity-80">ICU TO HDU TRANSFER DECISION SUPPORT SYSTEM</p></div></div><nav class="flex-1 px-4 space-y-6 overflow-y-auto"><div class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px]">home</span><span class="text-sm font-medium">Dashboard</span></div><div><p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider px-2 mb-2">PATIENT MANAGEMENT</p><ul class="space-y-1"><li onclick="window.location.href='../Doctor_my_patients/Doctor_my_patients.html'" class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">group</span><span class="text-sm">My Patients</span></li><li onclick="window.location.href='../Doctor_all_patients/Doctor_all_patients.html'" class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">clinical_notes</span><span class="text-sm">All Patients</span></li><li onclick="window.location.href='../Doctor_patient_search/Doctor_patient_search.html'" class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">search</span><span class="text-sm">Patient Search</span></li></ul></div><div><p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider px-2 mb-2">CLINICAL TOOLS</p><ul class="space-y-1"><li onclick="window.location.href='../Doctor_ews_calculator/Doctor_ews_calculator.html'" class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">analytics</span><span class="text-sm">EWS Calculator</span></li><li onclick="window.location.href='../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html'" class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">swap_horiz</span><span class="text-sm">Transfer Recommendations</span></li><li onclick="window.location.href='../Doctor_ews_trends/Doctor_ews_trends.html'" class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">monitoring</span><span class="text-sm">EWS Trends</span></li><li onclick="window.location.href='../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html'" class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">lightbulb</span><span class="text-sm">Patient Summary (AI)</span></li></ul></div><div><p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider px-2 mb-2">TASKS &amp; ALERTS</p><ul class="space-y-1"><li onclick="window.location.href='../Doctor_pending_approvals/Doctor_pending_approvals.html'" class="flex items-center justify-between px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-[20px] opacity-70">check_circle</span><span class="text-sm">Pending Approvals</span></div><span class="bg-error text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">5</span></li><li onclick="window.location.href='../Doctor_alerts_notifications/Doctor_alerts_notifications.html'" class="flex items-center justify-between px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-[20px] opacity-70">notifications</span><span class="text-sm">Alerts &amp; Notifications</span></div><span class="bg-error text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">8</span></li></ul></div><div><p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider px-2 mb-2">REPORTS</p><ul class="space-y-1"><li onclick="window.location.href='../Doctor_patient_reports/Doctor_patient_reports.html'" class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">description</span><span class="text-sm">Patient Reports</span></li><li onclick="window.location.href='../Doctor_transfer_reports/Doctor_transfer_reports.html'"><span class="material-symbols-outlined text-[20px]">swap_horiz</span><span class="text-sm font-bold">Transfer Reports</span></li><li onclick="window.location.href='../Doctor_audit_logs/Doctor_audit_logs.html'" class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">verified_user</span><span class="text-sm">Audit Logs</span></li></ul></div></nav><div class="mt-auto p-4 border-t border-white/10 space-y-1"><div class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">settings</span><span class="text-sm">Settings</span></div><div class="flex items-center gap-3 px-2 py-2 hover:bg-white/10 rounded cursor-pointer"><span class="material-symbols-outlined text-[20px] opacity-70">logout</span><span class="text-sm">Logout</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/80 backdrop-blur-xl z-40 flex items-center justify-between px-xl shadow-[0_1px_4px_rgba(0,0,0,0.02)]"><div class="flex items-center bg-surface-container-low px-md py-xs rounded-full w-96 border border-surface-variant"><span class="material-symbols-outlined text-on-surface-variant mr-sm">search</span><input class="bg-transparent border-none outline-none text-body-sm w-full text-on-surface placeholder:text-on-surface-variant" placeholder="Search records, patients..." type="text"></div><div class="flex items-center gap-lg"><button class="relative p-xs hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span></button><div class="flex items-center gap-md pl-md border-l border-outline-variant"><div class="text-right hidden sm:block"><div class="text-label-sm text-on-surface font-bold">Dr. Arjun Mehta</div><div class="text-[10px] text-on-surface-variant uppercase tracking-wider font-bold">Senior Consultant</div></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center cursor-pointer shadow-sm text-on-primary"><span class="material-symbols-outlined text-[20px]">person</span></div></div></div></header><main class="relative pt-16 min-h-screen bg-background"><div class="flex flex-col w-full">
+<!-- Content Container with proper margins -->
+<div class="flex flex-col gap-xl p-margin-desktop w-full max-w-7xl mx-auto">
+<!-- Title Section & Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-lg relative z-10">
+<div class="flex flex-col gap-xs">
+<h1 class="font-headline-lg text-primary tracking-tight">Transfer Reports</h1>
+<p class="font-body-lg text-on-surface-variant">Monitor and review patient transfer data across clinical units.</p>
+</div>
+<div class="flex items-center gap-md">
+<button class="flex items-center justify-center gap-sm px-lg py-sm rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors shadow-sm font-label-md">
+<span class="material-symbols-outlined text-[18px]">download</span>
+          Export PDF
+        </button>
+<button class="flex items-center justify-center gap-sm px-lg py-sm rounded-lg bg-primary text-on-primary hover:bg-surface-tint transition-colors shadow-md shadow-primary/20 font-label-md">
+<span class="material-symbols-outlined text-[18px]">add</span>
+          Generate New Report
+        </button>
+</div>
+</div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Total Transfers -->
+<div class="bg-surface-container-lowest rounded-xl p-lg shadow-sm flex flex-col gap-md relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Total Transfers</span>
+<span class="font-display text-on-surface">128</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">swap_horiz</span>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<span class="px-sm py-xs rounded-full bg-surface-container-high text-primary font-label-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12%
+          </span>
+<span class="font-body-sm text-on-surface-variant">vs last month</span>
+</div>
+<!-- Decorative Chart Background -->
+<svg class="absolute bottom-0 left-0 w-full h-12 text-primary-fixed opacity-50 pointer-events-none group-hover:scale-x-105 transition-transform" fill="currentColor" preserveAspectRatio="none" viewBox="0 0 200 50">
+<path d="M0 50 L0 30 C 20 40, 40 10, 60 20 C 80 30, 100 0, 120 15 C 140 30, 160 5, 180 25 L200 15 L200 50 Z"></path>
+</svg>
+</div>
+<!-- Success Rate -->
+<div class="bg-surface-container-lowest rounded-xl p-lg shadow-sm flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">ICU to HDU Success</span>
+<span class="font-display text-on-surface">94%</span>
+</div>
+<div class="relative w-12 h-12 flex items-center justify-center">
+<svg class="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+<circle class="stroke-surface-container-high" cx="18" cy="18" fill="none" r="16" stroke-width="4"></circle>
+<circle class="stroke-secondary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="100" stroke-dashoffset="6" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<span class="absolute material-symbols-outlined text-secondary text-[16px]">check_circle</span>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-body-sm text-on-surface-variant">Based on 85 completed transfers</span>
+</div>
+</div>
+<!-- Avg Transfer Time -->
+<div class="bg-surface-container-lowest rounded-xl p-lg shadow-sm flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Avg. Transfer Time</span>
+<span class="font-display text-on-surface">42m</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]">schedule</span>
+</div>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full mt-2 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 65%;"></div>
+</div>
+<span class="font-body-sm text-on-surface-variant text-right">Target: &lt; 45m</span>
+</div>
+<!-- Pending Approvals -->
+<div class="bg-primary rounded-xl p-lg shadow-md shadow-primary/20 flex flex-col gap-md text-on-primary">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-primary-fixed uppercase tracking-wider">Pending Approvals</span>
+<span class="font-display">5</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface/20 backdrop-blur-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">notifications_active</span>
+</div>
+</div>
+<div class="mt-auto pt-sm">
+<button class="w-full py-xs px-sm rounded-lg bg-on-primary text-primary font-label-md hover:bg-surface-bright transition-colors shadow-sm">
+            Review Requests
+          </button>
+</div>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-sm flex flex-wrap lg:flex-nowrap items-center gap-md z-20">
+<div class="flex-1 min-w-[200px] flex items-center bg-surface-container px-md py-sm rounded-lg">
+<span class="material-symbols-outlined text-on-surface-variant mr-sm text-[20px]">search</span>
+<input class="bg-transparent border-none outline-none w-full text-body-sm text-on-surface placeholder:text-on-surface-variant" placeholder="Search patient name, ID or unit..." type="text">
+</div>
+<div class="w-px h-8 bg-surface-container-high hidden lg:block mx-sm"></div>
+<div class="flex flex-wrap items-center gap-md">
+<button class="flex items-center gap-sm px-md py-sm bg-surface-container rounded-lg text-body-sm text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="">Transfer Type</span>
+<span class="material-symbols-outlined text-[18px]">keyboard_arrow_down</span>
+</button>
+<button class="flex items-center gap-sm px-md py-sm bg-surface-container rounded-lg text-body-sm text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="">Date Range</span>
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+</button>
+<button class="flex items-center gap-sm px-md py-sm bg-surface-container rounded-lg text-body-sm text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="">Outcome</span>
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+</button>
+<button aria-label="Clear filters" class="p-sm text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container rounded-full">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+<!-- Reports Table Data List -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-x-auto">
+<table class="w-full text-left border-collapse whitespace-nowrap">
+<thead>
+<tr class="bg-surface text-on-surface-variant font-label-md border-b border-surface-variant">
+<th class="px-lg py-md font-medium tracking-wide">Patient</th>
+<th class="px-lg py-md font-medium tracking-wide">Transfer Path</th>
+<th class="px-lg py-md font-medium tracking-wide">Date &amp; Time</th>
+<th class="px-lg py-md font-medium tracking-wide">Priority</th>
+<th class="px-lg py-md font-medium tracking-wide">Status</th>
+<th class="px-lg py-md font-medium tracking-wide text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-on-surface">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group border-b border-surface-variant/50">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm bg-surface-container" data-alt="Clinical professional headshot of a middle-aged South Asian male patient, soft lighting, cool-toned blue background, high quality portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADm8Dq5KLRBJDn0n7sHdlSIuPRiuHijvVbH_hQA7oPT_fiLq4LTnPIAp4g-GL7pcID5-lFjb0C6s3i734ix_BiqcpiZSyzOo-H4a6YWp16bvOKIHl4VuCLR-_t40y9Z73uvLEptiNOGBpoyLt6szz4m_z4HzR__3cm9pPQi7Qbu5dyetxG3w6AAo6Wex7_bp_7q13WKoVvc4tcXKR48-j6lmESBWQxHJ0nn7ETHNefR5xQxP9ChOI">
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">Ramesh Patel</span>
+<span class="font-body-sm text-on-surface-variant">ID: P-0924</span>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm">
+<span class="px-sm py-xs bg-surface-container rounded font-label-sm text-on-surface-variant">ER</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]">arrow_forward</span>
+<span class="px-sm py-xs bg-surface-container rounded font-label-sm text-on-surface-variant">ICU-A</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="">Oct 24, 2023</span>
+<span class="font-body-sm text-on-surface-variant">14:30 IST</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs text-error font-label-md">
+<span class="w-2 h-2 rounded-full bg-error"></span> High
+              </div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm gap-xs">
+<span class="material-symbols-outlined text-[14px]">check</span> Completed
+              </span>
+</td>
+<td class="px-lg py-md text-right">
+<button aria-label="View Details" class="p-sm text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors bg-surface-bright group border-b border-surface-variant/50">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center font-label-md text-on-tertiary-fixed shadow-sm">
+                  SV
+                </div>
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">Sunita Verma</span>
+<span class="font-body-sm text-on-surface-variant">ID: P-1052</span>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm">
+<span class="px-sm py-xs bg-surface-container rounded font-label-sm text-on-surface-variant">ICU-B</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]">arrow_forward</span>
+<span class="px-sm py-xs bg-surface-container rounded font-label-sm text-on-surface-variant">HDU-1</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="">Oct 24, 2023</span>
+<span class="font-body-sm text-on-surface-variant">15:45 IST</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs text-secondary font-label-md">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Medium
+              </div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm gap-xs">
+<span class="material-symbols-outlined text-[14px]">local_shipping</span> In-Transit
+              </span>
+</td>
+<td class="px-lg py-md text-right">
+<button aria-label="View Details" class="p-sm text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm bg-surface-container" data-alt="Clinical professional headshot of a young South Asian male patient, bright ambient light, sterile hospital environment, sharp focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9ZQbpI_9mvPGAvqZb1CoEDzrXnkJuN5yu0PtbMUlq53RX7tMXIsUs79OOgEknGoTCNt9HFm9HaQlyiMOofay2sE6py3eWdhOs9H5X_-F_jrYSJ6rMuW0oUH7zLKxhpCPvEFsLhJpOBOU2UW5DPEsv-jvo7Woxnh5F0BHs5JSdfyiIDs67vLbrIZu1s4S476po9w6MS7oUhzq-tYwC2dFTxzL3no-PmBL-gABAwhAOprybJXxeI_w">
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">Kabir Khan</span>
+<span class="font-body-sm text-on-surface-variant">ID: P-0441</span>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm">
+<span class="px-sm py-xs bg-surface-container rounded font-label-sm text-on-surface-variant">Gen Ward</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]">arrow_forward</span>
+<span class="px-sm py-xs bg-surface-container rounded font-label-sm text-on-surface-variant">Surgery</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="">Oct 24, 2023</span>
+<span class="font-body-sm text-on-surface-variant">16:10 IST</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs text-on-surface-variant font-label-md">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span> Normal
+              </div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-surface-container-high text-on-surface-variant font-label-sm gap-xs">
+<span class="material-symbols-outlined text-[14px]">cancel</span> Cancelled
+              </span>
+</td>
+<td class="px-lg py-md text-right">
+<button aria-label="View Details" class="p-sm text-on-surface-variant hover:text-primary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination / Footer area -->
+<div class="p-md flex items-center justify-between bg-surface text-body-sm text-on-surface-variant border-t border-surface-variant/50">
+<span class="">Showing 1 to 3 of 128 entries</span>
+<div class="flex items-center gap-xs">
+<button class="p-xs rounded hover:bg-surface-container transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-primary-container text-on-primary-container font-label-md flex items-center justify-center shadow-sm">1</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-on-surface font-label-md flex items-center justify-center transition-colors">2</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-on-surface font-label-md flex items-center justify-center transition-colors">3</button>
+<span class="px-xs">...</span>
+<button class="p-xs rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div></main></div>
+
+
+
+
+  <script src="../global_alert_manager.js"></script>
+</body></html>

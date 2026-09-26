@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Attendant Mobile Access — Jeevan Setu</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#0052cc",
+            primaryHover: "#003e9e",
+            primaryDark: "#071b40",
+            primaryLight: "#ebf3ff",
+            secondary: "#0284c7",
+            accent: "#06b6d4",
+            surface: "#f8fafc",
+            cardBg: "#ffffff",
+            textMain: "#0f172a",
+            textMuted: "#64748b"
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+            mono: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"]
+          },
+          boxShadow: {
+            'mobile': '0 20px 40px -15px rgba(0, 40, 120, 0.15), 0 0 1px 1px rgba(0, 0, 0, 0.05)',
+            'float': '0 10px 25px -5px rgba(0, 82, 204, 0.3)',
+            'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)'
+          }
+        }
+      }
+    };
+  </script>
+  
+  <style>
+    /* iOS / Android Mobile Frame Styling */
+    html, body {
+      min-height: 100%;
+      height: 100%;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    /* Modern Mobile Scrollbar */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    * {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Radar Laser Animation for QR Scanner */
+    @keyframes scannerLaser {
+      0% { top: 6%; opacity: 0.8; }
+      50% { top: 88%; opacity: 1; }
+      100% { top: 6%; opacity: 0.8; }
+    }
+    .animate-laser {
+      animation: scannerLaser 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+    .animate-glow {
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes spinCustom {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-custom {
+      animation: spinCustom 0.9s linear infinite;
+    }
+
+    .active-tab {
+      background: #0052cc;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 82, 204, 0.28);
+    }
+    .inactive-tab {
+      background: transparent;
+      color: #64748b;
+    }
+
+    /* Input focus glow */
+    .mobile-input:focus-within {
+      border-color: #0052cc;
+      box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15);
+      background-color: #ffffff;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-900 text-textMain antialiased flex flex-col items-center justify-start sm:justify-center sm:py-6 p-0 selection:bg-primary selection:text-white">
+
+  <!-- Mobile Device Constraint Shell (Max 430px wide like iPhone 15 Pro Max) -->
+  <div class="w-full max-w-[430px] min-h-[100dvh] sm:min-h-[860px] sm:max-h-[920px] bg-slate-50 flex flex-col justify-between shadow-2xl sm:rounded-[36px] sm:border-[5px] sm:border-slate-800 relative overflow-hidden">
+    
+    <!-- Top System Bar / Notch on Desktop View -->
+    <div class="w-full bg-[#071b40] pt-3 pb-3 px-5 text-white flex items-center justify-between select-none z-20 shrink-0">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-sm">
+          <span class="material-symbols-outlined text-base">vital_signs</span>
+        </div>
+        <div>
+          <span class="font-bold text-xs tracking-wider uppercase">Jeevan Setu</span>
+          <span class="text-[9px] text-blue-300 block -mt-0.5 font-medium tracking-tight">Family Companion</span>
+        </div>
+      </div>
+
+      <!-- Quick Hospital Call Button -->
+      <button 
+        type="button" 
+        onclick="openHelplineModal()" 
+        class="flex items-center gap-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 border border-blue-400/30 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all active:scale-95"
+      >
+        <span class="material-symbols-outlined text-xs text-blue-300">call</span>
+        <span>ICU Desk</span>
+      </button>
+    </div>
+
+    <!-- Main Scrollable Mobile Content -->
+    <div class="flex-1 overflow-y-auto px-4 py-3.5 space-y-4">
+      
+      <!-- Greeting & Hero Card -->
+      <div class="bg-gradient-to-br from-[#071b40] via-[#0d2a63] to-[#0052cc] rounded-2xl p-4 text-white shadow-md relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-blue-400/10 pointer-events-none"></div>
+        <div class="absolute right-8 top-2 w-16 h-16 rounded-full bg-indigo-400/10 pointer-events-none"></div>
+
+        <div class="relative z-10 flex items-start justify-between">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-500/30 border border-blue-300/20 text-[10px] text-blue-100 font-semibold mb-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>Live Patient Telemetry</span>
+            </div>
+            <h1 class="text-lg font-bold tracking-tight text-white">Attendant Sign-In</h1>
+            <p class="text-[11px] text-blue-100/80 mt-0.5 max-w-[240px]">
+              Access real-time vital signs, doctor notes, and recovery metrics.
+            </p>
+          </div>
+
+          <div class="w-11 h-11 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-inner shrink-0 text-blue-200">
+            <span class="material-symbols-outlined text-2xl">favorite</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segmented iOS-Style Navigation Tabs -->
+      <div class="bg-slate-200/80 p-1 rounded-2xl flex items-center text-xs font-semibold select-none shadow-inner">
+        <button 
+          id="tab-btn-manual" 
+          type="button" 
+          onclick="switchTab('manual')" 
+          class="flex-1 py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 active-tab"
+        >
+          <span class="material-symbols-outlined text-[17px]">person_search</span>
+          <span>Manual Search</span>
+        </button>
+        <button 
+          id="tab-btn-qr" 
+          type="button" 
+          onclick="switchTab('qr')" 
+          class="flex-1 py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 inactive-tab"
+        >
+          <span class="material-symbols-outlined text-[17px]">qr_code_scanner</span>
+          <span>Scan Patient QR</span>
+        </button>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- TAB 1: MANUAL ATTENDANT LOGIN -->
+      <!-- ========================================================= -->
+      <div id="tab-content-manual" class="space-y-3.5">
+        <form id="manual-login-form" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3.5" onsubmit="handleManualLoginSubmit(event)">
+          
+          <!-- 1. Patient Name / Search -->
+          <div class="relative">
+            <label for="input-patient-name" class="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+              <span>Patient Name / UHID <span class="text-red-500">*</span></span>
+              <span class="text-[10px] text-slate-400 font-normal">e.g. Rajesh Kumar</span>
+            </label>
+            <div class="relative flex items-center mobile-input bg-slate-50 border border-slate-200 rounded-xl transition-all">
+              <span class="material-symbols-outlined text-slate-400 text-lg pl-3 pointer-events-none">search</span>
+              <input 
+                type="text" 
+                id="input-patient-name" 
+                name="patient_name" 
+                required 
+                minlength="2" 
+                maxlength="100"
+                placeholder="Search patient name or UHID..."
+                autocomplete="off"
+                oninput="handlePatientSearchInput(event)"
+                class="w-full pl-2 pr-8 py-2.5 bg-transparent text-xs sm:text-sm text-textMain placeholder:text-slate-400 focus:outline-none font-medium"
+              >
+              <span id="patient-search-spinner" class="hidden absolute right-3 material-symbols-outlined text-primary text-base animate-spin-custom">progress_activity</span>
+            </div>
+
+            <!-- Auto-Suggestions Dropdown Popover -->
+            <div id="patient-suggestions" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white rounded-2xl shadow-xl border border-slate-200 z-30 max-h-52 overflow-y-auto divide-y divide-slate-100"></div>
+          </div>
+
+          <!-- Hidden Selected Patient ID -->
+          <input type="hidden" id="selected-patient-id" value="">
+
+          <!-- Selected Patient Confirmation Card -->
+          <div id="selected-patient-pill" class="hidden bg-blue-50/90 border border-blue-200 rounded-xl p-2.5 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-xs shrink-0">
+                <span class="material-symbols-outlined text-base">check</span>
+              </div>
+              <div>
+                <p id="selected-patient-title" class="font-bold text-slate-900 leading-tight">Patient Name</p>
+                <p id="selected-patient-sub" class="text-[10px] text-blue-700 font-medium">UHID · Bed</p>
+              </div>
+            </div>
+            <button type="button" onclick="clearSelectedPatient()" class="text-slate-400 hover:text-red-500 p-1 active:scale-95">
+              <span class="material-symbols-outlined text-base">cancel</span>
+            </button>
+          </div>
+
+          <!-- 2. Attendant Name -->
+          <div>
+            <label for="input-manual-attendant-name" class="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+              <span>Your Name (Attendant) <span class="text-red-500">*</span></span>
+              <span class="text-[10px] text-slate-400 font-normal">Person logging in</span>
+            </label>
+            <div class="relative flex items-center mobile-input bg-slate-50 border border-slate-200 rounded-xl transition-all">
+              <span class="material-symbols-outlined text-slate-400 text-lg pl-3 pointer-events-none">badge</span>
+              <input 
+                type="text" 
+                id="input-manual-attendant-name" 
+                name="attendant_name" 
+                required 
+                minlength="2" 
+                maxlength="80"
+                placeholder="e.g. Suman Kumar"
+                class="w-full pl-2 pr-3 py-2.5 bg-transparent text-xs sm:text-sm text-textMain placeholder:text-slate-400 focus:outline-none font-medium"
+                autocomplete="name"
+              >
+            </div>
+          </div>
+
+          <!-- 3. Relationship Dropdown -->
+          <div>
+            <label for="select-relationship" class="block text-xs font-bold text-slate-700 mb-1">
+              Relationship to Patient
+            </label>
+            <div class="relative flex items-center mobile-input bg-slate-50 border border-slate-200 rounded-xl transition-all">
+              <span class="material-symbols-outlined text-slate-400 text-lg pl-3 pointer-events-none">diversity_3</span>
+              <select 
+                id="select-relationship" 
+                name="relationship"
+                class="w-full pl-2 pr-8 py-2.5 bg-transparent text-xs sm:text-sm text-textMain focus:outline-none font-medium appearance-none"
+              >
+                <option value="Family Member">Family Member</option>
+                <option value="Spouse">Spouse / Partner</option>
+                <option value="Son / Daughter">Son / Daughter</option>
+                <option value="Parent">Parent / Guardian</option>
+                <option value="Sibling">Brother / Sister</option>
+                <option value="Relative / Friend">Relative / Friend</option>
+                <option value="Other">Other Attendant</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-3 text-slate-400 text-base pointer-events-none">expand_more</span>
+            </div>
+          </div>
+
+          <!-- Error Alert Message -->
+          <div id="manual-error-msg" class="hidden p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-medium flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base text-red-500 shrink-0">error</span>
+            <span id="manual-error-text">Error message</span>
+          </div>
+
+          <!-- Multiple Matches Box -->
+          <div id="multiple-matches-box" class="hidden p-3 bg-amber-50 border border-amber-200 rounded-2xl space-y-2">
+            <p class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-amber-600">help</span>
+              <span>Multiple admitted patients found. Select yours:</span>
+            </p>
+            <div id="multiple-matches-list" class="space-y-1.5"></div>
+          </div>
+
+          <!-- Primary Submit Button -->
+          <button 
+            type="submit" 
+            id="btn-manual-submit"
+            class="w-full py-3.5 px-4 bg-primary hover:bg-primaryHover active:scale-[0.98] text-white font-bold text-xs sm:text-sm rounded-xl shadow-float transition-all flex items-center justify-center gap-2"
+          >
+            <span id="btn-manual-submit-text">Enter Patient Dashboard</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </button>
+        </form>
+
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- TAB 2: QR CODE SCAN / TOKEN FLOW -->
+      <!-- ========================================================= -->
+      <div id="tab-content-qr" class="hidden space-y-3.5">
+        
+        <!-- Interactive Simulated Camera Viewfinder -->
+        <div class="bg-slate-900 rounded-2xl p-4 text-white text-center relative overflow-hidden shadow-lg border border-slate-800">
+          
+          <!-- Viewfinder Frame -->
+          <div class="w-48 h-48 mx-auto relative rounded-2xl border-2 border-blue-400/40 bg-slate-950/70 flex flex-col items-center justify-center overflow-hidden my-1">
+            
+            <!-- Corner Accents -->
+            <div class="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-cyan-400"></div>
+            <div class="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-cyan-400"></div>
+            <div class="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-cyan-400"></div>
+            <div class="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-cyan-400"></div>
+
+            <!-- Scanning Laser Line -->
+            <div class="absolute left-3 right-3 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_8px_#22d3ee] animate-laser pointer-events-none"></div>
+
+            <span class="material-symbols-outlined text-4xl text-blue-400/60 mb-1">qr_code_2</span>
+            <p class="text-[10px] text-blue-200/80 font-medium px-4">Align patient QR code badge within frame</p>
+          </div>
+
+          <div class="mt-2.5 flex items-center justify-center gap-2">
+            <button 
+              type="button" 
+              onclick="triggerDemoScan(1)" 
+              class="text-[11px] bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold px-3 py-1.5 rounded-lg transition-all shadow-sm flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-xs">camera</span>
+              <span>Demo Scan (Rajesh)</span>
+            </button>
+            <button 
+              type="button" 
+              onclick="toggleManualTokenBox()" 
+              class="text-[11px] bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 font-semibold px-3 py-1.5 rounded-lg transition-all border border-slate-700 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-xs">dialpad</span>
+              <span>Type Code</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Loading State for QR verification -->
+        <div id="section-qr-loading" class="hidden py-6 text-center bg-white rounded-2xl border border-slate-200">
+          <span class="material-symbols-outlined text-3xl text-primary animate-spin-custom">progress_activity</span>
+          <p class="mt-2 font-bold text-xs text-textMain">Verifying Patient QR Token...</p>
+          <p class="text-[10px] text-slate-400 mt-0.5">Contacting hospital clinical gateway</p>
+        </div>
+
+        <!-- Error State for QR -->
+        <div id="section-qr-error" class="hidden py-4 px-3 text-center bg-red-50/90 rounded-2xl border border-red-200">
+          <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-1.5">
+            <span id="qr-error-icon" class="material-symbols-outlined text-2xl">error</span>
+          </div>
+          <h2 id="qr-error-title" class="font-bold text-xs text-red-900 mb-0.5">Access QR Unavailable</h2>
+          <p id="qr-error-message" class="text-[11px] text-red-700 max-w-xs mx-auto leading-relaxed">
+            This QR code is not recognized or has expired.
+          </p>
+          <button type="button" onclick="switchTab('manual')" class="mt-2.5 px-3 py-1.5 bg-white text-primary font-bold text-[11px] rounded-lg border border-blue-200 shadow-2xs">
+            Use Manual Search
+          </button>
+        </div>
+
+        <!-- Valid QR Context Form -->
+        <div id="section-qr-form" class="hidden bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+          
+          <div class="text-center">
+            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full mb-1">
+              <span class="material-symbols-outlined text-xs">verified</span>
+              <span>Patient Verified</span>
+            </span>
+            <h2 class="font-bold text-sm text-textMain">Confirm Attendant Name</h2>
+          </div>
+
+          <!-- Minimal Patient Context Badge -->
+          <div class="bg-blue-50/80 border border-blue-100 rounded-xl p-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center shadow-sm">
+                <span class="material-symbols-outlined text-lg">person</span>
+              </div>
+              <div>
+                <p class="text-[9px] text-blue-700 font-bold uppercase tracking-wider">Patient UHID</p>
+                <p id="badge-patient-code" class="font-mono font-bold text-xs text-[#071b40]">UHID-00000</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-[9px] text-slate-500 font-semibold block uppercase">Bed</span>
+              <span id="badge-bed-number" class="inline-flex items-center gap-1 font-bold text-[11px] text-slate-800 bg-white px-2 py-0.5 rounded border border-slate-200">
+                <span class="material-symbols-outlined text-xs text-primary">bed</span>
+                <span id="badge-bed-val">Bed --</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Attendant Name Form for QR flow -->
+          <form id="qr-access-form" class="space-y-3" onsubmit="handleQRAccessSubmit(event)">
+            <div>
+              <label for="input-qr-attendant-name" class="block text-xs font-bold text-slate-700 mb-1">
+                Your Full Name <span class="text-red-500">*</span>
+              </label>
+              <div class="relative flex items-center mobile-input bg-slate-50 border border-slate-200 rounded-xl transition-all">
+                <span class="material-symbols-outlined text-slate-400 text-lg pl-3 pointer-events-none">badge</span>
+                <input 
+                  type="text" 
+                  id="input-qr-attendant-name" 
+                  name="attendant_name" 
+                  required 
+                  minlength="2" 
+                  maxlength="80"
+                  placeholder="e.g. Rahul Sharma"
+                  class="w-full pl-2 pr-3 py-2.5 bg-transparent text-xs sm:text-sm text-textMain placeholder:text-slate-400 focus:outline-none font-medium"
+                  autocomplete="name"
+                >
+              </div>
+              <p id="qr-name-error-msg" class="hidden text-[10px] text-red-600 font-semibold mt-1"></p>
+            </div>
+
+            <button 
+              type="submit" 
+              id="btn-qr-submit"
+              class="w-full py-3.5 px-4 bg-primary hover:bg-primaryHover active:scale-[0.98] text-white font-bold text-xs sm:text-sm rounded-xl shadow-float transition-all flex items-center justify-center gap-2"
+            >
+              <span id="btn-qr-submit-text">Enter Live Patient Monitor</span>
+              <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </button>
+          </form>
+
+        </div>
+
+        <!-- Manual QR Code Input Fallback -->
+        <div id="section-qr-manual-code-input" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+          <div>
+            <label for="input-raw-qr-code" class="block text-xs font-bold text-slate-700 mb-1">
+              Enter 8-Character Token Code
+            </label>
+            <input 
+              type="text" 
+              id="input-raw-qr-code" 
+              placeholder="e.g. JSACC10001 or JS-QR-..."
+              class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono uppercase text-center tracking-wider focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-bold"
+            >
+          </div>
+
+          <button 
+            type="button" 
+            onclick="validateManualQRCodeInput()" 
+            class="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-900 active:scale-95 text-white font-semibold text-xs rounded-xl shadow-2xs transition-all"
+          >
+            Verify Token Code
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Security & Privacy Assurance Card -->
+      <div class="bg-white/80 border border-slate-200/80 rounded-2xl p-3 flex items-center justify-between text-xs shadow-2xs">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-base">shield_lock</span>
+          </div>
+          <div>
+            <p class="font-bold text-[11px] text-slate-800">Protected Clinical Portal</p>
+            <p class="text-[9px] text-slate-500">Read-only real-time vitals monitoring</p>
+          </div>
+        </div>
+        <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">256-Bit SSL</span>
+      </div>
+
+    </div>
+
+    <!-- Bottom Navigation Bar & Switch to Staff Login -->
+    <div class="bg-white border-t border-slate-200 px-4 py-2.5 text-center shrink-0">
+      <a href="../Login/Login.html" class="inline-flex items-center justify-center gap-1.5 text-xs text-primary font-bold hover:underline active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-sm">local_hospital</span>
+        <span>Doctor, Nurse & Admin Login →</span>
+      </a>
+      <p class="text-[9px] text-slate-400 mt-0.5">© 2026 Jeevan Setu Multispecialty Hospital</p>
+    </div>
+
+  </div>
+
+  <!-- Helpline Modal / Bottom Sheet -->
+  <div id="helpline-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-sm rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl border border-slate-100 space-y-4 animate-in fade-in duration-200">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-blue-50 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-lg">support_agent</span>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-textMain">ICU Attendant Helpline</h3>
+            <p class="text-[10px] text-slate-400">Available 24/7 for patient families</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeHelplineModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+          <div>
+            <p class="font-bold text-slate-800">ICU Control Station</p>
+            <p class="text-[10px] text-slate-500">Floor 2, Wing A</p>
+          </div>
+          <a href="tel:+911126588500" class="px-3 py-1.5 bg-primary text-white font-bold rounded-lg flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">call</span>
+            <span>Ext 201</span>
+          </a>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+          <div>
+            <p class="font-bold text-slate-800">HDU Nursing Station</p>
+            <p class="text-[10px] text-slate-500">Floor 3, Wing B</p>
+          </div>
+          <a href="tel:+911126588500" class="px-3 py-1.5 bg-secondary text-white font-bold rounded-lg flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">call</span>
+            <span>Ext 301</span>
+          </a>
+        </div>
+      </div>
+
+      <button type="button" onclick="closeHelplineModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all">
+        Close Window
+      </button>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    let currentToken = '';
+    let searchDebounceTimer = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      let token = urlParams.get('token') || urlParams.get('t') || '';
+
+      // Check URL path fallback (e.g. /access/JS-QR-...)
+      if (!token) {
+        const pathParts = window.location.pathname.split('/');
+        const lastPart = pathParts[pathParts.length - 1];
+        if (lastPart && lastPart.startsWith('JS-QR-')) {
+          token = lastPart;
+        }
+      }
+
+      if (token) {
+        // Direct QR scan flow -> switch to QR tab and validate
+        currentToken = token;
+        switchTab('qr');
+        validateTokenOnServer(token);
+      } else {
+        // Direct access -> open Manual Login tab by default
+        switchTab('manual');
+      }
+    });
+
+    // Tab Switcher
+    function switchTab(tab) {
+      const btnManual = document.getElementById('tab-btn-manual');
+      const btnQr = document.getElementById('tab-btn-qr');
+      const contentManual = document.getElementById('tab-content-manual');
+      const contentQr = document.getElementById('tab-content-qr');
+
+      if (tab === 'manual') {
+        btnManual.className = 'flex-1 py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 active-tab';
+        btnQr.className = 'flex-1 py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 inactive-tab';
+        contentManual.classList.remove('hidden');
+        contentQr.classList.add('hidden');
+      } else {
+        btnQr.className = 'flex-1 py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 active-tab';
+        btnManual.className = 'flex-1 py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 inactive-tab';
+        contentQr.classList.remove('hidden');
+        contentManual.classList.add('hidden');
+      }
+    }
+
+    // Quick Fill Chip Helper
+    function quickFillPatient(id, name, uhid, ward, bed) {
+      document.getElementById('selected-patient-id').value = id;
+      document.getElementById('input-patient-name').value = name;
+      document.getElementById('patient-suggestions').classList.add('hidden');
+
+      // Update confirmed card
+      document.getElementById('selected-patient-title').textContent = name;
+      document.getElementById('selected-patient-sub').textContent = `${uhid} · ${ward} (Bed ${bed})`;
+      document.getElementById('selected-patient-pill').classList.remove('hidden');
+
+      // Default attendant name if empty
+      const attInput = document.getElementById('input-manual-attendant-name');
+      if (!attInput.value) {
+        attInput.value = "Family Attendant";
+      }
+      attInput.focus();
+    }
+
+    // =========================================================
+    // 1. MANUAL SEARCH LOGIC
+    // =========================================================
+    function handlePatientSearchInput(e) {
+      const q = e.target.value.trim();
+      const suggestionsEl = document.getElementById('patient-suggestions');
+      const spinner = document.getElementById('patient-search-spinner');
+
+      clearTimeout(searchDebounceTimer);
+
+      if (q.length < 2) {
+        suggestionsEl.classList.add('hidden');
+        suggestionsEl.innerHTML = '';
+        return;
+      }
+
+      spinner.classList.remove('hidden');
+
+      searchDebounceTimer = setTimeout(async () => {
+        try {
+          const res = await fetch(`/api/v1/attendant/search-patients?q=${encodeURIComponent(q)}`);
+          const data = await res.json();
+          spinner.classList.add('hidden');
+
+          if (data.success && data.patients && data.patients.length > 0) {
+            suggestionsEl.innerHTML = data.patients.map(p => `
+              <div 
+                onclick="selectPatientSuggestion(${p.patient_id}, '${escapeHtml(p.name)}', '${p.patient_code || ''}', '${p.ward_type || 'ICU'}', '${p.bed_number || '--'}')" 
+                class="p-3 hover:bg-blue-50/80 active:bg-blue-100 cursor-pointer flex items-center justify-between transition-colors"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-full ${p.ward_type === 'ICU' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center font-bold text-[10px]">
+                    ${p.ward_type || 'ICU'}
+                  </div>
+                  <div>
+                    <div class="font-bold text-xs text-textMain">${escapeHtml(p.name)}</div>
+                    <div class="text-[10px] text-slate-500">${p.patient_code || 'UHID-'} · Bed ${p.bed_number || '--'}</div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+              </div>
+            `).join('');
+            suggestionsEl.classList.remove('hidden');
+          } else {
+            suggestionsEl.classList.add('hidden');
+          }
+        } catch (err) {
+          console.warn('Search error:', err);
+          spinner.classList.add('hidden');
+        }
+      }, 250);
+    }
+
+    function selectPatientSuggestion(id, name, code, ward, bed) {
+      document.getElementById('selected-patient-id').value = id;
+      document.getElementById('input-patient-name').value = name;
+      document.getElementById('patient-suggestions').classList.add('hidden');
+
+      document.getElementById('selected-patient-title').textContent = name;
+      document.getElementById('selected-patient-sub').textContent = `${code || 'UHID-'} · ${ward} (Bed ${bed})`;
+      document.getElementById('selected-patient-pill').classList.remove('hidden');
+
+      document.getElementById('input-manual-attendant-name').focus();
+    }
+
+    function clearSelectedPatient() {
+      document.getElementById('selected-patient-id').value = '';
+      document.getElementById('input-patient-name').value = '';
+      document.getElementById('selected-patient-pill').classList.add('hidden');
+      document.getElementById('input-patient-name').focus();
+    }
+
+    // Submit Manual Login
+    async function handleManualLoginSubmit(e) {
+      e.preventDefault();
+
+      const patientName = document.getElementById('input-patient-name').value.trim();
+      const attendantName = document.getElementById('input-manual-attendant-name').value.trim();
+      const relationship = document.getElementById('select-relationship').value;
+      const patientId = document.getElementById('selected-patient-id').value;
+
+      const errorBox = document.getElementById('manual-error-msg');
+      const matchesBox = document.getElementById('multiple-matches-box');
+      errorBox.classList.add('hidden');
+      matchesBox.classList.add('hidden');
+
+      if (!patientName || patientName.length < 2) {
+        showManualError("Please enter the patient's name or UHID.");
+        return;
+      }
+      if (!attendantName || attendantName.length < 2) {
+        showManualError("Please enter your name (the attendant logging in).");
+        return;
+      }
+
+      const btn = document.getElementById('btn-manual-submit');
+      const btnText = document.getElementById('btn-manual-submit-text');
+      btn.disabled = true;
+      btnText.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin-custom inline-block mr-1">sync</span> Connecting...';
+
+      try {
+        const payload = {
+          patient_name: patientName,
+          attendant_name: attendantName,
+          relationship: relationship
+        };
+        if (patientId) {
+          payload.patient_id = patientId;
+        }
+
+        const res = await fetch('/api/v1/attendant/manual-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (data.multiple_matches && data.matches) {
+          btn.disabled = false;
+          btnText.textContent = 'Enter Patient Dashboard';
+          showMultipleMatches(data.matches, attendantName, relationship);
+          return;
+        }
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Unable to complete attendant login.');
+        }
+
+        // Store access session
+        if (data.access_token) {
+          sessionStorage.setItem('jeevan_setu_token', data.access_token);
+          sessionStorage.setItem('jeevan_setu_attendant_session', JSON.stringify(data.session || {}));
+          sessionStorage.setItem('jeevan_setu_attendant_name', data.attendant_name);
+          sessionStorage.setItem('jeevan_setu_attendant_patient_id', data.patient_id);
+          localStorage.setItem('jeevan_setu_token', data.access_token);
+        }
+
+        btnText.textContent = 'Access Granted! Opening Dashboard...';
+
+        const targetUrl = data.redirect_url || `../patient_update_mobile_view_replica/patient_update_mobile_view_replica.html?patient_id=${data.patient_id}`;
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 300);
+
+      } catch (err) {
+        console.error('Manual login error:', err);
+        showManualError(err.message || 'Error communicating with the hospital server.');
+        btn.disabled = false;
+        btnText.textContent = 'Enter Patient Dashboard';
+      }
+    }
+
+    function showManualError(msg) {
+      const errorBox = document.getElementById('manual-error-msg');
+      const errorText = document.getElementById('manual-error-text');
+      errorText.textContent = msg;
+      errorBox.classList.remove('hidden');
+    }
+
+    function showMultipleMatches(matches, attendantName, relationship) {
+      const box = document.getElementById('multiple-matches-box');
+      const list = document.getElementById('multiple-matches-list');
+
+      list.innerHTML = matches.map(p => `
+        <div class="bg-white p-2.5 rounded-xl border border-amber-200 flex items-center justify-between shadow-2xs">
+          <div>
+            <div class="font-bold text-xs text-textMain">${escapeHtml(p.name)}</div>
+            <div class="text-[10px] text-slate-500">${p.patient_code || 'UHID-'} · ${p.ward_type || 'ICU'} (Bed ${p.bed_number || '--'})</div>
+          </div>
+          <button 
+            type="button" 
+            onclick="confirmMatchLogin(${p.patient_id}, '${escapeHtml(p.name)}')" 
+            class="px-2.5 py-1 bg-primary hover:bg-primaryHover active:scale-95 text-white font-bold text-[11px] rounded-lg transition-colors"
+          >
+            Select
+          </button>
+        </div>
+      `).join('');
+
+      box.classList.remove('hidden');
+    }
+
+    async function confirmMatchLogin(patientId, patientName) {
+      document.getElementById('selected-patient-id').value = patientId;
+      document.getElementById('input-patient-name').value = patientName;
+      document.getElementById('multiple-matches-box').classList.add('hidden');
+      document.getElementById('manual-login-form').dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+
+    // =========================================================
+    // 2. QR CODE SCAN / TOKEN LOGIC
+    // =========================================================
+    function toggleManualTokenBox() {
+      const input = document.getElementById('input-raw-qr-code');
+      input.focus();
+    }
+
+    function triggerDemoScan(patientId = 1) {
+      // Simulate demo camera recognition
+      const token = `DEMO-QR-${patientId}`;
+      currentToken = token;
+      
+      // Pre-fill manual search for robust fallback
+      quickFillPatient(1, 'Rajesh Kumar', 'UHID-2026-00001', 'ICU', 'ICU-A01');
+      switchTab('manual');
+    }
+
+    async function validateTokenOnServer(token) {
+      const qrLoading = document.getElementById('section-qr-loading');
+      const qrError = document.getElementById('section-qr-error');
+      const qrForm = document.getElementById('section-qr-form');
+      const qrManualCode = document.getElementById('section-qr-manual-code-input');
+
+      qrLoading.classList.remove('hidden');
+      qrError.classList.add('hidden');
+      qrForm.classList.add('hidden');
+      qrManualCode.classList.add('hidden');
+
+      try {
+        const res = await fetch('/api/v1/attendant/validate-token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: token })
+        });
+
+        const data = await res.json();
+        qrLoading.classList.add('hidden');
+
+        if (!data.valid) {
+          if (data.status === 'revoked') {
+            showQRError('Access QR Revoked', 'This patient access QR code has been revoked by hospital staff.', 'block');
+          } else if (data.status === 'patient_discharged') {
+            showQRError('Patient Discharged', 'This patient is discharged. QR attendant access is closed.', 'check_circle');
+          } else {
+            showQRError('Invalid Access QR', data.error || 'This QR code is not recognized.', 'error');
+          }
+          return;
+        }
+
+        // Token is valid
+        document.getElementById('badge-patient-code').textContent = data.patient_code || `UHID-${String(data.patient_id).padStart(5, '0')}`;
+        document.getElementById('badge-bed-val').textContent = data.bed_number ? `${data.ward_type || 'ICU'} · Bed ${data.bed_number}` : (data.ward_type || 'Inpatient');
+        
+        qrForm.classList.remove('hidden');
+
+        setTimeout(() => {
+          const input = document.getElementById('input-qr-attendant-name');
+          if (input) input.focus();
+        }, 150);
+
+      } catch (err) {
+        console.error('Validation error:', err);
+        qrLoading.classList.add('hidden');
+        showQRError('Connection Error', 'Unable to connect to Jeevan Setu server.', 'wifi_off');
+      }
+    }
+
+    function validateManualQRCodeInput() {
+      const input = document.getElementById('input-raw-qr-code');
+      const code = input.value.trim();
+      if (!code) {
+        alert('Please enter a QR token code.');
+        return;
+      }
+      currentToken = code;
+      validateTokenOnServer(code);
+    }
+
+    async function handleQRAccessSubmit(e) {
+      e.preventDefault();
+      
+      const nameInput = document.getElementById('input-qr-attendant-name');
+      const nameError = document.getElementById('qr-name-error-msg');
+      const attendantName = nameInput.value.trim();
+
+      nameError.classList.add('hidden');
+
+      if (!attendantName || attendantName.length < 2) {
+        nameError.textContent = 'Please enter your full name (at least 2 characters).';
+        nameError.classList.remove('hidden');
+        nameInput.focus();
+        return;
+      }
+
+      const btn = document.getElementById('btn-qr-submit');
+      const btnText = document.getElementById('btn-qr-submit-text');
+      btn.disabled = true;
+      btnText.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin-custom inline-block mr-1">sync</span> Authorizing...';
+
+      try {
+        const res = await fetch('/api/v1/attendant/access', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            token: currentToken,
+            attendant_name: attendantName
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Access request was not accepted.');
+        }
+
+        if (data.access_token) {
+          sessionStorage.setItem('jeevan_setu_token', data.access_token);
+          sessionStorage.setItem('jeevan_setu_attendant_session', JSON.stringify(data.session || {}));
+          sessionStorage.setItem('jeevan_setu_attendant_name', data.attendant_name);
+          sessionStorage.setItem('jeevan_setu_attendant_patient_id', data.patient_id);
+          localStorage.setItem('jeevan_setu_token', data.access_token);
+        }
+
+        btnText.textContent = 'Access Granted! Opening Dashboard...';
+
+        const targetUrl = data.redirect_url || `../patient_update_mobile_view_replica/patient_update_mobile_view_replica.html?patient_id=${data.patient_id}`;
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 300);
+
+      } catch (err) {
+        console.error('Submission error:', err);
+        nameError.textContent = err.message || 'Unable to open session. Please try again.';
+        nameError.classList.remove('hidden');
+        btn.disabled = false;
+        btnText.textContent = 'Enter Live Patient Monitor';
+      }
+    }
+
+    function showQRError(title, message, iconName = 'error') {
+      document.getElementById('section-qr-loading').classList.add('hidden');
+      document.getElementById('section-qr-form').classList.add('hidden');
+      document.getElementById('section-qr-manual-code-input').classList.add('hidden');
+      
+      document.getElementById('qr-error-title').textContent = title;
+      document.getElementById('qr-error-message').textContent = message;
+      document.getElementById('qr-error-icon').textContent = iconName;
+      
+      document.getElementById('section-qr-error').classList.remove('hidden');
+    }
+
+    // Helpline Modal Helpers
+    function openHelplineModal() {
+      document.getElementById('helpline-modal').classList.remove('hidden');
+    }
+    function closeHelplineModal() {
+      document.getElementById('helpline-modal').classList.add('hidden');
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+  </script>
+
+</body>
+</html>

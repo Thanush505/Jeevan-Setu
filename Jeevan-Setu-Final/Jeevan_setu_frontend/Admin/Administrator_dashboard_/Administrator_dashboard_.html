@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+<html class="" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jeevan Setu - Administrator Dashboard</title>
+<!-- Tailwind CSS CDN with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts for Inter -->
+<link href="https://fonts.googleapis.com/css2?family=poppins:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+<style data-purpose="scrollbar-styling">
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+<!-- BEGIN: Main Dashboard Layout -->
+<div class="flex h-screen overflow-hidden">
+<!-- BEGIN: Sidebar Navigation -->
+<aside class="w-64 bg-[#0a1e4d] text-white flex flex-col flex-shrink-0 h-full overflow-y-auto" data-purpose="sidebar">
+<div class="p-6 flex items-center space-x-3">
+<div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+<svg class="w-8 h-8 text-[#0a1e4d]" fill="currentColor" viewbox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-none">JEEVAN SETU</h1>
+<p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider">Intelligent Transfer System</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-8">
+<!-- Main Section -->
+<div>
+<a class="flex items-center space-x-3 bg-blue-600 px-4 py-2.5 rounded-lg text-white font-medium" href="../Administrator_dashboard_/Administrator_dashboard_.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Dashboard</span>
+</a>
+</div>
+<!-- Management Section -->
+<div>
+<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Management</p>
+<ul class="space-y-2">
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_patient_management/Admin_patient_management.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Patients</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_beds_wards/Admin_beds_wards.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Beds &amp; Wards</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_users_roles/Admin_users_roles.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Users &amp; Roles</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_attendant_access/Admin_attendant_access.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Attendants (QR Access)</span></a></li>
+</ul>
+</div>
+<!-- Monitoring Section -->
+<div>
+<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Monitoring &amp; Analytics</p>
+<ul class="space-y-2">
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_ews_analytics/Admin_ews_analytics.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>EWS Analytics</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_resource_utilization/Admin_resource_utilization.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Resource Utilization</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_clinical_reports/Admin_clinical_reports.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Reports</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_audit_logs/Admin_audit_logs.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Audit Logs</span></a></li>
+</ul>
+</div>
+<!-- System Settings Section -->
+<div>
+<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">System Settings</p>
+<ul class="space-y-2">
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_system_settings/Admin_system_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>System Settings</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_notification_settings/Admin_notification_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Notifications</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_backup_restore/Admin_backup_restore.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Backup &amp; Restore</span></a></li>
+</ul>
+</div>
+</nav>
+<!-- Sidebar User Profile -->
+<div class="p-4 border-t border-white/10">
+<div class="bg-white/5 rounded-xl p-3 flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-full bg-slate-300 overflow-hidden ring-2 ring-blue-500/50">
+<img alt="Admin Avatar" class="w-full h-full object-cover" src="../admin_avatar.jpg"/>
+</div>
+<div>
+<p class="text-xs font-bold">Admin User</p>
+<p class="text-[10px] text-slate-400">Administrator</p>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<span class="w-2 h-2 bg-green-500 rounded-full mb-1"></span>
+<span class="text-[8px] text-slate-400 uppercase">Online</span>
+</div>
+</div>
+</div>
+
+<!-- Admin Logout Button -->
+<div class="px-4 pb-4">
+  <a href="../../Login/Login.html" class="flex items-center space-x-3 px-4 py-2 hover:bg-red-500/20 rounded-lg text-red-300 hover:text-red-200 transition-colors border border-red-500/30">
+    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+    <span class="font-medium text-sm">Logout</span>
+  </a>
+</div>
+
+</aside>
+<!-- END: Sidebar Navigation -->
+<!-- BEGIN: Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-slate-50">
+<!-- BEGIN: Top Navbar -->
+<header class="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-8 sticky top-0 z-10">
+<div class="flex items-center space-x-4">
+<button class="text-slate-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<div class="relative w-96">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input id="admin-dashboard-search" class="w-full pl-10 pr-16 py-2 bg-slate-100 border-none rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Search patients, beds, users..." type="text"/>
+<span class="absolute inset-y-0 right-0 flex items-center pr-3">
+<kbd class="text-[10px] text-slate-400 bg-white border border-slate-200 px-1.5 py-0.5 rounded shadow-sm">CTRL + K</kbd>
+</span>
+</div>
+</div>
+<div class="flex items-center space-x-6">
+<div class="relative">
+<svg class="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full border-2 border-white font-bold">12</span>
+</div>
+<div class="relative">
+<svg class="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full border-2 border-white font-bold">5</span>
+</div>
+<button class="text-slate-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 4l-5-5M4 16v4m0 0h4m-4-4l5 5m11-1v4m0 0h-4m4-4l-5 5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<div class="flex items-center space-x-2 cursor-pointer">
+<div class="text-right">
+<p class="text-xs font-bold leading-none">Admin User</p>
+<p class="text-[10px] text-slate-400">Administrator</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-slate-200">
+<img alt="Avatar" class="w-full h-full rounded-full" src="../admin_avatar.jpg"/>
+</div>
+<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</header>
+<!-- END: Top Navbar -->
+<!-- BEGIN: Dashboard Content Grid -->
+<div class="p-8 space-y-8">
+<!-- BEGIN: Page Header & Date -->
+<div class="flex justify-between items-center">
+<div>
+<h2 class="text-2xl font-bold text-slate-800">Dashboard Overview</h2>
+<p class="text-sm text-slate-500">Welcome back, Admin! Here's what's happening in your system.</p>
+</div>
+<div class="bg-white px-4 py-2 rounded-lg border border-slate-200 flex items-center space-x-3 text-sm font-medium shadow-sm">
+<svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>May 21, 2025</span>
+<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+<!-- END: Page Header & Date -->
+<!-- BEGIN: Stats Summary Row -->
+<div class="grid grid-cols-5 gap-6">
+<!-- Total Patients -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Total Patients</p>
+<p class="text-2xl font-black text-slate-800">128</p>
+</div>
+</div>
+<div class="flex items-center text-[10px] font-bold text-green-500">
+<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
+              12% vs yesterday
+            </div>
+<div class="mt-2 h-8 w-full">
+<svg class="w-full h-full stroke-blue-400 fill-none" viewbox="0 0 100 20"><path d="M0 15 Q 10 5, 20 12 T 40 8 T 60 14 T 80 10 T 100 12" stroke-width="2"></path></svg>
+</div>
+</div>
+<!-- ICU Occupancy -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M7 13h10v2H7v-2zm0-4h10v2H7V9zm0-4h10v2H7V5zM3 3h18v18H3V3z"></path></svg>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">ICU Occupancy</p>
+<p class="text-2xl font-black text-slate-800">76%</p>
+</div>
+</div>
+<div class="text-[10px] font-bold text-slate-500">
+              31 / 41 Beds
+            </div>
+<div class="mt-3 w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[76%]"></div>
+</div>
+</div>
+<!-- HDU Occupancy -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M19 7H5V5h14v2zm0 4H5V9h14v2zm0 4H5v-2h14v2zm0 4H5v-2h14v2z"></path></svg>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">HDU Occupancy</p>
+<p class="text-2xl font-black text-slate-800">63%</p>
+</div>
+</div>
+<div class="text-[10px] font-bold text-slate-500">
+              19 / 30 Beds
+            </div>
+<div class="mt-3 w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+<div class="bg-orange-500 h-full w-[63%]"></div>
+</div>
+</div>
+<!-- Transfers -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Transfers (Today)</p>
+<p class="text-2xl font-black text-slate-800">15</p>
+</div>
+</div>
+<div class="flex items-center text-[10px] font-bold text-green-500">
+<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
+              25% vs yesterday
+            </div>
+<div class="mt-2 h-8 w-full">
+<svg class="w-full h-full stroke-purple-400 fill-none" viewbox="0 0 100 20"><path d="M0 10 Q 20 2, 40 18 T 60 12 T 80 15 T 100 5" stroke-width="2"></path></svg>
+</div>
+</div>
+<!-- Critical Alerts -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center">
+<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Critical Alerts</p>
+<p class="text-2xl font-black text-slate-800">7</p>
+</div>
+</div>
+<a class="text-xs font-bold text-blue-600 hover:underline flex items-center" href="#">
+              View all alerts <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</div>
+<!-- END: Stats Summary Row -->
+<!-- BEGIN: Main Dashboard Grid -->
+<div class="grid grid-cols-3 gap-6">
+<!-- Patient Status Distribution -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<h3 class="font-bold text-slate-800 mb-6">Patient Status Distribution</h3>
+<div class="relative flex justify-center items-center mb-8">
+<!-- Mock Donut Chart (CSS Only) -->
+<div class="w-40 h-40 rounded-full border-[18px] border-slate-100 relative" style="border-color: #3b82f6 #10b981 #ef4444 #f59e0b;">
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-black text-slate-800">128</span>
+<span class="text-[10px] text-slate-400 font-bold uppercase">Total</span>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-slate-600 font-medium">Stable</span>
+</div>
+<span class="font-bold">48 (37.5%)</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+<span class="text-slate-600 font-medium">Observation</span>
+</div>
+<span class="font-bold">52 (40.6%)</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-red-500"></span>
+<span class="text-slate-600 font-medium">Critical</span>
+</div>
+<span class="font-bold">20 (15.6%)</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-orange-500"></span>
+<span class="text-slate-600 font-medium">Under Transfer</span>
+</div>
+<span class="font-bold">8 (6.3%)</span>
+</div>
+</div>
+<a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="#">View all patients →</a>
+</div>
+<!-- EWS Risk Level Distribution -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<h3 class="font-bold text-slate-800 mb-6">EWS Risk Level Distribution</h3>
+<div class="relative flex justify-center items-center mb-8">
+<div class="w-40 h-40 rounded-full border-[18px] border-slate-100 relative" style="border-color: #10b981 #f59e0b #ef4444 #e2e8f0;">
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-black text-slate-800">128</span>
+<span class="text-[10px] text-slate-400 font-bold uppercase">Total</span>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-slate-600 font-medium">Low Risk (0-4)</span>
+</div>
+<span class="font-bold">52 (40.6%)</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-orange-500"></span>
+<span class="text-slate-600 font-medium">Medium Risk (5-6)</span>
+</div>
+<span class="font-bold">38 (29.7%)</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-red-500"></span>
+<span class="text-slate-600 font-medium">High Risk (7+)</span>
+</div>
+<span class="font-bold">38 (29.7%)</span>
+</div>
+</div>
+<a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="#">View EWS Analytics →</a>
+</div>
+<!-- Recent Critical Alerts -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-slate-800">Recent Critical Alerts</h3>
+<a class="text-xs font-bold text-blue-600" href="#">View All →</a>
+</div>
+<div class="flex-1 space-y-4">
+<!-- Alert 1 -->
+<div class="flex items-start space-x-3">
+<div class="mt-1 w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-xs font-bold text-slate-800">High EWS Score</p>
+<span class="text-[10px] text-slate-400">2 min ago</span>
+</div>
+<p class="text-[10px] text-slate-500">Patient ID: P10045 | EWS: 8</p>
+</div>
+</div>
+<!-- Alert 2 -->
+<div class="flex items-start space-x-3">
+<div class="mt-1 w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-xs font-bold text-slate-800">Transfer Recommendation</p>
+<span class="text-[10px] text-slate-400">10 min ago</span>
+</div>
+<p class="text-[10px] text-slate-500">P10032 recommended ICU → HDU</p>
+</div>
+</div>
+<!-- Alert 3 -->
+<div class="flex items-start space-x-3">
+<div class="mt-1 w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-xs font-bold text-slate-800">Bed Capacity Warning</p>
+<span class="text-[10px] text-slate-400">25 min ago</span>
+</div>
+<p class="text-[10px] text-slate-500">ICU occupancy above 75%</p>
+</div>
+</div>
+<!-- Alert 4 -->
+<div class="flex items-start space-x-3">
+<div class="mt-1 w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-xs font-bold text-slate-800">High EWS Score</p>
+<span class="text-[10px] text-slate-400">30 min ago</span>
+</div>
+<p class="text-[10px] text-slate-500">Patient ID: P10067 | EWS: 9</p>
+</div>
+</div>
+<!-- Alert 5 -->
+<div class="flex items-start space-x-3">
+<div class="mt-1 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M13 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V9l-7-7zm0 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"></path></svg>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-0.5">
+<p class="text-xs font-bold text-slate-800">System Notification</p>
+<span class="text-[10px] text-slate-400">1 hr ago</span>
+</div>
+<p class="text-[10px] text-slate-500">Scheduled backup completed</p>
+</div>
+</div>
+</div>
+<a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="#">View all alerts →</a>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-6">
+<!-- Beds Overview -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-slate-800">Beds Overview</h3>
+<a class="text-xs font-bold text-blue-600" href="#">View All Beds →</a>
+</div>
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="text-slate-400 font-bold uppercase tracking-wider">
+<th class="pb-4">Unit</th>
+<th class="pb-4">Total Beds</th>
+<th class="pb-4">Occupied</th>
+<th class="pb-4">Available</th>
+<th class="pb-4">Occupancy</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr>
+<td class="py-3 flex items-center space-x-2">
+<svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="font-bold">ICU</span>
+</td>
+<td class="py-3">41</td>
+<td class="py-3">31</td>
+<td class="py-3">10</td>
+<td class="py-3">
+<div class="flex items-center space-x-2">
+<span class="font-bold text-red-500">76%</span>
+<div class="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-red-500 h-full w-[76%]"></div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td class="py-3 flex items-center space-x-2">
+<svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="font-bold">HDU</span>
+</td>
+<td class="py-3">30</td>
+<td class="py-3">19</td>
+<td class="py-3">11</td>
+<td class="py-3">
+<div class="flex items-center space-x-2">
+<span class="font-bold text-orange-500">63%</span>
+<div class="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-orange-500 h-full w-[63%]"></div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="font-black text-slate-800">
+<td class="py-4">Total</td>
+<td class="py-4">71</td>
+<td class="py-4">50</td>
+<td class="py-4">21</td>
+<td class="py-4">
+<div class="flex items-center space-x-2">
+<span class="font-bold text-blue-600">70%</span>
+<div class="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-blue-600 h-full w-[70%]"></div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Transfers Summary -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-bold text-slate-800">Transfers Summary (This Week)</h3>
+<a class="text-xs font-bold text-blue-600" href="#">View All Transfers →</a>
+</div>
+<div class="mb-4">
+<p class="text-3xl font-black text-slate-800">78</p>
+<p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Transfers</p>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-6">
+<div class="bg-blue-50/50 p-2 rounded-lg border border-blue-100 text-center">
+<p class="text-lg font-bold text-blue-700">32</p>
+<p class="text-[8px] text-blue-500 font-bold">ICU → HDU</p>
+</div>
+<div class="bg-orange-50/50 p-2 rounded-lg border border-orange-100 text-center">
+<p class="text-lg font-bold text-orange-700">28</p>
+<p class="text-[8px] text-orange-500 font-bold">HDU → ICU</p>
+</div>
+<div class="bg-slate-50 p-2 rounded-lg border border-slate-200 text-center">
+<p class="text-lg font-bold text-slate-700">18</p>
+<p class="text-[8px] text-slate-500 font-bold">Others</p>
+</div>
+</div>
+<div class="flex items-center text-[10px] font-bold text-green-500 mb-2">
+<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
+              18% vs last week
+            </div>
+<div class="h-16 w-full">
+<!-- Placeholder Chart -->
+<svg class="w-full h-full fill-blue-100 stroke-blue-500" viewbox="0 0 200 40">
+<path d="M0 40 L0 30 Q 20 10, 40 35 T 80 20 T 120 30 T 160 15 T 200 25 L 200 40 Z" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<h3 class="font-bold text-slate-800 mb-6">Quick Actions</h3>
+<div class="grid grid-cols-3 gap-4">
+<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-blue-50 hover:border-blue-200 transition-all group">
+<div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-bold text-slate-600">Add Patient</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all group">
+<div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-bold text-slate-600">Add User</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-orange-50 hover:border-orange-200 transition-all group">
+<div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-bold text-slate-600">Manage Beds</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-purple-50 hover:border-purple-200 transition-all group">
+<div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-bold text-slate-600">Generate Report</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-slate-100 hover:border-slate-300 transition-all group">
+<div class="w-10 h-10 bg-slate-50 text-slate-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-slate-600 group-hover:text-white transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-bold text-slate-600">System Settings</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-slate-100 hover:border-slate-300 transition-all group">
+<div class="w-10 h-10 bg-slate-50 text-slate-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-slate-600 group-hover:text-white transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-bold text-slate-600">Audit Logs</span>
+</button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-5 gap-6">
+<!-- Recent Patients Table -->
+<div class="col-span-3 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-slate-800">Recent Patients</h3>
+<a class="text-xs font-bold text-blue-600" href="#">View All →</a>
+</div>
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="text-slate-400 font-bold uppercase tracking-wider">
+<th class="pb-4">Patient ID</th>
+<th class="pb-4">Patient Name</th>
+<th class="pb-4">Age / Gender</th>
+<th class="pb-4">Current Unit</th>
+<th class="pb-4">EWS Score</th>
+<th class="pb-4">Status</th>
+<th class="pb-4">Last Updated</th>
+<th class="pb-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr>
+<td class="py-4 font-bold text-blue-600">P10045</td>
+<td class="py-4 font-bold">Ramesh Kumar</td>
+<td class="py-4">58 / Male</td>
+<td class="py-4">ICU</td>
+<td class="py-4 font-bold text-red-500">8 (High)</td>
+<td class="py-4"><span class="bg-red-50 text-red-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Critical</span></td>
+<td class="py-4">2 min ago</td>
+<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
+</tr>
+<tr>
+<td class="py-4 font-bold text-blue-600">P10032</td>
+<td class="py-4 font-bold">Sita Devi</td>
+<td class="py-4">67 / Female</td>
+<td class="py-4">ICU</td>
+<td class="py-4 font-bold text-orange-500">6 (Medium)</td>
+<td class="py-4"><span class="bg-orange-50 text-orange-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Observation</span></td>
+<td class="py-4">10 min ago</td>
+<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
+</tr>
+<tr>
+<td class="py-4 font-bold text-blue-600">P10067</td>
+<td class="py-4 font-bold">John Mathew</td>
+<td class="py-4">45 / Male</td>
+<td class="py-4">HDU</td>
+<td class="py-4 font-bold text-red-500">9 (High)</td>
+<td class="py-4"><span class="bg-red-50 text-red-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Critical</span></td>
+<td class="py-4">30 min ago</td>
+<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
+</tr>
+<tr>
+<td class="py-4 font-bold text-blue-600">P10012</td>
+<td class="py-4 font-bold">Anita Sharma</td>
+<td class="py-4">34 / Female</td>
+<td class="py-4">HDU</td>
+<td class="py-4 font-bold text-green-500">3 (Low)</td>
+<td class="py-4"><span class="bg-green-50 text-green-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Stable</span></td>
+<td class="py-4">45 min ago</td>
+<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
+</tr>
+<tr>
+<td class="py-4 font-bold text-blue-600">P10088</td>
+<td class="py-4 font-bold">Suresh Patil</td>
+<td class="py-4">70 / Male</td>
+<td class="py-4">HDU</td>
+<td class="py-4 font-bold text-orange-500">5 (Medium)</td>
+<td class="py-4"><span class="bg-orange-50 text-orange-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Observation</span></td>
+<td class="py-4">1 hr ago</td>
+<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Recent Transfers Table -->
+<div class="col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-slate-800">Recent Transfers</h3>
+</div>
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="text-slate-400 font-bold uppercase tracking-wider">
+<th class="pb-4">Transfer ID</th>
+<th class="pb-4">Patient ID</th>
+<th class="pb-4">From</th>
+<th class="pb-4">To</th>
+<th class="pb-4">Status</th>
+<th class="pb-4">Time</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr>
+<td class="py-4 font-bold">T10078</td>
+<td class="py-4 text-blue-600 font-bold">P10032</td>
+<td class="py-4">ICU</td>
+<td class="py-4">HDU</td>
+<td class="py-4"><span class="bg-green-50 text-green-600 px-2 py-0.5 rounded text-[10px] font-bold">Approved</span></td>
+<td class="py-4">10 min ago</td>
+</tr>
+<tr>
+<td class="py-4 font-bold">T10077</td>
+<td class="py-4 text-blue-600 font-bold">P10021</td>
+<td class="py-4">HDU</td>
+<td class="py-4">ICU</td>
+<td class="py-4"><span class="bg-green-50 text-green-600 px-2 py-0.5 rounded text-[10px] font-bold">Approved</span></td>
+<td class="py-4">25 min ago</td>
+</tr>
+<tr>
+<td class="py-4 font-bold">T10076</td>
+<td class="py-4 text-blue-600 font-bold">P10011</td>
+<td class="py-4">ICU</td>
+<td class="py-4">HDU</td>
+<td class="py-4"><span class="bg-red-50 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">Rejected</span></td>
+<td class="py-4">1 hr ago</td>
+</tr>
+<tr>
+<td class="py-4 font-bold">T10075</td>
+<td class="py-4 text-blue-600 font-bold">P10056</td>
+<td class="py-4">HDU</td>
+<td class="py-4">ICU</td>
+<td class="py-4"><span class="bg-green-50 text-green-600 px-2 py-0.5 rounded text-[10px] font-bold">Approved</span></td>
+<td class="py-4">2 hr ago</td>
+</tr>
+<tr>
+<td class="py-4 font-bold">T10074</td>
+<td class="py-4 text-blue-600 font-bold">P10044</td>
+<td class="py-4">ICU</td>
+<td class="py-4">HDU</td>
+<td class="py-4"><span class="bg-orange-50 text-orange-600 px-2 py-0.5 rounded text-[10px] font-bold">Pending</span></td>
+<td class="py-4">3 hr ago</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Footer -->
+<footer class="text-center text-[10px] text-slate-400 font-medium py-8">
+          © 2025 Jeevan Setu – Intelligent Patient Transfer Decision Support System. All rights reserved.
+        </footer>
+</div>
+<!-- END: Dashboard Content Grid -->
+</main>
+<!-- END: Main Content Area -->
+</div>
+<!-- END: Main Dashboard Layout -->
+<script>
+  const adminSearch = document.getElementById('admin-dashboard-search');
+  if (adminSearch) {
+    adminSearch.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && this.value.trim()) {
+        window.location.href = `../Admin_patient_management/Admin_patient_management.html?search=${encodeURIComponent(this.value.trim())}`;
+      }
+    });
+  }
+</script>
+<script src="../admin_navigation.js"></script>
+</body></html>

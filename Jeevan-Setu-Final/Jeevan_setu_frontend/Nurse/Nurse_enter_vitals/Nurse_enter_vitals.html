@@ -1,0 +1,612 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={theme:{extend:{"colors":{"tertiary-fixed-dim":"#b7c8e1","primary":"#004ac6","inverse-surface":"#263143","on-surface":"#111c2d","secondary-fixed-dim":"#89ceff","error":"#ba1a1a","surface-tint":"#0053db","on-primary-container":"#eeefff","tertiary":"#46566c","secondary":"#006591","outline":"#737686","surface-container":"#e7eeff","secondary-fixed":"#c9e6ff","on-primary-fixed-variant":"#003ea8","on-secondary-fixed-variant":"#004c6e","tertiary-fixed":"#d3e4fe","inverse-primary":"#b4c5ff","outline-variant":"#c3c6d7","surface":"#f9f9ff","surface-container-highest":"#d8e3fb","on-tertiary-container":"#e9f0ff","error-container":"#ffdad6","on-secondary":"#ffffff","background":"#f9f9ff","primary-fixed-dim":"#b4c5ff","surface-bright":"#f9f9ff","on-primary-fixed":"#00174b","surface-dim":"#cfdaf2","surface-variant":"#d8e3fb","on-tertiary-fixed":"#0b1c30","primary-container":"#2563eb","surface-container-low":"#f0f3ff","surface-container-lowest":"#ffffff","on-primary":"#ffffff","on-secondary-container":"#004666","primary-fixed":"#dbe1ff","inverse-on-surface":"#ecf1ff","on-secondary-fixed":"#001e2f","on-surface-variant":"#434655","on-error-container":"#93000a","on-tertiary":"#ffffff","on-background":"#111c2d","surface-container-high":"#dee8ff","secondary-container":"#39b8fd","on-error":"#ffffff","tertiary-container":"#5e6e85","on-tertiary-fixed-variant":"#38485d"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin-desktop":"32px","sm":"8px","lg":"24px","xs":"4px","margin-mobile":"16px","md":"16px","base":"4px","xl":"32px","gutter":"16px"},"fontFamily":{"body-lg":["Inter"],"headline-lg-mobile":["Poppins"],"body-md":["Inter"],"headline-md":["Poppins"],"label-md":["Inter"],"display":["Poppins"],"label-sm":["Inter"],"body-sm":["Inter"],"headline-sm":["Poppins"],"headline-lg":["Poppins"]},"fontSize":{"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"headline-lg-mobile":["28px",{"lineHeight":"36px","fontWeight":"600"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"500"}],"label-md":["14px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"600"}],"display":["48px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"label-sm":["12px",{"lineHeight":"16px","fontWeight":"600"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"headline-lg":["32px",{"lineHeight":"40px","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-background"><aside class="fixed left-0 top-0 h-full w-64 flex-shrink-0 flex flex-col bg-[#0f172a] text-slate-300 z-50 shadow-xl">
+  <div class="p-4 flex items-center gap-3 border-b border-slate-700/50">
+    <img alt="Logo" class="w-10 h-10 object-contain rounded-full bg-white p-1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDzu3PFCDHC4Yio2yDrWMyjfYYGGhfJceUqX6B9VDZzGmL4sENFmNDhG19HmryKpZ6sH2fCRVXHsEidUQ4NTEt2MeG_iddIp86yDvKJIOoeKKYUSX-g3bZ7SqLpSRYIGrTP37NQ2noXrst_QxrJECtr004Ma8lakzFbn9LujAKDzGTUXEJoQVMU6LljCprVQluapOgMBiKXxtqVK1MRD1ZA_4YFP6vTz_GS9uJefIC59H82Q1O6JkipKlQjM2wr_NQ53VA14ZPHA" style="object-position: 0 0; clip-path: inset(0 93% 90% 0);">
+    <div>
+      <h1 class="font-bold text-white text-sm tracking-wide">JEEVAN SETU</h1>
+      <p class="text-[10px] text-slate-400 leading-tight">ICU to HDU Transfer Decision Support System</p>
+    </div>
+  </div>
+  <nav class="flex-1 overflow-y-auto py-4 px-2 space-y-6">
+    <div class="space-y-1">
+      <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_dashboard/Nurse_dashboard.html">
+        <span class="material-symbols-outlined text-[18px]">dashboard</span>
+        <span class="">Dashboard</span>
+      </a>
+    </div>
+    <div>
+      <h2 class="px-3 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Patient Care</h2>
+      <div class="space-y-1">
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_my_patients/Nurse_my_patients.html">
+          <span class="material-symbols-outlined text-[18px]">group</span>
+          <span class="">My Patients</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../nurse_patient_monitoring/nurse_patient_monitoring.html">
+          <span class="material-symbols-outlined text-[18px]">monitoring</span>
+          <span class="">Patient Monitoring</span>
+        </a>
+        <a class="bg-primary text-white flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors" href="../Nurse_enter_vitals/Nurse_enter_vitals.html">
+          <span class="material-symbols-outlined text-[18px]">vital_signs</span>
+          <span class="">Enter Vitals</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_i_o_chart/Nurse_i_o_chart.html">
+          <span class="material-symbols-outlined text-[18px]">water_drop</span>
+          <span class="">I/O Chart</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_medication_log/Nurse_medication_log.html">
+          <span class="material-symbols-outlined text-[18px]">medication</span>
+          <span class="">Medication Log</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_nursing_notes/Nurse_nursing_notes.html">
+          <span class="material-symbols-outlined text-[18px]">edit_note</span>
+          <span class="">Nursing Notes</span>
+        </a>
+      </div>
+    </div>
+    <div>
+      <h2 class="px-3 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Alerts &amp; Tasks</h2>
+      <div class="space-y-1">
+        <a class="flex items-center justify-between px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_alerts/Nurse_alerts.html">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[18px]">notifications</span>
+            <span class="">Alerts</span>
+          </div>
+          <span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">6</span>
+        </a>
+        <a class="flex items-center justify-between px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_tasks/Nurse_tasks.html">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[18px]">checklist</span>
+            <span class="">Tasks</span>
+          </div>
+          <span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">5</span>
+        </a>
+      </div>
+    </div>
+    <div>
+      <h2 class="px-3 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Tools</h2>
+      <div class="space-y-1">
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_transfers/Nurse_transfers.html">
+          <span class="material-symbols-outlined text-[18px]">transfer_within_a_station</span>
+          <span class="">Transfer Recommendations</span>
+        </a>
+      </div>
+    </div>
+    <div>
+      <h2 class="px-3 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Reports</h2>
+      <div class="space-y-1">
+        <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm transition-colors" href="../Nurse_reports/Nurse_reports.html">
+          <span class="material-symbols-outlined text-[18px]">description</span>
+          <span class="">Reports</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+  <div class="mt-auto p-4 space-y-4">
+    <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+      <div class="flex items-center gap-3 text-sm mb-1 text-white">
+        <span class="material-symbols-outlined text-[18px]">schedule</span>
+        <span class="">Shift Information</span>
+      </div>
+      <p class="text-xs text-slate-400 ml-7">Morning Shift</p>
+      <p class="text-[10px] text-slate-500 ml-7">07:00 AM - 03:00 PM</p>
+    </div>
+    <div class="space-y-1">
+      <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm text-slate-400 transition-colors" href="javascript:alert('Jeevan Setu Help: Contact Nurse In-Charge or IT Support at Ext. 204');"Jeevan Setu Help: Contact Nurse In-Charge or IT Support at Ext. 204');">
+        <span class="material-symbols-outlined text-[18px]">help</span>
+        <span class="">Help &amp; Guidelines</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm text-slate-400 transition-colors" href="javascript:alert('Nurse Preferences: Ward ICU-1, Shift: Morning');"Nurse Preferences: Ward ICU-1, Shift: Morning');">
+        <span class="material-symbols-outlined text-[18px]">settings</span>
+        <span class="">Settings</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 hover:bg-slate-800 rounded-md text-sm text-slate-400 transition-colors" href="../../Login/Login.html">
+        <span class="material-symbols-outlined text-[18px]">logout</span>
+        <span class="">Logout</span>
+      </a>
+    </div>
+</aside><div class="pl-0 md:pl-64 min-h-screen flex flex-col bg-background"><header class="fixed top-0 left-0 md:left-64 right-0 h-16 bg-surface/90 backdrop-blur-md z-40 px-6 flex items-center justify-between border-b border-outline-variant/30"><div class="flex items-center gap-md"><button class="text-slate-500 hover:text-slate-700 md:hidden p-1 rounded-lg" onclick="window.toggleMobileNurseSidebar();" aria-label="Open menu"><span class="material-symbols-outlined text-[24px]">menu</span></button><span class="material-symbols-outlined text-primary">clinical_notes</span><span class="font-headline-sm text-headline-sm text-on-surface">Nurse Station</span></div><div class="flex items-center gap-lg"><div class="relative flex items-center bg-surface-container rounded-full px-md py-xs"><span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span><input class="bg-transparent border-none focus:ring-0 text-body-sm px-sm w-48" placeholder="Search patients..." type="text"></div><button class="relative p-xs text-on-surface-variant"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span></button><div class="flex items-center gap-sm pl-md border-l border-outline-variant"><div class="text-right hidden sm:block"><div class="font-label-md text-label-md text-on-surface nurse-profile-name">Sr. Nurse Priya</div><div class="font-label-sm text-label-sm text-on-surface-variant">ICU Ward B</div></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="pt-20 min-h-screen bg-background"><div class="flex flex-col w-full p-6 lg:p-8 gap-6">
+<!-- Header Section -->
+<div class="flex items-center justify-between bg-surface p-lg rounded-xl shadow-sm">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[24px]">vital_signs</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Enter Patient Vitals</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Record current clinical measurements to update the Early Warning Score (EWS).</p>
+</div>
+</div>
+<div class="flex items-center gap-sm bg-surface-container px-md py-sm rounded-lg">
+<span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+<span class="font-label-md text-label-md text-on-surface">Shift: Morning (07:00 AM - 03:00 PM)</span>
+</div>
+</div>
+<!-- Main Content Split -->
+<div class="grid grid-cols-12 gap-lg items-start">
+<!-- Patient Selection & Context (Sidebar - 4 columns) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+<!-- Patient Selector Card -->
+<div class="bg-surface rounded-xl p-lg shadow-sm relative">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-md">Select Patient</h2>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input id="patient-selector-input" class="w-full pl-10 pr-20 py-sm bg-surface-container rounded-lg font-body-md text-body-md text-on-surface border border-outline-variant/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none cursor-pointer" readonly="" type="text" value="UHID-2026-00001 - Rajesh Kumar (ICU-A01)">
+<button id="patient-change-btn" class="absolute right-3 top-1/2 -translate-y-1/2 text-primary font-label-md text-label-md hover:underline font-semibold">Change</button>
+</div>
+<!-- Patient Dropdown Menu (Hidden by default) -->
+<div id="patient-select-dropdown" class="hidden absolute left-4 right-4 top-full mt-1 bg-surface border border-outline-variant/40 rounded-xl shadow-xl z-50 overflow-hidden max-h-64 overflow-y-auto">
+  <div class="p-2 border-b border-outline-variant/20 text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Select Admitted Patient</div>
+  <div id="patient-options-list" class="divide-y divide-outline-variant/10">
+    <!-- Populated dynamically -->
+  </div>
+</div>
+</div>
+<!-- Patient Context Card -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden flex flex-col relative group border border-outline-variant/20">
+<!-- Accent header -->
+<div id="patient-card-accent" class="h-2 bg-gradient-to-r from-primary to-secondary w-full"></div>
+<div class="p-lg">
+<div class="flex items-start justify-between mb-md">
+<div>
+<h3 id="patient-card-name" class="font-headline-sm text-headline-sm text-on-surface font-bold">Rajesh Kumar</h3>
+<div id="patient-card-badge-bed" class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs mt-xs">
+<span class="material-symbols-outlined text-[16px]">badge</span> <span id="patient-card-code">UHID-2026-00001</span> &nbsp;•&nbsp; 
+                 <span class="material-symbols-outlined text-[16px]">bed</span> <span id="patient-card-bed">ICU-A01</span>
+               </div>
+</div>
+<div id="patient-card-ews-container" class="bg-error-container text-on-error-container px-sm py-xs rounded text-center min-w-[70px]">
+<div class="font-label-sm text-label-sm uppercase font-semibold">Current EWS</div>
+<div id="patient-card-ews" class="font-headline-lg text-headline-lg font-bold">--</div>
+</div>
+</div>
+<div class="space-y-sm mt-md">
+<div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Age / Gender</span>
+<span id="patient-card-age-gender" class="font-label-md text-label-md text-on-surface">45 / M</span>
+</div>
+<div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Admitted</span>
+<span id="patient-card-admitted" class="font-label-md text-label-md text-on-surface">--</span>
+</div>
+<div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Primary Diagnosis</span>
+<span id="patient-card-diagnosis" class="font-label-md text-label-md text-on-surface">--</span>
+</div>
+<div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Last Vitals Recorded</span>
+<span id="patient-card-last-recorded" class="font-label-md text-label-md text-on-surface text-right">
+                 --<br>
+<span id="patient-card-recorder" class="text-on-surface-variant font-normal">--</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Decorative subtle background pattern -->
+<div class="absolute -bottom-8 -right-8 opacity-5 pointer-events-none transition-transform group-hover:scale-110 duration-500">
+<span class="material-symbols-outlined text-[120px]">monitor_heart</span>
+</div>
+</div>
+</div>
+<!-- Data Entry Form (Main area - 8 columns) -->
+<div class="col-span-12 lg:col-span-8">
+<div class="bg-surface rounded-xl shadow-sm border border-outline-variant/30 flex flex-col h-full">
+<div class="p-lg border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low rounded-t-xl">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">add_circle</span>
+              New Vitals Entry
+            </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Fields marked with <span class="text-error">*</span> are required for EWS calculation.</p>
+</div>
+<div class="flex items-center gap-sm bg-surface rounded-lg px-md py-sm border border-outline-variant/50">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase">Time of Recording</label>
+<input id="input-record-time" class="bg-transparent border-none font-headline-sm text-headline-sm text-on-surface focus:ring-0 p-0 outline-none w-24 text-center cursor-pointer" type="time">
+</div>
+</div>
+<form class="p-lg flex-1 flex flex-col" id="vitals-form">
+<!-- Bento Grid style layout for inputs (4 Core Parameters) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md mb-lg">
+<!-- Heart Rate -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
+<label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
+                HR <span class="text-error">*</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">favorite</span>
+</label>
+<div class="flex items-end gap-sm mt-sm">
+<input id="input-heart-rate" class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50" placeholder="--" required="" min="20" max="300" type="number">
+<span class="font-body-sm text-body-sm text-on-surface-variant pb-1">bpm</span>
+</div>
+</div>
+<!-- Respiratory Rate -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
+<label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
+                RR <span class="text-error">*</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">air</span>
+</label>
+<div class="flex items-end gap-sm mt-sm">
+<input id="input-respiratory-rate" class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50" placeholder="--" required="" min="4" max="80" type="number">
+<span class="font-body-sm text-body-sm text-on-surface-variant pb-1">rpm</span>
+</div>
+</div>
+<!-- Systolic BP -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
+<label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
+                SBP <span class="text-error">*</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">blood_pressure</span>
+</label>
+<div class="flex items-end gap-sm mt-sm">
+<input id="input-systolic-bp" class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50" placeholder="--" required="" min="40" max="300" type="number">
+<span class="font-body-sm text-body-sm text-on-surface-variant pb-1 leading-tight">mmHg</span>
+</div>
+</div>
+<!-- Temperature -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
+<label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
+                Temp <span class="text-error">*</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">device_thermostat</span>
+</label>
+<div class="flex items-end gap-sm mt-sm">
+<input id="input-temperature" class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50" placeholder="--" required="" min="25.0" max="45.0" step="0.1" type="number">
+<span class="font-body-sm text-body-sm text-on-surface-variant pb-1">°C</span>
+</div>
+</div>
+</div>
+<!-- Notes Area -->
+<div class="mb-lg flex-1">
+<label class="font-label-md text-label-md text-on-surface-variant block mb-sm">Nursing Notes (Optional)</label>
+<textarea id="input-nursing-notes" class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md font-body-md text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none h-24" placeholder="Add any relevant observations, e.g., 'Patient feeling restless...'"></textarea>
+</div>
+<!-- Action Buttons -->
+<div class="flex justify-between items-center pt-md border-t border-outline-variant/30 mt-auto">
+<button id="clear-btn" class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-surface-variant border border-outline-variant/50 hover:bg-surface-variant/20 transition-colors" type="button">
+              Clear All
+            </button>
+<div class="flex gap-md">
+<button id="draft-btn" class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-surface border border-outline-variant hover:bg-surface-variant/20 transition-colors" type="button">
+                Save as Draft
+              </button>
+<button class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-primary bg-primary hover:bg-primary/90 transition-colors flex items-center gap-sm shadow-sm hover:shadow-md" id="save-vitals-btn" type="button">
+<span class="material-symbols-outlined text-[20px]">save</span>
+                Save Vitals &amp; Calculate EWS
+              </button>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- EWS Result Display Panel (Hidden until submission) -->
+<div id="ews-result-panel" class="hidden bg-surface rounded-xl shadow-lg border-2 border-primary/30 p-lg mt-lg">
+  <div class="flex items-center gap-sm mb-md">
+    <span class="material-symbols-outlined text-primary text-[28px]">clinical_notes</span>
+    <h2 class="font-headline-md text-headline-md text-on-surface">EWS Calculation Result</h2>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-md mb-lg">
+    <div class="bg-surface-container rounded-lg p-md text-center">
+      <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">RR Score</div>
+      <div id="result-rr-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
+    </div>
+    <div class="bg-surface-container rounded-lg p-md text-center">
+      <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">HR Score</div>
+      <div id="result-hr-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
+    </div>
+    <div class="bg-surface-container rounded-lg p-md text-center">
+      <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">SBP Score</div>
+      <div id="result-sbp-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
+    </div>
+    <div class="bg-surface-container rounded-lg p-md text-center">
+      <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Temp Score</div>
+      <div id="result-temp-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+    <div id="result-total-container" class="rounded-xl p-lg text-center bg-surface-container">
+      <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total EWS Score</div>
+      <div id="result-total-score" class="text-[48px] font-bold leading-tight">-</div>
+    </div>
+    <div class="rounded-xl p-lg text-center bg-surface-container">
+      <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Condition</div>
+      <div id="result-condition" class="font-headline-md text-headline-md font-bold mt-sm">-</div>
+    </div>
+    <div class="rounded-xl p-lg text-center bg-surface-container">
+      <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Recommendation</div>
+      <div id="result-recommendation" class="font-headline-sm text-headline-sm font-bold mt-sm">-</div>
+    </div>
+  </div>
+  <div id="result-abnormal" class="mt-md hidden">
+    <h3 class="font-label-md text-label-md text-error mb-sm">⚠️ Abnormal Parameters</h3>
+    <ul id="result-abnormal-list" class="list-disc list-inside text-body-sm text-on-surface-variant"></ul>
+  </div>
+</div>
+</div>
+</div>
+<script>
+  // ─── End-to-End Authoritative Patient Vitals & Profile Synchronization ───
+  let currentPatientId = 1;
+  const API_BASE = '/api/v1/vitals';
+  const PATIENT_API = '/api/v1/patients';
+  const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
+
+  function getAuthHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    return headers;
+  }
+
+  // Set default current time
+  const now = new Date();
+  const timeString = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+  const timeInput = document.getElementById('input-record-time');
+  if (timeInput) timeInput.value = timeString;
+
+  // Parse patient_id from URL query params (e.g. ?patient_id=2 or ?id=2)
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramId = urlParams.get('patient_id') || urlParams.get('id');
+  if (paramId && !isNaN(parseInt(paramId))) {
+    currentPatientId = parseInt(paramId);
+  }
+
+  function applyScoreColor(el, score) {
+    el.classList.remove('text-green-600','text-yellow-600','text-orange-600','text-red-600');
+    if (score === 0) el.classList.add('text-green-600');
+    else if (score === 1) el.classList.add('text-yellow-600');
+    else if (score === 2) el.classList.add('text-orange-600');
+    else el.classList.add('text-red-600');
+  }
+
+  function applyConditionStyle(condition) {
+    const totalContainer = document.getElementById('result-total-container');
+    if (!totalContainer) return;
+    totalContainer.classList.remove('bg-green-100','bg-yellow-100','bg-red-100');
+    const condEl = document.getElementById('result-condition');
+    condEl.classList.remove('text-green-700','text-yellow-700','text-red-700');
+    const recEl = document.getElementById('result-recommendation');
+    recEl.classList.remove('text-green-700','text-yellow-700','text-red-700');
+    if (condition === 'Stable') {
+      totalContainer.classList.add('bg-green-100');
+      condEl.classList.add('text-green-700');
+      recEl.classList.add('text-green-700');
+    } else if (condition === 'Moderate Risk') {
+      totalContainer.classList.add('bg-yellow-100');
+      condEl.classList.add('text-yellow-700');
+      recEl.classList.add('text-yellow-700');
+    } else {
+      totalContainer.classList.add('bg-red-100');
+      condEl.classList.add('text-red-700');
+      recEl.classList.add('text-red-700');
+    }
+  }
+
+  // Load patient profile & authoritative latest monitoring state
+  async function loadPatientProfile(patientId) {
+    try {
+      // 1. Fetch patient demographic & latest state
+      const res = await fetch(`${PATIENT_API}/${patientId}`, { headers: getAuthHeaders() });
+      if (!res.ok) {
+        console.warn(`Failed to fetch patient ${patientId}`);
+        return;
+      }
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+      const p = json.data;
+
+      // Update Patient Selector
+      const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
+      const bedStr = p.bed_number || 'ICU-01';
+      document.getElementById('patient-selector-input').value = `${pCode} - ${p.name} (${bedStr})`;
+
+      // Update Left Context Card
+      document.getElementById('patient-card-name').textContent = p.name;
+      document.getElementById('patient-card-code').textContent = pCode;
+      document.getElementById('patient-card-bed').textContent = bedStr;
+      document.getElementById('patient-card-age-gender').textContent = `${p.age || '--'} / ${p.gender === 'Female' ? 'F' : 'M'}`;
+      document.getElementById('patient-card-diagnosis').textContent = p.diagnosis || 'Clinical Monitoring';
+
+      if (p.admission_date) {
+        const d = new Date(p.admission_date);
+        document.getElementById('patient-card-admitted').textContent = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      }
+
+      // EWS Score badge styling
+      const ewsVal = p.ews_score !== undefined ? p.ews_score : (p.latest_vitals ? p.latest_vitals.ews_score : 0);
+      const ewsBadge = document.getElementById('patient-card-ews');
+      const ewsContainer = document.getElementById('patient-card-ews-container');
+      ewsBadge.textContent = ewsVal;
+
+      ewsContainer.className = 'px-sm py-xs rounded text-center min-w-[70px] ' + 
+        (ewsVal >= 5 ? 'bg-red-100 text-red-700' : ewsVal >= 3 ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700');
+
+      // Last vitals recorded
+      const lastRecordedEl = document.getElementById('patient-card-last-recorded');
+      const recorderEl = document.getElementById('patient-card-recorder');
+      if (p.latest_vitals && p.latest_vitals.recorded_at) {
+        const rDate = new Date(p.latest_vitals.recorded_at);
+        const timePart = rDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        lastRecordedEl.childNodes[0].nodeValue = `${timePart} Today\n`;
+        recorderEl.textContent = 'by Staff Nurse';
+      } else {
+        lastRecordedEl.childNodes[0].nodeValue = 'No vitals recorded\n';
+        recorderEl.textContent = 'Awaiting entry';
+      }
+    } catch (e) {
+      console.error('Error loading patient profile:', e);
+    }
+  }
+
+  // Populate patient switcher dropdown
+  async function setupPatientDropdown() {
+    const dropdown = document.getElementById('patient-select-dropdown');
+    const changeBtn = document.getElementById('patient-change-btn');
+    const inputEl = document.getElementById('patient-selector-input');
+    const listEl = document.getElementById('patient-options-list');
+
+    changeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('hidden');
+    });
+    inputEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', () => {
+      dropdown.classList.add('hidden');
+    });
+
+    try {
+      const res = await fetch(`${PATIENT_API}?status=admitted&limit=50`, { headers: getAuthHeaders() });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          listEl.innerHTML = '';
+          json.data.forEach(p => {
+            const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
+            const bedStr = p.bed_number || 'ICU-01';
+            const opt = document.createElement('div');
+            opt.className = 'px-3 py-2 hover:bg-primary/10 cursor-pointer flex justify-between items-center transition-colors text-sm';
+            opt.innerHTML = `
+              <div>
+                <span class="font-bold text-on-surface">${p.name}</span>
+                <span class="text-xs text-on-surface-variant ml-1">(${pCode} • ${bedStr})</span>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded font-bold ${p.ews_score >= 5 ? 'bg-red-100 text-red-700' : p.ews_score >= 3 ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}">
+                EWS: ${p.ews_score || 0}
+              </span>
+            `;
+            opt.addEventListener('click', () => {
+              currentPatientId = p.patient_id;
+              dropdown.classList.add('hidden');
+              loadPatientProfile(currentPatientId);
+              document.getElementById('ews-result-panel').classList.add('hidden');
+            });
+            listEl.appendChild(opt);
+          });
+        }
+      }
+    } catch (e) {
+      console.error('Error fetching patient list:', e);
+    }
+  }
+
+  // Clear button handler
+  document.getElementById('clear-btn').addEventListener('click', () => {
+    document.getElementById('input-heart-rate').value = '';
+    document.getElementById('input-respiratory-rate').value = '';
+    document.getElementById('input-systolic-bp').value = '';
+    document.getElementById('input-temperature').value = '';
+    document.getElementById('input-nursing-notes').value = '';
+    document.getElementById('ews-result-panel').classList.add('hidden');
+  });
+
+  // Save vitals & calculate EWS handler
+  document.getElementById('save-vitals-btn').addEventListener('click', async function(e) {
+    const btn = e.currentTarget;
+    const originalText = btn.innerHTML;
+    const form = document.getElementById('vitals-form');
+
+    // Validate required fields
+    const hr = document.getElementById('input-heart-rate').value;
+    const rr = document.getElementById('input-respiratory-rate').value;
+    const sbp = document.getElementById('input-systolic-bp').value;
+    const temp = document.getElementById('input-temperature').value;
+
+    if (!hr || !rr || !sbp || !temp) {
+      form.reportValidity();
+      return;
+    }
+
+    // Loading state
+    btn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">autorenew</span> Saving to Database...';
+    btn.classList.add('opacity-80', 'cursor-not-allowed');
+    btn.disabled = true;
+
+    try {
+      const response = await fetch(`${API_BASE}/patient/${currentPatientId}/submit`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          respiratory_rate: parseFloat(rr),
+          heart_rate: parseFloat(hr),
+          systolic_bp: parseFloat(sbp),
+          temperature: parseFloat(temp)
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        const data = result.data;
+
+        // Update score displays
+        const rrScoreEl = document.getElementById('result-rr-score');
+        const hrScoreEl = document.getElementById('result-hr-score');
+        const sbpScoreEl = document.getElementById('result-sbp-score');
+        const tempScoreEl = document.getElementById('result-temp-score');
+
+        rrScoreEl.textContent = data.scores.respiratory_rate;
+        hrScoreEl.textContent = data.scores.heart_rate;
+        sbpScoreEl.textContent = data.scores.systolic_bp;
+        tempScoreEl.textContent = data.scores.temperature;
+
+        applyScoreColor(rrScoreEl, data.scores.respiratory_rate);
+        applyScoreColor(hrScoreEl, data.scores.heart_rate);
+        applyScoreColor(sbpScoreEl, data.scores.systolic_bp);
+        applyScoreColor(tempScoreEl, data.scores.temperature);
+
+        document.getElementById('result-total-score').textContent = data.total_score;
+        document.getElementById('result-condition').textContent = data.condition;
+        document.getElementById('result-recommendation').textContent = data.recommendation;
+
+        applyConditionStyle(data.condition);
+
+        // Abnormal parameters
+        const abnormalPanel = document.getElementById('result-abnormal');
+        const abnormalList = document.getElementById('result-abnormal-list');
+        if (data.abnormal_parameters && data.abnormal_parameters.length > 0) {
+          abnormalList.innerHTML = data.abnormal_parameters.map(p =>
+            `<li><strong>${p.name}</strong>: ${p.value} ${p.unit} (Score: ${p.score})</li>`
+          ).join('');
+          abnormalPanel.classList.remove('hidden');
+        } else {
+          abnormalPanel.classList.add('hidden');
+        }
+
+        // Show result panel
+        document.getElementById('ews-result-panel').classList.remove('hidden');
+        document.getElementById('ews-result-panel').scrollIntoView({ behavior: 'smooth' });
+
+        // CRITICAL: Immediately refresh the Authoritative Patient Profile on the left!
+        await loadPatientProfile(currentPatientId);
+
+        btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check_circle</span> Saved & Synced!';
+        btn.classList.remove('bg-primary');
+        btn.classList.add('bg-green-600');
+      } else {
+        alert('Error: ' + (result.error || 'Failed to save vitals'));
+        btn.innerHTML = originalText;
+      }
+    } catch (err) {
+      console.error('API Error:', err);
+      alert('Network error. Please check your connection and try again.');
+      btn.innerHTML = originalText;
+    } finally {
+      btn.classList.remove('opacity-80', 'cursor-not-allowed');
+      btn.disabled = false;
+      // Reset button after 3.5 seconds
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.classList.remove('bg-green-600');
+        btn.classList.add('bg-primary');
+      }, 3500);
+    }
+  });
+
+  // Initial initialization
+  loadPatientProfile(currentPatientId);
+  setupPatientDropdown();
+</script>
+<script src="../nurse_navigation.js"></script>
+</main></div>
+  <script src="../global_alert_manager.js"></script>
+</body></html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "secondary-fixed": "#c9e6ff",
+                "on-tertiary-container": "#e9f0ff",
+                "primary-fixed-dim": "#b4c5ff",
+                "on-secondary-fixed-variant": "#004c6e",
+                "inverse-primary": "#b4c5ff",
+                "on-secondary-container": "#004666",
+                "error-container": "#ffdad6",
+                "background": "#f9f9ff",
+                "surface-bright": "#f9f9ff",
+                "on-error": "#ffffff",
+                "on-primary-fixed-variant": "#003ea8",
+                "secondary-fixed-dim": "#89ceff",
+                "surface-container-lowest": "#ffffff",
+                "surface-container": "#e7eeff",
+                "on-error-container": "#93000a",
+                "surface-container-highest": "#d8e3fb",
+                "on-surface": "#111c2d",
+                "tertiary-container": "#5e6e85",
+                "on-primary": "#ffffff",
+                "on-primary-container": "#eeefff",
+                "surface-container-low": "#f0f3ff",
+                "secondary-container": "#39b8fd",
+                "outline": "#737686",
+                "surface-container-high": "#dee8ff",
+                "error": "#ba1a1a",
+                "on-tertiary-fixed": "#0b1c30",
+                "primary-container": "#2563eb",
+                "on-tertiary": "#ffffff",
+                "secondary": "#006591",
+                "on-surface-variant": "#434655",
+                "surface-variant": "#d8e3fb",
+                "surface-dim": "#cfdaf2",
+                "inverse-surface": "#263143",
+                "tertiary-fixed-dim": "#b7c8e1",
+                "primary": "#004ac6",
+                "on-secondary-fixed": "#001e2f",
+                "inverse-on-surface": "#ecf1ff",
+                "primary-fixed": "#dbe1ff",
+                "tertiary": "#46566c",
+                "tertiary-fixed": "#d3e4fe",
+                "outline-variant": "#c3c6d7",
+                "surface": "#f9f9ff",
+                "surface-tint": "#0053db",
+                "on-tertiary-fixed-variant": "#38485d",
+                "on-secondary": "#ffffff",
+                "on-background": "#111c2d",
+                "on-primary-fixed": "#00174b"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "gutter": "16px",
+                "xs": "4px",
+                "sm": "8px",
+                "base": "4px",
+                "lg": "24px",
+                "margin-mobile": "16px",
+                "margin-desktop": "32px",
+                "xl": "32px",
+                "md": "16px"
+        },
+        "fontFamily": {
+                "body-sm": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Poppins"
+                ],
+                "headline-lg": [
+                        "Poppins"
+                ],
+                "headline-sm": [
+                        "Poppins"
+                ],
+                "display": [
+                        "Poppins"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "headline-lg-mobile": [
+                        "Poppins"
+                ],
+                "label-sm": [
+                        "Inter"
+                ],
+                "label-md": [
+                        "Inter"
+                ],
+                "body-lg": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "body-sm": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-sm": [
+                        "20px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "display": [
+                        "48px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-background"><aside class="fixed left-0 top-0 w-64 bg-[#0a1e4d] text-white flex flex-col flex-shrink-0 h-full overflow-y-auto z-50" data-purpose="sidebar">
+<div class="p-6 flex items-center space-x-3">
+<div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+<svg class="w-8 h-8 text-[#0a1e4d]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-none">JEEVAN SETU</h1>
+<p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider">Intelligent Transfer System</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-8">
+<!-- Main Section -->
+<div>
+<a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Administrator_dashboard_/Administrator_dashboard_.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Dashboard</span>
+</a>
+</div>
+<!-- Management Section -->
+<div>
+<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Management</p>
+<ul class="space-y-2">
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_patient_management/Admin_patient_management.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Patients</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_beds_wards/Admin_beds_wards.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Beds &amp; Wards</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_users_roles/Admin_users_roles.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Users &amp; Roles</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_attendant_access/Admin_attendant_access.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Attendants (QR Access)</span></a></li>
+</ul>
+</div>
+<!-- Monitoring Section -->
+<div>
+<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Monitoring &amp; Analytics</p>
+<ul class="space-y-2">
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_ews_analytics/Admin_ews_analytics.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>EWS Analytics</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_resource_utilization/Admin_resource_utilization.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Resource Utilization</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_clinical_reports/Admin_clinical_reports.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Reports</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_audit_logs/Admin_audit_logs.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Audit Logs</span></a></li>
+</ul>
+</div>
+<!-- System Settings Section -->
+<div>
+<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">System Settings</p>
+<ul class="space-y-2">
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_system_settings/Admin_system_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>System Settings</span></a></li>
+<li><a class="flex items-center space-x-3 bg-blue-600 px-4 py-2.5 rounded-lg text-white font-medium" href="../Admin_notification_settings/Admin_notification_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Notifications</span></a></li>
+<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_backup_restore/Admin_backup_restore.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Backup &amp; Restore</span></a></li>
+</ul>
+</div>
+</nav>
+<!-- Sidebar User Profile -->
+<div class="p-4 border-t border-white/10">
+<div class="bg-white/5 rounded-xl p-3 flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-full bg-slate-300 overflow-hidden ring-2 ring-blue-500/50">
+<img alt="Admin Avatar" class="w-full h-full object-cover" src="../admin_avatar.jpg">
+</div>
+<div>
+<p class="text-xs font-bold">Admin User</p>
+<p class="text-[10px] text-slate-400">Administrator</p>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<span class="w-2 h-2 bg-green-500 rounded-full mb-1"></span>
+<span class="text-[8px] text-slate-400 uppercase">Online</span>
+</div>
+</div>
+</div>
+
+<!-- Admin Logout Button -->
+<div class="px-4 pb-4">
+  <a href="../../Login/Login.html" class="flex items-center space-x-3 px-4 py-2 hover:bg-red-500/20 rounded-lg text-red-300 hover:text-red-200 transition-colors border border-red-500/30">
+    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+    <span class="font-medium text-sm">Logout</span>
+  </a>
+</div>
+
+</aside><div class="pl-64 w-full"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-margin-desktop"><div class="flex-1 max-w-xl"><div class="relative flex items-center bg-surface-container-low rounded-full px-md py-xs border border-outline-variant/30 hover:border-outline/50 transition-colors"><span class="material-symbols-outlined text-outline">search</span><input class="bg-transparent border-none focus:ring-0 w-full ml-sm text-body-sm text-on-surface outline-none" placeholder="Search patient ID, bed number or records..." type="text"></div></div><div class="flex items-center gap-lg"><button class="relative p-sm rounded-full text-on-surface-variant hover:bg-surface-variant/20 transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span></button><div class="flex items-center gap-md pl-lg border-l border-outline-variant/30"><div class="text-right hidden sm:block"><p class="font-label-md text-label-md text-on-surface">Dr. Ananya Sharma</p><p class="font-label-sm text-label-sm text-on-surface-variant">Chief Administrator</p></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary">person</span></div></div></div></header><main class="relative pt-16 bg-background min-h-screen"><div class="flex flex-col w-full gap-margin-desktop p-margin-desktop">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md">
+<div class="flex flex-col gap-sm max-w-2xl">
+<h1 class="font-display text-display text-on-background">Notification Routing &amp; Rules</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Configure how alerts and communications are dispatched across the hospital network. Manage channels, escalation paths, and quiet hours.</p>
+</div>
+<div class="flex gap-md">
+<button class="px-md py-sm rounded-lg bg-surface-container text-on-surface font-label-md hover:shadow-md transition-shadow flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface text-[20px]">history</span>
+        Audit Log
+      </button>
+<button class="px-md py-sm rounded-lg bg-primary text-on-primary font-label-md hover:shadow-md transition-shadow flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-primary text-[20px]">save</span>
+        Save Changes
+      </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-margin-desktop">
+<!-- Left Column: Global Rules (Quiet Hours & Throttling) & Simulation Sandbox -->
+<div class="col-span-1 lg:col-span-4 flex flex-col gap-margin-desktop">
+<!-- Quiet Hours -->
+<section class="bg-surface rounded-xl shadow-sm p-lg flex flex-col gap-lg">
+<div class="flex items-center justify-between pb-md border-b border-outline-variant/30">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary">nights_stay</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Quiet Hours</h2>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Suppress non-critical notifications during specific times to reduce alert fatigue.</p>
+<div class="flex flex-col gap-md">
+<label class="flex items-center justify-between cursor-pointer">
+<span class="font-label-md text-label-md text-on-surface">Enable Quiet Hours</span>
+<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary">
+<span class="inline-block h-4 w-4 translate-x-6 rounded-full bg-on-primary transition"></span>
+</div>
+</label>
+<div class="grid grid-cols-2 gap-md"><div class="flex items-center gap-md flex-1">
+  <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+    <span class="material-symbols-outlined text-on-secondary-container">swap_horiz</span>
+  </div>
+  <div class="flex-1">
+    <h3 class="font-headline-sm text-headline-sm text-on-surface">Bed Transfer Requests</h3>
+    <p class="font-body-sm text-body-sm text-on-surface-variant">Intra-ward or inter-department transfers.</p>
+  </div>
+</div>
+<div class="flex items-center gap-lg">
+  <div class="flex items-center">
+    <span class="material-symbols-outlined text-outline">arrow_forward</span>
+  </div>
+  <div class="flex flex-col gap-xs min-w-[140px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Recipients</span>
+    <div class="flex gap-sm flex-wrap">
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">Nurse Station (Origin)</span>
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">Transport Team</span>
+    </div>
+  </div>
+  <div class="flex flex-col gap-xs ml-md min-w-[80px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Channels</span>
+    <div class="flex gap-xs">
+      <span class="material-symbols-outlined text-primary text-[20px]" title="In-App">desktop_windows</span>
+    </div>
+  </div>
+</div></div>
+<div class="bg-error-container/20 rounded-lg p-md border border-error/20 flex gap-sm items-start mt-sm"><div class="flex items-center gap-md flex-1">
+  <div class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center shrink-0">
+    <span class="material-symbols-outlined text-on-tertiary-container">settings</span>
+  </div>
+  <div class="flex-1">
+    <h3 class="font-headline-sm text-headline-sm text-on-surface">System Maintenance</h3>
+    <p class="font-body-sm text-body-sm text-on-surface-variant">Scheduled downtime or degraded performance.</p>
+  </div>
+</div>
+<div class="flex items-center gap-lg">
+  <div class="flex items-center">
+    <span class="material-symbols-outlined text-outline">arrow_forward</span>
+  </div>
+  <div class="flex flex-col gap-xs min-w-[140px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Recipients</span>
+    <div class="flex gap-sm flex-wrap">
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">IT Admins</span>
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">All Staff (Warning)</span>
+    </div>
+  </div>
+  <div class="flex flex-col gap-xs ml-md min-w-[80px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Channels</span>
+    <div class="flex gap-xs">
+      <span class="material-symbols-outlined text-primary text-[20px]" title="Email">mail</span>
+      <span class="material-symbols-outlined text-primary text-[20px]" title="In-App Banner">campaign</span>
+    </div>
+  </div>
+</div></div>
+</div>
+</section>
+<!-- Frequency Limits -->
+<section class="bg-surface rounded-xl shadow-sm p-lg flex flex-col gap-lg">
+<div class="flex items-center gap-md pb-md border-b border-outline-variant/30">
+<span class="material-symbols-outlined text-secondary">tune</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Throttling</h2>
+</div>
+<div class="flex flex-col gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface flex justify-between">
+                Max Alerts per Hour
+                <span class="text-primary">15</span>
+</label>
+<input class="w-full accent-primary h-2 bg-surface-variant rounded-lg appearance-none cursor-pointer" max="50" min="1" type="range" value="15">
+</div>
+<label class="flex items-center justify-between cursor-pointer mt-sm">
+<span class="font-label-md text-label-md text-on-surface">Batch low-priority alerts</span>
+<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary">
+<span class="inline-block h-4 w-4 translate-x-6 rounded-full bg-on-primary transition"></span>
+</div>
+</label>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-[12px] -mt-sm">Delivers non-urgent notifications in a single digest every 30 minutes.</p>
+</div>
+</section>
+<!-- Test Trigger -->
+<section class="bg-surface-container-highest rounded-xl shadow-sm p-lg flex flex-col gap-md border border-outline-variant/50 relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-xl"></div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface relative z-10">Simulation Sandbox</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant relative z-10">Fire a test event to verify routing and template configuration.</p>
+<div class="flex flex-col gap-sm relative z-10 mt-sm">
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none">
+<option>Critical EWS Alert</option>
+<option>Bed Transfer Request</option>
+<option>System Maintenance</option>
+</select>
+<button class="w-full px-md py-sm rounded-lg border border-primary text-primary font-label-md hover:bg-primary/5 transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[20px]">send</span>
+            Fire Test Event
+          </button>
+</div>
+</section>
+</div>
+<!-- Right Column: Routing Map & Templates -->
+<div class="col-span-1 lg:col-span-8 flex flex-col gap-margin-desktop">
+<!-- Routing Map -->
+<section class="bg-surface rounded-xl shadow-sm p-lg flex flex-col gap-lg">
+<div class="flex justify-between items-center pb-md border-b border-outline-variant/30">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Event Routing Map</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Define which roles receive specific alert types and via which channels.</p>
+</div>
+<button class="text-primary hover:text-primary-fixed-variant transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+</div>
+<div class="flex flex-col gap-md">
+<!-- Route Item 1 -->
+<div class="bg-surface-container-low rounded-lg p-md flex flex-col sm:flex-row gap-lg items-start sm:items-center justify-between group hover:shadow-md transition-all border border-outline-variant/30"><div class="flex items-center gap-md flex-1">
+  <div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center shrink-0">
+    <span class="material-symbols-outlined text-on-error-container">warning</span>
+  </div>
+  <div class="flex-1">
+    <h3 class="font-headline-sm text-headline-sm text-on-surface">Critical EWS Alerts (Score &gt; 7)</h3>
+    <p class="font-body-sm text-body-sm text-on-surface-variant">Immediate deterioration risk detected.</p>
+  </div>
+</div>
+<div class="flex items-center gap-lg">
+  <div class="flex items-center">
+    <span class="material-symbols-outlined text-outline">arrow_forward</span>
+  </div>
+  <div class="flex flex-col gap-xs min-w-[140px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Recipients</span>
+    <div class="flex gap-sm flex-wrap">
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">Attending MD</span>
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">Charge Nurse</span>
+    </div>
+  </div>
+  <div class="flex flex-col gap-xs ml-md min-w-[80px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Channels</span>
+    <div class="flex gap-xs">
+      <span class="material-symbols-outlined text-primary text-[20px]" title="Push Notification">smartphone</span>
+      <span class="material-symbols-outlined text-primary text-[20px]" title="SMS">sms</span>
+    </div>
+  </div>
+</div></div>
+<!-- Route Item 2 -->
+<div class="bg-surface-container-low rounded-lg p-md flex flex-col sm:flex-row gap-lg items-start sm:items-center justify-between group hover:shadow-md transition-all border border-outline-variant/30"><div class="flex items-center gap-md flex-1">
+  <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+    <span class="material-symbols-outlined text-on-secondary-container">swap_horiz</span>
+  </div>
+  <div class="flex-1">
+    <h3 class="font-headline-sm text-headline-sm text-on-surface">Bed Transfer Requests</h3>
+    <p class="font-body-sm text-body-sm text-on-surface-variant">Intra-ward or inter-department transfers.</p>
+  </div>
+</div>
+<div class="flex items-center gap-lg">
+  <div class="flex items-center">
+    <span class="material-symbols-outlined text-outline">arrow_forward</span>
+  </div>
+  <div class="flex flex-col gap-xs min-w-[140px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Recipients</span>
+    <div class="flex gap-sm flex-wrap">
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">Nurse Station (Origin)</span>
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">Transport Team</span>
+    </div>
+  </div>
+  <div class="flex flex-col gap-xs ml-md min-w-[80px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Channels</span>
+    <div class="flex gap-xs">
+      <span class="material-symbols-outlined text-primary text-[20px]" title="In-App">desktop_windows</span>
+    </div>
+  </div>
+</div></div>
+<!-- Route Item 3 -->
+<div class="bg-surface-container-low rounded-lg p-md flex flex-col sm:flex-row gap-lg items-start sm:items-center justify-between group hover:shadow-md transition-all border border-outline-variant/30"><div class="flex items-center gap-md flex-1">
+  <div class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center shrink-0">
+    <span class="material-symbols-outlined text-on-tertiary-container">settings</span>
+  </div>
+  <div class="flex-1">
+    <h3 class="font-headline-sm text-headline-sm text-on-surface">System Maintenance</h3>
+    <p class="font-body-sm text-body-sm text-on-surface-variant">Scheduled downtime or degraded performance.</p>
+  </div>
+</div>
+<div class="flex items-center gap-lg">
+  <div class="flex items-center">
+    <span class="material-symbols-outlined text-outline">arrow_forward</span>
+  </div>
+  <div class="flex flex-col gap-xs min-w-[140px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Recipients</span>
+    <div class="flex gap-sm flex-wrap">
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">IT Admins</span>
+      <span class="px-sm py-xs bg-surface-variant text-on-surface-variant rounded font-label-sm">All Staff (Warning)</span>
+    </div>
+  </div>
+  <div class="flex flex-col gap-xs ml-md min-w-[80px]">
+    <span class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider text-[10px]">Channels</span>
+    <div class="flex gap-xs">
+      <span class="material-symbols-outlined text-primary text-[20px]" title="Email">mail</span>
+      <span class="material-symbols-outlined text-primary text-[20px]" title="In-App Banner">campaign</span>
+    </div>
+  </div>
+</div></div>
+</div>
+</section>
+<!-- Templates Editor -->
+<section class="bg-surface rounded-xl shadow-sm p-lg flex flex-col gap-lg">
+<div class="flex justify-between items-center pb-md border-b border-outline-variant/30">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Message Templates</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Standardized formats for automated alerts.</p>
+</div>
+<div class="relative bg-surface-container-low rounded-lg p-xs flex gap-xs">
+<button class="px-md py-xs rounded bg-surface shadow-sm text-on-surface font-label-sm">SMS</button>
+<button class="px-md py-xs rounded text-on-surface-variant font-label-sm hover:bg-surface-variant/50">Email</button>
+<button class="px-md py-xs rounded text-on-surface-variant font-label-sm hover:bg-surface-variant/50">Push</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg">
+<div class="col-span-1 border-r border-outline-variant/30 pr-md flex flex-col gap-sm">
+<button class="text-left px-md py-sm rounded-lg bg-primary-container/10 text-primary-fixed-variant font-label-md border-l-4 border-primary">
+              Critical EWS
+            </button>
+<button class="text-left px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low font-label-md border-l-4 border-transparent">
+              Discharge Ready
+            </button>
+<button class="text-left px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low font-label-md border-l-4 border-transparent">
+              Abnormal Labs
+            </button>
+<button class="text-left px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low font-label-md border-l-4 border-transparent">
+              Consult Request
+            </button>
+</div>
+<div class="col-span-1 md:col-span-3 flex flex-col gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface">Template Name</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20" type="text" value="Critical EWS Alert (SMS)">
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-center">
+<label class="font-label-sm text-label-sm text-on-surface">Message Body</label>
+<span class="font-label-sm text-label-sm text-outline text-[10px]">112 / 160 chars</span>
+</div>
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 font-mono text-sm resize-none" rows="4">URGENT: Patient {{patient_name}} (Bed {{bed_id}}) in {{ward_name}} has an EWS of {{ews_score}}. Action required immediately.</textarea>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="font-label-sm text-label-sm text-on-surface">Available Variables</label>
+<div class="flex flex-wrap gap-sm">
+<button class="px-sm py-xs bg-surface-container text-on-surface-variant rounded border border-outline-variant/30 font-mono text-[12px] hover:bg-surface-variant transition-colors">{{patient_name}}</button>
+<button class="px-sm py-xs bg-surface-container text-on-surface-variant rounded border border-outline-variant/30 font-mono text-[12px] hover:bg-surface-variant transition-colors">{{mrn}}</button>
+<button class="px-sm py-xs bg-surface-container text-on-surface-variant rounded border border-outline-variant/30 font-mono text-[12px] hover:bg-surface-variant transition-colors">{{bed_id}}</button>
+<button class="px-sm py-xs bg-surface-container text-on-surface-variant rounded border border-outline-variant/30 font-mono text-[12px] hover:bg-surface-variant transition-colors">{{ward_name}}</button>
+<button class="px-sm py-xs bg-surface-container text-on-surface-variant rounded border border-outline-variant/30 font-mono text-[12px] hover:bg-surface-variant transition-colors">{{ews_score}}</button>
+<button class="px-sm py-xs bg-surface-container text-on-surface-variant rounded border border-outline-variant/30 font-mono text-[12px] hover:bg-surface-variant transition-colors">{{timestamp}}</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div></main></div>
+<script src="../admin_navigation.js"></script>
+</body></html>

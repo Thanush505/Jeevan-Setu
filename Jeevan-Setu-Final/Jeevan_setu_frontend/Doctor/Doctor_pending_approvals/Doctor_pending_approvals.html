@@ -1,0 +1,490 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={theme:{extend:{"colors":{"surface-variant":"#d8e3fb","on-surface-variant":"#434655","tertiary-container":"#5e6e85","on-primary-fixed-variant":"#003ea8","secondary-container":"#39b8fd","on-primary":"#ffffff","secondary-fixed-dim":"#89ceff","on-secondary-fixed":"#001e2f","surface-dim":"#cfdaf2","surface-container-highest":"#d8e3fb","surface-container-high":"#dee8ff","on-surface":"#111c2d","on-secondary":"#ffffff","inverse-primary":"#b4c5ff","surface-bright":"#f9f9ff","surface-container-lowest":"#ffffff","on-tertiary-container":"#e9f0ff","tertiary":"#46566c","error":"#ba1a1a","surface-container":"#e7eeff","primary-fixed":"#dbe1ff","primary-fixed-dim":"#b4c5ff","primary-container":"#2563eb","on-tertiary":"#ffffff","on-primary-fixed":"#00174b","error-container":"#ffdad6","on-secondary-fixed-variant":"#004c6e","surface-container-low":"#f0f3ff","background":"#f9f9ff","tertiary-fixed":"#d3e4fe","on-error":"#ffffff","inverse-surface":"#263143","outline-variant":"#c3c6d7","inverse-on-surface":"#ecf1ff","on-secondary-container":"#004666","secondary-fixed":"#c9e6ff","on-error-container":"#93000a","on-tertiary-fixed":"#0b1c30","tertiary-fixed-dim":"#b7c8e1","on-background":"#111c2d","outline":"#737686","primary":"#004ac6","surface":"#f9f9ff","on-primary-container":"#eeefff","surface-tint":"#0053db","secondary":"#006591","on-tertiary-fixed-variant":"#38485d"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin-desktop":"32px","margin-mobile":"16px","base":"4px","sm":"8px","lg":"24px","gutter":"16px","xl":"32px","md":"16px","xs":"4px"},"fontFamily":{"label-md":["Inter"],"display":["Poppins"],"body-sm":["Inter"],"headline-lg-mobile":["Poppins"],"label-sm":["Inter"],"headline-sm":["Poppins"],"headline-md":["Poppins"],"body-lg":["Inter"],"body-md":["Inter"],"headline-lg":["Poppins"]},"fontSize":{"label-md":["14px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"600"}],"display":["48px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-lg-mobile":["28px",{"lineHeight":"36px","fontWeight":"600"}],"label-sm":["12px",{"lineHeight":"16px","fontWeight":"600"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"500"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"40px","fontWeight":"600"}]}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Poppins:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="global-styles">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f6f9;
+            color: #1a202c;
+        }
+        .sidebar-active {
+            background-color: #2563eb;
+            border-radius: 0.375rem;
+        }
+        .status-pill {
+            @apply px-2 py-0.5 rounded text-[10px] font-semibold text-center block;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 10px;
+        }
+    </style>
+</head><body class="flex h-screen overflow-hidden"><aside class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col overflow-y-auto">
+<div class="p-4 border-b border-gray-700 flex items-center space-x-3">
+<div class="bg-white rounded p-1">
+<img alt="Jeevan Setu Logo" class="w-8 h-8" src="https://lh3.googleusercontent.com/aida/AP1WRLtZkgTML_Otbbxv2wqsDv-odq4X2dPZRl2bwN-67hCoJuUMI0KWmJcF_8gh3O0nqjkBbMAnOEIDGrhWlYhIQ4yuR0gDMvZeW48uZZ4IYW7GyY2WmIb4uK2QfXuKeBWrr-HtcDITwbXiV8xl89hq3WoAfsmaYLr-KflS8h0F3JOgEwEQQDoeB4NWMDisEipcrMZ_QGrWE0wMjzSVoyvxz4JhF1g_J_1k6LquEBjJJd3VrZPB41x6rGXz"/>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-tight">JEEVAN SETU</h1>
+<p class="text-[9px] text-gray-400 uppercase tracking-tighter">ICU to HDU Transfer Decision Support System</p>
+</div>
+</div>
+<nav class="flex-1 px-3 py-4 space-y-6">
+<div>
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_dashboard_/Doctor_dashboard_.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded">
+<svg class="w-5 h-5 opacity-60" fill="currentColor" viewbox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+<span class="text-sm font-medium">Dashboard</span>
+</li>
+</ul>
+</div>
+<div>
+<p class="text-[10px] text-gray-500 font-bold uppercase px-3 mb-2 tracking-widest">Patient Management</p>
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_my_patients/Doctor_my_patients.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">My Patients</span>
+</li>
+<li onclick="window.location.href='../Doctor_all_patients/Doctor_all_patients.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">All Patients</span>
+</li>
+<li onclick="window.location.href='../Doctor_patient_search/Doctor_patient_search.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Patient Search</span>
+</li>
+</ul>
+</div>
+<div>
+<p class="text-[10px] text-gray-500 font-bold uppercase px-3 mb-2 tracking-widest">Clinical Tools</p>
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_ews_calculator/Doctor_ews_calculator.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">EWS Calculator</span>
+</li>
+<li onclick="window.location.href='../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Transfer Recommendations</span>
+</li>
+<li onclick="window.location.href='../Doctor_ews_trends/Doctor_ews_trends.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">EWS Trends</span>
+</li>
+<li onclick="window.location.href='../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Patient Summary (AI)</span>
+</li>
+</ul>
+</div>
+<div>
+<p class="text-[10px] text-gray-500 font-bold uppercase px-3 mb-2 tracking-widest">Tasks &amp; Alerts</p>
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_pending_approvals/Doctor_pending_approvals.html'">
+<div class="flex items-center space-x-3">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm font-medium">Pending Approvals</span>
+</div>
+<span class="bg-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">5</span>
+</li>
+<li onclick="window.location.href='../Doctor_alerts_notifications/Doctor_alerts_notifications.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center justify-between cursor-pointer rounded">
+<div class="flex items-center space-x-3">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Alerts &amp; Notifications</span>
+</div>
+<span class="bg-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">8</span>
+</li>
+</ul>
+</div>
+<div>
+<p class="text-[10px] text-gray-500 font-bold uppercase px-3 mb-2 tracking-widest">Reports</p>
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_patient_reports/Doctor_patient_reports.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Patient Reports</span>
+</li>
+<li onclick="window.location.href='../Doctor_transfer_reports/Doctor_transfer_reports.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Transfer Reports</span>
+</li>
+<li onclick="window.location.href='../Doctor_audit_logs/Doctor_audit_logs.html'" class="hover:bg-gray-800 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Audit Logs</span>
+</li>
+</ul>
+</div>
+</nav>
+<div class="mt-auto px-4 py-4 border-t border-gray-700 space-y-1 bg-[#071328]">
+<li onclick="window.location.href='../Doctor_settings_jeevan/Doctor_settings_jeevan.html'">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2"></path></svg>
+<span class="text-sm">Settings</span>
+</li>
+<li onclick="window.location.href='../../Login/Login.html'" class="list-none hover:bg-gray-800 px-3 py-2 flex items-center space-x-3 cursor-pointer transition-colors rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Logout</span>
+</li>
+</div>
+</aside><main class="flex-1 overflow-y-auto flex flex-col bg-[#f0f2f5]"><header class="h-16 bg-white border-b flex items-center justify-between px-6 sticky top-0 z-30">
+<div class="flex items-center space-x-4">
+<button class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<h2 class="font-bold text-xl text-gray-800">Dashboard</h2>
+</div>
+<div class="flex items-center space-x-6">
+<div class="flex items-center text-gray-500 space-x-2 text-sm font-medium border-r pr-6">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>21 May 2025 | 10:45 AM</span>
+</div>
+<div class="relative">
+<select class="bg-gray-100 border-none text-sm rounded-lg px-4 py-2 pr-10 focus:ring-2 focus:ring-blue-500 appearance-none font-medium">
+<option>ICU - General Ward</option>
+<option>HDU - Cardiac</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="text-right">
+<p class="text-sm font-bold text-gray-800 leading-none">Dr. Arjun Mehta</p>
+<p class="text-[11px] text-gray-500">Consultant Intensivist</p>
+<div class="flex items-center justify-end space-x-1">
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+<span class="text-[10px] text-gray-400">Online</span>
+</div>
+</div>
+<img alt="Dr. Arjun Mehta" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMEbtSCl4pEF41D5sTxFOToWhBlcIEOBQjfl1K2nHP6aRqaABpczGfDsSDBmg2I1XtDztWaaFaMkIPzuo4g0PjfBw2GwnJoOLiLL3ZkNVB595rBpr-CmvzwhjzLpLSgYHFttDeW1wz13KJLhsrtGXyQEr0uKQ7_TJ6feRDAojxvos5gEWmk2bV96eoeG8262vMS0v1-wWhNvm1RpwjO0bs_Y5R1bfuSxzjm_rlLotdR6LG1TX15vUtrRIBPHD-4alPvgARBNNYmg"/>
+</div>
+</div>
+</header><div class="p-6 space-y-6"><div class="flex flex-col w-full h-full relative" id="pending-approvals-view">
+<!-- Header -->
+<div class="flex items-end justify-between mb-6 shrink-0">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-red-600 text-white font-bold text-[10px] px-2 py-0.5 rounded-full">5 Critical Actions</span>
+<span class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Required within 2 hours</span>
+</div>
+<h1 class="font-bold text-2xl text-gray-800">Pending Approvals</h1>
+<p class="text-xs text-gray-500 mt-1 max-w-2xl font-medium">Review and authorize critical patient transitions, medication changes, and discharge summaries. Actions are logged automatically for audit compliance.</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-white border border-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-50 transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+                    Filter
+                </button>
+<button class="bg-white border border-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-50 transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">sort</span>
+                    Sort by Priority
+                </button>
+</div>
+</div>
+<!-- Split View Layout -->
+<div class="flex-1 flex gap-6 min-h-0">
+<!-- Left: Approvals List (4 columns) -->
+<div class="w-1/3 flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex-shrink-0 relative">
+<!-- Search/Quick Filter -->
+<div class="p-4 bg-white z-10 sticky top-0 border-b border-gray-100">
+<div class="flex bg-gray-50 rounded-lg p-1 relative border border-gray-100">
+<button class="flex-1 py-1.5 text-center text-xs font-bold text-gray-800 bg-white shadow-sm rounded-md transition-all">All (5)</button>
+<button class="flex-1 py-1.5 text-center text-xs font-bold text-gray-500 hover:text-gray-800 transition-all">Transfers (2)</button>
+<button class="flex-1 py-1.5 text-center text-xs font-bold text-gray-500 hover:text-gray-800 transition-all">Meds (1)</button>
+</div>
+</div>
+<!-- List Items -->
+<div class="flex-1 overflow-y-auto" id="approvals-list">
+<!-- Item 1: High Priority (Active) -->
+<div class="p-4 cursor-pointer transition-all border-l-4 border-blue-600 bg-blue-50/30 hover:bg-blue-50/50 relative overflow-hidden group list-item-active">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-1">
+<span class="bg-red-50 text-red-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider border border-red-200">High Priority</span>
+<span class="text-red-600 font-bold text-[10px] flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">timer</span> -45m SLA</span>
+</div>
+<span class="text-gray-400 text-[10px] font-medium">Just now</span>
+</div>
+<h3 class="font-bold text-sm text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">Transfer: ICU → HDU</h3>
+<p class="text-xs text-gray-500 line-clamp-2 mb-3">Patient shows sustained improvement over 48h. EWS stable at 3. Requesting step-down to High Dependency Unit to optimize ICU bed utilization.</p>
+<div class="flex items-center gap-2 mt-auto">
+<div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold shrink-0">RK</div>
+<div>
+<p class="text-xs font-bold text-gray-800">Rajesh Kumar</p>
+<p class="text-gray-400 font-medium text-[9px]">ID: P-98234 • Bed: ICU-04</p>
+</div>
+</div>
+</div>
+<!-- Item 2: Medium Priority -->
+<div class="p-4 cursor-pointer transition-all border-l-4 border-transparent hover:bg-gray-50 group border-b border-gray-100">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-1">
+<span class="bg-orange-50 text-orange-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider border border-orange-200">Medium</span>
+</div>
+<span class="text-gray-400 text-[10px] font-medium">2h ago</span>
+</div>
+<h3 class="font-bold text-sm text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">Medication Change</h3>
+<p class="text-xs text-gray-500 line-clamp-2 mb-3">Adjust Noradrenaline infusion rate. Current MAP consistently &gt; 75mmHg. Request tapering protocol initiation.</p>
+<div class="flex items-center gap-2 mt-auto">
+<div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">SD</div>
+<div>
+<p class="text-xs font-bold text-gray-800">Sunita Devi</p>
+<p class="text-gray-400 font-medium text-[9px]">ID: P-45122 • Bed: HDU-12</p>
+</div>
+</div>
+</div>
+<!-- Item 3: Routine -->
+<div class="p-4 cursor-pointer transition-all border-l-4 border-transparent hover:bg-gray-50 group border-b border-gray-100">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-1">
+<span class="bg-gray-100 text-gray-600 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider border border-gray-200">Routine</span>
+</div>
+<span class="text-gray-400 text-[10px] font-medium">4h ago</span>
+</div>
+<h3 class="font-bold text-sm text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">Discharge Summary</h3>
+<p class="text-xs text-gray-500 line-clamp-2 mb-3">Final review required for discharge summary. All cultures negative, afebrile x 48h, tolerating oral diet well.</p>
+<div class="flex items-center gap-2 mt-auto">
+<div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-xs font-bold shrink-0">AP</div>
+<div>
+<p class="text-xs font-bold text-gray-800">Amit Patel</p>
+<p class="text-gray-400 font-medium text-[9px]">ID: P-11290 • Bed: Ward-A3</p>
+</div>
+</div>
+</div>
+<!-- Item 4: Routine -->
+<div class="p-4 cursor-pointer transition-all border-l-4 border-transparent hover:bg-gray-50 group border-b border-gray-100">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-1">
+<span class="bg-gray-100 text-gray-600 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider border border-gray-200">Routine</span>
+</div>
+<span class="text-gray-400 text-[10px] font-medium">Yesterday</span>
+</div>
+<h3 class="font-bold text-sm text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">Dietary Order Update</h3>
+<p class="text-xs text-gray-500 line-clamp-2 mb-3">Transition from clear fluids to soft mechanical diet post-op day 2. Patient reporting hunger, bowel sounds present.</p>
+<div class="flex items-center gap-2 mt-auto">
+<div class="w-8 h-8 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold shrink-0">MR</div>
+<div>
+<p class="text-xs font-bold text-gray-800">Meera Reddy</p>
+<p class="text-gray-400 font-medium text-[9px]">ID: P-88321 • Bed: Ward-B1</p>
+</div>
+</div>
+</div>
+<!-- Item 5: High Priority -->
+<div class="p-4 cursor-pointer transition-all border-l-4 border-transparent hover:bg-gray-50 group border-b border-gray-100">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-1">
+<span class="bg-red-50 text-red-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider border border-red-200">High Priority</span>
+</div>
+<span class="text-gray-400 text-[10px] font-medium">Yesterday</span>
+</div>
+<h3 class="font-bold text-sm text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">Transfer: Ward → ICU</h3>
+<p class="text-xs text-gray-500 line-clamp-2 mb-3">Rapid clinical deterioration. SpO2 falling to 88% on 15L NRBM. Increasing respiratory distress, requires immediate intubation and mechanical ventilation.</p>
+<div class="flex items-center gap-2 mt-auto">
+<div class="w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center text-xs font-bold shrink-0">KS</div>
+<div>
+<p class="text-xs font-bold text-gray-800">Karan Singh</p>
+<p class="text-gray-400 font-medium text-[9px]">ID: P-09942 • Bed: Ward-C4</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Details Panel (8 columns) -->
+<div class="w-2/3 flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden relative" id="details-panel">
+<!-- Detail Header -->
+<div class="p-6 border-b border-gray-100 flex flex-col gap-4 bg-white relative overflow-hidden">
+<div class="flex justify-between items-start relative z-10">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-bold border-2 border-white shadow-sm">RK</div>
+<div>
+<h2 class="font-bold text-xl text-gray-800 m-0 leading-tight">Rajesh Kumar <span class="text-gray-500 text-sm font-medium ml-1">(58M)</span></h2>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded border border-gray-100">ID: P-98234</span>
+<span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded border border-gray-100">Location: ICU-04</span>
+<span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded border border-gray-100">Admitted: 12-Oct-2023</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="inline-flex items-center gap-1 bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full mb-1">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" fill-rule="evenodd"></path></svg>
+<span class="text-[10px] font-bold uppercase tracking-wider">High Priority Request</span>
+</div>
+<p class="text-[10px] text-gray-500 font-medium mt-1">Requested by: Dr. Vikram Singh</p>
+</div>
+</div>
+</div>
+<!-- Detail Content Scrollable Area -->
+<div class="flex-1 overflow-y-auto p-6 bg-gray-50">
+<div class="max-w-4xl mx-auto space-y-6">
+<!-- Rationale Card -->
+<div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+<div class="flex items-center gap-2 mb-4">
+<div class="p-1.5 bg-blue-50 rounded-lg text-blue-600">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h3 class="font-bold text-sm text-gray-800 m-0">Transfer Rationale: ICU to HDU</h3>
+</div>
+<div class="text-xs text-gray-600 space-y-3 leading-relaxed">
+<p>Patient was admitted 5 days ago with severe community-acquired pneumonia requiring mechanical ventilation. Successfully extubated 48 hours ago. Currently maintaining oxygen saturations &gt; 94% on 2L nasal cannula.</p>
+<p>Hemodynamically stable off vasopressors for &gt; 48 hours. Serial ABGs show resolution of respiratory acidosis. Tolerating enteral nutrition well.</p>
+<p><strong class="text-gray-800">Recommendation:</strong> Patient meets step-down criteria. Transfer to High Dependency Unit (HDU) for continued respiratory monitoring and physiotherapy. This will also free up critical ICU bed capacity.</p>
+</div>
+</div>
+<!-- Split Metrics Section -->
+<div class="grid grid-cols-2 gap-6">
+<!-- EWS Trends Container -->
+<div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-bold text-sm text-gray-800 m-0 flex items-center gap-2">
+<div class="p-1.5 bg-indigo-50 rounded-lg text-indigo-600">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+                                        EWS Trend (48h)
+                                    </h3>
+<div class="w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm flex items-center justify-center shadow-inner">
+                                        3
+                                    </div>
+</div>
+<div class="flex-1 relative min-h-[120px] w-full flex items-end justify-between pt-4">
+<!-- Simple Inline SVG Chart for EWS Trend -->
+<svg class="w-full h-full absolute inset-0 text-indigo-500" preserveaspectratio="none" viewbox="0 0 100 100">
+<!-- Grid lines -->
+<line stroke="#f3f4f6" stroke-dasharray="2,2" x1="0" x2="100" y1="20" y2="20"></line>
+<line stroke="#f3f4f6" stroke-dasharray="2,2" x1="0" x2="100" y1="50" y2="50"></line>
+<line stroke="#f3f4f6" stroke-dasharray="2,2" x1="0" x2="100" y1="80" y2="80"></line>
+<!-- Trend Line (High to Low) -->
+<path d="M 0 10 L 20 15 L 40 40 L 60 45 L 80 70 L 100 80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Data Points -->
+<circle cx="0" cy="10" fill="currentColor" r="2.5"></circle>
+<circle cx="20" cy="15" fill="currentColor" r="2.5"></circle>
+<circle cx="40" cy="40" fill="currentColor" r="2.5"></circle>
+<circle cx="60" cy="45" fill="currentColor" r="2.5"></circle>
+<circle cx="80" cy="70" fill="currentColor" r="2.5"></circle>
+<circle cx="100" cy="80" fill="#10B981" r="3.5"></circle> <!-- Current EWS is 3 (good) -->
+<!-- Gradient fill under line -->
+<path d="M 0 10 L 20 15 L 40 40 L 60 45 L 80 70 L 100 80 L 100 100 L 0 100 Z" fill="url(#trendGradient)" opacity="0.1"></path>
+<defs>
+<lineargradient id="trendGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="currentColor" stop-opacity="1"></stop>
+<stop offset="100%" stop-color="currentColor" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<div class="flex justify-between mt-3 text-gray-400 font-bold text-[9px] uppercase tracking-wider">
+<span>48h ago (EWS 8)</span>
+<span>Current (EWS 3)</span>
+</div>
+</div>
+<!-- Key Vitals -->
+<div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex flex-col">
+<h3 class="font-bold text-sm text-gray-800 m-0 mb-4 flex items-center gap-2">
+<div class="p-1.5 bg-teal-50 rounded-lg text-teal-600">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+                                    Current Vitals
+                                </h3>
+<div class="grid grid-cols-2 gap-2 flex-1">
+<!-- HR -->
+<div class="bg-gray-50 p-2 rounded-lg border border-gray-100 text-center">
+<p class="text-[16px] font-bold text-gray-800 leading-none">78</p>
+<p class="text-[8px] text-gray-400 font-bold uppercase mt-1">bpm</p>
+<p class="text-[9px] font-bold text-gray-600 mt-0.5">HR</p>
+</div>
+<!-- BP -->
+<div class="bg-gray-50 p-2 rounded-lg border border-gray-100 text-center">
+<p class="text-[16px] font-bold text-gray-800 leading-none">120/75</p>
+<p class="text-[8px] text-gray-400 font-bold uppercase mt-1">mmHg</p>
+<p class="text-[9px] font-bold text-gray-600 mt-0.5">BP</p>
+</div>
+<!-- SpO2 -->
+<div class="bg-gray-50 p-2 rounded-lg border border-gray-100 text-center">
+<p class="text-[16px] font-bold text-gray-800 leading-none">96</p>
+<p class="text-[8px] text-gray-400 font-bold uppercase mt-1">%</p>
+<p class="text-[9px] font-bold text-gray-600 mt-0.5">SpO2 (2L NC)</p>
+</div>
+<!-- RR -->
+<div class="bg-gray-50 p-2 rounded-lg border border-gray-100 text-center">
+<p class="text-[16px] font-bold text-gray-800 leading-none">16</p>
+<p class="text-[8px] text-gray-400 font-bold uppercase mt-1">rpm</p>
+<p class="text-[9px] font-bold text-gray-600 mt-0.5">RR</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Checklists / Readiness -->
+<div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+<h3 class="font-bold text-sm text-gray-800 m-0 mb-4">Transfer Readiness Checklist</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+<input checked="" class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500" disabled="" type="checkbox"/>
+<span class="text-xs text-gray-700 font-medium">Hemodynamically stable &gt; 24h</span>
+</label>
+<label class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+<input checked="" class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500" disabled="" type="checkbox"/>
+<span class="text-xs text-gray-700 font-medium">Extubated &gt; 24h &amp; maintaining airway</span>
+</label>
+<label class="flex items-center gap-3 p-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+<input checked="" class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500" disabled="" type="checkbox"/>
+<span class="text-xs text-gray-700 font-medium">HDU bed availability confirmed (Bed: HDU-08)</span>
+</label>
+<label class="flex items-center gap-3 p-2 bg-white rounded-lg cursor-pointer hover:bg-gray-50 transition-colors border border-gray-200">
+<input class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500" type="checkbox"/>
+<span class="text-xs text-gray-800 font-bold">Verify receiving nurse handover completed</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Fixed Action Footer -->
+<div class="p-4 bg-white border-t border-gray-100 flex items-center justify-between shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)] z-20">
+<button class="px-4 py-2 rounded-lg text-xs font-bold text-red-600 bg-white hover:bg-red-50 border border-red-200 transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        Reject
+                    </button>
+<div class="flex gap-3">
+<button class="px-4 py-2 rounded-lg text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                            Request Info
+                        </button>
+<button class="px-5 py-2 rounded-lg text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-all flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                            Approve Transfer
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // Simple script to handle list item selection for demonstration purposes
+    document.addEventListener('DOMContentLoaded', () => {
+        const listItems = document.querySelectorAll('#approvals-list > div');
+        
+        listItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Remove active class from all
+                listItems.forEach(i => {
+                    i.classList.remove('bg-blue-50/30', 'border-blue-600', 'list-item-active');
+                    i.classList.add('border-transparent');
+                });
+                
+                // Add active state to clicked item
+                item.classList.remove('border-transparent');
+                item.classList.add('bg-blue-50/30', 'border-blue-600', 'list-item-active');
+                
+                // Pulse details panel
+                const detailsPanel = document.getElementById('details-panel');
+                detailsPanel.style.opacity = '0.7';
+                setTimeout(() => {
+                    detailsPanel.style.opacity = '1';
+                    detailsPanel.style.transition = 'opacity 0.2s ease';
+                }, 100);
+            });
+        });
+    });
+</script></div></main>  <script src="../global_alert_manager.js"></script>
+</body></html>

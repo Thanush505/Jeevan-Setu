@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Beds, Wards &amp; Resource Utilization — Jeevan Setu Admin</title>
+  <style>
+    @layer base {
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overscroll-behavior: none;
+      }
+
+      main>:first-child {
+        margin-top: 0 !important;
+      }
+
+      main>:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sidebar-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#004ac6",
+            "on-primary-fixed": "#00174b",
+            "surface-container-low": "#f0f3ff",
+            "error-container": "#ffdad6",
+            "background": "#f9f9ff",
+            "on-surface-variant": "#434655",
+            "on-error": "#ffffff",
+            "primary-fixed-dim": "#b4c5ff",
+            "on-background": "#111c2d",
+            "on-secondary-fixed-variant": "#004c6e",
+            "tertiary": "#46566c",
+            "secondary-fixed": "#c9e6ff",
+            "on-surface": "#111c2d",
+            "surface-container-high": "#dee8ff",
+            "primary-container": "#2563eb",
+            "on-primary-container": "#eeefff",
+            "on-primary": "#ffffff",
+            "secondary-fixed-dim": "#89ceff",
+            "inverse-surface": "#263143",
+            "surface-container-lowest": "#ffffff",
+            "surface-variant": "#d8e3fb",
+            "secondary": "#006591",
+            "surface-tint": "#0053db",
+            "inverse-primary": "#b4c5ff",
+            "surface-bright": "#f9f9ff",
+            "on-secondary-container": "#004666",
+            "on-tertiary-fixed": "#0b1c30",
+            "tertiary-container": "#5e6e85",
+            "surface-container-highest": "#d8e3fb",
+            "inverse-on-surface": "#ecf1ff",
+            "surface": "#f9f9ff",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed": "#001e2f",
+            "error": "#ba1a1a",
+            "on-tertiary-container": "#e9f0ff",
+            "surface-container": "#e7eeff",
+            "primary-fixed": "#dbe1ff",
+            "outline-variant": "#c3c6d7",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed-variant": "#38485d",
+            "tertiary-fixed": "#d3e4fe",
+            "on-tertiary": "#ffffff",
+            "secondary-container": "#39b8fd",
+            "surface-dim": "#cfdaf2",
+            "outline": "#737686",
+            "on-primary-fixed-variant": "#003ea8",
+            "tertiary-fixed-dim": "#b7c8e1"
+          },
+          fontFamily: {
+            "body-lg": ["Inter"],
+            "headline-lg": ["Poppins"],
+            "label-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-md": ["Poppins"],
+            "display": ["Poppins"],
+            "headline-sm": ["Poppins"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-background font-body-md text-on-surface">
+
+  <!-- =================================================================== -->
+  <!-- SIDEBAR NAVIGATION                                                  -->
+  <!-- =================================================================== -->
+  <aside
+    class="fixed left-0 top-0 w-64 bg-[#0a1e4d] text-white flex flex-col flex-shrink-0 h-full overflow-y-auto z-50 sidebar-transition"
+    data-purpose="sidebar">
+    <div class="p-6 flex items-center space-x-3">
+      <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-md">
+        <svg class="w-8 h-8 text-[#0a1e4d]" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z">
+          </path>
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-lg font-bold leading-none">JEEVAN SETU</h1>
+        <p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider font-semibold">Intelligent Transfer System</p>
+      </div>
+    </div>
+
+    <nav class="flex-1 px-4 py-4 space-y-6">
+      <div>
+        <a class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 transition-colors font-medium"
+          href="../Administrator_dashboard_/Administrator_dashboard_.html">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3 px-4">Management</p>
+        <ul class="space-y-1.5">
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors text-sm"
+              href="../Admin_patient_management/Admin_patient_management.html"><svg class="w-5 h-5 flex-shrink-0"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Patients</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 bg-blue-600 px-4 py-2 rounded-lg text-white font-medium text-sm shadow-md"
+              href="../Admin_beds_wards/Admin_beds_wards.html"><svg class="w-5 h-5 flex-shrink-0" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Beds &amp; Wards</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors text-sm"
+              href="../Admin_users_roles/Admin_users_roles.html"><svg class="w-5 h-5 flex-shrink-0" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Users &amp; Roles</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors text-sm"
+              href="../Admin_attendant_access/Admin_attendant_access.html"><svg class="w-5 h-5 flex-shrink-0"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Attendants (QR Access)</span></a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3 px-4">Monitoring &amp; Analytics
+        </p>
+        <ul class="space-y-1.5">
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors text-sm"
+              href="../Admin_ews_analytics/Admin_ews_analytics.html"><svg class="w-5 h-5 flex-shrink-0" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>EWS Analytics</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors text-sm"
+              href="../Admin_clinical_reports/Admin_clinical_reports.html"><svg class="w-5 h-5 flex-shrink-0"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Reports</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors text-sm"
+              href="../Admin_audit_logs/Admin_audit_logs.html"><svg class="w-5 h-5 flex-shrink-0" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Audit Logs</span></a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3 px-4">System Settings</p>
+        <ul class="space-y-1.5">
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors text-sm"
+              href="../Admin_system_settings/Admin_system_settings.html"><svg class="w-5 h-5 flex-shrink-0" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2"></path>
+              </svg><span>System Settings</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors text-sm"
+              href="../Admin_notification_settings/Admin_notification_settings.html"><svg class="w-5 h-5 flex-shrink-0"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Notifications</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors text-sm"
+              href="../Admin_backup_restore/Admin_backup_restore.html"><svg class="w-5 h-5 flex-shrink-0" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Backup &amp; Restore</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Sidebar User Profile -->
+    <div class="p-4 mt-auto border-t border-white/10">
+      <div class="bg-white/5 rounded-xl p-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div id="sidebar-admin-initials"
+            class="w-9 h-9 rounded-full bg-blue-500 text-white font-bold flex items-center justify-center text-xs shadow-sm">
+            AD
+          </div>
+          <div class="truncate max-w-[110px]">
+            <p id="sidebar-admin-name" class="text-xs font-bold truncate">Administrator</p>
+            <p class="text-[10px] text-blue-200">Super Admin</p>
+          </div>
+        </div>
+        <button onclick="logoutAdmin()" class="text-slate-400 hover:text-red-300 transition-colors p-1"
+          title="Sign Out">
+          <span class="material-symbols-outlined text-lg">logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =================================================================== -->
+  <!-- MAIN CONTENT CONTAINER                                              -->
+  <!-- =================================================================== -->
+  <div class="pl-64 flex flex-col min-h-screen">
+
+    <!-- Header Bar -->
+    <header
+      class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl z-40 flex items-center justify-between px-8 border-b border-surface-variant/30 shadow-2xs">
+      <div class="flex items-center flex-1 max-w-md bg-surface-container px-4 py-2 rounded-full">
+        <span class="material-symbols-outlined text-outline text-[20px] mr-2">search</span>
+        <input id="bed-search-input"
+          class="bg-transparent border-none outline-none w-full text-body-sm text-on-surface placeholder:text-outline-variant"
+          placeholder="Search beds, wards, patients, or clinicians..." type="text">
+      </div>
+      <div class="flex items-center gap-6">
+        <button onclick="fetchBedsAndUtilizationMetrics()"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-xs font-semibold text-primary transition-all">
+          <span class="material-symbols-outlined text-base" id="icon-refresh">sync</span>
+          <span>Sync Live Data</span>
+        </button>
+        <div class="flex items-center gap-3 pl-4 border-l border-surface-variant/50">
+          <div class="text-right hidden sm:block">
+            <p id="top-admin-name" class="text-label-md text-on-surface leading-none font-bold">Administrator</p>
+            <p class="text-label-sm text-on-surface-variant leading-none mt-1">Hospital Admin</p>
+          </div>
+          <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">
+            AD
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-16 min-h-screen bg-background flex-1">
+      <div class="flex flex-col w-full p-8 gap-6 max-w-7xl mx-auto">
+
+        <!-- Page Title & Header -->
+        <div
+          class="flex flex-wrap items-center justify-between gap-4 bg-surface-container-low p-6 rounded-2xl border border-surface-variant/40 shadow-sm">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Live Bed Allocation &amp;
+                Resource Telemetry</span>
+            </div>
+            <h1 class="font-headline-lg text-2xl md:text-3xl font-bold text-on-surface">Beds, Wards &amp; Resource
+              Utilization</h1>
+            <p class="font-body-sm text-xs sm:text-sm text-on-surface-variant mt-1">Real-time hospital bed matrix,
+              clinical capacity pressure, and ward distribution directory.</p>
+          </div>
+          <div class="flex items-center gap-3 flex-wrap">
+            <button onclick="fetchBedsAndUtilizationMetrics()"
+              class="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-high hover:bg-surface-variant text-on-surface font-semibold text-xs transition-all border border-surface-variant/50 shadow-2xs">
+              <span class="material-symbols-outlined text-base">refresh</span>
+              <span>Refresh Metrics</span>
+            </button>
+
+            </a>
+          </div>
+        </div>
+
+        <!-- Metric KPI Cards: Merged Telemetry -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+          <!-- Card 1: Overall Bed Occupancy -->
+          <div
+            class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-surface-variant/30 flex flex-col justify-between hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-label-sm text-xs font-bold text-on-surface-variant uppercase tracking-wider">Overall Bed
+                Occupancy</span>
+              <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[20px]">domain</span>
+              </div>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span id="metric-overall-rate" class="font-display text-3xl font-bold text-on-surface">--%</span>
+              <span id="metric-overall-ratio" class="text-xs font-medium text-on-surface-variant">-- / -- beds</span>
+            </div>
+            <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden mt-1">
+              <div id="bar-overall-rate" class="bg-primary h-2 rounded-full transition-all duration-500"
+                style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Card 2: Critical Care Load -->
+          <div
+            class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-surface-variant/30 flex flex-col justify-between hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-label-sm text-xs font-bold text-on-surface-variant uppercase tracking-wider">Critical
+                Care Load</span>
+              <div class="w-9 h-9 rounded-xl bg-error-container text-error flex items-center justify-center">
+                <span class="material-symbols-outlined text-[20px]">monitor_heart</span>
+              </div>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span id="metric-critical-rate" class="font-display text-3xl font-bold text-on-surface">--%</span>
+              <span class="text-xs font-semibold text-error bg-error-container/60 px-2 py-0.5 rounded-full">ICU +
+                HDU</span>
+            </div>
+            <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden mt-1">
+              <div id="bar-critical-rate" class="bg-error h-2 rounded-full transition-all duration-500"
+                style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Card 3: Available Critical Beds -->
+          <div
+            class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-surface-variant/30 flex flex-col justify-between hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-label-sm text-xs font-bold text-on-surface-variant uppercase tracking-wider">Available
+                Critical Beds</span>
+              <div class="w-9 h-9 rounded-xl bg-secondary-container/30 text-secondary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+              </div>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span id="metric-critical-avail" class="font-display text-3xl font-bold text-secondary">--</span>
+              <span class="text-xs font-medium text-on-surface-variant">Immediate Intake Ready</span>
+            </div>
+            <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden mt-1">
+              <div id="bar-critical-avail" class="bg-secondary h-2 rounded-full transition-all duration-500"
+                style="width: 100%"></div>
+            </div>
+          </div>
+
+          <!-- Card 4: Capacity Alerts -->
+          <div
+            class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-surface-variant/30 flex flex-col justify-between hover:shadow-md transition-all">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-label-sm text-xs font-bold text-on-surface-variant uppercase tracking-wider">Capacity
+                Status</span>
+              <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[20px]">warning</span>
+              </div>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span id="metric-alerts-count" class="font-display text-3xl font-bold text-on-surface">0</span>
+              <span id="metric-alerts-label"
+                class="text-xs font-semibold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">All Wards
+                Normal</span>
+            </div>
+            <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden mt-1">
+              <div id="bar-alerts" class="bg-green-500 h-2 rounded-full transition-all duration-500"
+                style="width: 100%"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Section 2: Unit Type Breakdown Cards (ICU, HDU, General Wards) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          <!-- ICU Card -->
+          <div
+            class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-surface-variant/30 flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between border-b border-surface-variant/30 pb-2.5">
+              <div class="flex items-center gap-2.5">
+                <div
+                  class="w-9 h-9 rounded-xl bg-error-container text-error flex items-center justify-center shadow-2xs">
+                  <span class="material-symbols-outlined text-xl">emergency</span>
+                </div>
+                <div>
+                  <h3 class="font-headline-sm text-sm font-bold text-on-surface">ICU Wards</h3>
+                  <p class="text-[11px] text-on-surface-variant">Level 3 Critical Care</p>
+                </div>
+              </div>
+              <span id="icu-badge-rate"
+                class="px-2 py-0.5 rounded-full text-xs font-bold bg-error-container text-error border border-error/20">--%</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div class="bg-surface-container-low p-2 rounded-xl">
+                <p class="text-[10px] text-on-surface-variant font-medium">Total</p>
+                <p id="icu-total-beds" class="text-base font-bold text-on-surface mt-0.5">--</p>
+              </div>
+              <div class="bg-error-container/30 p-2 rounded-xl">
+                <p class="text-[10px] text-error font-medium">Occupied</p>
+                <p id="icu-occupied-beds" class="text-base font-bold text-error mt-0.5">--</p>
+              </div>
+              <div class="bg-green-50 p-2 rounded-xl">
+                <p class="text-[10px] text-green-700 font-medium">Available</p>
+                <p id="icu-avail-beds" class="text-base font-bold text-green-700 mt-0.5">--</p>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-[11px] text-on-surface-variant font-medium mb-1">
+                <span>Occupancy Pressure</span>
+                <span id="icu-text-rate">--%</span>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                <div id="icu-bar-rate" class="bg-error h-2 rounded-full transition-all duration-500" style="width: 0%">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HDU Card -->
+          <div
+            class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-surface-variant/30 flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between border-b border-surface-variant/30 pb-2.5">
+              <div class="flex items-center gap-2.5">
+                <div
+                  class="w-9 h-9 rounded-xl bg-secondary-container/40 text-secondary flex items-center justify-center shadow-2xs">
+                  <span class="material-symbols-outlined text-xl">health_and_safety</span>
+                </div>
+                <div>
+                  <h3 class="font-headline-sm text-sm font-bold text-on-surface">HDU Units</h3>
+                  <p class="text-[11px] text-on-surface-variant">Step-down Progressive Care</p>
+                </div>
+              </div>
+              <span id="hdu-badge-rate"
+                class="px-2 py-0.5 rounded-full text-xs font-bold bg-secondary-container/30 text-secondary border border-secondary/20">--%</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div class="bg-surface-container-low p-2 rounded-xl">
+                <p class="text-[10px] text-on-surface-variant font-medium">Total</p>
+                <p id="hdu-total-beds" class="text-base font-bold text-on-surface mt-0.5">--</p>
+              </div>
+              <div class="bg-secondary-container/20 p-2 rounded-xl">
+                <p class="text-[10px] text-secondary font-medium">Occupied</p>
+                <p id="hdu-occupied-beds" class="text-base font-bold text-secondary mt-0.5">--</p>
+              </div>
+              <div class="bg-green-50 p-2 rounded-xl">
+                <p class="text-[10px] text-green-700 font-medium">Available</p>
+                <p id="hdu-avail-beds" class="text-base font-bold text-green-700 mt-0.5">--</p>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-[11px] text-on-surface-variant font-medium mb-1">
+                <span>Occupancy Pressure</span>
+                <span id="hdu-text-rate">--%</span>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                <div id="hdu-bar-rate" class="bg-secondary h-2 rounded-full transition-all duration-500"
+                  style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- General Ward Card -->
+          <div
+            class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-surface-variant/30 flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between border-b border-surface-variant/30 pb-2.5">
+              <div class="flex items-center gap-2.5">
+                <div
+                  class="w-9 h-9 rounded-xl bg-primary-container/20 text-primary flex items-center justify-center shadow-2xs">
+                  <span class="material-symbols-outlined text-xl">apartment</span>
+                </div>
+                <div>
+                  <h3 class="font-headline-sm text-sm font-bold text-on-surface">General Wards</h3>
+                  <p class="text-[11px] text-on-surface-variant">Inpatient Medical &amp; Surgical</p>
+                </div>
+              </div>
+              <span id="gen-badge-rate"
+                class="px-2 py-0.5 rounded-full text-xs font-bold bg-primary-container/15 text-primary border border-primary/20">--%</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div class="bg-surface-container-low p-2 rounded-xl">
+                <p class="text-[10px] text-on-surface-variant font-medium">Total</p>
+                <p id="gen-total-beds" class="text-base font-bold text-on-surface mt-0.5">--</p>
+              </div>
+              <div class="bg-primary-container/10 p-2 rounded-xl">
+                <p class="text-[10px] text-primary font-medium">Occupied</p>
+                <p id="gen-occupied-beds" class="text-base font-bold text-primary mt-0.5">--</p>
+              </div>
+              <div class="bg-green-50 p-2 rounded-xl">
+                <p class="text-[10px] text-green-700 font-medium">Available</p>
+                <p id="gen-avail-beds" class="text-base font-bold text-green-700 mt-0.5">--</p>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-[11px] text-on-surface-variant font-medium mb-1">
+                <span>Occupancy Pressure</span>
+                <span id="gen-text-rate">--%</span>
+              </div>
+              <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                <div id="gen-bar-rate" class="bg-primary h-2 rounded-full transition-all duration-500"
+                  style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Section 3: Interactive Live Bed Grid & Ward Floorplan -->
+        <div
+          class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-surface-variant/30 flex flex-col gap-5">
+
+          <!-- Ward Floorplan Toolbar -->
+          <div
+            class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-surface-variant/30">
+            <div>
+              <h2 class="font-headline-sm text-lg font-bold text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-xl">grid_view</span>
+                Live Bed Matrix &amp; Ward Floorplan
+              </h2>
+              <p class="text-xs text-on-surface-variant mt-0.5">Interactive spatial view of occupied, available, and
+                critical beds across selected unit.</p>
+            </div>
+
+            <!-- Ward Selector Buttons -->
+            <div class="flex items-center gap-2 flex-wrap">
+              <div id="ward-nav-container" class="flex p-1 bg-surface-container rounded-xl text-xs font-semibold">
+                <!-- Dynamically loaded -->
+                <button class="ward-tab px-3 py-1.5 rounded-lg bg-primary text-white shadow-2xs transition-all"
+                  data-ward="ICU-A">ICU-A (North Wing)</button>
+                <button
+                  class="ward-tab px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface transition-all"
+                  data-ward="HDU-B">HDU-B (East Wing)</button>
+                <button
+                  class="ward-tab px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface transition-all"
+                  data-ward="General Ward-C">General Ward-C</button>
+              </div>
+
+              <!-- Bed Status Filter -->
+              <select id="bed-status-filter"
+                class="px-3 py-1.5 bg-white border border-outline-variant/40 rounded-xl text-xs font-semibold text-on-surface focus:ring-2 focus:ring-primary/20">
+                <option value="all">All Bed States</option>
+                <option value="occupied">Occupied Only</option>
+                <option value="available">Available Only</option>
+                <option value="maintenance">Maintenance</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Floorplan Matrix Container -->
+          <div
+            class="bg-surface-container-low/40 rounded-xl p-6 border-2 border-dashed border-outline-variant/30 min-h-[260px] relative">
+
+            <!-- Central Station Label -->
+            <div class="text-center mb-6">
+              <span id="current-floorplan-title"
+                class="font-mono text-[11px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                Unit Floorplan: ICU-A (Level 3 Critical Care)
+              </span>
+            </div>
+
+            <!-- Live Beds Grid -->
+            <div id="beds-matrix-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <!-- Loading Skeleton -->
+              <div class="col-span-full py-12 text-center">
+                <span class="material-symbols-outlined text-3xl text-primary animate-spin">sync</span>
+                <p class="text-xs font-semibold text-on-surface mt-2">Loading live ward bed matrix...</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Legend Bar -->
+          <div class="flex items-center justify-between flex-wrap gap-3 pt-2 text-xs text-on-surface-variant">
+            <div class="flex items-center gap-4 flex-wrap">
+              <span class="font-bold text-[11px] uppercase tracking-wider text-slate-400">Legend:</span>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-error"></span>
+                <span>Critical / High EWS</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-secondary"></span>
+                <span>Occupied (Stable)</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <span>Available</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                <span>Maintenance / Turnaround</span>
+              </div>
+            </div>
+            <span id="bed-matrix-count-summary" class="font-mono text-[11px] text-slate-500">Showing 6 beds in
+              ICU-A</span>
+          </div>
+
+        </div>
+
+        <!-- Section 4: Ward-by-Ward Capacity & Utilization Directory Table -->
+        <div
+          class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-surface-variant/30 flex flex-col gap-4">
+          <div class="flex items-center justify-between flex-wrap gap-4 pb-2 border-b border-surface-variant/30">
+            <div>
+              <h2 class="font-headline-sm text-lg font-bold text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-xl">table_chart</span>
+                Ward-by-Ward Capacity &amp; Utilization Directory
+              </h2>
+              <p class="text-xs text-on-surface-variant mt-0.5">Detailed breakdown of operational capacity, occupied
+                census, and available beds across all hospital wards.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-on-surface-variant font-medium">Filter Unit:</span>
+              <select id="ward-filter-type"
+                class="bg-surface-container px-3 py-1.5 rounded-lg text-xs font-semibold text-on-surface border border-surface-variant/50 focus:ring-2 focus:ring-primary/20 outline-none">
+                <option value="">All Units</option>
+                <option value="ICU">ICU Only</option>
+                <option value="HDU">HDU Only</option>
+                <option value="General">General Only</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Ward Table -->
+          <div class="w-full overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-surface-variant/40 bg-surface-container/40">
+                  <th class="py-3 px-4 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Ward Name
+                  </th>
+                  <th class="py-3 px-4 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Unit Type
+                  </th>
+                  <th class="py-3 px-4 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Floor
+                  </th>
+                  <th class="py-3 px-4 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Total
+                    Capacity</th>
+                  <th class="py-3 px-4 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Occupied
+                  </th>
+                  <th class="py-3 px-4 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">Available
+                  </th>
+                  <th class="py-3 px-4 font-label-md text-xs text-on-surface-variant uppercase tracking-wider">
+                    Utilization</th>
+                  <th
+                    class="py-3 px-4 font-label-md text-xs text-on-surface-variant uppercase tracking-wider text-right">
+                    Status</th>
+                </tr>
+              </thead>
+              <tbody id="ward-breakdown-tbody" class="divide-y divide-surface-variant/20 font-body-sm text-xs">
+                <tr>
+                  <td colspan="8" class="p-8 text-center text-on-surface-variant">
+                    <span
+                      class="material-symbols-outlined text-[32px] text-primary animate-spin block mx-auto mb-2">sync</span>
+                    <p class="font-label-md">Loading ward capacity metrics...</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- JAVASCRIPT: MERGED BEDS & RESOURCE UTILIZATION ENGINE               -->
+  <!-- =================================================================== -->
+  <script>
+    const ANALYTICS_API = '/api/v1/analytics';
+    const BEDS_API = '/api/v1/beds';
+    const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
+
+    let allBedsData = [];
+    let wardBreakdownData = [];
+    let currentSelectedWard = 'ICU-A';
+
+    function getAuthHeaders() {
+      const headers = { 'Content-Type': 'application/json' };
+      if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+      return headers;
+    }
+
+    async function fetchBedsAndUtilizationMetrics() {
+      const refreshIcon = document.getElementById('icon-refresh');
+      if (refreshIcon) refreshIcon.classList.add('animate-spin');
+
+      try {
+        // 1. Fetch Resource Utilization Summary
+        const resUtil = await fetch(`${ANALYTICS_API}/resource-utilization`, { headers: getAuthHeaders() });
+        if (resUtil.ok) {
+          const jsonUtil = await resUtil.json();
+          if (jsonUtil.success && jsonUtil.data) {
+            renderUtilizationOverview(jsonUtil.data);
+          }
+        }
+
+        // 2. Fetch Occupancy Breakdown
+        const resOcc = await fetch(`${ANALYTICS_API}/occupancy`, { headers: getAuthHeaders() });
+        if (resOcc.ok) {
+          const jsonOcc = await resOcc.json();
+          if (jsonOcc.success && jsonOcc.data) {
+            renderOccupancyBreakdown(jsonOcc.data);
+          }
+        }
+
+        // 3. Fetch All Live Beds
+        const resBeds = await fetch(BEDS_API, { headers: getAuthHeaders() });
+        if (resBeds.ok) {
+          const jsonBeds = await resBeds.json();
+          if (jsonBeds.success && jsonBeds.data) {
+            allBedsData = jsonBeds.data || [];
+            renderBedsMatrix();
+          }
+        }
+      } catch (err) {
+        console.error('[Jeevan Setu] Failed to load beds & resource metrics:', err);
+      } finally {
+        setTimeout(() => {
+          if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+        }, 500);
+      }
+    }
+
+    function renderUtilizationOverview(data) {
+      // Overall Rate
+      const overallRate = data.overall_utilization_rate_pct || 0;
+      document.getElementById('metric-overall-rate').textContent = `${overallRate.toFixed(1)}%`;
+      document.getElementById('metric-overall-ratio').textContent = `${data.occupied_beds || 0} / ${data.total_beds || 0} beds`;
+      document.getElementById('bar-overall-rate').style.width = `${Math.min(overallRate, 100)}%`;
+
+      // Critical Rate
+      const critRate = data.critical_care_utilization_pct || 0;
+      document.getElementById('metric-critical-rate').textContent = `${critRate.toFixed(1)}%`;
+      document.getElementById('bar-critical-rate').style.width = `${Math.min(critRate, 100)}%`;
+
+      // Available Critical Beds
+      const critAvail = data.available_critical_beds || 0;
+      document.getElementById('metric-critical-avail').textContent = critAvail;
+
+      // Alerts
+      const alertsCount = data.high_occupancy_alerts_count || 0;
+      document.getElementById('metric-alerts-count').textContent = alertsCount;
+      const alertBadge = document.getElementById('metric-alerts-label');
+      const barAlerts = document.getElementById('bar-alerts');
+      if (alertsCount > 0) {
+        alertBadge.textContent = `${alertsCount} Ward(s) > 85%`;
+        alertBadge.className = 'text-xs font-semibold text-error bg-error-container px-2 py-0.5 rounded-full';
+        barAlerts.className = 'bg-error h-2 rounded-full transition-all duration-500';
+      } else {
+        alertBadge.textContent = 'All Wards Normal';
+        alertBadge.className = 'text-xs font-semibold text-green-700 bg-green-100 px-2 py-0.5 rounded-full';
+        barAlerts.className = 'bg-green-500 h-2 rounded-full transition-all duration-500';
+      }
+    }
+
+    function renderOccupancyBreakdown(data) {
+      // ICU Breakdown
+      if (data.icu_occupancy) {
+        const icu = data.icu_occupancy;
+        const rate = icu.occupancy_rate_pct || 0;
+        document.getElementById('icu-total-beds').textContent = icu.total_beds || 0;
+        document.getElementById('icu-occupied-beds').textContent = icu.occupied_beds || 0;
+        document.getElementById('icu-avail-beds').textContent = icu.available_beds || 0;
+        document.getElementById('icu-badge-rate').textContent = `${rate.toFixed(1)}%`;
+        document.getElementById('icu-text-rate').textContent = `${rate.toFixed(1)}%`;
+        document.getElementById('icu-bar-rate').style.width = `${Math.min(rate, 100)}%`;
+      }
+
+      // HDU Breakdown
+      if (data.hdu_occupancy) {
+        const hdu = data.hdu_occupancy;
+        const rate = hdu.occupancy_rate_pct || 0;
+        document.getElementById('hdu-total-beds').textContent = hdu.total_beds || 0;
+        document.getElementById('hdu-occupied-beds').textContent = hdu.occupied_beds || 0;
+        document.getElementById('hdu-avail-beds').textContent = hdu.available_beds || 0;
+        document.getElementById('hdu-badge-rate').textContent = `${rate.toFixed(1)}%`;
+        document.getElementById('hdu-text-rate').textContent = `${rate.toFixed(1)}%`;
+        document.getElementById('hdu-bar-rate').style.width = `${Math.min(rate, 100)}%`;
+      }
+
+      // General Ward Breakdown
+      if (data.general_occupancy) {
+        const gen = data.general_occupancy;
+        const rate = gen.occupancy_rate_pct || 0;
+        document.getElementById('gen-total-beds').textContent = gen.total_beds || 0;
+        document.getElementById('gen-occupied-beds').textContent = gen.occupied_beds || 0;
+        document.getElementById('gen-avail-beds').textContent = gen.available_beds || 0;
+        document.getElementById('gen-badge-rate').textContent = `${rate.toFixed(1)}%`;
+        document.getElementById('gen-text-rate').textContent = `${rate.toFixed(1)}%`;
+        document.getElementById('gen-bar-rate').style.width = `${Math.min(rate, 100)}%`;
+      }
+
+      // Ward Directory Table
+      wardBreakdownData = data.ward_breakdown || [];
+      renderWardTable(wardBreakdownData);
+    }
+
+    function renderBedsMatrix() {
+      const grid = document.getElementById('beds-matrix-grid');
+      if (!grid) return;
+
+      const statusFilter = document.getElementById('bed-status-filter').value;
+      const searchKeyword = (document.getElementById('bed-search-input')?.value || '').toLowerCase().trim();
+
+      // Filter beds for the selected ward
+      const filtered = allBedsData.filter(b => {
+        const matchesWard = (b.ward_name === currentSelectedWard || (b.ward_type && currentSelectedWard.includes(b.ward_type)));
+        if (!matchesWard) return false;
+
+        if (statusFilter !== 'all') {
+          if (b.status !== statusFilter) return false;
+        }
+
+        if (searchKeyword) {
+          const bedNum = (b.bed_number || '').toLowerCase();
+          const pName = (b.patient_name || '').toLowerCase();
+          const uhid = (b.patient_code || '').toLowerCase();
+          const doc = (b.doctor_name || '').toLowerCase();
+          if (!bedNum.includes(searchKeyword) && !pName.includes(searchKeyword) && !uhid.includes(searchKeyword) && !doc.includes(searchKeyword)) {
+            return false;
+          }
+        }
+
+        return true;
+      });
+
+      document.getElementById('current-floorplan-title').textContent = `Unit Floorplan: ${currentSelectedWard}`;
+      document.getElementById('bed-matrix-count-summary').textContent = `Showing ${filtered.length} of ${allBedsData.filter(b => b.ward_name === currentSelectedWard).length} beds in ${currentSelectedWard}`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-10 text-center text-on-surface-variant">
+            <span class="material-symbols-outlined text-3xl text-outline-variant block mb-1">bed</span>
+            <p class="font-bold text-xs">No beds match the current filter in ${currentSelectedWard}.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(b => {
+        const isOccupied = b.status === 'occupied';
+        const isMaintenance = b.status === 'maintenance';
+        const isCritical = isOccupied && (b.ews_score >= 5 || b.risk_level === 'CRITICAL' || b.risk_level === 'HIGH');
+
+        if (isOccupied) {
+          const borderClass = isCritical ? 'border-l-4 border-error' : 'border-l-4 border-secondary';
+          const iconColor = isCritical ? 'text-error' : 'text-secondary';
+          const pulseDot = isCritical ? '<span class="w-2 h-2 rounded-full bg-error animate-pulse" title="High / Critical EWS"></span>' : '';
+
+          return `
+            <div class="bg-surface-container-lowest rounded-xl p-3.5 shadow-sm hover:shadow-md transition-shadow ${borderClass} cursor-pointer group">
+              <div class="flex justify-between items-start mb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-lg ${iconColor}">bed</span>
+                  <span class="font-bold text-xs text-on-surface">${b.bed_number}</span>
+                </div>
+                ${pulseDot}
+              </div>
+              <div class="mt-2 pt-2 border-t border-surface-variant/40">
+                <p class="font-bold text-xs text-on-surface truncate">${b.patient_name || 'Admitted Patient'}</p>
+                <p class="text-[10px] text-on-surface-variant font-mono mt-0.5 truncate">${b.patient_code || 'UHID-Active'}</p>
+                <div class="flex justify-between items-center mt-2 text-[10px]">
+                  <span class="px-1.5 py-0.5 rounded font-semibold ${isCritical ? 'bg-error-container text-error' : 'bg-secondary-container/40 text-secondary'}">
+                    EWS: ${b.ews_score ?? (isCritical ? '6' : '1')}
+                  </span>
+                  <span class="text-on-surface-variant font-medium truncate max-w-[90px]">${b.doctor_name || 'Dr. On Duty'}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (isMaintenance) {
+          return `
+            <div class="bg-surface-variant/40 rounded-xl p-3.5 shadow-2xs border border-outline-variant/30 flex flex-col justify-center items-center h-[115px] opacity-75">
+              <span class="material-symbols-outlined text-xl text-outline mb-1">build</span>
+              <span class="font-bold text-xs text-on-surface-variant">${b.bed_number}</span>
+              <span class="text-[10px] font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded mt-1">Maintenance</span>
+            </div>
+          `;
+        } else {
+          // Available
+          return `
+            <div class="bg-surface-container-lowest rounded-xl p-3.5 shadow-2xs border-2 border-dashed border-emerald-200 hover:border-emerald-500 hover:bg-emerald-50/30 transition-all flex flex-col justify-center items-center h-[115px]">
+              <span class="material-symbols-outlined text-xl text-emerald-600 mb-1">check_circle</span>
+              <span class="font-bold text-xs text-on-surface">${b.bed_number}</span>
+              <span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded mt-1">Available</span>
+            </div>
+          `;
+        }
+      }).join('');
+    }
+
+    function renderWardTable(wards) {
+      const tbody = document.getElementById('ward-breakdown-tbody');
+      if (!tbody) return;
+
+      const filterType = document.getElementById('ward-filter-type').value;
+      const filtered = filterType ? wards.filter(w => w.ward_type === filterType) : wards;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="p-8 text-center text-on-surface-variant">
+              <span class="material-symbols-outlined text-[32px] text-outline-variant block mb-1">domain_disabled</span>
+              <p class="font-label-md">No wards match the selected filter</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(w => {
+        const rate = w.occupancy_rate_pct || 0;
+        let badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+        let statusText = 'Optimal';
+
+        if (rate >= 85) {
+          badgeClass = 'bg-error-container text-error border-error/30';
+          statusText = 'High Capacity';
+        } else if (rate >= 65) {
+          badgeClass = 'bg-amber-100 text-amber-800 border-amber-200';
+          statusText = 'Moderate';
+        }
+
+        return `
+          <tr class="hover:bg-surface-container-low/60 transition-colors">
+            <td class="py-3 px-4 font-bold text-on-surface">${w.ward_name}</td>
+            <td class="py-3 px-4">
+              <span class="px-2 py-0.5 rounded-full font-bold text-[10px] ${w.ward_type === 'ICU' ? 'bg-error-container text-error' : w.ward_type === 'HDU' ? 'bg-secondary-container/30 text-secondary' : 'bg-primary-container/20 text-primary'}">
+                ${w.ward_type}
+              </span>
+            </td>
+            <td class="py-3 px-4 text-on-surface-variant">${w.floor || 'Floor 1'}</td>
+            <td class="py-3 px-4 font-bold text-on-surface">${w.total_beds || 0}</td>
+            <td class="py-3 px-4 font-semibold text-error">${w.occupied_beds || 0}</td>
+            <td class="py-3 px-4 font-semibold text-emerald-700">${w.available_beds || 0}</td>
+            <td class="py-3 px-4">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-[11px] w-9">${rate.toFixed(0)}%</span>
+                <div class="w-20 bg-surface-container rounded-full h-1.5 overflow-hidden">
+                  <div class="h-1.5 rounded-full ${rate >= 85 ? 'bg-error' : rate >= 65 ? 'bg-amber-500' : 'bg-emerald-500'}" style="width: ${Math.min(rate, 100)}%"></div>
+                </div>
+              </div>
+            </td>
+            <td class="py-3 px-4 text-right">
+              <span class="inline-flex px-2 py-0.5 rounded-full font-bold text-[10px] border ${badgeClass}">
+                ${statusText}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Setup Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      // Ward Tab Click
+      document.querySelectorAll('.ward-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.ward-tab').forEach(t => {
+            t.classList.remove('bg-primary', 'text-white', 'shadow-2xs');
+            t.classList.add('text-on-surface-variant');
+          });
+          tab.classList.add('bg-primary', 'text-white', 'shadow-2xs');
+          tab.classList.remove('text-on-surface-variant');
+
+          currentSelectedWard = tab.getAttribute('data-ward');
+          renderBedsMatrix();
+        });
+      });
+
+      // Filter change
+      const wardFilterSelect = document.getElementById('ward-filter-type');
+      if (wardFilterSelect) {
+        wardFilterSelect.addEventListener('change', () => renderWardTable(wardBreakdownData));
+      }
+
+      const bedStatusFilter = document.getElementById('bed-status-filter');
+      if (bedStatusFilter) {
+        bedStatusFilter.addEventListener('change', () => renderBedsMatrix());
+      }
+
+      const searchInput = document.getElementById('bed-search-input');
+      if (searchInput) {
+        searchInput.addEventListener('input', () => renderBedsMatrix());
+      }
+
+      fetchBedsAndUtilizationMetrics();
+    });
+  </script>
+  <script src="../admin_navigation.js"></script>
+</body>
+
+</html>

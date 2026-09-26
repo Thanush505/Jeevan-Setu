@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Rajesh Kumar",
+    "age": 58,
+    "gender": "Male",
+    "blood_group": "B+",
+    "contact_number": "9876543210",
+    "ward_type": "ICU",
+    "bed_number": "I-001",
+    "diagnosis": "Acute Myocardial Infarction",
+    "status": "admitted"
+  },
+  {
+    "name": "Priya Sharma",
+    "age": 45,
+    "gender": "Female",
+    "blood_group": "O+",
+    "contact_number": "9876543211",
+    "ward_type": "ICU",
+    "bed_number": "I-002",
+    "diagnosis": "Severe Pneumonia with Respiratory Failure",
+    "status": "admitted"
+  },
+  {
+    "name": "Amit Patel",
+    "age": 67,
+    "gender": "Male",
+    "blood_group": "A+",
+    "contact_number": "9876543212",
+    "ward_type": "HDU",
+    "bed_number": "H-001",
+    "diagnosis": "Post-operative monitoring (CABG)",
+    "status": "admitted"
+  },
+  {
+    "name": "Sunita Devi",
+    "age": 72,
+    "gender": "Female",
+    "blood_group": "AB+",
+    "contact_number": "9876543213",
+    "ward_type": "ICU",
+    "bed_number": "I-003",
+    "diagnosis": "Diabetic Ketoacidosis",
+    "status": "admitted"
+  },
+  {
+    "name": "Mohammed Ali",
+    "age": 55,
+    "gender": "Male",
+    "blood_group": "O-",
+    "contact_number": "9876543214",
+    "ward_type": "HDU",
+    "bed_number": "H-002",
+    "diagnosis": "Acute Pancreatitis",
+    "status": "admitted"
+  },
+  {
+    "name": "Ananya Reddy",
+    "age": 34,
+    "gender": "Female",
+    "blood_group": "B-",
+    "contact_number": "9876543215",
+    "ward_type": "General",
+    "bed_number": "G-001",
+    "diagnosis": "Post-appendectomy recovery",
+    "status": "admitted"
+  },
+  {
+    "name": "Vikram Singh",
+    "age": 42,
+    "gender": "Male",
+    "blood_group": "A-",
+    "contact_number": "9876543216",
+    "ward_type": "ICU",
+    "bed_number": "I-004",
+    "diagnosis": "Traumatic Brain Injury",
+    "status": "admitted"
+  },
+  {
+    "name": "Lakshmi Narayana",
+    "age": 80,
+    "gender": "Female",
+    "blood_group": "O+",
+    "contact_number": "9876543217",
+    "ward_type": "HDU",
+    "bed_number": "H-003",
+    "diagnosis": "Congestive Heart Failure — stable",
+    "status": "admitted"
+  }
+]

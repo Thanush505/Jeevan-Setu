@@ -1,0 +1,448 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Jeevan Setu - My Patients</title>
+<style>
+@layer base{
+  html,body{margin:0;padding:0;}
+  body{overscroll-behavior:none;}
+  main>:first-child{margin-top:0!important;}
+  main>:last-child{margin-bottom:0!important;}
+}
+::-webkit-scrollbar{display:none;}
+.sidebar-active {
+  background-color: #2563eb;
+  border-radius: 0.375rem;
+}
+/* Custom Scrollbar for sidebar */
+aside::-webkit-scrollbar {
+  width: 6px;
+  display: block;
+}
+aside::-webkit-scrollbar-track {
+  background: #0a1931;
+}
+aside::-webkit-scrollbar-thumb {
+  background: #1e3a8a;
+  border-radius: 10px;
+}
+</style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "on-primary": "#ffffff", "on-secondary-container": "#004666", "on-primary-fixed-variant": "#003ea8", "on-tertiary-fixed-variant": "#38485d", "error": "#ba1a1a", "secondary-fixed": "#c9e6ff", "tertiary-container": "#5e6e85", "inverse-surface": "#263143", "surface-bright": "#f9f9ff", "on-tertiary": "#ffffff", "outline-variant": "#c3c6d7", "surface-container-highest": "#d8e3fb", "tertiary-fixed": "#d3e4fe", "on-surface-variant": "#434655", "surface-container-lowest": "#ffffff", "on-secondary": "#ffffff", "inverse-on-surface": "#ecf1ff", "surface": "#f9f9ff", "primary": "#004ac6", "primary-fixed-dim": "#b4c5ff", "on-tertiary-container": "#e9f0ff", "on-background": "#111c2d", "on-error": "#ffffff", "secondary-container": "#39b8fd", "background": "#f9f9ff", "surface-container": "#e7eeff", "surface-dim": "#cfdaf2", "inverse-primary": "#b4c5ff", "surface-container-high": "#dee8ff", "outline": "#737686", "surface-container-low": "#f0f3ff", "on-secondary-fixed-variant": "#004c6e", "on-primary-fixed": "#00174b", "on-surface": "#111c2d", "primary-fixed": "#dbe1ff", "on-tertiary-fixed": "#0b1c30", "on-primary-container": "#eeefff", "surface-tint": "#0053db", "secondary": "#006591", "tertiary": "#46566c", "primary-container": "#2563eb", "on-secondary-fixed": "#001e2f", "surface-variant": "#d8e3fb", "error-container": "#ffdad6", "tertiary-fixed-dim": "#b7c8e1", "on-error-container": "#93000a", "secondary-fixed-dim": "#89ceff"
+      },
+      "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+      "spacing": { "xs": "4px", "sm": "8px", "lg": "24px", "base": "4px", "gutter": "16px", "md": "16px", "xl": "32px", "margin-mobile": "16px", "margin-desktop": "32px" },
+      "fontFamily": { "headline-md": ["Poppins"], "body-lg": ["Inter"], "headline-sm": ["Poppins"], "body-sm": ["Inter"], "headline-lg": ["Poppins"], "label-sm": ["Inter"], "body-md": ["Inter"], "display": ["Poppins"], "headline-lg-mobile": ["Poppins"], "label-md": ["Inter"] },
+      "fontSize": {
+        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "500" }],
+        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+        "display": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+        "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+      }
+    }
+  }
+};
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap" rel="stylesheet">
+</head>
+<body class="flex h-screen overflow-hidden bg-background font-body-md text-on-background">
+<!-- BEGIN: LeftSidebar -->
+<aside class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col overflow-y-auto font-body-sm">
+<div class="p-6 border-b border-gray-700">
+<div class="flex items-center space-x-3">
+<div class="bg-blue-600 p-2 rounded-lg">
+<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<h1 class="font-bold text-lg tracking-wide uppercase">Jeevan Setu</h1>
+<p class="text-[9px] text-gray-400 uppercase tracking-tighter">ICU to HDU Transfer DSS</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-3 py-2 space-y-4">
+<!-- General Nav -->
+<div data-purpose="nav-section">
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_dashboard_/Doctor_dashboard_.html'" class="hover:bg-gray-800 py-2 flex items-center space-x-3 cursor-pointer transition-colors px-2 rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Dashboard</span>
+</li>
+</ul>
+</div>
+<div data-purpose="nav-section">
+<p class="text-[10px] text-gray-500 font-bold uppercase px-3 mb-2">Patient Management</p>
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_my_patients/Doctor_my_patients.html'">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+<span class="text-sm font-medium">My Patients</span>
+</li>
+<li onclick="window.location.href='../Doctor_all_patients/Doctor_all_patients.html'" class="hover:bg-gray-800 py-2 flex items-center space-x-3 cursor-pointer transition-colors px-2 rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+<span class="text-sm">All Patients</span>
+</li>
+<li onclick="window.location.href='../Doctor_patient_search/Doctor_patient_search.html'" class="hover:bg-gray-800 py-2 flex items-center space-x-3 cursor-pointer transition-colors px-2 rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-sm">Patient Search</span>
+</li>
+</ul>
+</div>
+<div data-purpose="nav-section">
+<p class="text-[10px] text-gray-500 font-bold uppercase px-3 mb-2">Clinical Tools</p>
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_ews_calculator/Doctor_ews_calculator.html'" class="hover:bg-gray-800 py-2 flex items-center space-x-3 cursor-pointer px-2 rounded transition-colors">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+<span class="text-sm">EWS Calculator</span>
+</li>
+<li onclick="window.location.href='../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html'" class="hover:bg-gray-800 py-2 flex items-center justify-between cursor-pointer px-2 rounded transition-colors">
+<div class="flex items-center space-x-3">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+<span class="text-sm">Transfer Recommendations</span>
+</div>
+</li>
+<li onclick="window.location.href='../Doctor_ews_trends/Doctor_ews_trends.html'" class="hover:bg-gray-800 py-2 flex items-center space-x-3 cursor-pointer px-2 rounded transition-colors">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+<span class="text-sm">EWS Trends</span>
+</li>
+<li onclick="window.location.href='../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html'" class="hover:bg-gray-800 py-2 flex items-center space-x-3 cursor-pointer px-2 rounded transition-colors">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+<span class="text-sm">Patient Summary (AI)</span>
+</li>
+</ul>
+</div>
+<div data-purpose="nav-section">
+<p class="text-[10px] text-gray-500 font-bold uppercase px-3 mb-2">Tasks &amp; Alerts</p>
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_pending_approvals/Doctor_pending_approvals.html'" class="hover:bg-gray-800 py-2 flex items-center justify-between cursor-pointer px-2 rounded transition-colors">
+<div class="flex items-center space-x-3">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+<span class="text-sm">Pending Approvals</span>
+</div>
+<span class="bg-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">5</span>
+</li>
+<li onclick="window.location.href='../Doctor_alerts_notifications/Doctor_alerts_notifications.html'" class="hover:bg-gray-800 py-2 flex items-center justify-between cursor-pointer px-2 rounded transition-colors">
+<div class="flex items-center space-x-3">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+<span class="text-sm">Alerts &amp; Notifications</span>
+</div>
+<span class="bg-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">8</span>
+</li>
+</ul>
+</div>
+<div data-purpose="nav-section">
+<p class="text-[10px] text-gray-500 font-bold uppercase px-3 mb-2">Reports</p>
+<ul class="space-y-1">
+<li onclick="window.location.href='../Doctor_patient_reports/Doctor_patient_reports.html'" class="hover:bg-gray-800 py-2 flex items-center space-x-3 cursor-pointer px-2 rounded transition-colors">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+<span class="text-sm">Patient Reports</span>
+</li>
+<li onclick="window.location.href='../Doctor_transfer_reports/Doctor_transfer_reports.html'" class="hover:bg-gray-800 py-2 flex items-center space-x-3 cursor-pointer px-2 rounded transition-colors">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+<span class="text-sm">Transfer Reports</span>
+</li>
+<li onclick="window.location.href='../Doctor_audit_logs/Doctor_audit_logs.html'" class="hover:bg-gray-800 py-2 flex items-center space-x-3 cursor-pointer px-2 rounded transition-colors">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+<span class="text-sm">Audit Logs</span>
+</li>
+</ul>
+</div>
+</nav>
+<div class="mt-auto px-4 py-6 space-y-1">
+<li onclick="window.location.href='../Doctor_settings_jeevan/Doctor_settings_jeevan.html'">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+<span class="text-sm">Settings</span>
+</li>
+<li onclick="window.location.href='../../Login/Login.html'" class="list-none hover:bg-gray-800 px-3 py-2 flex items-center space-x-3 cursor-pointer transition-colors rounded">
+<svg class="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+<span class="text-sm">Logout</span>
+</li>
+</div>
+</aside>
+<!-- END: LeftSidebar -->
+<div class="flex-1 overflow-y-auto flex flex-col">
+<header class="h-12 bg-white border-b flex items-center justify-between px-4 sticky top-0 z-30">
+<div class="flex items-center space-x-4">
+<button class="p-1 text-gray-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<h2 class="font-bold text-lg">My Patients</h2>
+</div>
+<div class="flex items-center space-x-8">
+<div class="flex items-center text-gray-500 space-x-2 text-sm font-medium">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+<span class="">21 May 2025 | 10:45 AM</span>
+</div>
+<div class="relative">
+<select class="bg-gray-50 border border-gray-200 text-sm rounded-lg px-4 py-1.5 focus:ring-0 focus:border-gray-400">
+<option>ICU - General Ward</option>
+<option>HDU - Cardiac</option>
+</select>
+</div>
+<div class="flex items-center space-x-3 border-l pl-8">
+<div class="text-right">
+<p class="text-sm font-bold">Dr. Arjun Mehta</p>
+<p class="text-[11px] text-gray-500">Consultant Intensivist</p>
+<div class="flex items-center justify-end">
+<span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+<span class="text-[10px] text-gray-400">Online</span>
+</div>
+</div>
+<img alt="Doctor Portrait" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMEbtSCl4pEF41D5sTxFOToWhBlcIEOBQjfl1K2nHP6aRqaABpczGfDsSDBmg2I1XtDztWaaFaMkIPzuo4g0PjfBw2GwnJoOLiLL3ZkNVB595rBpr-CmvzwhjzLpLSgYHFttDeW1wz13KJLhsrtGXyQEr0uKQ7_TJ6feRDAojxvos5gEWmk2bV96eoeG8262vMS0v1-wWhNvm1RpwjO0bs_Y5R1bfuSxzjm_rlLotdR6LG1TX15vUtrRIBPHD-4alPvgARBNNYmg">
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col px-margin-desktop w-full max-w-7xl mx-auto">
+<div class="flex flex-col w-full gap-xl pb-lg">
+<section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div class="flex flex-col gap-xs">
+<h1 class="font-headline-lg text-headline-lg text-on-background">My Patients</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">24 Active patients • 3 require immediate attention</p>
+</div>
+<div class="flex gap-sm items-center w-full md:w-auto">
+<div class="relative w-full md:w-64">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input id="doctor-my-patients-search" class="w-full bg-surface-container-low text-on-surface font-body-sm text-body-sm pl-xl py-sm pr-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 placeholder-outline transition-shadow" placeholder="Search by name, ID or bed..." type="text">
+</div>
+<button class="bg-surface-container-high text-on-surface p-sm rounded-lg hover:bg-surface-variant transition-colors flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">tune</span>
+</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-lg flex items-center gap-xs hover:bg-primary/90 transition-colors shrink-0 shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span> Admit
+          </button>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md">
+<div class="bg-surface-container rounded-lg p-md flex items-center gap-md shadow-sm">
+<div class="w-12 h-12 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider">Critical (EWS &gt; 6)</p>
+<p class="font-headline-md text-headline-md text-on-surface">3</p>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg p-md flex items-center gap-md shadow-sm">
+<div class="w-12 h-12 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">monitoring</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider">Monitor (EWS 4-5)</p>
+<p class="font-headline-md text-headline-md text-on-surface">8</p>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg p-md flex items-center gap-md shadow-sm">
+<div class="w-12 h-12 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider">Stable (EWS 0-3)</p>
+<p class="font-headline-md text-headline-md text-on-surface">13</p>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg p-md flex items-center gap-md shadow-sm">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">logout</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider">Pending Discharge</p>
+<p class="font-headline-md text-headline-md text-on-surface">4</p>
+</div>
+</div>
+</div>
+<div class="flex gap-sm border-b border-surface-variant pb-xs overflow-x-auto hide-scrollbar">
+<button class="font-label-md text-label-md px-md py-xs rounded-full bg-primary text-on-primary whitespace-nowrap">All Wards</button>
+<button class="font-label-md text-label-md px-md py-xs rounded-full bg-surface-container-low text-on-surface hover:bg-surface-variant whitespace-nowrap transition-colors">ICU (4)</button>
+<button class="font-label-md text-label-md px-md py-xs rounded-full bg-surface-container-low text-on-surface hover:bg-surface-variant whitespace-nowrap transition-colors">Cardiology (8)</button>
+<button class="font-label-md text-label-md px-md py-xs rounded-full bg-surface-container-low text-on-surface hover:bg-surface-variant whitespace-nowrap transition-colors">General (12)</button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-md overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md">
+<th class="p-md font-normal">Patient</th>
+<th class="p-md font-normal">Location</th>
+<th class="p-md font-normal">Diagnosis / Primary Issue</th>
+<th class="p-md font-normal text-center">EWS</th>
+<th class="p-md font-normal">Last Vitals</th>
+<th class="p-md font-normal text-right">Action</th>
+</tr>
+</thead>
+<tbody id="doctor-my-patients-tbody" class="font-body-sm text-body-sm text-on-surface divide-y divide-surface-variant">
+<!-- Dynamic rows loaded via /api/v1/patients -->
+</tbody>
+</table>
+</div>
+<div class="p-md border-t border-surface-variant bg-surface-container-low flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
+<span id="doctor-my-patients-count">Loading patients...</span>
+<div class="flex gap-sm">
+<button class="p-xs rounded hover:bg-surface-variant transition-colors disabled:opacity-50 material-symbols-outlined" disabled="">chevron_left</button>
+<button class="p-xs rounded hover:bg-surface-variant transition-colors material-symbols-outlined">chevron_right</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="py-lg text-center shrink-0">
+<p class="font-body-sm text-label-sm text-outline">Secure Healthcare Gateway • HIPAA Compliant</p>
+</footer>
+</div>
+
+<script>
+  const PATIENT_API = '/api/v1/patients';
+  const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
+  let currentDoctorSearch = '';
+
+  // Extract doctor user_id from JWT token for filtering
+  function getDoctorIdFromToken() {
+    if (!AUTH_TOKEN) return null;
+    try {
+      const payload = JSON.parse(atob(AUTH_TOKEN.split('.')[1]));
+      return payload.sub || null;
+    } catch (e) { return null; }
+  }
+  const DOCTOR_ID = getDoctorIdFromToken();
+
+  function getAuthHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    return headers;
+  }
+
+  async function refreshDoctorMyPatients(searchQuery) {
+    if (searchQuery !== undefined) {
+      currentDoctorSearch = searchQuery;
+    }
+    try {
+      let url = `${PATIENT_API}?status=admitted`;
+      if (DOCTOR_ID) url += `&doctor_id=${DOCTOR_ID}`;
+      if (currentDoctorSearch && currentDoctorSearch.trim()) {
+        url += `&search=${encodeURIComponent(currentDoctorSearch.trim())}`;
+      }
+
+      const res = await fetch(url, { headers: getAuthHeaders() });
+      if (!res.ok) return;
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+
+      const tbody = document.getElementById('doctor-my-patients-tbody');
+      if (!tbody) return;
+
+      const countSpan = document.getElementById('doctor-my-patients-count');
+      if (countSpan) countSpan.textContent = `Showing 1-${json.data.length} of ${json.data.length} patients`;
+
+      tbody.innerHTML = '';
+      if (json.data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="p-8 text-center text-on-surface-variant">
+              <span class="material-symbols-outlined text-[36px] text-outline-variant block mb-2">person_search</span>
+              <p class="font-label-md">No patients found</p>
+              <p class="text-xs text-outline mt-1">Try searching by a different name, patient ID, or bed number.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      json.data.forEach(p => {
+        const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
+        const bedStr = (p.ward_type || 'ICU') + ' • Bed ' + (p.bed_number || '01');
+        const ewsScore = p.ews_score !== undefined ? p.ews_score : (p.latest_vitals ? p.latest_vitals.ews_score : 0);
+        const condition = p.condition || (ewsScore >= 5 ? 'Critical' : ewsScore >= 3 ? 'Observation' : 'Stable');
+        
+        let hr = '--', rr = '--', sbp = '--', temp = '--', timeStr = '--';
+        if (p.latest_vitals && p.latest_vitals.heart_rate !== null) {
+          const lv = p.latest_vitals;
+          hr = lv.heart_rate !== null ? lv.heart_rate + ' bpm' : '--';
+          rr = lv.respiratory_rate !== null ? lv.respiratory_rate + ' /min' : '--';
+          sbp = lv.systolic_bp !== null ? lv.systolic_bp + ' mmHg' : '--';
+          temp = lv.temperature !== null ? lv.temperature + '°C' : '--';
+          if (lv.recorded_at) {
+            const d = new Date(lv.recorded_at);
+            timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          }
+        }
+
+        let ewsCircleBg = 'bg-[#DCFCE7] text-[#166534]';
+        let rowBg = '';
+        if (ewsScore >= 5) {
+          ewsCircleBg = 'bg-error text-on-error';
+          rowBg = 'bg-error-container/10';
+        } else if (ewsScore >= 3) {
+          ewsCircleBg = 'bg-secondary-container text-on-secondary-container';
+          rowBg = 'bg-surface-container-highest/30';
+        }
+
+        const initials = p.name ? p.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'PT';
+
+        const tr = document.createElement('tr');
+        tr.className = `hover:bg-surface-container-low transition-colors ${rowBg}`;
+        tr.innerHTML = `
+          <td class="p-md flex items-center gap-md">
+            <div class="w-10 h-10 rounded-full ${ewsCircleBg} flex items-center justify-center font-headline-sm text-headline-sm">${initials}</div>
+            <div>
+              <p class="font-label-md text-label-md text-on-surface">${p.name} ${ewsScore >= 5 ? '<span class="text-error ml-xs material-symbols-outlined text-[16px] align-text-bottom">priority_high</span>' : ''}</p>
+              <p class="text-on-surface-variant">${p.gender === 'Female' ? 'F' : 'M'} • ${p.age || '--'}y • #${pCode}</p>
+            </div>
+          </td>
+          <td class="p-md text-on-surface-variant">${bedStr}</td>
+          <td class="p-md">${p.diagnosis || 'Active Monitoring'}</td>
+          <td class="p-md text-center">
+            <div class="inline-flex items-center justify-center w-8 h-8 rounded-full ${ewsCircleBg} font-headline-sm text-headline-sm shadow-sm">${ewsScore}</div>
+          </td>
+          <td class="p-md">
+            <div class="flex flex-col gap-xs text-on-surface-variant">
+              <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[14px]">favorite</span> HR ${hr}</span>
+              <span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[14px]">air</span> RR ${rr}</span>
+              <span class="text-[10px]">${timeStr}</span>
+            </div>
+          </td>
+          <td class="p-md text-right">
+            <a href="../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html?patient_id=${p.patient_id}" class="bg-surface-container-high text-primary hover:bg-surface-variant p-sm rounded-lg transition-colors shadow-sm inline-flex items-center" title="View Patient Details">
+              <span class="material-symbols-outlined">quick_reference_all</span>
+            </a>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (e) {
+      console.error('[Jeevan Setu] Doctor My Patients sync error:', e);
+    }
+  }
+
+  // Hook up debounced search input
+  const searchInput = document.getElementById('doctor-my-patients-search');
+  if (searchInput) {
+    let debounceTimer;
+    searchInput.addEventListener('input', function(e) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        refreshDoctorMyPatients(e.target.value);
+      }, 300);
+    });
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        clearTimeout(debounceTimer);
+        refreshDoctorMyPatients(this.value);
+      }
+    });
+  }
+
+  refreshDoctorMyPatients();
+  setInterval(refreshDoctorMyPatients, 8000);
+</script>
+  <script src="../global_alert_manager.js"></script>
+</body></html>
