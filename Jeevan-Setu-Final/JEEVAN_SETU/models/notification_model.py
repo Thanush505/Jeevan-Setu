@@ -102,9 +102,10 @@ class Notification:
             conditions.append("n.type = %s")
             params.append(db_type)
 
-        # Stale & Cross-Doctor Protection: If user is a doctor, filter out notifications for unassigned patients
+        # Stale & Cross-Doctor Protection: If user is a doctor, filter out notifications for unassigned patients and exclude TRANSFER APPROVED
         if role == 'doctor':
             conditions.append("(n.patient_id IS NULL OR p.assigned_doctor = %s)")
+            conditions.append("(n.title NOT LIKE '%[TRANSFER APPROVED]%')")
             params.append(user_id)
 
         where_clause = " AND ".join(conditions)
@@ -145,7 +146,8 @@ class Notification:
                    FROM notifications n
                    LEFT JOIN patients p ON n.patient_id = p.patient_id
                    WHERE n.user_id = %s AND n.is_read = FALSE
-                     AND (n.patient_id IS NULL OR p.assigned_doctor = %s)""",
+                     AND (n.patient_id IS NULL OR p.assigned_doctor = %s)
+                     AND (n.title NOT LIKE '%[TRANSFER APPROVED]%')""",
                 (user_id, user_id), fetch=True
             )
         else:
@@ -160,7 +162,7 @@ class Notification:
         """Mark a specific notification as read."""
         if user_id:
             return db.execute_query(
-                "UPDATE notifications SET is_read = TRUE, read_at = NOW() WHERE notification_id = %s AND user_id = %s",
+                "UPDATE notifications SET is_read = TRUE, read_at = NOW() WHERE notification_id = %s AND (user_id = %s OR user_id IS NULL)",
                 (notification_id, user_id)
             )
         return db.execute_query(

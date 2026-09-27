@@ -36,13 +36,15 @@ def list_user_notifications():
     notif_type = request.args.get('type')
     limit = request.args.get('limit', 50, type=int)
 
+    user_role = getattr(user, 'role', '').lower()
     notifications = Notification.get_by_user(
         user_id=user.id,
         unread_only=unread_only_param,
         notif_type=notif_type,
-        limit=limit
+        limit=limit,
+        role=user_role
     )
-    unread_count = Notification.get_unread_count(user.id)
+    unread_count = Notification.get_unread_count(user.id, role=user_role)
 
     return jsonify({
         'success': True,
@@ -57,6 +59,7 @@ def list_user_notifications():
 # 2. PUT /notifications/{id}/read & POST /notifications/{id}/read
 # ─────────────────────────────────────────────────────────────
 @notification_bp.route('/<int:notification_id>/read', methods=['PUT', 'POST'])
+@notification_bp.route('/<int:notification_id>/dismiss', methods=['PUT', 'POST'])
 def mark_notification_read(notification_id):
     """Mark a single notification as read for current user."""
     user = get_current_authenticated_user()

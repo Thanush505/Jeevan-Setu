@@ -170,15 +170,44 @@ except ImportError:
         return {'action': 'STABILIZE', 'recommendation': 'Keep in ICU'}
 
 
-def _fmt_val(val, unit=""):
-    """Format numeric telemetry values cleanly without awkward trailing zeros (e.g. 91% instead of 91.0%)."""
-    if val is None:
-        return "N/A"
+def _fmt_val(val, unit="", not_recorded="Not recorded"):
+    """Format numeric telemetry values cleanly without awkward trailing zeros (e.g. 91% instead of 91.0%), and avoid 'None%'."""
+    if val is None or str(val).strip().lower() in ('none', 'null', 'nan', ''):
+        return not_recorded
+    if unit and not unit.startswith((' ', '%', '/')):
+        unit_str = f" {unit}"
+    else:
+        unit_str = unit
     if isinstance(val, (int, float)):
         if float(val).is_integer():
-            return f"{int(val)}{unit}"
-        return f"{round(float(val), 1)}{unit}"
-    return f"{val}{unit}"
+            return f"{int(val)}{unit_str}"
+        return f"{round(float(val), 1)}{unit_str}"
+    val_str = str(val).strip()
+    if val_str.lower() in ('none', 'null', 'nan', ''):
+        return not_recorded
+    return f"{val_str}{unit_str}"
+
+
+def _fmt_bp(sbp, dbp):
+    """Format blood pressure cleanly without '120.0/None mmHg' or null conversions."""
+    s_clean = None if sbp is None or str(sbp).strip().lower() in ('none', 'null', 'nan', '') else (_fmt_val(sbp))
+    d_clean = None if dbp is None or str(dbp).strip().lower() in ('none', 'null', 'nan', '') else (_fmt_val(dbp))
+
+    if s_clean and d_clean:
+        return f"{s_clean}/{d_clean} mmHg"
+    elif s_clean:
+        return f"Systolic BP {s_clean} mmHg (Diastolic: Not recorded)"
+    elif d_clean:
+        return f"Diastolic BP {d_clean} mmHg (Systolic: Not recorded)"
+    return "BP: Not recorded"
+
+
+def _fmt_spo2(spo2):
+    """Format oxygen saturation cleanly without 'None%'."""
+    if spo2 is None or str(spo2).strip().lower() in ('none', 'null', 'nan', ''):
+        return "SpO₂: Not recorded"
+    return f"SpO₂ {_fmt_val(spo2, unit='%')}"
+
 
 
 # =============================================================================
@@ -1268,7 +1297,8 @@ STOPWORDS_NOT_PATIENTS = {
     'why', 'what', 'how', 'when', 'who', 'is', 'are', 'was', 'were', 'he', 'she', 'it', 'they',
     'him', 'her', 'his', 'their', 'the', 'this', 'that', 'these', 'those', 'yesterday', 'today',
     'overnight', 'changes', 'concerns', 'problems', 'worries', 'reassuring', 'findings', 'points',
-    'diagnosis', 'illness', 'disease', 'notes', 'tell', 'show', 'give', 'check', 'explain', 'brief'
+    'diagnosis', 'illness', 'disease', 'notes', 'tell', 'show', 'give', 'check', 'explain', 'brief',
+    'patient', 'the patient', 'this patient', 'a patient', 'doctor', 'nurse', 'hospital', 'bot', 'setu', 'dr setu'
 }
 
 
@@ -1297,6 +1327,22 @@ def extract_explicit_patient_mention(text):
         raw_name = m_intro.group('name').strip()
         if raw_name.lower() not in STOPWORDS_NOT_PATIENTS and len(raw_name) > 1:
             return raw_name, "status overview", True
+
+    # 2b. Possessive name patterns: "What is Amit Verma's EWS?", "Show Priya's vitals", "Amit Verma's diagnosis"
+    m_possessive = re.search(r'\b(?P<name>[a-zA-Z]{3,}(?:\s+[a-zA-Z]{3,})?)\'s\b', msg, re.IGNORECASE)
+    if m_possessive:
+        raw_name = m_possessive.group('name').strip()
+        if raw_name.lower() not in STOPWORDS_NOT_PATIENTS and not any(w in raw_name.lower().split() for w in ('the', 'this', 'that', 'patient', 'doctor', 'nurse', 'hospital', 'bot', 'setu')) and len(raw_name) > 2:
+            cleaned = msg.replace(m_possessive.group(0), '').strip()
+            return raw_name, cleaned, True
+
+    # 2c. Phrases like "regarding <name>", "for patient <name>", "of <name>"
+    m_for = re.search(r'\b(?:regarding|for\s+patient|about\s+patient|of\s+patient)\s+(?P<name>[a-zA-Z]{3,}(?:\s+[a-zA-Z]{3,})?)\b', msg, re.IGNORECASE)
+    if m_for:
+        raw_name = m_for.group('name').strip()
+        if raw_name.lower() not in STOPWORDS_NOT_PATIENTS and not any(w in raw_name.lower().split() for w in ('the', 'this', 'that', 'patient', 'doctor', 'nurse', 'hospital', 'bot', 'setu')) and len(raw_name) > 2:
+            cleaned = msg.replace(m_for.group(0), '').strip()
+            return raw_name, cleaned, True
 
     # 3. Direct short name if 1-3 words and not a clinical concept word
     words = [w for w in re.split(r'[^a-zA-Z0-9_\-]+', msg) if w]
@@ -1431,8 +1477,12 @@ def classify_question_intent(message, session_state=None):
         'treatment for ', 'treatment of ', 'symptoms of ', 'side effects of ',
         'normal range of ', 'normal value of ', 'how does ', 'pathophysiology of '
     ]
-    patient_pronouns = {'his', 'her', 'he', 'she', 'patient', 'patients', 'patient\'s', 'him', 'this', 'current'}
-    if any(q.startswith(p) for p in general_query_starters) and not any(w in words for w in patient_pronouns):
+    patient_indicators = {
+        'his', 'her', 'he', 'she', 'patient', 'patients', "patient's", 'him', 'this', 'current',
+        'the', 'documented', 'diagnosis', 'condition', 'vitals', 'vital', 'ews', 'score', 'recommendation',
+        'transfer', 'bed', 'ward', 'admission', 'admitted', 'history', 'trends', 'trajectory', 'latest'
+    }
+    if any(q.startswith(p) for p in general_query_starters) and not any(w in words for w in patient_indicators):
         return 'GENERAL_MEDICAL_CONCEPT', None
 
     # ── 5. Single Vital Parameter Queries ──
@@ -2273,6 +2323,86 @@ def reason_general_medical_query(query, context=None):
 
     # ── Comprehensive Medical Knowledge Base ──
     MEDICAL_KB = {
+        'hypertension': {
+            'title': 'Hypertension (High Blood Pressure)',
+            'definition': 'A chronic medical condition in which systemic arterial blood pressure remains persistently elevated (Systolic BP ≥140 mmHg and/or Diastolic BP ≥90 mmHg on repeated measurements).',
+            'classification': [
+                'Normal: SBP <120 mmHg and DBP <80 mmHg',
+                'Elevated: SBP 120–129 mmHg and DBP <80 mmHg',
+                'Stage 1 Hypertension: SBP 130–139 mmHg or DBP 80–89 mmHg',
+                'Stage 2 Hypertension: SBP ≥140 mmHg or DBP ≥90 mmHg',
+                'Hypertensive Crisis: SBP >180 mmHg and/or DBP >120 mmHg (requires urgent evaluation for end-organ damage)'
+            ],
+            'clinical_significance': [
+                'Major modifiable risk factor for stroke, myocardial infarction, heart failure, and chronic kidney disease.',
+                'Often asymptomatic ("the silent killer") until secondary vascular or target-organ damage develops.',
+                'Requires lifestyle modification (DASH diet, sodium reduction <2g/day, regular aerobic exercise, weight management) alongside pharmacotherapy (ACE inhibitors, ARBs, CCBs like amlodipine, thiazide diuretics).'
+            ],
+            'causes': 'Primary (Essential, 90–95%): Multifactorial genetic, dietary, and autonomic factors. Secondary (5–10%): Renal artery stenosis, chronic kidney disease, primary aldosteronism, Cushing syndrome, pheochromocytoma, obstructive sleep apnea (OSA).'
+        },
+        'fever': {
+            'title': 'Fever (Pyrexia)',
+            'definition': 'Elevation of core body temperature above the normal physiological set-point (typically core temperature ≥38.0°C / 100.4°F) mediated by endogenous pyrogens (IL-1, IL-6, TNF-alpha) acting on the anterior hypothalamus.',
+            'clinical_significance': [
+                'Low-grade: 37.3–38.0°C (monitor closely for infectious onset)',
+                'Moderate: 38.1–39.0°C (indicative of acute inflammatory/infectious response)',
+                'High: >39.0°C (warrants blood cultures, septic workup, and antipyresis)',
+                'Hyperpyrexia: >40.0°C (medical emergency risking neurological and physiological decompensation)'
+            ],
+            'causes': 'Bacterial/viral/fungal infections, sepsis, post-operative systemic inflammatory response syndrome (SIRS), drug fever, malignancy, autoimmune connective tissue diseases.'
+        },
+        'anemia': {
+            'title': 'Anemia',
+            'definition': 'A pathological reduction in total circulating red blood cell mass or hemoglobin concentration (<13.0 g/dL in adult males, <12.0 g/dL in adult non-pregnant females), leading to impaired oxygen-carrying capacity.',
+            'symptoms': 'Fatigue, exertional dyspnea, pallor, tachycardia, dizziness, orthostatic hypotension, headache, cold extremities.',
+            'diagnosis': 'CBC (Hb, Hct, RBC indices: MCV, MCH), peripheral blood smear, reticulocyte count, serum ferritin, iron panel, Vitamin B12, folate.',
+            'clinical_significance': [
+                'Microcytic (MCV <80 fL): Iron deficiency anemia, thalassemia, anemia of chronic disease (late), sideroblastic.',
+                'Normocytic (MCV 80–100 fL): Acute blood loss, hemolysis, renal failure (erythropoietin deficiency), early chronic disease.',
+                'Macrocytic (MCV >100 fL): Vitamin B12 deficiency (pernicious anemia), folate deficiency, drug-induced, liver disease.'
+            ]
+        },
+        'coronary artery disease': {
+            'title': 'Coronary Artery Disease (CAD / Ischemic Heart Disease)',
+            'definition': 'A pathological narrowing or blockage of one or more epicardial coronary arteries caused by atherosclerotic plaque buildup, restricting oxygenated blood supply to the myocardium.',
+            'symptoms': 'Angina pectoris (substernal chest tightness radiating to left arm/jaw, triggered by exertion/stress), dyspnea, diaphoresis, fatigue.',
+            'diagnosis': '12-lead ECG, high-sensitivity cardiac troponins, echocardiography (wall motion abnormalities), coronary CT angiography, invasive coronary angiography.',
+            'treatment': 'Lifestyle modification, antiplatelets (aspirin, clopidogrel), high-intensity statins, beta-blockers, ACE inhibitors, revascularization via PCI (percutaneous coronary intervention) or CABG (coronary artery bypass graft).'
+        },
+        'ecg': {
+            'title': 'Electrocardiogram (ECG / EKG)',
+            'definition': 'A non-invasive transthoracic recording of the electrical potentials generated by the heart during cardiac cycles, captured via standard 12-lead electrode placement.',
+            'clinical_significance': [
+                'P wave: Atrial depolarization (normal <120 ms).',
+                'PR interval: AV nodal conduction time (normal 120–200 ms; prolonged in first-degree AV block).',
+                'QRS complex: Ventricular depolarization (normal <120 ms; widened in bundle branch blocks, VT).',
+                'ST segment: Ischemic evaluation (ST elevation indicates acute transmural infarction; ST depression indicates subendocardial ischemia/strain).',
+                'T wave: Ventricular repolarization (peaked in hyperkalemia, inverted in ischemia/strain).',
+                'QT interval: Total duration of ventricular electrical activation and recovery (prolongation risks Torsades de Pointes).'
+            ]
+        },
+        'vital signs': {
+            'title': 'Normal Adult Vital Signs & Physiological Norms',
+            'definition': "Core clinical measurements that evaluate the body's fundamental physiological homeostasis and autonomic stability.",
+            'normal_range': 'HR: 60–100 bpm | BP: 100–130 / 60–80 mmHg | RR: 12–20 breaths/min | Temp: 36.5–37.5°C | SpO₂: 95–100% | AVPU: Alert',
+            'clinical_significance': [
+                'Heart Rate: 60–100 bpm (Tachycardia >100 bpm, Bradycardia <60 bpm).',
+                'Blood Pressure: Systolic 100–130 mmHg, Diastolic 60–80 mmHg, MAP >65 mmHg for vital organ perfusion.',
+                'Respiratory Rate: 12–20 breaths/min (Tachypnea >20/min is the most sensitive early marker of physiological deterioration).',
+                'Oxygen Saturation (SpO₂): ≥95% on room air (SpO₂ <92% requires supplemental oxygenation; <88% indicates severe hypoxemia).',
+                'Temperature: 36.5–37.5°C (Fever ≥38.0°C, Hypothermia <35.0°C).',
+                'Early Warning Score (EWS): Aggregates all 6 vital sign deviations into a composite score (0–1 Low, 2–4 Medium, 5–6 High, ≥7 Critical Risk).'
+            ]
+        },
+        'hypotension': {
+            'title': 'Hypotension (Low Blood Pressure)',
+            'definition': 'Abnormally low systemic arterial blood pressure (typically Systolic BP <90 mmHg or Mean Arterial Pressure (MAP) <65 mmHg), compromising vital end-organ perfusion.',
+            'causes': 'Hypovolemia (hemorrhage, severe dehydration), distributive vasodilation (septic shock, anaphylaxis), cardiogenic pump failure (massive MI, severe heart failure), obstructive shock (massive PE, cardiac tamponade), medication overdose.',
+            'clinical_significance': [
+                'MAP <65 mmHg risks acute kidney injury, cerebral hypoperfusion, and ischemic lactic acidosis.',
+                'Requires immediate hemodynamic evaluation, crystalloid fluid challenge if hypovolemic, and vasopressor support (norepinephrine) if unresponsive to fluids.'
+            ]
+        },
         # ── Vital Signs & Parameters ──
         'spo2': {
             'title': 'Oxygen Saturation (SpO₂)',
@@ -2755,7 +2885,7 @@ def reason_general_medical_query(query, context=None):
 
         # Patient-specific connection if telemetry exists
         if p and v:
-            lines.append(f"\n*(Context for **{p.get('name', 'patient')}**: Admitted in {p.get('ward_type', 'ICU')} with latest recorded vitals: SpO₂ {v.get('spo2', 'N/A')}%, HR {v.get('heart_rate', 'N/A')} bpm, BP {v.get('blood_pressure_sys', 'N/A')}/{v.get('blood_pressure_dia', 'N/A')} mmHg).*")
+            lines.append(f"\n*(Context for **{p.get('name', 'patient')}**: Admitted in {p.get('ward_type', 'ICU')} with latest recorded vitals: {_fmt_spo2(v.get('spo2'))}, HR {_fmt_val(v.get('heart_rate'), 'bpm')}, BP {_fmt_bp(v.get('blood_pressure_sys'), v.get('blood_pressure_dia'))}).*")
 
         lines.append("\n*This is general medical reference information. Always correlate with individual patient context and clinical assessment.*")
         return "\n".join(lines)
@@ -2774,9 +2904,9 @@ def reason_general_medical_query(query, context=None):
         patient_note = ""
         if p and v:
             patient_note = (
-                f"\n\n**For {p['name']}:** Current telemetry shows SpO₂ {_fmt_val(v.get('spo2'))}%, "
-                f"HR {_fmt_val(v.get('heart_rate'))} bpm, RR {_fmt_val(v.get('respiratory_rate'))}/min, "
-                f"BP {_fmt_val(v.get('blood_pressure_sys'))} mmHg, Temp {_fmt_val(v.get('temperature'))}°C."
+                f"\n\n**For {p['name']}:** Current telemetry shows {_fmt_spo2(v.get('spo2'))}, "
+                f"HR {_fmt_val(v.get('heart_rate'), 'bpm')}, RR {_fmt_val(v.get('respiratory_rate'), '/min')}, "
+                f"BP {_fmt_bp(v.get('blood_pressure_sys'), v.get('blood_pressure_dia'))}, Temp {_fmt_val(v.get('temperature'), '°C')}."
             )
         return (
             f"**{core_term.title()}**\n\n"
@@ -3034,40 +3164,156 @@ def reason_custom_client_telemetry(vitals_dict, raw_query="", patient_name=None,
 
 def process_conversational_message(user_id=1, message="", active_patient_id=None,
                                    custom_vitals=None, custom_patient=None, custom_notes=None,
-                                   user_role="doctor"):
+                                   user_role="doctor", mode="patient"):
     """
     Main conversational orchestrator that handles free-form natural language input:
-    1. Enforces RBAC & patient access controls.
-    2. Manages multi-turn conversation memory.
-    3. Resolves explicit patient switching vs ongoing active patient inquiries.
-    4. Handles cases with no active patient gracefully.
-    5. Leverages OpenRouter Gemini AI with controlled database context.
-    6. Reasons over real database data and directly answers the question.
+    1. Supports two explicit context modes: 'patient' (default) and 'general'.
+    2. Enforces RBAC & patient access controls.
+    3. In Patient Mode: Grounded in verified MySQL database records for selected patient.
+    4. In General Mode: Zero patient context attached. Educates on medical/clinical concepts.
+       Directs user to Patient Chat mode if specific patient records are requested.
+    5. Leverages OpenRouter Gemini AI with strict clinical guardrails.
     """
     msg = (message or "").strip().strip('"\'`“”’‘').strip()
+    chat_mode = (mode or "patient").strip().lower()
+    if chat_mode not in ("patient", "general"):
+        chat_mode = "patient" if active_patient_id else "general"
 
     # Step 0: Check if Explicit Simulator Mode is triggered
     if custom_vitals and isinstance(custom_vitals, dict) and len(custom_vitals) > 0:
         p_name = None
-        if active_patient_id:
+        if active_patient_id and chat_mode == "patient":
             p = getPatient(active_patient_id)
             p_name = p['name'] if p else None
         sim_text = reason_custom_client_telemetry(custom_vitals, raw_query=msg, patient_name=p_name, custom_notes=custom_notes)
         return {
             'success': True,
+            'mode': chat_mode,
             'text': sim_text,
+            'response': sim_text,
             'intent': 'simulated_telemetry',
-            'patient_id': active_patient_id
+            'patient_id': active_patient_id if chat_mode == "patient" else None,
+            'patient_context': get_patient_clinical_context(active_patient_id) if (chat_mode == "patient" and active_patient_id) else None
         }
 
     if not msg:
         return {
             'success': False,
+            'mode': chat_mode,
             'error': 'Empty message.',
-            'text': 'Please enter a question about a patient or provide a patient name.',
+            'text': 'Please enter a medical question or select a patient for clinical rounds.',
+            'response': 'Please enter a medical question or select a patient for clinical rounds.',
             'intent': 'empty_query'
         }
 
+    # =========================================================================
+    # ── GENERAL CHAT MODE (ZERO PATIENT CONTEXT & NO DATA LEAKAGE) ──
+    # =========================================================================
+    if chat_mode == "general":
+        # 1. Redirection Guardrail: If user explicitly asks about a specific patient by name or asks for patient-specific records in General Mode
+        cand_name, remaining_q, is_explicit_mention = extract_explicit_patient_mention(msg)
+        if is_explicit_mention and cand_name:
+            redirection_text = (
+                f"You are currently in **General Chat mode** with no patient selected. "
+                f"To view verified clinical records, telemetry, or transfer recommendations for **{cand_name}**, "
+                f"please switch to **Patient Chat mode** and select the patient from your authorized dropdown."
+            )
+            return {
+                'success': True,
+                'mode': 'general',
+                'patient_id': None,
+                'patient_context': None,
+                'text': redirection_text,
+                'response': redirection_text,
+                'intent': 'general_mode_patient_redirection'
+            }
+
+        # Check for generic patient queries without a name in general mode (e.g., "What is his EWS?", "What are the patient's vitals?")
+        if re.search(r'\b(the patient|his|her|this patient)\b', msg, re.IGNORECASE) and re.search(r'\b(vitals?|ews|diagnosis|heart rate|blood pressure|spo2|temperature|respiratory rate|bed|ward|transfer|recommendation)\b', msg, re.IGNORECASE):
+            redirection_text = (
+                "You are currently in **General Chat mode** with no patient selected. "
+                "Please switch to **Patient Chat mode** and select a patient from the dropdown to access patient-specific telemetry and clinical records."
+            )
+            return {
+                'success': True,
+                'mode': 'general',
+                'patient_id': None,
+                'patient_context': None,
+                'text': redirection_text,
+                'response': redirection_text,
+                'intent': 'general_mode_patient_redirection'
+            }
+
+        # 2. Greeting / General Help in General Mode
+        if any(w in msg.lower().split() for w in ['hi', 'hello', 'hey', 'greetings']) and len(msg.split()) <= 4:
+            greeting_text = (
+                "Hello! I am **Dr. Setu** in **General Healthcare Chat mode**.\n\n"
+                "I can assist you with general medical concepts, physiological norms, clinical score definitions (like EWS/NEWS2), and ICU/HDU terminology.\n\n"
+                "• *Example:* 'What is hypertension?'\n"
+                "• *Example:* 'What is the normal adult respiratory rate?'\n"
+                "• *Example:* 'Explain Early Warning Score (EWS)'\n"
+                "• *Example:* 'What is the difference between ICU and HDU?'\n\n"
+                "*Note: To view live bedside records or telemetry for an admitted patient, please switch to Patient Chat mode.*"
+            )
+            return {
+                'success': True,
+                'mode': 'general',
+                'patient_id': None,
+                'patient_context': None,
+                'text': greeting_text,
+                'response': greeting_text,
+                'intent': 'general_greeting'
+            }
+
+        # 3. Direct AI Educational Response via OpenRouter (No patient context)
+        if is_ai_configured():
+            ok, ai_resp, _ = query_openrouter_gemini(msg, patient_context=None, user_role=user_role, mode="general")
+            if ok and ai_resp:
+                return {
+                    'success': True,
+                    'mode': 'general',
+                    'patient_id': None,
+                    'patient_context': None,
+                    'text': ai_resp,
+                    'response': ai_resp,
+                    'intent': 'general_ai_response'
+                }
+
+        # 4. Fallback: Embedded Medical Knowledge Base (context=None ensures zero patient context)
+        med_resp = reason_general_medical_query(msg, context=None)
+        if med_resp:
+            return {
+                'success': True,
+                'mode': 'general',
+                'patient_id': None,
+                'patient_context': None,
+                'text': med_resp,
+                'response': med_resp,
+                'intent': 'general_medical_concept'
+            }
+
+        # 5. Default General Response
+        default_gen_resp = (
+            "**Dr. Setu — General Healthcare Assistant:**\n\n"
+            "I can provide general educational healthcare explanations and clinical reference information.\n\n"
+            "• Ask about medical conditions (e.g., *'What is sepsis?'*, *'Explain COPD'*)\n"
+            "• Ask about vital sign ranges (e.g., *'What is normal blood pressure?'*, *'What is tachycardia?'*)\n"
+            "• Ask about hospital protocols (e.g., *'Difference between ICU and HDU'*, *'What is EWS?'*)\n\n"
+            "*Educational information provided for clinical reference. For patient-specific telemetry, please switch to Patient Chat mode.*"
+        )
+        return {
+            'success': True,
+            'mode': 'general',
+            'patient_id': None,
+            'patient_context': None,
+            'text': default_gen_resp,
+            'response': default_gen_resp,
+            'intent': 'general_help'
+        }
+
+    # =========================================================================
+    # ── PATIENT CHAT MODE (DATABASE GROUNDED & RBAC PROTECTED) ──
+    # =========================================================================
     state = ConversationMemory.get_state(user_id)
 
     # Synchronize active patient ID with state
@@ -3085,8 +3331,10 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
         if not effective_patient_id:
             return {
                 'success': False,
+                'mode': 'patient',
                 'error': 'Unauthorized',
                 'text': 'Attendant access is restricted to your assigned patient only. Please select your assigned patient.',
+                'response': 'Attendant access is restricted to your assigned patient only. Please select your assigned patient.',
                 'intent': 'rbac_restricted'
             }
 
@@ -3099,7 +3347,9 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
         if match_type == "none":
             return {
                 'success': True,
+                'mode': 'patient',
                 'text': f"I could not find any patient matching '{cand_name}' in the database.\n\nPlease check the name or enter a valid UHID (e.g., 'Sahil Sharma' or 'UHID-2026-00001').",
+                'response': f"I could not find any patient matching '{cand_name}' in the database.\n\nPlease check the name or enter a valid UHID (e.g., 'Sahil Sharma' or 'UHID-2026-00001').",
                 'intent': "patient_not_found",
                 'requires_patient_selection': True
             }
@@ -3110,7 +3360,9 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
             )
             return {
                 'success': True,
+                'mode': 'patient',
                 'text': f"I found multiple patients matching '{cand_name}'. Please specify which patient you would like to review:\n\n{patient_list}",
+                'response': f"I found multiple patients matching '{cand_name}'. Please specify which patient you would like to review:\n\n{patient_list}",
                 'intent': "patient_disambiguation",
                 'candidates': patients,
                 'requires_patient_selection': True
@@ -3146,11 +3398,14 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
             ConversationMemory.update_state(user_id=user_id, bot_response=response_text)
             return {
                 'success': True,
+                'mode': 'patient',
                 'text': response_text,
+                'response': response_text,
                 'intent': "patient_found",
                 'patient_id': new_id,
                 'patient': p,
-                'context': get_patient_clinical_context(new_id)
+                'context': get_patient_clinical_context(new_id),
+                'patient_context': get_patient_clinical_context(new_id)
             }
 
     # Step 2: Classify intent and topic for free-form input
@@ -3170,9 +3425,12 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
         )
         return {
             'success': True,
+            'mode': 'patient',
             'text': greeting_text,
+            'response': greeting_text,
             'intent': 'greeting',
-            'patient_id': effective_patient_id
+            'patient_id': effective_patient_id,
+            'patient_context': get_patient_clinical_context(effective_patient_id) if effective_patient_id else None
         }
 
     if intent == 'ACKNOWLEDGMENT':
@@ -3180,15 +3438,19 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
         ack_text = f"You're welcome, Doctor. I'm ready if you'd like to check {p_name}'s vital trends, overnight changes, or transfer recommendations." if p_name else "You're welcome, Doctor. Let me know which patient you'd like to review next."
         return {
             'success': True,
+            'mode': 'patient',
             'text': ack_text,
+            'response': ack_text,
             'intent': 'acknowledgment',
-            'patient_id': effective_patient_id
+            'patient_id': effective_patient_id,
+            'patient_context': get_patient_clinical_context(effective_patient_id) if effective_patient_id else None
         }
 
     if intent == 'HELP':
         p_name = state.get('active_patient_name')
         return {
             'success': True,
+            'mode': 'patient',
             'text': (
                 f"Doctor, you can ask me ANY natural question about " + (f"**{p_name}**" if p_name else "a patient") + ":\n\n"
                 f"• *'condition?'* or *'how is he?'* — Comprehensive status & telemetry.\n"
@@ -3199,11 +3461,22 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
                 f"• *'why is he still in ICU?'* — Decision support & transfer criteria.\n"
                 f"• *'Tell me about Rajesh'* — Switch to another authorized patient."
             ),
+            'response': (
+                f"Doctor, you can ask me ANY natural question about " + (f"**{p_name}**" if p_name else "a patient") + ":\n\n"
+                f"• *'condition?'* or *'how is he?'* — Comprehensive status & telemetry.\n"
+                f"• *'what about his oxygen?'* or *'why is his oxygen low?'* — Single vital & causality reasoning.\n"
+                f"• *'is he getting better?'* or *'is he stable?'* — Trajectory & trend analysis.\n"
+                f"• *'what changed overnight?'* — Historical overnight comparison.\n"
+                f"• *'what worries you?'* — Ranked key concerns & abnormal parameters.\n"
+                f"• *'why is he still in ICU?'* — Decision support & transfer criteria.\n"
+                f"• *'Tell me about Rajesh'* — Switch to another authorized patient."
+            ),
             'intent': 'help',
-            'patient_id': effective_patient_id
+            'patient_id': effective_patient_id,
+            'patient_context': get_patient_clinical_context(effective_patient_id) if effective_patient_id else None
         }
 
-    # Step 4: Handle input when NO patient is currently active (Answer ANY query directly)
+    # Step 4: Handle input when NO patient is currently active in Patient Mode
     if not effective_patient_id:
         # 1. First check if user is specifically searching for or typing a patient name/UHID
         is_name_query = len(msg.split()) <= 4 and not any(w in msg.lower() for w in ['what', 'why', 'how', 'when', 'who', 'is', 'are', 'can', 'explain', 'tell', 'define', 'which', 'should', 'list', 'calculate', 'describe', 'difference', 'treatment', 'causes', 'symptoms'])
@@ -3223,11 +3496,14 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
                 ConversationMemory.update_state(user_id=user_id, bot_response=response_text)
                 return {
                     'success': True,
+                    'mode': 'patient',
                     'text': response_text,
+                    'response': response_text,
                     'intent': "patient_found",
                     'patient_id': new_id,
                     'patient': p,
-                    'context': get_patient_clinical_context(new_id)
+                    'context': get_patient_clinical_context(new_id),
+                    'patient_context': get_patient_clinical_context(new_id)
                 }
             elif match_type == "multiple":
                 patient_list = "\n".join(
@@ -3236,20 +3512,26 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
                 )
                 return {
                     'success': True,
+                    'mode': 'patient',
                     'text': f"I found multiple patients matching '{msg}'. Which patient would you like me to review?\n\n{patient_list}",
+                    'response': f"I found multiple patients matching '{msg}'. Which patient would you like me to review?\n\n{patient_list}",
                     'intent': "patient_disambiguation",
                     'candidates': patients,
                     'requires_patient_selection': True
                 }
 
-        # 2. Directly answer whatever question or input was provided via OpenRouter AI
+        # 2. Directly answer whatever general question was provided via OpenRouter AI
         if is_ai_configured():
-            ok, ai_resp, _ = query_openrouter_gemini(msg, patient_context=None, user_role=user_role)
+            ok, ai_resp, _ = query_openrouter_gemini(msg, patient_context=None, user_role=user_role, mode="general")
             if ok and ai_resp:
                 return {
                     'success': True,
+                    'mode': 'patient',
                     'text': ai_resp,
-                    'intent': intent.lower() if intent else 'ai_general_query'
+                    'response': ai_resp,
+                    'intent': intent.lower() if intent else 'ai_general_query',
+                    'patient_id': None,
+                    'patient_context': None
                 }
 
         # 3. Fallback to rich embedded medical knowledge base
@@ -3257,15 +3539,23 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
         if med_resp and "Clinical Concept" not in med_resp:
             return {
                 'success': True,
+                'mode': 'patient',
                 'text': med_resp,
-                'intent': 'general_medical_concept'
+                'response': med_resp,
+                'intent': 'general_medical_concept',
+                'patient_id': None,
+                'patient_context': None
             }
 
-        # 4. Fallback open response
+        # 4. Fallback prompt to select patient
         return {
             'success': True,
-            'text': f"**Dr. Setu Clinical Assistant:**\n\nI am ready to assist with clinical decision-support, vital signs telemetry analysis, ICU-HDU transfer recommendations, and medical inquiries.\n\n• To review an admitted patient, please enter their name or UHID (e.g., *'Sahil Sharma'* or *'JS-0001'*).\n• Or ask any clinical question (e.g., *'What are the signs of septic shock?'* or *'Explain NEWS2 scoring'*).",
-            'intent': "prompt_patient_selection"
+            'mode': 'patient',
+            'text': f"**Dr. Setu Clinical Assistant (Patient Mode):**\n\nPlease select a patient from the dropdown above to review live telemetry, EWS risk scores, and transfer recommendations.\n\n• Or enter a patient name / UHID (e.g., *'Sahil Sharma'* or *'JS-0001'*).\n• Or switch to **General Chat** mode to ask general medical and healthcare questions without a patient context.",
+            'response': f"**Dr. Setu Clinical Assistant (Patient Mode):**\n\nPlease select a patient from the dropdown above to review live telemetry, EWS risk scores, and transfer recommendations.\n\n• Or enter a patient name / UHID (e.g., *'Sahil Sharma'* or *'JS-0001'*).\n• Or switch to **General Chat** mode to ask general medical and healthcare questions without a patient context.",
+            'intent': "prompt_patient_selection",
+            'patient_id': None,
+            'patient_context': None
         }
 
     # Step 5: Synthesize grounded clinical answer for the active patient
@@ -3296,10 +3586,13 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
 
     return {
         'success': True,
+        'mode': 'patient',
         'text': response_text,
+        'response': response_text,
         'intent': intent.lower(),
         'patient_id': effective_patient_id,
-        'context': context
+        'context': context,
+        'patient_context': context
     }
 
 
@@ -3367,7 +3660,7 @@ def _synthesize_answer(patient_id, intent, parameter, raw_query, session_state, 
     if intent == 'GENERAL_MEDICAL_CONCEPT':
         c = get_patient_clinical_context(patient_id)
         if is_ai_configured():
-            ok, ai_resp, _ = query_openrouter_gemini(raw_query, patient_context=c, user_role=user_role)
+            ok, ai_resp, _ = query_openrouter_gemini(raw_query, patient_context=c, user_role=user_role, mode="patient")
             if ok:
                 return ai_resp
         return reason_general_medical_query(raw_query, context=c)
@@ -3375,7 +3668,7 @@ def _synthesize_answer(patient_id, intent, parameter, raw_query, session_state, 
     # 3. Open Custom Inquiries with OpenRouter Gemini AI
     if is_ai_configured():
         c = get_patient_clinical_context(patient_id)
-        ok, ai_resp, meta = query_openrouter_gemini(raw_query, patient_context=c, user_role=user_role)
+        ok, ai_resp, meta = query_openrouter_gemini(raw_query, patient_context=c, user_role=user_role, mode="patient")
         if ok:
             return ai_resp
 
@@ -3383,7 +3676,7 @@ def _synthesize_answer(patient_id, intent, parameter, raw_query, session_state, 
     return reason_open_custom_query(patient_id, raw_query)
 
 
-def process_message(user_id, message, patient_id=None, custom_vitals=None, custom_patient=None, custom_notes=None, user_role="doctor"):
+def process_message(user_id, message, patient_id=None, custom_vitals=None, custom_patient=None, custom_notes=None, user_role="doctor", mode="patient"):
     """
     Backwards-compatible API wrapper calling process_conversational_message.
     """
@@ -3394,7 +3687,8 @@ def process_message(user_id, message, patient_id=None, custom_vitals=None, custo
         custom_vitals=custom_vitals,
         custom_patient=custom_patient,
         custom_notes=custom_notes,
-        user_role=user_role
+        user_role=user_role,
+        mode=mode
     )
 
 

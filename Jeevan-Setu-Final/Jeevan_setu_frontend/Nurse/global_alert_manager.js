@@ -366,23 +366,62 @@
         activeModals.set(itemKey, modal);
         playAlertChime(false);
 
-        const dismissAction = async () => {
-            if (notifId) {
-                try {
-                    await fetch(`/api/v1/notifications/${notifId}/read`, {
-                        method: 'POST',
-                        headers: getAuthHeaders()
-                    });
-                } catch (e) {}
+        const dismissAction = async (e) => {
+            if (e && e.preventDefault && e.target && e.target.tagName !== 'A') {
+                e.preventDefault();
             }
+
+            // 1. Optimistic dismissal & session tracking
             markAlertDismissedInSession(itemKey);
             removeModalWithAnimation(itemKey);
-            setTimeout(fetchGlobalAlertFeed, 400);
+
+            // 2. Persist dismissal in database
+            if (notifId) {
+                try {
+                    const headers = getAuthHeaders();
+                    await fetch(`/api/v1/notifications/${notifId}/dismiss`, {
+                        method: 'POST',
+                        headers: headers
+                    }).catch(() => {
+                        return fetch(`/api/v1/notifications/${notifId}/read`, {
+                            method: 'POST',
+                            headers: headers
+                        });
+                    }).catch(() => {
+                        return fetch(`/notifications/${notifId}/read`, {
+                            method: 'POST',
+                            headers: headers
+                        });
+                    });
+                } catch (err) {
+                    console.warn('[ALERT MANAGER] Failed to persist notification dismissal:', err);
+                }
+            }
+
+            // 3. Re-poll after persistence
+            setTimeout(fetchGlobalAlertFeed, 300);
         };
 
         modal.querySelectorAll('.btn-dismiss-approved').forEach(btn => {
             btn.addEventListener('click', dismissAction);
         });
+
+        const reviewBtn = modal.querySelector('.js-btn-approve');
+        if (reviewBtn) {
+            reviewBtn.addEventListener('click', () => {
+                markAlertDismissedInSession(itemKey);
+                if (notifId) {
+                    try {
+                        const headers = getAuthHeaders();
+                        fetch(`/api/v1/notifications/${notifId}/dismiss`, {
+                            method: 'POST',
+                            headers: headers,
+                            keepalive: true
+                        }).catch(() => {});
+                    } catch (e) {}
+                }
+            });
+        }
     }
 
     // Helpers for session dismissed tracking
@@ -536,8 +575,8 @@
                 }
             }
 
-            // 4b. Process Approved Transfer Notifications (Top 1 active modal)
-            if (Array.isArray(data.approved_transfers) && data.approved_transfers.length > 0) {
+            // 4b. Process Approved Transfer Notifications (Nurse portal only - Doctors do not receive this popup)
+            if (isNurse && Array.isArray(data.approved_transfers) && data.approved_transfers.length > 0) {
                 const pendingApproved = data.approved_transfers.filter(a => !dismissed.includes(`apprv_${a.notification_id}`));
                 if (pendingApproved.length > 0) {
                     const topApprv = pendingApproved[0];
@@ -589,7 +628,11 @@
         const uhid = alert.patient_code || `P${alert.patient_id}`;
         const ward = alert.ward_type || 'ICU';
         const bed = alert.bed_number || '--';
-        const score = alert.ews_score ?? alert.score ?? '--';
+                let rawScore = alert.ews_score ?? alert.total_ews_score ?? alert.score ?? alert.latest_ews_score ?? alert.total_score;
+        if ((rawScore === undefined || rawScore === null) && (alert.parameter === 'ews_total' || !alert.parameter)) {
+            rawScore = alert.value;
+        }
+        const score = (rawScore !== undefined && rawScore !== null && rawScore !== '') ? Math.round(Number(rawScore)) : '--';
         const param = alert.parameter ? alert.parameter.toUpperCase() : 'VITAL SIGN';
         const patientId = alert.patient_id;
 

@@ -274,8 +274,154 @@
             .js-btn-approve:hover {
                 background: #047857;
             }
+            .js-alert-card-approved {
+                border-left: 4px solid #10b981;
+            }
+            .js-alert-header-approved {
+                background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+                padding: 14px 18px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid #059669;
+            }
+            .js-alert-patient-box-approved {
+                background: #064e3b22;
+                border: 1px solid #05966944;
+            }
+        
         `;
         document.head.appendChild(style);
+    }
+
+
+    // Render Doctor Approved Transfer Modal Popup for Nurses & Staff
+    function renderApprovedTransferPopup(item, itemKey, isDoctor, isNurse) {
+        injectGlobalAlertStyles();
+        const root = getOverlayContainer();
+
+        const modal = document.createElement('div');
+        modal.id = `modal-${itemKey}`;
+        modal.className = 'js-alert-card js-alert-card-approved';
+
+        const patientName = item.patient_name || 'Patient';
+        const uhid = item.patient_code || `P${item.patient_id}`;
+        const ward = item.ward_type || 'HDU';
+        const bed = item.bed_number || 'Assigned';
+        const patientId = item.patient_id;
+        const notifId = item.notification_id;
+
+        const pathLower = (window.location.pathname || '').toLowerCase();
+        const isNursePortal = pathLower.includes('/nurse') || pathLower.includes('nurse_');
+        const isDoctorPortal = pathLower.includes('/doctor') || pathLower.includes('doctor_');
+
+        let targetPatientUrl = '#';
+        if (isNursePortal) {
+            targetPatientUrl = `../Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+        } else if (isDoctorPortal) {
+            targetPatientUrl = `../Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}`;
+        } else {
+            targetPatientUrl = isNurse ? `/Nurse/Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}` : `/Doctor/Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}`;
+        }
+
+        modal.innerHTML = `
+            <div class="js-alert-header js-alert-header-approved">
+                <div class="js-alert-header-left">
+                    <div class="js-alert-icon-box">✅</div>
+                    <div>
+                        <h3 class="js-alert-title-main">TRANSFER APPROVED</h3>
+                        <p class="js-alert-subtitle">ICU → HDU • Ready for Step-Down Transfer</p>
+                    </div>
+                </div>
+                <button type="button" class="js-alert-btn-close btn-dismiss-approved" title="Dismiss">✕</button>
+            </div>
+
+            <div class="js-alert-body">
+                <div class="js-alert-patient-box js-alert-patient-box-approved">
+                    <div>
+                        <h4 class="js-alert-patient-name">${patientName}</h4>
+                        <p class="js-alert-patient-sub">UHID: ${uhid} • Destination: <strong>${ward}</strong> (Bed: <strong>${bed}</strong>)</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="display: inline-block; padding: 4px 10px; background: #059669; color: #fff; border-radius: 6px; font-weight: 700; font-size: 11px; text-transform: uppercase;">
+                            APPROVED
+                        </span>
+                    </div>
+                </div>
+
+                <div class="js-alert-notice-box" style="border-color: #05966944; background: #064e3b18;">
+                    <strong>Transfer Notice:</strong> ${item.message || 'Doctor approval completed. Patient is approved for transfer to HDU.'}
+                </div>
+
+                <div class="js-alert-actions">
+                    <button type="button" class="js-btn js-btn-outline btn-dismiss-approved">Dismiss</button>
+                    <a href="${targetPatientUrl}" class="js-btn js-btn-approve">
+                        👁️ Review Patient
+                    </a>
+                </div>
+            </div>
+        `;
+
+        root.appendChild(modal);
+        activeModals.set(itemKey, modal);
+        playAlertChime(false);
+
+        const dismissAction = async (e) => {
+            if (e && e.preventDefault && e.target && e.target.tagName !== 'A') {
+                e.preventDefault();
+            }
+
+            // 1. Optimistic dismissal & session tracking
+            markAlertDismissedInSession(itemKey);
+            removeModalWithAnimation(itemKey);
+
+            // 2. Persist dismissal in database
+            if (notifId) {
+                try {
+                    const headers = getAuthHeaders();
+                    await fetch(`/api/v1/notifications/${notifId}/dismiss`, {
+                        method: 'POST',
+                        headers: headers
+                    }).catch(() => {
+                        return fetch(`/api/v1/notifications/${notifId}/read`, {
+                            method: 'POST',
+                            headers: headers
+                        });
+                    }).catch(() => {
+                        return fetch(`/notifications/${notifId}/read`, {
+                            method: 'POST',
+                            headers: headers
+                        });
+                    });
+                } catch (err) {
+                    console.warn('[ALERT MANAGER] Failed to persist notification dismissal:', err);
+                }
+            }
+
+            // 3. Re-poll after persistence
+            setTimeout(fetchGlobalAlertFeed, 300);
+        };
+
+        modal.querySelectorAll('.btn-dismiss-approved').forEach(btn => {
+            btn.addEventListener('click', dismissAction);
+        });
+
+        const reviewBtn = modal.querySelector('.js-btn-approve');
+        if (reviewBtn) {
+            reviewBtn.addEventListener('click', () => {
+                markAlertDismissedInSession(itemKey);
+                if (notifId) {
+                    try {
+                        const headers = getAuthHeaders();
+                        fetch(`/api/v1/notifications/${notifId}/dismiss`, {
+                            method: 'POST',
+                            headers: headers,
+                            keepalive: true
+                        }).catch(() => {});
+                    } catch (e) {}
+                }
+            });
+        }
     }
 
     // Helpers for session dismissed tracking
@@ -429,6 +575,23 @@
                 }
             }
 
+            // 4b. Process Approved Transfer Notifications (Nurse portal only - Doctors do not receive this popup)
+            if (isNurse && Array.isArray(data.approved_transfers) && data.approved_transfers.length > 0) {
+                const pendingApproved = data.approved_transfers.filter(a => !dismissed.includes(`apprv_${a.notification_id}`));
+                if (pendingApproved.length > 0) {
+                    const topApprv = pendingApproved[0];
+                    const apprvKey = `apprv_${topApprv.notification_id}`;
+                    if (!activeModals.has(apprvKey)) {
+                        for (let [k, modalEl] of activeModals.entries()) {
+                            if (k.startsWith('apprv_')) {
+                                removeModalWithAnimation(k);
+                            }
+                        }
+                        renderApprovedTransferPopup(topApprv, apprvKey, isDoctor, isNurse);
+                    }
+                }
+            }
+
             // 5. Process Prolonged Ready-to-Transfer Alerts (Top 1 active modal)
             if (Array.isArray(data.transfer_alerts) && data.transfer_alerts.length > 0) {
                 const pendingTrans = data.transfer_alerts.filter(t => !dismissed.includes(`trans_${t.recommendation_id}_${t.patient_id}`));
@@ -465,7 +628,11 @@
         const uhid = alert.patient_code || `P${alert.patient_id}`;
         const ward = alert.ward_type || 'ICU';
         const bed = alert.bed_number || '--';
-        const score = alert.ews_score ?? alert.score ?? '--';
+                let rawScore = alert.ews_score ?? alert.total_ews_score ?? alert.score ?? alert.latest_ews_score ?? alert.total_score;
+        if ((rawScore === undefined || rawScore === null) && (alert.parameter === 'ews_total' || !alert.parameter)) {
+            rawScore = alert.value;
+        }
+        const score = (rawScore !== undefined && rawScore !== null && rawScore !== '') ? Math.round(Number(rawScore)) : '--';
         const param = alert.parameter ? alert.parameter.toUpperCase() : 'VITAL SIGN';
         const patientId = alert.patient_id;
 

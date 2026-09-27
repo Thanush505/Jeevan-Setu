@@ -551,7 +551,7 @@
         <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center justify-between text-left">
           <div class="truncate max-w-[260px]">
             <span class="text-[10px] font-bold text-slate-400 uppercase block">Access URL</span>
-            <span id="modal-qr-url" class="font-mono text-[11px] text-slate-700 truncate block">--</span>
+            <a id="modal-qr-url" href="#" target="_blank" class="font-mono text-[11px] text-blue-600 hover:text-blue-800 hover:underline truncate block" title="Click to open QR URL">--</a>
           </div>
           <button onclick="copyModalQRUrl()" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-primary border border-slate-200 rounded-lg text-xs font-semibold transition-all">
             Copy
@@ -1073,7 +1073,11 @@
       document.getElementById('modal-patient-ward-bed').textContent = `${p.ward_type || 'ICU'} · Bed ${p.bed_number || '01'}`;
       
       document.getElementById('modal-qr-image').src = p.qr_image_data_url || '';
-      document.getElementById('modal-qr-url').textContent = p.access_url || '--';
+      const qrUrlEl = document.getElementById('modal-qr-url');
+      if (qrUrlEl) {
+        qrUrlEl.textContent = p.access_url || '--';
+        qrUrlEl.href = p.access_url || '#';
+      }
 
       openModal('modal-view-qr');
     }

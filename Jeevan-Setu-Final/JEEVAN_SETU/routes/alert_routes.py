@@ -157,7 +157,7 @@ def get_global_alert_feed():
     unread_notifs = Notification.get_unread_count(user_id) if user_id else len(emergency_alerts)
     
     approved_transfers = []
-    if user_id:
+    if user_id and role == 'nurse':
         try:
             approved_transfers = db.execute_query(
                 """SELECT n.notification_id, n.patient_id, n.title, n.message, n.created_at,

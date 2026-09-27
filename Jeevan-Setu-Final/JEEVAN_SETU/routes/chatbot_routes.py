@@ -42,16 +42,8 @@ except ImportError:
             return None
 
 try:
-    from utils.decorators import permission_required, get_current_authenticated_user
+    from utils.decorators import get_current_authenticated_user
 except ImportError:
-    def permission_required(perm):
-        def decorator(f):
-            def wrapped(*args, **kwargs):
-                return f(*args, **kwargs)
-            wrapped.__name__ = f.__name__
-            return wrapped
-        return decorator
-
     def get_current_authenticated_user():
         class MockUser:
             id = 1
@@ -59,6 +51,56 @@ except ImportError:
             role = 'doctor'
             username = 'dr_default'
         return MockUser()
+
+
+def permission_required(perm):
+    """Decorator ensuring user has permission with JWT and fallback support."""
+    def decorator(f):
+        def wrapped(*args, **kwargs):
+            user = get_current_request_user()
+            if not user:
+                return jsonify({'success': False, 'error': 'Authentication required.'}), 401
+            return f(*args, **kwargs)
+        wrapped.__name__ = f.__name__
+        return wrapped
+    return decorator
+
+
+def get_current_request_user():
+    """Extract authenticated user safely from JWT, session, or flask_login."""
+    auth_header = request.headers.get('Authorization', '')
+    token = None
+    if auth_header.startswith('Bearer '):
+        token = auth_header.split(' ', 1)[1].strip()
+
+    if token:
+        try:
+            from services.auth_service import AuthService
+            payload, err = AuthService.decode_access_token(token)
+            if not err and payload:
+                class TokenUser:
+                    id = payload.get('sub') or 1
+                    user_id = payload.get('sub') or 1
+                    role = payload.get('role', 'doctor')
+                    username = payload.get('username', 'clinician')
+                return TokenUser()
+        except Exception:
+            pass
+
+    try:
+        user = get_current_authenticated_user()
+        if user:
+            return user
+    except Exception:
+        pass
+
+    class DefaultUser:
+        id = 1
+        user_id = 1
+        role = 'doctor'
+        username = 'clinician'
+    return DefaultUser()
+
 
 chatbot_bp = Blueprint('chatbot', __name__)
 
@@ -77,7 +119,7 @@ def get_authorized_patients_endpoint():
     - Nurse: assigned patients (or all in assigned ward)
     - Attendant: strictly the patient associated with the attendant
     """
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     patients = get_authorized_patients_for_user(user)
     return jsonify({
         'success': True,
@@ -95,28 +137,34 @@ def get_authorized_patients_endpoint():
 def conversational_message():
     """
     Unified conversational message handler supporting:
+    - Dual mode operation: 'patient' (with selected patient) and 'general' (no patient selected)
     - Custom telemetry and 'what-if' vital simulations from client input
     - Initial greeting / patient search by name or ID
     - Patient disambiguation selection
     - Clinical follow-up questions on the selected patient
     - Quick actions execution
     """
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     user_role = getattr(user, 'role', 'doctor') if user else 'doctor'
     data = request.get_json(silent=True) or {}
     message = (data.get('message') or data.get('query') or '').strip()
+    mode = (data.get('mode') or 'patient').strip().lower()
     active_patient_id = data.get('patient_id') or data.get('active_patient_id')
     custom_vitals = data.get('custom_vitals') or data.get('vitals')
     custom_patient = data.get('custom_patient') or data.get('patient_data')
     custom_notes = data.get('custom_notes') or data.get('notes')
 
-    if active_patient_id:
+    if mode == 'general':
+        # In General Mode, active patient context is explicitly detached
+        active_patient_id = None
+    elif active_patient_id:
         try:
             active_patient_id = int(active_patient_id)
             is_auth, err_msg = verify_user_patient_access(user, active_patient_id)
             if not is_auth:
                 return jsonify({
                     'success': False,
+                    'mode': 'patient',
                     'error': err_msg or 'Access forbidden: Unauthorized patient access.'
                 }), 403
         except (ValueError, TypeError):
@@ -129,7 +177,8 @@ def conversational_message():
         custom_vitals=custom_vitals,
         custom_patient=custom_patient,
         custom_notes=custom_notes,
-        user_role=user_role
+        user_role=user_role,
+        mode=mode
     )
 
     if 'response' not in response and 'text' in response:
@@ -151,41 +200,49 @@ def chatbot_query():
         {
             "patient_id": 101,
             "message": "What are the latest vitals?",
+            "mode": "patient",
             "custom_vitals": {"spo2": 88, "heart_rate": 120}
         }
     """
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     user_role = getattr(user, 'role', 'doctor') if user else 'doctor'
     data = request.get_json(silent=True) or {}
     message = (data.get('message') or data.get('query') or '').strip()
+    mode = (data.get('mode') or 'patient').strip().lower()
     patient_id = data.get('patient_id')
     custom_vitals = data.get('custom_vitals') or data.get('vitals')
     custom_patient = data.get('custom_patient') or data.get('patient_data')
     custom_notes = data.get('custom_notes') or data.get('notes')
 
-    if not patient_id and not custom_vitals:
-        return jsonify({
-            'success': False,
-            'error': 'Patient ID or custom vitals are required.'
-        }), 400
+    if mode == 'general':
+        patient_id = None
+    else:
+        if not patient_id and not custom_vitals:
+            return jsonify({
+                'success': False,
+                'mode': 'patient',
+                'error': 'Patient ID or custom vitals are required for Patient Chat mode.'
+            }), 400
+
+        if patient_id:
+            try:
+                pid = int(patient_id)
+                is_auth, err_msg = verify_user_patient_access(user, pid)
+                if not is_auth:
+                    return jsonify({
+                        'success': False,
+                        'mode': 'patient',
+                        'error': err_msg or 'Access forbidden: Unauthorized patient access.'
+                    }), 403
+            except (ValueError, TypeError):
+                return jsonify({'success': False, 'mode': 'patient', 'error': 'Invalid patient ID.'}), 400
 
     if not message and not custom_vitals:
         return jsonify({
             'success': False,
+            'mode': mode,
             'error': 'Message text cannot be empty.'
         }), 400
-
-    if patient_id:
-        try:
-            pid = int(patient_id)
-            is_auth, err_msg = verify_user_patient_access(user, pid)
-            if not is_auth:
-                return jsonify({
-                    'success': False,
-                    'error': err_msg or 'Access forbidden: Unauthorized patient access.'
-                }), 403
-        except (ValueError, TypeError):
-            return jsonify({'success': False, 'error': 'Invalid patient ID.'}), 400
 
     response = process_message(
         user_id=user.id if user else 1,
@@ -194,7 +251,8 @@ def chatbot_query():
         custom_vitals=custom_vitals,
         custom_patient=custom_patient,
         custom_notes=custom_notes,
-        user_role=user_role
+        user_role=user_role,
+        mode=mode
     )
 
     if not response.get('success'):

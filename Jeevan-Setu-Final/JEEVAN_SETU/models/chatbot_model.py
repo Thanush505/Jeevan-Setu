@@ -2,7 +2,13 @@
 models/chatbot_model.py — Model for chatbot conversation history.
 """
 
-from database.db import db
+try:
+    from database.db import db
+except ImportError:
+    class MockDB:
+        def execute_query(self, *args, **kwargs):
+            return []
+    db = MockDB()
 
 
 class ChatbotConversation:
@@ -12,12 +18,11 @@ class ChatbotConversation:
     def save(user_id, user_message, bot_response, patient_id=None,
              intent=None, confidence=None):
         """Save a chatbot conversation turn."""
-        bot_resp = bot_response if bot_response is not None else ""
         return db.execute_query(
             """INSERT INTO chatbot_conversations
                (user_id, patient_id, user_message, bot_response, intent, confidence)
                VALUES (%s, %s, %s, %s, %s, %s)""",
-            (user_id, patient_id, user_message, bot_resp, intent, confidence)
+            (user_id, patient_id, user_message, bot_response, intent, confidence)
         )
 
     @staticmethod

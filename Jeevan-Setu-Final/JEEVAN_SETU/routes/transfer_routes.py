@@ -120,21 +120,19 @@ def create_transfer_request():
 
     # Strict Cross-Doctor Authorization (IDOR Prevention)
     user_role = getattr(user, 'role', '').lower() if user else ''
-    patient_id = transfer.get('patient_id')
-    patient = Patient.get_by_id(patient_id) if patient_id else None
     if user_role == 'doctor' and patient and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
         AuditLog.log(
-            action='UNAUTHORIZED_CROSS_DOCTOR_TRANSFER_REJECT_ATTEMPT',
+            action='UNAUTHORIZED_CROSS_DOCTOR_TRANSFER_REQUEST_ATTEMPT',
             user_id=user_id,
-            entity_type='transfer',
-            entity_id=transfer_id,
+            entity_type='patient',
+            entity_id=patient_id,
             new_value={'attempted_by_doctor_id': user_id, 'assigned_doctor_id': patient.get('assigned_doctor')},
             ip_address=request.remote_addr,
-            description=f"Security Alert: Dr. {getattr(user, 'full_name', 'Unknown')} attempted unauthorized transfer rejection for Patient {patient.get('name')} assigned to another doctor."
+            description=f"Security Alert: Dr. {getattr(user, 'full_name', 'Unknown')} attempted unauthorized transfer request for Patient {patient.get('name')} assigned to another doctor."
         )
         return jsonify({
             'success': False,
-            'error': 'Permission denied: Access forbidden. You are only authorized to reject transfers for your assigned patients.'
+            'error': 'Permission denied: Access forbidden. You are only authorized to request transfers for your assigned patients.'
         }), 403
 
 

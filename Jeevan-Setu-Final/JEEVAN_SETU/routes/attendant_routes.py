@@ -21,22 +21,21 @@ attendant_bp = Blueprint('attendant', __name__)
 def get_base_url():
     """
     Extract full base URL (scheme + host) for QR generation and redirection.
-    Prioritizes EXTERNAL_BASE_URL (http://192.168.1.3:5000) so mobile cameras scan a Wi-Fi reachable URL.
+    Dynamically resolves active LAN IP (e.g. 172.20.10.2) or client request host.
     """
-    config = get_config()
-    external_base = getattr(config, 'EXTERNAL_BASE_URL', None) or os.getenv('EXTERNAL_BASE_URL')
-    
     if request:
         host = request.headers.get('Host', '')
-        # If client is directly accessing from phone or external IP, use request host
         if host and not host.startswith(('localhost', '127.0.0.1', '::1', '0.0.0.0')):
             scheme = request.scheme or 'http'
             return f"{scheme}://{host}".rstrip('/')
             
-    if external_base:
+    from config import get_config, get_lan_ip
+    config = get_config()
+    external_base = getattr(config, 'EXTERNAL_BASE_URL', None) or os.getenv('EXTERNAL_BASE_URL')
+    if external_base and not '192.168.1.3' in external_base and not '127.0.0.1' in external_base:
         return external_base.rstrip('/')
         
-    lan_ip = getattr(config, 'LAN_IP', '192.168.1.3')
+    lan_ip = getattr(config, 'LAN_IP', None) or get_lan_ip()
     port = getattr(config, 'PORT', 5000)
     return f"http://{lan_ip}:{port}".rstrip('/')
 

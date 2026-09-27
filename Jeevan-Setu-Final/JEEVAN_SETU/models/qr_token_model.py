@@ -37,16 +37,25 @@ class PatientQRToken:
 
     @staticmethod
     def get_effective_base_url(base_url=None):
-        """Determine effective base URL for QR links (default: http://192.168.1.3:5000)."""
+        """Determine effective base URL for QR links."""
         if base_url:
             return base_url.rstrip('/')
-        from config import get_config
+        try:
+            from flask import has_request_context, request
+            if has_request_context() and request and request.host:
+                scheme = request.scheme or 'http'
+                host = request.host
+                if not host.startswith(('localhost', '127.0.0.1', '::1', '0.0.0.0')):
+                    return f"{scheme}://{host}".rstrip('/')
+        except Exception:
+            pass
+        from config import get_config, get_lan_ip
         import os
         config = get_config()
         ext_base = getattr(config, 'EXTERNAL_BASE_URL', None) or os.getenv('EXTERNAL_BASE_URL')
-        if ext_base:
+        if ext_base and not '192.168.1.3' in ext_base and not '127.0.0.1' in ext_base:
             return ext_base.rstrip('/')
-        lan_ip = getattr(config, 'LAN_IP', '192.168.1.3')
+        lan_ip = getattr(config, 'LAN_IP', None) or get_lan_ip()
         port = getattr(config, 'PORT', 5000)
         return f"http://{lan_ip}:{port}".rstrip('/')
 

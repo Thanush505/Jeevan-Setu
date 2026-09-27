@@ -70,80 +70,152 @@
 <body class="flex h-screen overflow-hidden bg-slate-100">
 
     <!-- SIDEBAR -->
-    <aside class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col overflow-y-auto shadow-xl z-20">
-        <div class="p-4 border-b border-gray-800 flex items-center space-x-3">
-            <div class="bg-blue-600 rounded-lg p-2 shadow-inner flex items-center justify-center">
-                <span class="material-symbols-outlined text-white text-2xl">local_hospital</span>
-            </div>
-            <div>
-                <h1 class="font-bold text-lg leading-tight tracking-wide">JEEVAN SETU</h1>
-                <p class="text-[9px] text-blue-300 uppercase tracking-wider font-semibold">ICU–HDU Decision Support</p>
-            </div>
-        </div>
+      <!-- STANDARDIZED DOCTOR SIDEBAR -->
+  <aside id="doctor-sidebar" class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col h-screen overflow-y-auto select-none border-r border-slate-800">
+    <!-- Branding -->
+    <div class="p-5 border-b border-white/10 flex items-center gap-3">
+      <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md shadow-blue-500/20">
+        <span class="material-symbols-outlined text-white text-[22px]">medical_services</span>
+      </div>
+      <div>
+        <h1 class="font-bold text-base tracking-tight leading-tight text-white font-['Poppins']">JEEVAN SETU</h1>
+        <p class="text-[9px] text-cyan-400 font-semibold tracking-wider uppercase">ICU TO HDU TRANSFER DSS</p>
+      </div>
+    </div>
 
-        <nav class="flex-1 px-3 py-4 space-y-5">
-            <div>
-                <ul class="space-y-1">
-                    <li onclick="window.location.href='/Doctor/Doctor_dashboard_/Doctor_dashboard_.html'" class="hover:bg-slate-800/80 py-2.5 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded-lg text-slate-300 hover:text-white">
-                        <span class="material-symbols-outlined text-[19px]">dashboard</span>
-                        <span class="text-sm font-medium">Dashboard</span>
-                    </li>
-                </ul>
-            </div>
+    <!-- Navigation -->
+    <nav class="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
+      <!-- Dashboard -->
+      <div>
+        <ul class="space-y-1">
+          <li>
+            <a href="../Doctor_dashboard_/Doctor_dashboard_.html" data-page="dashboard" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">dashboard</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+        </ul>
+      </div>
 
-            <div>
-                <p class="text-[10px] text-slate-400 font-bold uppercase px-3 mb-2 tracking-widest">Patient Management</p>
-                <ul class="space-y-1">
-                    <li onclick="window.location.href='/Doctor/Doctor_my_patients/Doctor_my_patients.html'" class="hover:bg-slate-800/80 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded-lg text-slate-300 hover:text-white">
-                        <span class="material-symbols-outlined text-[19px]">group</span>
-                        <span class="text-sm">My Patients</span>
-                    </li>
-                    <li onclick="window.location.href='/Doctor/Doctor_all_patients/Doctor_all_patients.html'" class="hover:bg-slate-800/80 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded-lg text-slate-300 hover:text-white">
-                        <span class="material-symbols-outlined text-[19px]">corporate_fare</span>
-                        <span class="text-sm">All Patients</span>
-                    </li>
-                    <li onclick="window.location.href='/Doctor/Doctor_patient_search/Doctor_patient_search.html'" class="hover:bg-slate-800/80 py-2 px-3 flex items-center space-x-3 cursor-pointer transition-colors rounded-lg text-slate-300 hover:text-white">
-                        <span class="material-symbols-outlined text-[19px]">person_search</span>
-                        <span class="text-sm">Patient Search</span>
-                    </li>
-                </ul>
-            </div>
+      <!-- Patient Management -->
+      <div>
+        <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">PATIENT MANAGEMENT</p>
+        <ul class="space-y-1">
+          <li>
+            <a href="../Doctor_my_patients/Doctor_my_patients.html" data-page="my_patients" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">groups</span>
+              <span>My Patients</span>
+            </a>
+          </li>
+          <li>
+            <a href="../Doctor_all_patients/Doctor_all_patients.html" data-page="all_patients" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">domain</span>
+              <span>All Patients</span>
+            </a>
+          </li>
+          <li>
+            <a href="../Doctor_patient_search/Doctor_patient_search.html" data-page="patient_search" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">search</span>
+              <span>Patient Search</span>
+            </a>
+          </li>
+        </ul>
+      </div>
 
-            <div>
-                <p class="text-[10px] text-slate-400 font-bold uppercase px-3 mb-2 tracking-widest">Clinical AI & Decision Tools</p>
-                <ul class="space-y-1">
-                    <li class="sidebar-active py-2.5 px-3 flex items-center space-x-3 cursor-pointer text-white font-semibold shadow-md">
-                        <span class="material-symbols-outlined text-[19px]">smart_toy</span>
-                        <span class="text-sm">Clinical Assistant (Dr. Setu)</span>
-                    </li>
-                    <li onclick="window.location.href='/Doctor/Doctor_ews_calculator/Doctor_ews_calculator.html'" class="hover:bg-slate-800/80 py-2 px-3 flex items-center space-x-3 cursor-pointer rounded-lg text-slate-300 hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-[19px]">calculate</span>
-                        <span class="text-sm">EWS Calculator</span>
-                    </li>
-                    <li onclick="window.location.href='/Doctor/Doctor_transfer_recommendations/Doctor_transfer_recommendations.html'" class="hover:bg-slate-800/80 py-2 px-3 flex items-center space-x-3 cursor-pointer rounded-lg text-slate-300 hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-[19px]">swap_horiz</span>
-                        <span class="text-sm">Transfer Approvals</span>
-                    </li>
-                    <li onclick="window.location.href='/Doctor/Doctor_ews_trends/Doctor_ews_trends.html'" class="hover:bg-slate-800/80 py-2 px-3 flex items-center space-x-3 cursor-pointer rounded-lg text-slate-300 hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-[19px]">trending_up</span>
-                        <span class="text-sm">EWS Trends</span>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+      <!-- Clinical Tools -->
+      <div>
+        <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">CLINICAL TOOLS</p>
+        <ul class="space-y-1">
+          <li>
+            <a href="../Doctor_ews_calculator/Doctor_ews_calculator.html" data-page="ews_calculator" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">calculate</span>
+              <span>EWS Calculator</span>
+            </a>
+          </li>
+          <li>
+            <a href="../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html" data-page="transfer_recommendations" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">swap_horiz</span>
+              <span>Transfer Recommendations</span>
+            </a>
+          </li>
+          <li>
+            <a href="../Doctor_ews_trends/Doctor_ews_trends.html" data-page="ews_trends" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">trending_up</span>
+              <span>EWS Trends</span>
+            </a>
+          </li>
+          <li>
+            <a href="../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html" data-page="patient_summary_ai" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg bg-white/10 text-cyan-400 font-semibold border-l-4 border-cyan-400 transition-all group text-sm">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-cyan-400">psychology</span>
+              <span>Patient Summary (AI)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
 
-        <div class="p-3 border-t border-gray-800/80 bg-[#071326]">
-            <div class="flex items-center space-x-3 px-2 py-1.5">
-                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-xs text-white shadow-sm" id="sidebar-clinician-avatar">
-                    DR
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-xs font-semibold truncate text-white" id="sidebar-clinician-name">Dr. Clinician</p>
-                    <p class="text-[10px] text-blue-300 truncate" id="sidebar-clinician-role">Attending Physician • ICU</p>
-                </div>
-            </div>
-        </div>
-    </aside>
+      <!-- Tasks & Alerts -->
+      <div>
+        <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">TASKS & ALERTS</p>
+        <ul class="space-y-1">
+          <li>
+            <a href="../Doctor_pending_approvals/Doctor_pending_approvals.html" data-page="pending_approvals" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <div class="flex items-center">
+                <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">check_circle</span>
+                <span>Pending Approvals</span>
+              </div>
+              <span id="sidebar-pending-count" class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">5</span>
+            </a>
+          </li>
+          <li>
+            <a href="../Doctor_alerts_notifications/Doctor_alerts_notifications.html" data-page="alerts_notifications" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <div class="flex items-center">
+                <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">notifications</span>
+                <span>Alerts & Notifications</span>
+              </div>
+              <span id="sidebar-alerts-count" class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Reports -->
+      <div>
+        <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">REPORTS</p>
+        <ul class="space-y-1">
+          <li>
+            <a href="../Doctor_patient_reports/Doctor_patient_reports.html" data-page="patient_reports" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">description</span>
+              <span>Patient Reports</span>
+            </a>
+          </li>
+          <li>
+            <a href="../Doctor_transfer_reports/Doctor_transfer_reports.html" data-page="transfer_reports" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">summarize</span>
+              <span>Transfer Reports</span>
+            </a>
+          </li>
+          <li>
+            <a href="../Doctor_audit_logs/Doctor_audit_logs.html" data-page="audit_logs" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">verified_user</span>
+              <span>Audit Logs</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Bottom Actions -->
+    <div class="p-3 border-t border-white/10 space-y-1 mt-auto bg-[#081426]/50">
+      <a href="../Doctor_settings_jeevan/Doctor_settings_jeevan.html" data-page="settings" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+        <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">settings</span>
+        <span>Settings</span>
+      </a>
+      <a href="../../Login/Login.html" onclick="if(typeof handleDoctorLogout==='function'){handleDoctorLogout(event);}" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all group text-sm font-medium">
+        <span class="material-symbols-outlined mr-3 text-[20px] text-red-400 group-hover:text-red-300 transition-colors">logout</span>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
 
     <!-- MAIN CHAT INTERFACE -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
@@ -179,13 +251,29 @@
             </div>
         </header>
 
-        <!-- LIVE PATIENT TELEMETRY BAR (WITH PATIENT DROPDOWN & REMOVED PDF REPORT) -->
+        <!-- LIVE PATIENT TELEMETRY & MODE BAR -->
         <div id="active-patient-bar" class="bg-[#0f172a] text-white px-6 py-2.5 flex items-center justify-between shadow-md flex-shrink-0 border-b border-slate-800 relative z-30">
-            <div class="flex items-center space-x-4 flex-wrap">
+            <div class="flex items-center space-x-3 flex-wrap">
                 
+                <!-- MODE TOGGLE CONTROLS -->
+                <div class="flex items-center bg-slate-900/90 rounded-lg p-0.5 border border-slate-700 shadow-inner" id="mode-toggle-group">
+                    <button id="mode-patient-btn" type="button" onclick="setChatMode('patient')" 
+                            class="px-2.5 py-1 text-xs font-bold rounded-md flex items-center gap-1 transition-all bg-blue-600 text-white shadow-xs cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">account_circle</span>
+                        <span>Patient Chat</span>
+                    </button>
+                    <button id="mode-general-btn" type="button" onclick="setChatMode('general')" 
+                            class="px-2.5 py-1 text-xs font-semibold rounded-md flex items-center gap-1 transition-all text-slate-400 hover:text-slate-200 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">public</span>
+                        <span>General Chat</span>
+                    </button>
+                </div>
+
+                <div class="h-4 w-px bg-slate-700"></div>
+
                 <!-- PATIENT SELECTOR DROPDOWN -->
-                <div class="relative flex items-center space-x-2">
-                    <span class="material-symbols-outlined text-blue-400 text-lg">account_circle</span>
+                <div id="patient-selector-container" class="relative flex items-center space-x-2">
+                    <span class="material-symbols-outlined text-blue-400 text-lg" id="patient-selector-icon">person</span>
                     <span class="text-xs text-slate-400">Patient:</span>
                     
                     <button id="patient-dropdown-btn" onclick="togglePatientDropdown(event)" 
@@ -215,23 +303,23 @@
                     <span class="text-[11px] text-blue-300 font-mono" id="bar-patient-code">--</span>
                 </div>
 
-                <div class="h-4 w-px bg-slate-700"></div>
-                <div class="text-xs text-slate-300">
+                <div class="h-4 w-px bg-slate-700" id="bar-loc-divider"></div>
+                <div class="text-xs text-slate-300" id="bar-location-container">
                     Location: <strong class="text-white" id="bar-patient-ward">--</strong> (Bed: <span id="bar-patient-bed">--</span>)
                 </div>
-                <div class="h-4 w-px bg-slate-700"></div>
-                <div class="flex items-center space-x-1.5 text-xs">
+                <div class="h-4 w-px bg-slate-700" id="bar-ews-divider"></div>
+                <div class="flex items-center space-x-1.5 text-xs" id="bar-ews-container">
                     <span class="text-slate-400">EWS:</span>
                     <span class="px-2 py-0.5 rounded font-bold text-[11px] bg-slate-800 text-white" id="bar-patient-ews">--</span>
                 </div>
-                <div class="h-4 w-px bg-slate-700"></div>
+                <div class="h-4 w-px bg-slate-700" id="bar-time-divider"></div>
                 <div class="text-[11px] text-emerald-400 flex items-center gap-1 font-mono" id="bar-telemetry-time">
                     <span class="material-symbols-outlined text-[13px]">schedule</span> Ready
                 </div>
             </div>
 
-            <!-- RIGHT ACTION CONTROLS (PDF REPORT BUTTON REMOVED) -->
-            <div class="flex items-center space-x-2">
+            <!-- RIGHT ACTION CONTROLS -->
+            <div class="flex items-center space-x-2" id="bar-right-controls">
                 <button id="sync-vitals-btn" onclick="syncLiveVitals()" disabled class="disabled:opacity-40 disabled:cursor-not-allowed bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-2.5 py-1 rounded font-medium transition-colors flex items-center gap-1 border border-slate-700 cursor-pointer">
                     <span class="material-symbols-outlined text-sm">refresh</span> Sync Telemetry
                 </button>
@@ -251,15 +339,15 @@
                 <div class="chat-bubble-doctor p-4.5 shadow-sm max-w-2xl text-xs text-gray-800 leading-relaxed space-y-3">
                     <div class="flex items-center justify-between border-b border-gray-100 pb-2">
                         <span class="font-bold text-blue-900 flex items-center gap-1.5 text-sm">
-                            <span class="material-symbols-outlined text-blue-600 text-[18px]">medical_services</span> Dr. Setu • ICU Specialist Assistant
+                            <span class="material-symbols-outlined text-blue-600 text-[18px]">medical_services</span> Dr. Setu • Clinical & Healthcare Assistant
                         </span>
-                        <span class="text-[10px] bg-blue-50 text-blue-700 font-semibold px-2 py-0.5 rounded border border-blue-100">Live Decision Support</span>
+                        <span class="text-[10px] bg-blue-50 text-blue-700 font-semibold px-2 py-0.5 rounded border border-blue-100" id="welcome-badge">Dual-Mode Assistant</span>
                     </div>
-                    <p class="font-medium text-slate-700">
-                        Hello, Clinician. I am your clinical decision assistant for ICU–HDU monitoring. I provide real-time patient handovers, analyze vital telemetry trends, explain EWS risk scores, and review transfer readiness based strictly on recorded database telemetry.
+                    <p class="font-medium text-slate-700" id="welcome-description">
+                        Hello, Clinician. I am your clinical decision assistant for ICU–HDU monitoring. I provide real-time patient handovers, analyze vital telemetry trends, explain EWS risk scores, review transfer readiness, and answer general medical and healthcare questions.
                     </p>
                     <div class="bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-600 space-y-1">
-                        <p class="font-bold text-slate-800">Select a patient from the dropdown above or search below to begin rounds:</p>
+                        <p class="font-bold text-slate-800" id="welcome-prompt-header">Select a patient above for Patient Chat, or switch to General Chat for general healthcare inquiries:</p>
                         <p id="patient-quick-picks">Loading authorized patient list...</p>
                     </div>
                 </div>
@@ -268,33 +356,12 @@
 
         <!-- QUICK ACTIONS BAR -->
         <div id="quick-actions-bar" class="bg-white border-t border-gray-200 px-6 py-2 flex items-center gap-2 overflow-x-auto flex-shrink-0 shadow-xs">
-            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex-shrink-0 flex items-center gap-1">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex-shrink-0 flex items-center gap-1" id="quick-actions-label">
                 <span class="material-symbols-outlined text-[13px]">bolt</span> Clinical Quick Handover:
             </span>
-            <button onclick="sendQuickAction('Current Vitals')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
-                <span class="material-symbols-outlined text-[14px]">ecg_heart</span> Current Vitals
-            </button>
-            <button onclick="sendQuickAction('Patient Summary')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
-                <span class="material-symbols-outlined text-[14px]">summarize</span> Full Summary
-            </button>
-            <button onclick="sendQuickAction('Vital Trends')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
-                <span class="material-symbols-outlined text-[14px]">trending_up</span> Longitudinal Trends
-            </button>
-            <button onclick="sendQuickAction('EWS & Score')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
-                <span class="material-symbols-outlined text-[14px]">speed</span> EWS & CSI Index
-            </button>
-            <button onclick="sendQuickAction('Transfer Recommendation')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
-                <span class="material-symbols-outlined text-[14px]">swap_horiz</span> Transfer Decision
-            </button>
-            <button onclick="sendQuickAction('Previous Decisions')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
-                <span class="material-symbols-outlined text-[14px]">history</span> Review History
-            </button>
-            <button onclick="sendQuickAction('Documented Condition')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
-                <span class="material-symbols-outlined text-[14px]">diagnosis</span> Documented Condition
-            </button>
-            <button onclick="openCustomTelemetryModal()" class="quick-chip bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 px-3.5 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 flex-shrink-0 shadow-sm transition-all transform hover:scale-105 cursor-pointer">
-                <span class="material-symbols-outlined text-[15px]">science</span> ⚡ Custom Input / Simulator
-            </button>
+            <div id="quick-chips-container" class="flex items-center gap-2">
+                <!-- Dynamically Populated by JavaScript according to active chatMode -->
+            </div>
         </div>
 
         <!-- INPUT BOX -->
@@ -423,6 +490,7 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        let chatMode = 'patient'; // 'patient' (with active patient context) or 'general' (educational/multipurpose healthcare)
         let authorizedPatients = [];
         let activePatientId = null;
         let activePatientData = null;
@@ -759,6 +827,129 @@
             renderPatientDropdown(filtered);
         });
 
+        // Quick Action Chips Renderer (Patient Mode vs General Mode)
+        function renderQuickActions() {
+            const container = document.getElementById('quick-chips-container');
+            const label = document.getElementById('quick-actions-label');
+            if (!container) return;
+
+            if (chatMode === 'patient') {
+                if (label) label.innerHTML = `<span class="material-symbols-outlined text-[13px]">bolt</span> Clinical Handover:`;
+                container.innerHTML = `
+                    <button onclick="sendQuickAction('Current Vitals')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">ecg_heart</span> Current Vitals
+                    </button>
+                    <button onclick="sendQuickAction('Patient Summary')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">summarize</span> Full Summary
+                    </button>
+                    <button onclick="sendQuickAction('Vital Trends')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">trending_up</span> Longitudinal Trends
+                    </button>
+                    <button onclick="sendQuickAction('EWS & Score')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">speed</span> EWS & CSI Index
+                    </button>
+                    <button onclick="sendQuickAction('Transfer Recommendation')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">swap_horiz</span> Transfer Decision
+                    </button>
+                    <button onclick="sendQuickAction('Previous Decisions')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">history</span> Review History
+                    </button>
+                    <button onclick="sendQuickAction('Documented Condition')" class="quick-chip bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-gray-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">diagnosis</span> Documented Condition
+                    </button>
+                    <button onclick="openCustomTelemetryModal()" class="quick-chip bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 px-3.5 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 flex-shrink-0 shadow-sm transition-all transform hover:scale-105 cursor-pointer">
+                        <span class="material-symbols-outlined text-[15px]">science</span> ⚡ Custom Input / Simulator
+                    </button>
+                `;
+            } else {
+                if (label) label.innerHTML = `<span class="material-symbols-outlined text-[13px]">school</span> General Healthcare Prompts:`;
+                container.innerHTML = `
+                    <button onclick="sendGeneralQuickPrompt('What is EWS and how is it scored?')" class="quick-chip bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">speed</span> Explain EWS
+                    </button>
+                    <button onclick="sendGeneralQuickPrompt('What are the normal vital signs for an adult?')" class="quick-chip bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">vital_signs</span> Normal Vital Signs
+                    </button>
+                    <button onclick="sendGeneralQuickPrompt('What is the difference between ICU and HDU?')" class="quick-chip bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">domain</span> ICU vs HDU
+                    </button>
+                    <button onclick="sendGeneralQuickPrompt('What is hypertension and how is it classified?')" class="quick-chip bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">blood_pressure</span> Hypertension
+                    </button>
+                    <button onclick="sendGeneralQuickPrompt('What are the clinical signs and criteria for sepsis?')" class="quick-chip bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">warning</span> Sepsis Criteria
+                    </button>
+                    <button onclick="sendGeneralQuickPrompt('What is the difference between tachycardia and bradycardia?')" class="quick-chip bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">favorite</span> Tachycardia vs Bradycardia
+                    </button>
+                    <button onclick="sendGeneralQuickPrompt('What does oxygen saturation (SpO2) measure?')" class="quick-chip bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                        <span class="material-symbols-outlined text-[14px]">air</span> Oxygen Saturation
+                    </button>
+                `;
+            }
+        }
+
+        // Mode Switching Function (Patient Mode vs General Mode)
+        function setChatMode(newMode) {
+            chatMode = newMode === 'general' ? 'general' : 'patient';
+            const patientBtn = document.getElementById('mode-patient-btn');
+            const generalBtn = document.getElementById('mode-general-btn');
+            const pDropdownBtn = document.getElementById('patient-dropdown-btn');
+            const pCodeEl = document.getElementById('bar-patient-code');
+            const locContainer = document.getElementById('bar-location-container');
+            const ewsContainer = document.getElementById('bar-ews-container');
+            const ewsDivider = document.getElementById('bar-ews-divider');
+            const timeEl = document.getElementById('bar-telemetry-time');
+            const syncBtn = document.getElementById('sync-vitals-btn');
+            const switchBtn = document.getElementById('switch-patient-btn');
+            const userInputEl = document.getElementById('user-input');
+
+            if (chatMode === 'general') {
+                if (patientBtn) patientBtn.className = 'px-2.5 py-1 text-xs font-semibold rounded-md flex items-center gap-1 transition-all text-slate-400 hover:text-slate-200 cursor-pointer';
+                if (generalBtn) generalBtn.className = 'px-2.5 py-1 text-xs font-bold rounded-md flex items-center gap-1 transition-all bg-purple-600 text-white shadow-xs cursor-pointer';
+                
+                document.getElementById('bar-patient-name').textContent = 'No Patient Selected';
+                if (pDropdownBtn) pDropdownBtn.className = 'bg-slate-800/60 text-slate-400 font-medium text-xs px-2.5 py-1 rounded border border-slate-700/60 flex items-center gap-1.5 cursor-not-allowed opacity-80';
+                if (pCodeEl) pCodeEl.textContent = 'GENERAL_MODE';
+                if (locContainer) locContainer.innerHTML = 'Mode: <strong class="text-purple-300">General Healthcare (Educational)</strong>';
+                if (ewsContainer) ewsContainer.classList.add('hidden');
+                if (ewsDivider) ewsDivider.classList.add('hidden');
+                if (timeEl) timeEl.innerHTML = `<span class="material-symbols-outlined text-[13px]">public</span> Educational Knowledge`;
+                if (syncBtn) syncBtn.disabled = true;
+                if (switchBtn) switchBtn.classList.add('hidden');
+                if (userInputEl) userInputEl.placeholder = 'Ask any medical or healthcare question (e.g. What is hypertension?, What is EWS?)...';
+
+                appendMessage('bot', '🌐 **Switched to General Healthcare Chat Mode.**\n\nNo patient is selected. You can ask general educational medical questions (e.g., physiological concepts, vital sign norms, clinical scoring, or ICU/HDU terminology).\n\n*Note: To view or analyze verified records for a specific patient, please switch back to Patient Chat mode.*');
+            } else {
+                if (patientBtn) patientBtn.className = 'px-2.5 py-1 text-xs font-bold rounded-md flex items-center gap-1 transition-all bg-blue-600 text-white shadow-xs cursor-pointer';
+                if (generalBtn) generalBtn.className = 'px-2.5 py-1 text-xs font-semibold rounded-md flex items-center gap-1 transition-all text-slate-400 hover:text-slate-200 cursor-pointer';
+                
+                if (pDropdownBtn) pDropdownBtn.className = 'bg-blue-900/80 hover:bg-blue-800/90 text-white font-bold text-xs px-2.5 py-1 rounded border border-blue-700/60 flex items-center gap-1.5 transition-all shadow-xs focus:outline-none focus:ring-1 focus:ring-blue-400 cursor-pointer';
+                if (ewsContainer) ewsContainer.classList.remove('hidden');
+                if (ewsDivider) ewsDivider.classList.remove('hidden');
+                if (switchBtn) switchBtn.classList.remove('hidden');
+                if (userInputEl) userInputEl.placeholder = 'Ask Dr. Setu about current vitals, EWS risk, or transfer decision...';
+
+                if (activePatientData) {
+                    selectPatient(activePatientData, false);
+                    appendMessage('bot', `👤 **Switched to Patient Chat Mode.**\n\nActive context for **${escapeHtml(activePatientData.name || 'Selected Patient')}** (${activePatientData.patient_code || ''}) restored from verified Jeevan Setu database records.`);
+                } else if (authorizedPatients && authorizedPatients.length > 0) {
+                    selectPatient(authorizedPatients[0], false);
+                    appendMessage('bot', `👤 **Switched to Patient Chat Mode.**\n\nActive context for **${escapeHtml(authorizedPatients[0].name)}** selected.`);
+                } else {
+                    document.getElementById('bar-patient-name').textContent = 'Select a Patient';
+                    if (pCodeEl) pCodeEl.textContent = '--';
+                    if (locContainer) locContainer.innerHTML = 'Location: <strong class="text-white">--</strong>';
+                }
+            }
+            renderQuickActions();
+        }
+
+        // Quick General Question Trigger
+        function sendGeneralQuickPrompt(promptText) {
+            sendMessage(promptText);
+        }
+
         // Select Patient and update all header parameters & chatbot context
         function selectPatient(patient, announceChat = true) {
             if (!patient) return;
@@ -767,25 +958,47 @@
             activePatientData = patient;
             sessionStorage.setItem('jeevan_setu_active_patient_id', pid);
 
+            // Ensure we are in patient mode when a patient is explicitly selected
+            if (chatMode !== 'patient') {
+                chatMode = 'patient';
+                const patientBtn = document.getElementById('mode-patient-btn');
+                const generalBtn = document.getElementById('mode-general-btn');
+                if (patientBtn) patientBtn.className = 'px-2.5 py-1 text-xs font-bold rounded-md flex items-center gap-1 transition-all bg-blue-600 text-white shadow-xs cursor-pointer';
+                if (generalBtn) generalBtn.className = 'px-2.5 py-1 text-xs font-semibold rounded-md flex items-center gap-1 transition-all text-slate-400 hover:text-slate-200 cursor-pointer';
+                const ewsContainer = document.getElementById('bar-ews-container');
+                const ewsDivider = document.getElementById('bar-ews-divider');
+                const switchBtn = document.getElementById('switch-patient-btn');
+                if (ewsContainer) ewsContainer.classList.remove('hidden');
+                if (ewsDivider) ewsDivider.classList.remove('hidden');
+                if (switchBtn) switchBtn.classList.remove('hidden');
+                renderQuickActions();
+            }
+
             // 1. Update Patient Name & Code
             document.getElementById('bar-patient-name').textContent = patient.name || `Patient #${pid}`;
             document.getElementById('bar-patient-code').textContent = patient.patient_code || `JS-${pid}`;
 
             // 2. Update Ward & Bed Location
-            document.getElementById('bar-patient-ward').textContent = patient.ward_type || patient.ward_name || 'ICU';
-            document.getElementById('bar-patient-bed').textContent = patient.bed_number || 'N/A';
+            const locContainer = document.getElementById('bar-location-container');
+            const wardName = patient.ward_type || patient.ward_name || 'ICU';
+            const bedNumber = patient.bed_number || 'N/A';
+            if (locContainer) {
+                locContainer.innerHTML = `Location: <strong class="text-white" id="bar-patient-ward">${escapeHtml(wardName)}</strong> (Bed: <span id="bar-patient-bed">${escapeHtml(bedNumber)}</span>)`;
+            }
 
             // 3. Update EWS Score & Risk Level Badge
             const ewsBadge = document.getElementById('bar-patient-ews');
             const ewsVal = patient.ews_score ?? 0;
             const risk = (patient.ews_risk_level || patient.risk_level || (ewsVal >= 7 ? 'CRITICAL' : (ewsVal >= 5 ? 'HIGH' : (ewsVal >= 1 ? 'MEDIUM' : 'LOW')))).toUpperCase();
-            ewsBadge.textContent = `${ewsVal} (${risk})`;
-            if (risk === 'CRITICAL' || risk === 'HIGH' || ewsVal >= 5) {
-                ewsBadge.className = 'px-2 py-0.5 rounded font-bold text-[11px] bg-red-600 text-white shadow-xs';
-            } else if (risk === 'MEDIUM' || ewsVal >= 1) {
-                ewsBadge.className = 'px-2 py-0.5 rounded font-bold text-[11px] bg-amber-500 text-white shadow-xs';
-            } else {
-                ewsBadge.className = 'px-2 py-0.5 rounded font-bold text-[11px] bg-emerald-600 text-white shadow-xs';
+            if (ewsBadge) {
+                ewsBadge.textContent = `${ewsVal} (${risk})`;
+                if (risk === 'CRITICAL' || risk === 'HIGH' || ewsVal >= 5) {
+                    ewsBadge.className = 'px-2 py-0.5 rounded font-bold text-[11px] bg-red-600 text-white shadow-xs';
+                } else if (risk === 'MEDIUM' || ewsVal >= 1) {
+                    ewsBadge.className = 'px-2 py-0.5 rounded font-bold text-[11px] bg-amber-500 text-white shadow-xs';
+                } else {
+                    ewsBadge.className = 'px-2 py-0.5 rounded font-bold text-[11px] bg-emerald-600 text-white shadow-xs';
+                }
             }
 
             // 4. Update Recorded Timestamp
@@ -811,7 +1024,7 @@
                 .then(data => {
                     if (data.success && data.context) {
                         activePatientData = data.context.patient || patient;
-                        if (data.context.ews) {
+                        if (data.context.ews && ewsBadge) {
                             const e = data.context.ews;
                             const eScore = e.score ?? ewsVal;
                             const eRisk = (e.risk_level || risk).toUpperCase();
@@ -843,7 +1056,7 @@
             }
         }
 
-        // Send Message to Backend (scoped strictly to active authorized patient)
+        // Send Message to Backend (scoped strictly according to active mode)
         async function sendMessage(msgText, customVitals = null, customNotes = null) {
             if ((!msgText || !msgText.trim()) && !customVitals) return;
 
@@ -855,16 +1068,26 @@
             try {
                 const payload = {
                     message: msgText || '',
-                    patient_id: activePatientId
+                    mode: chatMode,
+                    patient_id: chatMode === 'patient' ? activePatientId : null
                 };
                 if (customVitals) payload.custom_vitals = customVitals;
                 if (customNotes) payload.custom_notes = customNotes;
 
-                const response = await fetch('/chatbot/message', {
-                    method: 'POST',
-                    headers: getAuthHeaders(),
-                    body: JSON.stringify(payload)
-                });
+                let response;
+                try {
+                    response = await fetch('/chatbot/message', {
+                        method: 'POST',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(payload)
+                    });
+                } catch (e1) {
+                    response = await fetch('/api/v1/chatbot/message', {
+                        method: 'POST',
+                        headers: getAuthHeaders(),
+                        body: JSON.stringify(payload)
+                    });
+                }
 
                 const data = await response.json();
                 typingIndicator.classList.add('hidden');
@@ -875,7 +1098,7 @@
                 }
 
                 if (data.success) {
-                    if (data.patient_id && (!activePatientId || String(activePatientId) !== String(data.patient_id))) {
+                    if (chatMode === 'patient' && data.patient_id && (!activePatientId || String(activePatientId) !== String(data.patient_id))) {
                         const authP = authorizedPatients.find(p => String(p.patient_id || p.id) === String(data.patient_id));
                         if (authP) {
                             selectPatient(authP, false);
@@ -982,7 +1205,7 @@
 
         // Live telemetry sync
         async function syncLiveVitals() {
-            if (!activePatientId) return;
+            if (!activePatientId || chatMode !== 'patient') return;
             typingIndicator.classList.remove('hidden');
             try {
                 const res = await fetch(`/chatbot/patient/${activePatientId}/summary`, { headers: getAuthHeaders() });
@@ -999,6 +1222,9 @@
 
         // Quick action handler
         function sendQuickAction(actionName) {
+            if (chatMode !== 'patient') {
+                setChatMode('patient');
+            }
             if (!activePatientId && actionName !== 'Patient Summary') {
                 appendMessage('bot', 'Clinician, please select a patient from the dropdown first before requesting ' + actionName + '.');
                 return;
@@ -1022,6 +1248,7 @@
 
         function confirmShowSummary(patientId) {
             activePatientId = patientId;
+            if (chatMode !== 'patient') setChatMode('patient');
             sendMessage('Show complete patient summary');
         }
 
@@ -1106,7 +1333,10 @@
             } catch (e) {}
 
             loadAuthorizedPatients();
+            renderQuickActions();
         });
     </script>
+  <script src="../doctor_sidebar.js"></script>
+  <script src="../global_alert_manager.js"></script>
 </body>
 </html>

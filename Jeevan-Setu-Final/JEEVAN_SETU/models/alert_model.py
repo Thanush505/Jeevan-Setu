@@ -45,9 +45,29 @@ class Alert:
         params.append(limit)
 
         return db.execute_query(
-            f"""SELECT a.*, p.name as patient_name, p.ward_type, p.bed_number, p.patient_code, p.diagnosis, p.assigned_doctor
+            f"""SELECT a.*, p.name as patient_name, p.ward_type, p.bed_number, p.patient_code, p.diagnosis, p.assigned_doctor,
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as ews_score,
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as total_ews_score,
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as score,
+                      COALESCE(e.risk_level, 'LOW') as risk_level
                FROM alerts a
                JOIN patients p ON a.patient_id = p.patient_id
+               LEFT JOIN (
+                   SELECT e1.patient_id, e1.total_score, e1.risk_level, e1.vital_id
+                   FROM ews_scores e1
+                   INNER JOIN (
+                       SELECT patient_id, MAX(ews_id) as max_ews_id
+                       FROM ews_scores GROUP BY patient_id
+                   ) e2 ON e1.ews_id = e2.max_ews_id
+               ) e ON p.patient_id = e.patient_id
+               LEFT JOIN (
+                   SELECT v1.patient_id, v1.ews_score
+                   FROM vitals v1
+                   INNER JOIN (
+                       SELECT patient_id, MAX(vital_id) as max_id
+                       FROM vitals GROUP BY patient_id
+                   ) v2 ON v1.vital_id = v2.max_id
+               ) v ON p.patient_id = v.patient_id
                WHERE {where_sql}
                ORDER BY 
                  CASE a.alert_type 
@@ -93,7 +113,30 @@ class Alert:
     def get_by_patient(patient_id):
         """Get alerts for a specific patient."""
         return db.execute_query(
-            "SELECT * FROM alerts WHERE patient_id = %s ORDER BY created_at DESC",
+            """SELECT a.*, p.name as patient_name, p.ward_type, p.bed_number, p.patient_code, p.diagnosis,
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as ews_score,
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as total_ews_score,
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as score,
+                      COALESCE(e.risk_level, 'LOW') as risk_level
+               FROM alerts a
+               JOIN patients p ON a.patient_id = p.patient_id
+               LEFT JOIN (
+                   SELECT e1.patient_id, e1.total_score, e1.risk_level
+                   FROM ews_scores e1
+                   INNER JOIN (
+                       SELECT patient_id, MAX(ews_id) as max_ews_id
+                       FROM ews_scores GROUP BY patient_id
+                   ) e2 ON e1.ews_id = e2.max_ews_id
+               ) e ON p.patient_id = e.patient_id
+               LEFT JOIN (
+                   SELECT v1.patient_id, v1.ews_score
+                   FROM vitals v1
+                   INNER JOIN (
+                       SELECT patient_id, MAX(vital_id) as max_id
+                       FROM vitals GROUP BY patient_id
+                   ) v2 ON v1.vital_id = v2.max_id
+               ) v ON p.patient_id = v.patient_id
+               WHERE a.patient_id = %s ORDER BY a.created_at DESC""",
             (patient_id,), fetch=True
         ) or []
 
@@ -204,9 +247,22 @@ class Alert:
         return db.execute_query(
             f"""SELECT a.*, p.name as patient_name, p.patient_code, p.ward_type, p.bed_number,
                       p.diagnosis, p.assigned_doctor, p.assigned_nurse,
-                      v.ews_score as latest_ews_score, v.recorded_at as vitals_recorded_at
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as ews_score,
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as total_ews_score,
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as score,
+                      COALESCE(e.total_score, v.ews_score, CAST(a.value AS SIGNED)) as latest_ews_score,
+                      COALESCE(e.risk_level, CASE WHEN a.value >= 7 THEN 'CRITICAL' WHEN a.value >= 5 THEN 'HIGH' WHEN a.value >= 3 THEN 'MEDIUM' ELSE 'LOW' END) as risk_level,
+                      v.recorded_at as vitals_recorded_at
                FROM alerts a
                JOIN patients p ON a.patient_id = p.patient_id
+               LEFT JOIN (
+                   SELECT e1.patient_id, e1.total_score, e1.risk_level, e1.vital_id
+                   FROM ews_scores e1
+                   INNER JOIN (
+                       SELECT patient_id, MAX(ews_id) as max_ews_id
+                       FROM ews_scores GROUP BY patient_id
+                   ) e2 ON e1.ews_id = e2.max_ews_id
+               ) e ON p.patient_id = e.patient_id
                LEFT JOIN (
                    SELECT v1.patient_id, v1.ews_score, v1.recorded_at
                    FROM vitals v1

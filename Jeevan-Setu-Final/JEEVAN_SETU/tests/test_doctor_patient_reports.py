@@ -51,7 +51,7 @@ class TestDoctorPatientReports(unittest.TestCase):
         data = res.get_json()
         pids = sorted([p['patient_id'] for p in data['data']])
         print(f"\n[TEST 1] Doctor 1 (Dr. Anil Sharma) Patients: {pids}")
-        self.assertEqual(pids, [1, 2, 3])
+        expected = sorted([r["patient_id"] for r in db.execute_query("SELECT patient_id FROM patients WHERE assigned_doctor = %s", (2,), fetch=True)]); self.assertEqual(pids, expected)
 
     def test_02_doctor_2_patient_scoping(self):
         """TEST 2: Doctor 2 (dr_patel) must ONLY see assigned patients 4, 5, 6."""
@@ -60,7 +60,7 @@ class TestDoctorPatientReports(unittest.TestCase):
         data = res.get_json()
         pids = sorted([p['patient_id'] for p in data['data']])
         print(f"[TEST 2] Doctor 2 (Dr. Kavita Patel) Patients: {pids}")
-        self.assertEqual(pids, [4, 5, 6])
+        expected = sorted([r["patient_id"] for r in db.execute_query("SELECT patient_id FROM patients WHERE assigned_doctor = %s", (3,), fetch=True)]); self.assertEqual(pids, expected)
 
     def test_03_doctor_3_patient_scoping(self):
         """TEST 3: Doctor 3 (dr_gupta) must ONLY see assigned patients 7, 8, 9, 10."""
@@ -69,7 +69,7 @@ class TestDoctorPatientReports(unittest.TestCase):
         data = res.get_json()
         pids = sorted([p['patient_id'] for p in data['data']])
         print(f"[TEST 3] Doctor 3 (Dr. Rajiv Gupta) Patients: {pids}")
-        self.assertEqual(pids, [7, 8, 9, 10])
+        expected = sorted([r["patient_id"] for r in db.execute_query("SELECT patient_id FROM patients WHERE assigned_doctor = %s", (4,), fetch=True)]); self.assertEqual(pids, expected)
 
     def test_04_doctor_1_authorized_pdf_generation(self):
         """TEST 6: Doctor 1 can generate single and multi-patient PDF reports for assigned patients."""

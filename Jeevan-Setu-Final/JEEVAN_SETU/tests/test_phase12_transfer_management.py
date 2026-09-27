@@ -224,7 +224,7 @@ class TestPhase12TransferManagement(unittest.TestCase):
 
         # 5. Audit log must be present
         logs = db.execute_query(
-            "SELECT * FROM audit_logs WHERE action = 'approve_transfer' AND entity_id = %s",
+            "SELECT * FROM audit_logs WHERE action IN ('approve_transfer', 'TRANSFER_APPROVED_AND_EXECUTED') AND entity_id = %s",
             (self.created_transfer_id,), fetch=True
         )
         self.assertGreaterEqual(len(logs), 1)
