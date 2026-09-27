@@ -1,94 +1,130 @@
-# JEEVAN SETU (जीवन सेतु) 🏥
+# Jeevan Setu 🏥
+### Intelligent ICU ↔ HDU Patient Transfer Decision Support, Clinical Reasoning & Attendant Access System
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://python.org)
-[![Flask](https://img.shields.io/badge/Backend-Flask-black.svg?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
-[![MySQL](https://img.shields.io/badge/Database-MySQL-00758F.svg?logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![JavaScript](https://img.shields.io/badge/Frontend-HTML5%20%2B%20Vanilla%20JS-F7DF1E.svg?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
-> **Intelligent Clinical Decision Support, Critical Emergency Alert & Patient Transfer System (ICU ↔ HDU)**
-
----
-
-## 📌 Overview
-
-**Jeevan Setu** is an intelligent, secure, and explainable clinical decision-support and hospital operations platform designed to optimize critical care monitoring and patient transfers between **Intensive Care Units (ICU)**, **High Dependency Units (HDU)**, and General Wards.
-
-By integrating continuous vital signs monitoring, automated **Early Warning Score (EWS)** calculation, explainable clinical heuristics, **Global Universal Emergency Alerting**, prolonged **Ready-to-Transfer Monitoring**, permanent patient-specific QR attendant portals, and multi-patient ReportLab clinical reporting, Jeevan Setu empowers clinical teams with real-time operational telemetry and objective decision support.
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-3.0%2B-green.svg)](https://flask.palletsprojects.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-orange.svg)](https://www.mysql.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)]()
 
 ---
 
-## ✨ Key Capabilities & Modules
+## 📌 Executive Summary
 
-### 🚨 1. Global Emergency Alert System
-- **Real-Time Critical Detection**: Automatically detects when a patient's vitals trigger a **Critical** risk level ($\text{EWS} \ge 5$ or critical vital deviations).
-- **Universal Global Popup**: Dispatches instant emergency alert popups across **all 14 Doctor pages and 13 Nurse pages** without requiring users to navigate back to the dashboard.
-- **Smart Queue & Zero-Dependency Modal**: Self-contained CSS modal with audio-visual indicators, vitals telemetry, patient UHID/bed info, and one-click clinical navigation.
-- **Duplicate Prevention**: Intelligently suppresses duplicate alerts while an active alert is unacknowledged for the same patient.
-- **Clinical Recovery Auto-Resolution**: Automatically marks critical alerts resolved when the patient's condition improves to Stable/Moderate.
-- **Doctor Acknowledgment**: Tracks and persists clinician acknowledgment timestamps and user IDs in MySQL.
+**Jeevan Setu** (*Bridge of Life*) is an enterprise-grade hospital clinical decision support system (CDSS) designed to streamline critical care bed workflows, patient deterioration tracking, and ICU ↔ HDU (High Dependency Unit) step-down transfers. 
 
----
-
-### 🔄 2. Prolonged Ready-to-Transfer Alert System
-- **Automatic Prolonged Transfer Detection**: Monitors patients in *Ready-to-Transfer* state (*Fit for HDU Transfer*); generates high-priority alerts when waiting time exceeds the configurable threshold (default: 120 minutes).
-- **Doctor-Only Transfer Approval**: Only Attending Doctors and Administrators have authorization to approve transfers.
-- **Strict Nurse RBAC Enforcement**: Nurse portal displays read-only transfer status. Any attempt by unauthorized roles to approve a transfer is blocked with **HTTP 403 Forbidden** and recorded in the security audit log (`UNAUTHORIZED_TRANSFER_APPROVAL_ATTEMPT`).
-- **Stale Approval Protection**: Re-evaluates patient vitals in real-time at the exact moment of approval; if the patient's condition has deteriorated and is no longer Stable, approval is rejected (**HTTP 400 Bad Request**).
-- **Post-Approval Nurse Notifications**: Dispatches immediate notifications to ward nurses upon doctor approval to initiate physical bed transfer.
+The platform integrates:
+1. **Real-Time 4-Parameter Early Warning Scoring (EWS)** for continuous vital signs telemetry.
+2. **AI-Powered Clinical Decision Support & Reasoning** leveraging OpenRouter & Google Gemma 4 AI for interactive clinician querying and automated patient summaries.
+3. **Atomic Transfer Approval Pipeline** with concurrency-safe HDU bed assignment and instant ICU bed release.
+4. **Strict Doctor-Patient Authorization & IDOR Hardening** ensuring clinicians only receive alerts and access records for assigned patients.
+5. **Universal Global Alert & Notification System** with real-time popups across Doctor, Nurse, and Attendant portals.
+6. **Permanent QR Attendant Access System** providing families with secure, read-only mobile recovery updates.
 
 ---
 
-### 🛡️ 3. Administrator Portal
-- **Real-Time Telemetry**: Live hospital census, active ICU/HDU bed occupancy, pending transfer requests, and critical alerts.
-- **Patient Management & In-App Admission**: Real-time admission modal connected to MySQL (`UHID`, demographics, diagnosis, bed allocation, and clinician assignment).
-- **Beds, Wards & Resource Utilization**:
-  - Live spatial bed matrix for ICU-A, HDU-B, and General Ward-C.
-  - Overall occupancy %, critical care load pressure, and capacity alerts for wards exceeding $85\%$ capacity.
-- **User & Role Management**: Clinician accounts with bcrypt/werkzeug hashed passwords and granular permissions.
-- **Permanent Patient-Specific QR Attendant Access**:
-  - Cryptographically secure opaque tokens (`JS-QR-P{patient_id}-{entropy}`).
-  - Static QR persistence (one permanent QR per patient until revoked or regenerated).
-  - Printable hospital badge passes, PNG downloads, and revocation controls.
-- **Multi-Patient Clinical Reports**: ReportLab two-pass repeating hospital header canvas, batching, structured previews, and dynamic downloads.
-- **Audit Logs, System Settings & Backup**: Real-time audit trails tracking authentication, transfers, clinical reports, and QR scans.
+## 🌟 Key Features & Capabilities
 
----
-
-### 📱 4. Mobile Attendant Portal & QR Access
-```
-ADMIN                                          ATTENDANT
-  │                                                │
-  ▼                                                ▼
-Generate QR (Once per patient)               Scan QR Code
-  │                                                │
-  ▼                                                ▼
-Permanent Secure Token ────────────► Mobile Scan Entry Page
-(Zero sensitive PII in QR)           (Enter Attendant Name)
-                                                   │
-                                                   ▼
-                                        Verify Token & Name
-                                                   │
-                                                   ▼
-                                        Create Attendant Session
-                                                   │
-                                                   ▼
-                                      Read-Only Patient Dashboard
-                                      (Vitals, EWS, Bed & Clinician)
-```
-- **Mobile-First Entry Page** (`/Attendant/attendant_access.html`): Context badge, name sanitization, and server-side validation.
-- **Strict Isolation**: Read-only clinical telemetry dynamically bound to the authenticated attendant session.
-
----
-
-### 🩺 5. Clinical Decision Support & EWS Engine
-- **Standard 4-Parameter Vital Assessment**:
+### 🩺 1. Clinical Decision Support & 4-Parameter EWS Engine
+- **Vital Parameters Tracked**:
   - Respiratory Rate ($RR$)
   - Heart Rate ($HR$)
   - Systolic Blood Pressure ($SBP$)
   - Body Temperature ($Temp$)
-- **Automated Real-Time EWS Scoring**: Calculates sub-scores per parameter and categorizes risk (`NORMAL`, `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
-- **Explainable Decision Recommendations**: Evaluates condition indicators and outputs transparent clinical recommendations (*Keep in ICU*, *Transfer to HDU*, *Discharge / Ward*).
+- **Automated Risk Stratification**: Sub-score calculations categorizing risk into `NORMAL`, `LOW`, `MEDIUM`, `HIGH`, and `CRITICAL`.
+- **Transparent Step-Down Heuristics**: Automatic evaluation of patient readiness for step-down transfers (*Maintain in ICU*, *Transfer to HDU*, *Discharge / Ward*).
+
+---
+
+### 🤖 2. Jeevan Setu AI Clinical Assistant (OpenRouter & Gemma 4)
+- **High-Performance AI Model**: Powered by OpenRouter integration (`google/gemma-4-31b-it:free`).
+- **Context-Grounded Clinical Reasoning (CCRL)**:
+  - Validates clinician queries against live database telemetry.
+  - Generates comprehensive structured patient summaries (demographics, EWS trajectory, organ system review, medication history, and step-down eligibility).
+  - Handles general medical consultations, drug-drug interaction inquiries, and discharge criteria.
+- **Strict Role-Based Scoping**: Physicians access deep clinical reasoning while nursing staff receive monitoring guidance.
+
+---
+
+### 🛡️ 3. Doctor-Patient Authorization & IDOR Hardening
+- **Strict Database-Level Scoping**: Queries for alerts, feeds, vitals, patient lists, reports, and transfers are strictly bound to `patients.assigned_doctor = authenticated_doctor_id`.
+- **Zero Frontend Filtering Vulnerabilities**: Unauthorized patient data is never sent to the client browser.
+- **Cross-Doctor IDOR Protection**: Direct API access to unassigned patient records, vitals, reports, or transfer actions immediately returns `HTTP 403 Forbidden` and logs a security audit event (`UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT`).
+
+---
+
+### ⚡ 4. Atomic Transfer Approval & HDU Bed Allocation Pipeline
+```
+[Patient Stabilized (EWS=0)]
+           │
+           ▼
+[Doctor Reviews & Approves Transfer]
+           │
+           ▼ (ACID Database Transaction)
+   ┌────────────────────────────────────────────────────────┐
+   │ 1. Lock transfer and patient records                   │
+   │ 2. Select & lock available HDU bed (SELECT FOR UPDATE) │
+   │ 3. Release previous ICU bed (status -> 'available')    │
+   │ 4. Occupy target HDU bed (status -> 'occupied')        │
+   │ 5. Update patient location: Ward -> HDU, Bed -> HDU-XX │
+   │ 6. Update transfer record: status -> 'approved'        │
+   │ 7. Deactivate pending transfer alerts                  │
+   │ 8. Generate persistent nurse notification              │
+   │ 9. Record audit trail entry                            │
+   └────────────────────────────────────────────────────────┘
+           │
+           ├──────────────────────────────┬──────────────────────────────┐
+           ▼                              ▼                              ▼
+ [Nurse Portal Popup]          [Attendant Portal View]          [Chatbot Telemetry]
+ Real-time "TRANSFER APPROVED"    Instantly shows Ward: HDU,     Reports current location
+ modal with assigned bed          Bed: <new_bed_number>          as HDU and new bed
+```
+- **Concurrency & Resource Safety**: Concurrency-safe bed selection with row-level locking (`FOR UPDATE`) prevents double bed allocation.
+- **Full Rollback Guarantee**: If all HDU beds are occupied, the transaction rolls back cleanly, preserving patient and ICU bed states.
+- **Multi-Portal Real-Time Consistency**: Doctor, Nurse, Admin, Attendant, and Chatbot immediately read the updated HDU location from the database.
+
+---
+
+### 🔔 5. Global Alert & Notification System
+- **Universal Modal Popups**: Overlay notifications display across all pages without requiring dashboard reloads:
+  - 🚨 **Critical Emergency Alerts**: Triggered on vital sign deterioration ($EWS \ge 7$ or single parameter deterioration).
+  - ⏳ **Prolonged Ready-to-Transfer Alerts**: Alerts clinicians when stable patients exceed ward waiting thresholds.
+  - ✅ **Transfer Approved Notifications**: Alerts assigned nurses immediately upon doctor approval with destination bed details.
+- **Role Guardrails**:
+  - **Doctor**: `[Dismiss]`, `[Review]`, and `[Approve Transfer]`.
+  - **Nurse**: `[Dismiss]` and `[Review]` (**Strictly prohibited from approving transfers**).
+
+---
+
+### 📱 6. Permanent Patient-Specific QR Attendant Access
+- **Cryptographically Secure Tokens**: Opaque tokens (`JS-QR-P{patient_id}-{entropy}`) without exposed PII in URLs.
+- **One Permanent QR per Patient**: Static QR badges for hospital beds and ID passes until discharged or revoked.
+- **Mobile Read-Only Dashboard**: Allows family attendants to view real-time recovery progress, vital signs, assigned ward, and clinician details on their mobile devices.
+
+---
+
+## 🏛️ System Architecture
+
+```mermaid
+graph TD
+    A[Staff / Clinician / Attendant Browser] -->|REST API / HTTPS| B[Flask Application Server]
+    B --> C[RBAC & JWT / Session Authentication]
+    B --> D[4-Parameter EWS & Decision Engine]
+    B --> E[OpenRouter Gemma 4 AI Assistant]
+    B --> F[Atomic Transfer & Bed Allocation Engine]
+    B --> G[Universal Global Alert & Notification System]
+    B --> H[ReportLab Clinical PDF Engine]
+    B --> I[Cryptographic QR Token Engine]
+    
+    D --> DB[(MySQL Database)]
+    F --> DB
+    G --> DB
+    H --> DB
+    I --> DB
+    
+    DB -->|Real-time Vitals, Beds, Transfers & Audits| B
+    B -->|Global Alert Feed / REST JSON / Mobile Views| A
+```
 
 ---
 
@@ -99,33 +135,11 @@ Permanent Secure Token ────────────► Mobile Scan Entry
 | **🛡️ Admin** | `admin` | `Admin@123` / `admin123` | System Administrator | Administration |
 | **👨‍⚕️ Doctor** | `dr_sharma` | `Doctor@123` / `doctor123` | Dr. Rajesh Sharma | ICU |
 | **👨‍⚕️ Doctor** | `dr_gupta` | `Doctor@123` / `doctor123` | Dr. Ananya Gupta | Cardiology |
-| **👨‍⚕️ Doctor** | `dr_verma` | `Doctor@123` / `doctor123` | Dr. Vikram Verma | Neurology |
-| **👨‍⚕️ Doctor** | `dr_mehta` | `Doctor@123` / `doctor123` | Dr. Sunita Mehta | Pulmonology |
-| **👩‍⚕️ Nurse** | `nurse_priya` | `Nurse@123` / `nurse123` | Sr. Nurse Priya Sharma | ICU |
-| **👩‍⚕️ Nurse** | `nurse_anjali` | `Nurse@123` / `nurse123` | Nurse Anjali Verma | HDU |
-| **👩‍⚕️ Nurse** | `nurse_sunita` | `Nurse@123` / `nurse123` | Nurse Sunita Patel | General Ward |
-| **👩‍⚕️ Nurse** | `nurse_rekha` | `Nurse@123` / `nurse123` | Nurse Rekha Nair | ICU |
-| **📱 Attendant** | `attendant_1` | `Attendant@123` | Ramesh Kumar | Patient Care |
-
----
-
-## 🏛️ System Architecture
-
-```mermaid
-graph TD
-    A[Staff / Clinician / Attendant Browser] -->|REST API / HTTP| B[Flask Application Server]
-    B --> C[RBAC & JWT / Session Auth]
-    B --> D[4-Parameter EWS & Decision Engine]
-    B --> E[Global Emergency & Transfer Alert Engine]
-    B --> F[ReportLab Clinical PDF Engine]
-    B --> G[QR Cryptographic Token Engine]
-    D --> H[(MySQL Database)]
-    E --> H
-    F --> H
-    G --> H
-    H -->|Real-time Vitals, Alerts, Beds & Audits| B
-    B -->|Global Alert JSON / UI / PDF Stream| A
-```
+| **👨‍⚕️ Doctor** | `dr_patel` | `Doctor@123` / `doctor123` | Dr. Kavita Patel | Medicine |
+| **👩‍⚕️ Nurse** | `nurse_priya` | `Nurse@123` / `nurse123` | Sr. Nurse Priya Patel | ICU |
+| **👩‍⚕️ Nurse** | `nurse_arun` | `Nurse@123` / `nurse123` | Nurse Arun Krishnan | HDU |
+| **👩‍⚕️ Nurse** | `nurse_meera` | `Nurse@123` / `nurse123` | Nurse Meera Jain | ICU |
+| **📱 Attendant** | `att_rajesh` | `Attendant@123` | Suman Kumar | Family Attendant |
 
 ---
 
@@ -134,24 +148,25 @@ graph TD
 ```
 Jeevan-Setu/
 ├── JEEVAN_SETU/                  # Flask Backend Application
-│   ├── app.py                   # Application entrypoint & dynamic router
-│   ├── config.py                # Hospital branding, waiting periods & MySQL config
-│   ├── requirements.txt         # Python dependencies
-│   ├── database/                # Schema definitions & initializer
-│   │   ├── schema.sql           # Database schema tables
-│   │   ├── init_db.py           # DB initializer & default seed data
+│   ├── app.py                   # Application entrypoint & blueprint router
+│   ├── config.py                # Hospital branding, waiting thresholds & MySQL config
+│   ├── requirements.txt         # Python backend dependencies
+│   ├── database/                # Schema definitions & migrations
+│   │   ├── schema.sql           # Database tables schema
+│   │   ├── init_db.py           # DB initializer & seed data
 │   │   └── migration_manager.py # SQL migration runner
-│   ├── models/                  # Data models (Patient, Vitals, EWS, Alert, User, Bed, Transfer, QRToken, Report)
-│   ├── modules/                 # Decision engine, Alert engine, Report engine & Analytics
-│   ├── routes/                  # REST API Blueprints (Alert, Decision, Transfer, Patient, Vitals, Bed, Attendant, Report, User)
-│   ├── utils/                   # RBAC decorators, security helpers, audit logging, validators
+│   ├── models/                  # Data models (Patient, Vitals, EWS, Alert, Transfer, Bed, User, QRToken)
+│   ├── modules/                 # Decision engine, Scoring engine, Alert engine, Chatbot engine
+│   ├── routes/                  # REST API Blueprints (Alert, Transfer, Patient, Vitals, Bed, Attendant, Chatbot, Report)
+│   ├── services/                # Business services (Auth, Notification, Decision, Realtime)
+│   ├── utils/                   # RBAC middleware, JWT handlers, security decorators, audit logging
 │   └── tests/                   # Comprehensive automated test suites
 │
 ├── Jeevan_setu_frontend/        # Frontend Templates & Assets
-│   ├── Admin/                   # 11 Administrator management pages & admin_navigation.js
-│   ├── Doctor/                  # 14 Physician decision & review views + global_alert_manager.js
-│   ├── Nurse/                   # 13 Nursing vitals & monitoring views + global_alert_manager.js
-│   ├── Attendant/               # Mobile QR scan entry & patient replica view
+│   ├── Admin/                   # Administrator portals (Patient & Bed management, QR generation)
+│   ├── Doctor/                  # Physician portals (My Patients, Pending Approvals, Transfer Reports)
+│   ├── Nurse/                   # Nursing portals (Dashboard, Enter Vitals, My Patients, Alerts)
+│   ├── Attendant/               # Mobile QR scan entry & patient replica dashboard
 │   ├── Login/                   # Multi-role authentication interface
 │   └── global_alert_manager.js  # Universal Global Alert System client script
 │
@@ -199,8 +214,8 @@ pip install -r requirements.txt
 
 ---
 
-### 5. Configure Database Environment
-Create or verify `JEEVAN_SETU/.env`:
+### 5. Configure Environment Variables
+Create `.env` inside `JEEVAN_SETU/`:
 ```env
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -209,9 +224,11 @@ DB_PASSWORD=your_mysql_password
 DB_NAME=jeevan_setu
 SECRET_KEY=your_secret_key
 JWT_SECRET_KEY=your_jwt_secret_key
+OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_MODEL=google/gemma-4-31b-it:free
 ```
 
-Initialize database schema and seed standard clinician logins:
+Initialize database tables and seed clinician logins:
 ```bash
 python database/init_db.py
 ```
@@ -222,20 +239,23 @@ python database/init_db.py
 ```bash
 python app.py
 ```
-- **PC Access**: `http://127.0.0.1:5000`
-- **Mobile Access (Same Wi-Fi)**: `http://<YOUR_LOCAL_IP>:5000`
+- **Web Portal Access**: `http://127.0.0.1:5000`
+- **Mobile Access (Same Wi-Fi)**: `http://<YOUR_LAN_IP>:5000`
 
 ---
 
 ## 🧪 Testing & Verification
 
-Run the automated verification test suites:
+Run automated test suites verifying authorization, atomic transfers, EWS scoring, and AI reasoning:
 ```bash
-# Run Global Emergency Alert & Transfer System tests (9/9 PASS)
-pytest tests/test_global_emergency_transfer_alerts.py -v
+# Verify Doctor-Patient Authorization & IDOR protection
+python ../test_auth_suite.py
 
-# Run Full System Test Suite (Phases 2 through 19)
-python run_all_tests.py
+# Verify Complete Atomic Transfer Workflow (ICU -> HDU -> Bed Allocation -> Nurse Notification)
+python ../test_transfer_workflow.py
+
+# Verify Rollback Behavior under zero bed availability
+python ../test_rollback.py
 ```
 
 ---
