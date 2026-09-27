@@ -89,24 +89,29 @@ class Notification:
         )
 
     @staticmethod
-    def get_by_user(user_id, unread_only=False, notif_type=None, limit=50):
-        """Fetch notifications for a user with optional unread filter and categorization."""
-        conditions = ["user_id = %s"]
+    def get_by_user(user_id, unread_only=False, notif_type=None, limit=50, role=None):
+        """Fetch notifications for a user with optional unread filter and doctor-patient authorization."""
+        conditions = ["n.user_id = %s"]
         params = [user_id]
 
         if unread_only:
-            conditions.append("is_read = FALSE")
+            conditions.append("n.is_read = FALSE")
 
         if notif_type:
             db_type = Notification.TYPE_MAPPING.get(str(notif_type).upper(), str(notif_type).lower())
-            conditions.append("type = %s")
+            conditions.append("n.type = %s")
             params.append(db_type)
+
+        # Stale & Cross-Doctor Protection: If user is a doctor, filter out notifications for unassigned patients
+        if role == 'doctor':
+            conditions.append("(n.patient_id IS NULL OR p.assigned_doctor = %s)")
+            params.append(user_id)
 
         where_clause = " AND ".join(conditions)
         params.append(limit)
 
         notifications = db.execute_query(
-            f"""SELECT n.*, p.name AS patient_name, p.ward_type, p.bed_number
+            f"""SELECT n.*, p.name AS patient_name, p.ward_type, p.bed_number, p.assigned_doctor
                 FROM notifications n
                 LEFT JOIN patients p ON n.patient_id = p.patient_id
                 WHERE {where_clause}
@@ -132,12 +137,22 @@ class Notification:
         return notifications
 
     @staticmethod
-    def get_unread_count(user_id):
-        """Get count of unread notifications for a user."""
-        res = db.execute_query(
-            "SELECT COUNT(*) AS unread_count FROM notifications WHERE user_id = %s AND is_read = FALSE",
-            (user_id,), fetch=True
-        )
+    def get_unread_count(user_id, role=None):
+        """Get count of unread notifications for a user scoped to assigned patients."""
+        if role == 'doctor':
+            res = db.execute_query(
+                """SELECT COUNT(*) AS unread_count 
+                   FROM notifications n
+                   LEFT JOIN patients p ON n.patient_id = p.patient_id
+                   WHERE n.user_id = %s AND n.is_read = FALSE
+                     AND (n.patient_id IS NULL OR p.assigned_doctor = %s)""",
+                (user_id, user_id), fetch=True
+            )
+        else:
+            res = db.execute_query(
+                "SELECT COUNT(*) AS unread_count FROM notifications WHERE user_id = %s AND is_read = FALSE",
+                (user_id,), fetch=True
+            )
         return res[0]['unread_count'] if res else 0
 
     @staticmethod

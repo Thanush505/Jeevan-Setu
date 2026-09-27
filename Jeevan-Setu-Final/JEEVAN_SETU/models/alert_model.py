@@ -20,13 +20,35 @@ class Alert:
         )
 
     @staticmethod
-    def get_active(limit=50):
-        """Get all unacknowledged alerts."""
+    def get_active(user=None, limit=50):
+        """Get all unacknowledged alerts scoped to user role & assigned patients."""
+        where_clauses = ["a.is_acknowledged = FALSE"]
+        params = []
+        if user:
+            role = getattr(user, 'role', '').lower()
+            user_id = getattr(user, 'id', getattr(user, 'user_id', None))
+            if role == 'doctor' and user_id:
+                where_clauses.append("p.assigned_doctor = %s")
+                params.append(user_id)
+            elif role == 'nurse' and user_id:
+                dept = getattr(user, 'department', None)
+                if dept:
+                    where_clauses.append("(p.assigned_nurse = %s OR p.assigned_nurse IS NULL OR p.ward_type = %s)")
+                    params.extend([user_id, dept])
+                else:
+                    where_clauses.append("(p.assigned_nurse = %s OR p.assigned_nurse IS NULL)")
+                    params.append(user_id)
+            elif role == 'attendant':
+                return []
+        
+        where_sql = " AND ".join(where_clauses)
+        params.append(limit)
+
         return db.execute_query(
-            """SELECT a.*, p.name as patient_name, p.ward_type, p.bed_number, p.patient_code, p.diagnosis
+            f"""SELECT a.*, p.name as patient_name, p.ward_type, p.bed_number, p.patient_code, p.diagnosis, p.assigned_doctor
                FROM alerts a
                JOIN patients p ON a.patient_id = p.patient_id
-               WHERE a.is_acknowledged = FALSE
+               WHERE {where_sql}
                ORDER BY 
                  CASE a.alert_type 
                    WHEN 'critical' THEN 1 
@@ -36,21 +58,35 @@ class Alert:
                    ELSE 5 
                  END ASC,
                  a.created_at DESC LIMIT %s""",
-            (limit,), fetch=True
+            tuple(params), fetch=True
         ) or []
 
     @staticmethod
-    def get_acknowledged(limit=50):
-        """Get all acknowledged alerts."""
+    def get_acknowledged(user=None, limit=50):
+        """Get acknowledged alerts scoped to user."""
+        where_clauses = ["a.is_acknowledged = TRUE"]
+        params = []
+        if user:
+            role = getattr(user, 'role', '').lower()
+            user_id = getattr(user, 'id', getattr(user, 'user_id', None))
+            if role == 'doctor' and user_id:
+                where_clauses.append("p.assigned_doctor = %s")
+                params.append(user_id)
+            elif role == 'attendant':
+                return []
+        
+        where_sql = " AND ".join(where_clauses)
+        params.append(limit)
+
         return db.execute_query(
-            """SELECT a.*, p.name as patient_name, p.ward_type, p.bed_number, p.patient_code, p.diagnosis,
+            f"""SELECT a.*, p.name as patient_name, p.ward_type, p.bed_number, p.patient_code, p.diagnosis,
                       u.full_name as acknowledged_by_name
                FROM alerts a
                JOIN patients p ON a.patient_id = p.patient_id
                LEFT JOIN users u ON a.acknowledged_by = u.user_id
-               WHERE a.is_acknowledged = TRUE
+               WHERE {where_sql}
                ORDER BY a.acknowledged_at DESC, a.alert_id DESC LIMIT %s""",
-            (limit,), fetch=True
+            tuple(params), fetch=True
         ) or []
 
     @staticmethod
@@ -83,13 +119,27 @@ class Alert:
         )
 
     @staticmethod
-    def get_count_by_type():
-        """Get count of active alerts by type."""
+    def get_count_by_type(user=None):
+        """Get count of active alerts by type scoped to user."""
+        where_clauses = ["a.is_acknowledged = FALSE"]
+        params = []
+        if user:
+            role = getattr(user, 'role', '').lower()
+            user_id = getattr(user, 'id', getattr(user, 'user_id', None))
+            if role == 'doctor' and user_id:
+                where_clauses.append("p.assigned_doctor = %s")
+                params.append(user_id)
+            elif role == 'attendant':
+                return []
+        
+        where_sql = " AND ".join(where_clauses)
         return db.execute_query(
-            """SELECT alert_type, COUNT(*) as count
-               FROM alerts WHERE is_acknowledged = FALSE
-               GROUP BY alert_type""",
-            fetch=True
+            f"""SELECT a.alert_type, COUNT(*) as count
+               FROM alerts a
+               JOIN patients p ON a.patient_id = p.patient_id
+               WHERE {where_sql}
+               GROUP BY a.alert_type""",
+            tuple(params) if params else None, fetch=True
         ) or []
 
     @staticmethod
@@ -132,8 +182,8 @@ class Alert:
             role = getattr(user, 'role', '').lower()
             user_id = getattr(user, 'id', getattr(user, 'user_id', None))
             if role == 'doctor' and user_id:
-                # Scoped to assigned doctor or hospital patients
-                where_clauses.append("(p.assigned_doctor = %s OR p.assigned_doctor IS NULL)")
+                # Strictly scoped to assigned doctor only
+                where_clauses.append("p.assigned_doctor = %s")
                 params.append(user_id)
             elif role == 'nurse' and user_id:
                 # Scoped to assigned nurse or matching ward

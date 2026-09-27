@@ -24,23 +24,43 @@ def alert_panel():
 @alert_bp.route('/api/active')
 @permission_required('view_alerts')
 def get_active_alerts():
-    """API: Get all active (unacknowledged) alerts."""
-    alerts = Alert.get_active()
+    """API: Get active (unacknowledged) alerts scoped to authenticated user."""
+    user = get_current_authenticated_user()
+    alerts = Alert.get_active(user=user)
     return jsonify({'success': True, 'data': alerts, 'count': len(alerts)})
 
 
 @alert_bp.route('/api/acknowledged')
 @permission_required('view_alerts')
 def get_acknowledged_alerts():
-    """API: Get acknowledged alerts."""
-    alerts = Alert.get_acknowledged(limit=50)
+    """API: Get acknowledged alerts scoped to authenticated user."""
+    user = get_current_authenticated_user()
+    alerts = Alert.get_acknowledged(user=user, limit=50)
     return jsonify({'success': True, 'data': alerts, 'count': len(alerts)})
 
 
 @alert_bp.route('/api/patient/<int:patient_id>')
 @permission_required('view_alerts')
 def get_patient_alerts(patient_id):
-    """API: Get alerts for a specific patient."""
+    """API: Get alerts for a specific patient with IDOR verification."""
+    user = get_current_authenticated_user()
+    user_role = getattr(user, 'role', '').lower() if user else ''
+    user_id = getattr(user, 'id', getattr(user, 'user_id', None)) if user else None
+
+    patient = Patient.get_by_id(patient_id)
+    if not patient:
+        return jsonify({'success': False, 'error': f'Patient #{patient_id} not found'}), 404
+
+    if user_role == 'doctor' and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
+        AuditLog.log(
+            'UNAUTHORIZED_PATIENT_ALERT_ACCESS_ATTEMPT',
+            user_id=user_id,
+            entity_type='Patient',
+            entity_id=patient_id,
+            description=f"Security Alert: Dr. {getattr(user, 'full_name', 'Unknown')} attempted unauthorized access to alerts for Patient #{patient_id}"
+        )
+        return jsonify({'success': False, 'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'}), 403
+
     alerts = Alert.get_by_patient(patient_id)
     return jsonify({'success': True, 'data': alerts})
 
@@ -48,31 +68,38 @@ def get_patient_alerts(patient_id):
 @alert_bp.route('/acknowledge/<int:alert_id>', methods=['POST'])
 @permission_required('acknowledge_alerts')
 def acknowledge_alert(alert_id):
-    """Acknowledge an alert (Doctors, Nurses, and Admins)."""
+    """Acknowledge an alert (Doctors, Nurses, and Admins) with IDOR verification."""
     user = get_current_authenticated_user()
     user_id = user.id if user else 1
+    user_role = getattr(user, 'role', '').lower() if user else ''
+
+    alert = db.execute_query("SELECT a.*, p.assigned_doctor FROM alerts a JOIN patients p ON a.patient_id = p.patient_id WHERE a.alert_id = %s", (alert_id,), fetch=True)
+    if not alert:
+        return jsonify({'success': False, 'error': f'Alert #{alert_id} not found'}), 404
+
+    if user_role == 'doctor' and alert[0].get('assigned_doctor') and int(alert[0].get('assigned_doctor')) != int(user_id):
+        AuditLog.log(
+            'UNAUTHORIZED_ALERT_ACKNOWLEDGE_ATTEMPT',
+            user_id=user_id,
+            entity_type='Alert',
+            entity_id=alert_id,
+            description=f"Security Alert: Dr. {getattr(user, 'full_name', 'Unknown')} attempted unauthorized acknowledgment of Alert #{alert_id}"
+        )
+        return jsonify({'success': False, 'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'}), 403
+
     Alert.acknowledge(alert_id, user_id)
     AuditLog.log('ACKNOWLEDGE_ALERT', user_id=user_id, entity_type='Alert', entity_id=alert_id, description=f'Alert #{alert_id} acknowledged by user {user_id}')
     return jsonify({'success': True, 'message': 'Alert acknowledged', 'alert_id': alert_id})
 
 
-@alert_bp.route('/acknowledge-all-non-urgent', methods=['POST'])
-@permission_required('acknowledge_alerts')
-def acknowledge_all_non_urgent():
-    """Acknowledge all active non-urgent alerts (medium, low, info)."""
-    user = get_current_authenticated_user()
-    user_id = user.id if user else 1
-    Alert.acknowledge_all_non_urgent(user_id)
-    AuditLog.log('ACKNOWLEDGE_ALL_NON_URGENT', user_id=user_id, entity_type='Alert', entity_id=None, description='All active non-urgent alerts acknowledged')
-    return jsonify({'success': True, 'message': 'All non-urgent alerts acknowledged'})
-
-
 @alert_bp.route('/api/count')
 @permission_required('view_alerts')
 def alert_count():
-    """API: Get count of active alerts by type."""
-    counts = Alert.get_count_by_type()
+    """API: Get count of active alerts by type scoped to authenticated user."""
+    user = get_current_authenticated_user()
+    counts = Alert.get_count_by_type(user=user)
     return jsonify({'success': True, 'data': counts})
+
 
 
 # ─────────────────────────────────────────────────────────────
@@ -126,8 +153,26 @@ def get_global_alert_feed():
     # 3. Get active Ready-to-Transfer alerts & recommendations
     transfer_alerts = get_active_transfer_alerts_for_user(user, limit=20)
 
-    # 4. Get unread notifications count
+    # 4. Get unread notifications count and unread approved transfer notifications
     unread_notifs = Notification.get_unread_count(user_id) if user_id else len(emergency_alerts)
+    
+    approved_transfers = []
+    if user_id:
+        try:
+            approved_transfers = db.execute_query(
+                """SELECT n.notification_id, n.patient_id, n.title, n.message, n.created_at,
+                          p.name AS patient_name, p.patient_code, p.bed_number, p.ward_type, p.diagnosis
+                   FROM notifications n
+                   JOIN patients p ON n.patient_id = p.patient_id
+                   WHERE n.user_id = %s 
+                     AND n.type = 'transfer' 
+                     AND n.is_read = 0
+                   ORDER BY n.created_at DESC
+                   LIMIT 5""",
+                (user_id,), fetch=True
+            ) or []
+        except Exception as e:
+            print(f"[GLOBAL FEED] Warning fetching approved transfers: {e}")
 
     return jsonify({
         'success': True,
@@ -139,8 +184,10 @@ def get_global_alert_feed():
         'unread_count': unread_notifs,
         'emergency_alerts_count': len(emergency_alerts),
         'transfer_alerts_count': len(transfer_alerts),
+        'approved_transfers_count': len(approved_transfers),
         'emergency_alerts': emergency_alerts,
         'transfer_alerts': transfer_alerts,
+        'approved_transfers': approved_transfers,
         'server_time': datetime.now().isoformat()
     }), 200
 
@@ -148,9 +195,24 @@ def get_global_alert_feed():
 @alert_bp.route('/emergency/acknowledge/<int:alert_id>', methods=['POST', 'PUT'])
 @permission_required('acknowledge_alerts')
 def acknowledge_emergency_alert(alert_id):
-    """Acknowledge a critical emergency alert."""
+    """Acknowledge a critical emergency alert with IDOR verification."""
     user = get_current_authenticated_user()
     user_id = user.id if user else 1
+    user_role = getattr(user, 'role', '').lower() if user else ''
+
+    alert = db.execute_query("SELECT a.*, p.assigned_doctor FROM alerts a JOIN patients p ON a.patient_id = p.patient_id WHERE a.alert_id = %s", (alert_id,), fetch=True)
+    if not alert:
+        return jsonify({'success': False, 'error': f'Alert #{alert_id} not found'}), 404
+
+    if user_role == 'doctor' and alert[0].get('assigned_doctor') and int(alert[0].get('assigned_doctor')) != int(user_id):
+        AuditLog.log(
+            'UNAUTHORIZED_EMERGENCY_ALERT_ACK_ATTEMPT',
+            user_id=user_id,
+            entity_type='Alert',
+            entity_id=alert_id,
+            description=f"Security Alert: Dr. {getattr(user, 'full_name', 'Unknown')} attempted unauthorized acknowledgment of Emergency Alert #{alert_id}"
+        )
+        return jsonify({'success': False, 'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'}), 403
 
     Alert.acknowledge(alert_id, user_id)
     AuditLog.log(

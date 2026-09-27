@@ -277,16 +277,27 @@ def check_and_generate_prolonged_transfer_alerts(patient_id=None, waiting_period
             threshold=float(waiting_period_minutes)
         )
 
-        # Broadcast notification: Doctor (with approval action), Nurse (view-only notification)
+        # Targeted Notification: Assigned Doctor (with approval action), Nurse (view-only notification)
         try:
-            Notification.broadcast_to_role(
-                role='doctor',
-                title=f"[TRANSFER APPROVAL REQUIRED] {p_name}",
-                message=message,
-                notif_type='TRANSFER_READY',
-                patient_id=p_id,
-                severity='TRANSFER'
-            )
+            assigned_doc = rec.get('assigned_doctor')
+            if assigned_doc:
+                Notification.create(
+                    user_id=assigned_doc,
+                    title=f"[TRANSFER APPROVAL REQUIRED] {p_name}",
+                    message=message,
+                    notif_type='TRANSFER_READY',
+                    patient_id=p_id,
+                    severity='TRANSFER'
+                )
+            else:
+                Notification.broadcast_to_role(
+                    role='doctor',
+                    title=f"[TRANSFER APPROVAL REQUIRED] {p_name}",
+                    message=message,
+                    notif_type='TRANSFER_READY',
+                    patient_id=p_id,
+                    severity='TRANSFER'
+                )
             Notification.broadcast_to_role(
                 role='nurse',
                 title=f"[TRANSFER PENDING DOCTOR APPROVAL] {p_name}",
@@ -341,13 +352,18 @@ def get_active_transfer_alerts_for_user(user=None, limit=20):
     if user:
         if user_role == 'attendant':
             return []
-        # Doctors and Nurses see transfers for their assigned patients, unassigned patients, or hospital ward transfers
+        # Strict Doctor-patient assignment: Doctors receive transfers ONLY for their assigned patients
         if user_role == 'doctor' and user_id:
-            where_clauses.append("(p.assigned_doctor = %s OR p.assigned_doctor IS NULL OR 1=1)")
+            where_clauses.append("p.assigned_doctor = %s")
             params.append(user_id)
         elif user_role == 'nurse' and user_id:
-            where_clauses.append("(p.assigned_nurse = %s OR p.assigned_nurse IS NULL OR 1=1)")
-            params.append(user_id)
+            dept = getattr(user, 'department', None) if not isinstance(user, dict) else user.get('department')
+            if dept:
+                where_clauses.append("(p.assigned_nurse = %s OR p.assigned_nurse IS NULL OR p.ward_type = %s)")
+                params.extend([user_id, dept])
+            else:
+                where_clauses.append("(p.assigned_nurse = %s OR p.assigned_nurse IS NULL)")
+                params.append(user_id)
 
     where_sql = " AND ".join(where_clauses)
     params.append(limit)

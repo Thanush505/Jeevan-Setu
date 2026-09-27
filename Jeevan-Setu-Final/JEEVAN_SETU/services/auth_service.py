@@ -30,6 +30,7 @@ class AuthService:
             'email': user.email if hasattr(user, 'email') else user['email'],
             'role': user.role if hasattr(user, 'role') else user['role'],
             'department': user.department if hasattr(user, 'department') else user.get('department'),
+            'patient_id': getattr(user, 'patient_id', None) or (user.get('patient_id') if isinstance(user, dict) else None),
             'jti': jti,
             'iat': now,
             'exp': now + timedelta(seconds=expires_in)

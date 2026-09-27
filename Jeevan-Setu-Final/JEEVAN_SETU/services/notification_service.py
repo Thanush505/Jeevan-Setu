@@ -78,15 +78,26 @@ class NotificationService:
             f"Doctor review & authorization required."
         )
 
-        # Broadcast to doctors for authorization and nurses for transfer prep
-        Notification.broadcast_to_role(
-            role='doctor',
-            title=title,
-            message=message,
-            notif_type='TRANSFER_READY',
-            patient_id=patient_id,
-            severity='TRANSFER'
-        )
+        # Targeted Notification: Only patient's assigned doctor receives approval alert
+        assigned_doc = patient.get('assigned_doctor') if patient else None
+        if assigned_doc:
+            Notification.create(
+                user_id=assigned_doc,
+                title=title,
+                message=message,
+                notif_type='TRANSFER_READY',
+                patient_id=patient_id,
+                severity='TRANSFER'
+            )
+        else:
+            Notification.broadcast_to_role(
+                role='doctor',
+                title=title,
+                message=message,
+                notif_type='TRANSFER_READY',
+                patient_id=patient_id,
+                severity='TRANSFER'
+            )
         Notification.broadcast_to_role(
             role='nurse',
             title=title,

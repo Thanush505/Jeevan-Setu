@@ -102,11 +102,19 @@ def list_patients():
 @permission_required('view_patients')
 def search_patients():
     """
-    Fast multi-column search by query string.
+    Fast multi-column search by query string scoped to assigned Doctor.
     Query: ?q=... or ?search=...
     """
-    query = request.args.get('q') or request.args.get('search') or ''
+    user = get_current_authenticated_user()
+    user_role = getattr(user, 'role', '').lower() if user else ''
+    user_id = getattr(user, 'id', getattr(user, 'user_id', None)) if user else None
+
+    query = request.args.get('q') or request.args.get('search') or request.args.get('query') or ''
     results = Patient.search(query) if query else []
+
+    if user_role == 'doctor' and user_id:
+        results = [p for p in results if p.get('assigned_doctor') and int(p.get('assigned_doctor')) == int(user_id)]
+
     return jsonify({
         'success': True,
         'query': query,
@@ -164,14 +172,32 @@ def nurse_patient_search():
 @permission_required('view_patients')
 def get_patient(patient_id):
     """
-    Fetch single patient profile by ID.
+    Fetch single patient profile by ID with strict Doctor-patient IDOR enforcement.
     """
+    user = get_current_authenticated_user()
+    user_role = getattr(user, 'role', '').lower() if user else ''
+    user_id = getattr(user, 'id', getattr(user, 'user_id', None)) if user else None
+
     patient = Patient.get_by_id(patient_id)
     if not patient:
         if _is_api_request():
             return jsonify({'success': False, 'error': f'Patient with ID {patient_id} not found'}), 404
         flash('Patient not found.', 'error')
         return redirect(url_for('patient.dashboard'))
+
+    # Strict Doctor IDOR check
+    if user_role == 'doctor' and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
+        AuditLog.log(
+            'UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
+            user_id=user_id,
+            entity_type='Patient',
+            entity_id=patient_id,
+            description=f"Security Alert: Dr. {getattr(user, 'full_name', 'Unknown')} attempted unauthorized access to Patient #{patient_id} ({patient.get('name')})"
+        )
+        return jsonify({
+            'success': False,
+            'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'
+        }), 403
 
     return jsonify({
         'success': True,

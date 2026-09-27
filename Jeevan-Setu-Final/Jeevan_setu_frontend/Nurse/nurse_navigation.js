@@ -319,9 +319,7 @@
       `;
     });
 
-    // 3. Bottom Utility Menu (Collapsible 'More' section)
-    const isMoreExpanded = (currentActiveId === 'settings') || sessionStorage.getItem('jeevan_setu_nurse_sidebar_more') === 'true';
-
+        // 3. Bottom Utility Menu (Direct Settings & Logout buttons)
     const isSettingsActive = currentActiveId === 'settings';
     const settingsLinkClass = isSettingsActive
       ? 'bg-blue-600 text-white font-semibold shadow-md'
@@ -329,27 +327,15 @@
     const settingsIconClass = isSettingsActive ? 'text-white' : 'text-slate-400';
 
     const bottomNavHtml = `
-      <div class="p-2.5 border-t border-slate-700/50 flex-shrink-0 bg-[#0c1322]">
-        <button id="nurse-sidebar-more-toggle" class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 transition-all text-xs font-medium focus:outline-none select-none cursor-pointer" aria-expanded="${isMoreExpanded}" aria-controls="nurse-sidebar-more-menu">
-          <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            <span>More</span>
-          </div>
-          <svg id="nurse-sidebar-more-icon" class="w-4 h-4 text-slate-400 transition-transform duration-200 ${isMoreExpanded ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-        </button>
-
-        <div id="nurse-sidebar-more-menu" class="space-y-1 mt-1 overflow-hidden transition-all duration-300 ${isMoreExpanded ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0 pointer-events-none hidden'}">
-          <a class="flex items-center gap-3 px-3 py-2 rounded-lg ${settingsLinkClass} transition-colors text-xs" href="../Nurse_settings/Nurse_settings.html">
-            <svg class="w-4 h-4 ${settingsIconClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-            <span>Settings</span>
-          </a>
-          <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors text-xs font-semibold cursor-pointer" href="javascript:void(0);" onclick="window.logoutNurse();">
-            <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-            <span>Logout</span>
-          </a>
-        </div>
+      <div class="p-2.5 border-t border-slate-700/50 flex-shrink-0 bg-[#0c1322] space-y-1">
+        <a class="flex items-center gap-3 px-3 py-2 rounded-lg ${settingsLinkClass} transition-colors text-xs font-medium" href="../Nurse_settings/Nurse_settings.html">
+          <svg class="w-4 h-4 ${settingsIconClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          <span>Settings</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors text-xs font-semibold cursor-pointer" href="javascript:void(0);" onclick="window.logoutNurse();">
+          <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          <span>Logout</span>
+        </a>
       </div>
     `;
 
@@ -361,39 +347,7 @@
       ${bottomNavHtml}
     `;
 
-    setupNurseSidebarMoreToggle();
     standardizePageLayout();
-  }
-
-  function setupNurseSidebarMoreToggle() {
-    const toggleBtn = document.getElementById('nurse-sidebar-more-toggle');
-    const menuEl = document.getElementById('nurse-sidebar-more-menu');
-    const iconEl = document.getElementById('nurse-sidebar-more-icon');
-    if (!toggleBtn || !menuEl) return;
-
-    toggleBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const isHidden = menuEl.classList.contains('hidden') || menuEl.classList.contains('max-h-0');
-      if (isHidden) {
-        menuEl.classList.remove('hidden', 'max-h-0', 'opacity-0', 'pointer-events-none');
-        menuEl.classList.add('max-h-48', 'opacity-100');
-        if (iconEl) iconEl.classList.add('rotate-180');
-        toggleBtn.setAttribute('aria-expanded', 'true');
-        sessionStorage.setItem('jeevan_setu_nurse_sidebar_more', 'true');
-      } else {
-        menuEl.classList.add('max-h-0', 'opacity-0', 'pointer-events-none');
-        menuEl.classList.remove('max-h-48', 'opacity-100');
-        if (iconEl) iconEl.classList.remove('rotate-180');
-        toggleBtn.setAttribute('aria-expanded', 'false');
-        sessionStorage.setItem('jeevan_setu_nurse_sidebar_more', 'false');
-        setTimeout(() => {
-          if (toggleBtn.getAttribute('aria-expanded') === 'false') {
-            menuEl.classList.add('hidden');
-          }
-        }, 300);
-      }
-    });
   }
 
   function renderSharedNurseHeader() {

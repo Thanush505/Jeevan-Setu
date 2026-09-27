@@ -118,6 +118,26 @@ def create_transfer_request():
     user = get_current_authenticated_user()
     user_id = user.id if user else None
 
+    # Strict Cross-Doctor Authorization (IDOR Prevention)
+    user_role = getattr(user, 'role', '').lower() if user else ''
+    patient_id = transfer.get('patient_id')
+    patient = Patient.get_by_id(patient_id) if patient_id else None
+    if user_role == 'doctor' and patient and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
+        AuditLog.log(
+            action='UNAUTHORIZED_CROSS_DOCTOR_TRANSFER_REJECT_ATTEMPT',
+            user_id=user_id,
+            entity_type='transfer',
+            entity_id=transfer_id,
+            new_value={'attempted_by_doctor_id': user_id, 'assigned_doctor_id': patient.get('assigned_doctor')},
+            ip_address=request.remote_addr,
+            description=f"Security Alert: Dr. {getattr(user, 'full_name', 'Unknown')} attempted unauthorized transfer rejection for Patient {patient.get('name')} assigned to another doctor."
+        )
+        return jsonify({
+            'success': False,
+            'error': 'Permission denied: Access forbidden. You are only authorized to reject transfers for your assigned patients.'
+        }), 403
+
+
     transfer_id = Transfer.request_transfer(
         patient_id=patient_id,
         from_ward=from_ward,
@@ -167,6 +187,26 @@ def get_transfer_by_id(transfer_id):
     transfer = Transfer.get_by_id(transfer_id)
     if not transfer:
         return jsonify({'success': False, 'error': f'Transfer #{transfer_id} not found'}), 404
+
+    user = get_current_authenticated_user()
+    user_role = getattr(user, 'role', '').lower() if user else ''
+    user_id = getattr(user, 'id', getattr(user, 'user_id', None)) if user else None
+
+    if user_role == 'doctor':
+        patient_id = transfer.get('patient_id')
+        patient = Patient.get_by_id(patient_id) if patient_id else None
+        if patient and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
+            AuditLog.log(
+                action='UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
+                user_id=user_id,
+                entity_type='transfer',
+                entity_id=transfer_id,
+                description=f"Unauthorized transfer view attempt by Dr. {getattr(user, 'username', '')} for unassigned patient #{patient_id}"
+            )
+            return jsonify({
+                'success': False,
+                'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'
+            }), 403
 
     return jsonify({
         'success': True,
@@ -225,7 +265,23 @@ def approve_transfer_request(transfer_id):
     if not patient:
         return jsonify({'success': False, 'error': f'Patient #{patient_id} not found'}), 404
 
-    # 2. Stale State Protection: Verify current patient clinical condition
+    # 2. Strict Cross-Doctor Authorization (IDOR Prevention)
+    if user_role == 'doctor' and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
+        AuditLog.log(
+            action='UNAUTHORIZED_CROSS_DOCTOR_TRANSFER_APPROVAL_ATTEMPT',
+            user_id=user_id,
+            entity_type='transfer',
+            entity_id=transfer_id,
+            new_value={'attempted_by_doctor_id': user_id, 'assigned_doctor_id': patient.get('assigned_doctor')},
+            ip_address=request.remote_addr,
+            description=f"Security Alert: Dr. {getattr(user, 'full_name', 'Unknown')} attempted unauthorized transfer approval for Patient {patient.get('name')} assigned to another doctor."
+        )
+        return jsonify({
+            'success': False,
+            'error': 'Permission denied: Access forbidden. You are only authorized to approve transfers for your assigned patients.'
+        }), 403
+
+    # 3. Stale State Protection: Verify current patient clinical condition
     current_ews = patient.get('ews_score', 0) or 0
     decision = evaluate(current_ews)
     current_condition = decision.get('condition')
@@ -258,7 +314,7 @@ def approve_transfer_request(transfer_id):
             return jsonify({'success': False, 'error': 'to_bed_id must be an integer'}), 400
 
     try:
-        Transfer.approve_transfer(
+        exec_result = Transfer.approve_transfer(
             transfer_id=transfer_id,
             approved_by=user_id,
             to_bed_id=to_bed_id,
@@ -266,37 +322,23 @@ def approve_transfer_request(transfer_id):
             remarks=remarks
         )
 
-        # Acknowledge / resolve any pending transfer alerts for this patient
-        db.execute_query(
-            """UPDATE alerts SET is_acknowledged = TRUE, acknowledged_by = %s, acknowledged_at = NOW()
-               WHERE patient_id = %s AND parameter = 'transfer_pending' AND is_acknowledged = FALSE""",
-            (user_id, patient_id)
-        )
-
-        # Audit Log
         doctor_name = getattr(user, 'full_name', 'Doctor')
         AuditLog.log(
-            action='approve_transfer',
+            action='TRANSFER_APPROVED_AND_EXECUTED',
             user_id=user_id,
             entity_type='transfer',
             entity_id=transfer_id,
-            new_value={'status': 'approved', 'remarks': remarks, 'to_bed_id': to_bed_id},
+            new_value={
+                'status': 'approved',
+                'remarks': remarks,
+                'patient_id': patient_id,
+                'from_ward': transfer.get('from_ward', 'ICU'),
+                'to_ward': exec_result.get('dest_ward', 'HDU'),
+                'to_bed_number': exec_result.get('to_bed_number')
+            },
             ip_address=request.remote_addr,
-            description=f"Transfer #{transfer_id} for Patient {transfer.get('patient_name')} approved by Dr. {doctor_name}. Remarks: {remarks}"
+            description=f"Transfer #{transfer_id} for Patient {patient.get('name')} approved and executed by Dr. {doctor_name}. HDU Bed: {exec_result.get('to_bed_number')}."
         )
-
-        # 3. Notify Nurse after Doctor approval
-        try:
-            Notification.broadcast_to_role(
-                role='nurse',
-                title=f"[TRANSFER APPROVED] {patient.get('name')}",
-                message=f"Transfer for {patient.get('name')} has been approved by Dr. {doctor_name}.",
-                notif_type='TRANSFER',
-                patient_id=patient_id,
-                severity='TRANSFER'
-            )
-        except Exception as e:
-            print(f"[TRANSFER APPROVE] Warning broadcasting nurse notification: {e}")
 
         updated_transfer = Transfer.get_by_id(transfer_id)
         updated_patient = Patient.get_by_id(patient_id)
@@ -306,8 +348,17 @@ def approve_transfer_request(transfer_id):
             'message': f"Transfer #{transfer_id} approved and executed successfully by Dr. {doctor_name}",
             'status': 'approved',
             'transfer_id': transfer_id,
-            'data': updated_transfer,
-            'patient': updated_patient
+            'destination': exec_result.get('dest_ward', 'HDU'),
+            'assigned_bed': exec_result.get('to_bed_number'),
+            'patient': {
+                'id': patient_id,
+                'name': updated_patient.get('name'),
+                'patient_code': updated_patient.get('patient_code'),
+                'current_ward': updated_patient.get('ward_type'),
+                'current_bed': updated_patient.get('bed_number')
+            },
+            'notification_created': True,
+            'data': updated_transfer
         }), 200
 
     except ValueError as e:
@@ -334,11 +385,29 @@ def reject_transfer_request(transfer_id):
     if not transfer:
         return jsonify({'success': False, 'error': f'Transfer #{transfer_id} not found'}), 404
 
+    user = get_current_authenticated_user()
+    user_role = getattr(user, 'role', '').lower() if user else ''
+    user_id = getattr(user, 'id', getattr(user, 'user_id', None)) if user else None
+
+    # Strict Doctor Authorization Check
+    patient_id = transfer.get('patient_id')
+    patient = Patient.get_by_id(patient_id) if patient_id else None
+    if user_role == 'doctor' and patient and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
+        AuditLog.log(
+            action='UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
+            user_id=user_id,
+            entity_type='transfer',
+            entity_id=transfer_id,
+            description=f"Unauthorized transfer reject attempt by Dr. {getattr(user, 'username', '')} for unassigned patient #{patient_id}"
+        )
+        return jsonify({
+            'success': False,
+            'error': 'Permission denied: Access forbidden. You are only authorized to reject transfers for your assigned patients.'
+        }), 403
+
     data = request.get_json(silent=True) or request.form.to_dict() or {}
     remarks = data.get('remarks') or data.get('reason') or 'Rejected by attending doctor'
 
-    user = get_current_authenticated_user()
-    user_id = user.id if user else None
 
     try:
         Transfer.reject_transfer(
@@ -372,3 +441,60 @@ def reject_transfer_request(transfer_id):
         return jsonify({'success': False, 'error': str(e)}), 400
     except Exception as e:
         return jsonify({'success': False, 'error': f'Error rejecting transfer: {str(e)}'}), 500
+
+
+# ─────────────────────────────────────────────────────────────
+# 6. POST /transfers/{id}/request-info — Request Info from Nurses
+# ─────────────────────────────────────────────────────────────
+@transfer_bp.route('/<int:transfer_id>/request-info', methods=['POST'])
+@role_required('doctor', 'admin')
+def request_info_transfer(transfer_id):
+    """Doctor requests info for a transfer from nurses."""
+    transfer = Transfer.get_by_id(transfer_id)
+    if not transfer:
+        return jsonify({'success': False, 'error': f'Transfer #{transfer_id} not found'}), 404
+
+    user = get_current_authenticated_user()
+    user_id = getattr(user, 'id', getattr(user, 'user_id', None))
+    user_role = getattr(user, 'role', '').lower()
+
+    patient_id = transfer.get('patient_id')
+    patient = Patient.get_by_id(patient_id) if patient_id else None
+
+    if user_role == 'doctor' and patient and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
+        return jsonify({
+            'success': False,
+            'error': 'Permission denied: Access forbidden. You are only authorized to request information for your assigned patients.'
+        }), 403
+
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    message = data.get('message') or data.get('inquiry') or 'Attending doctor requested additional clinical information.'
+
+    doctor_name = getattr(user, 'full_name', 'Doctor')
+    try:
+        Notification.broadcast_to_role(
+            role='nurse',
+            title=f"[INFO REQUEST] {patient.get('name') if patient else 'Patient'}",
+            message=f"Dr. {doctor_name} requested clinical details for patient {patient.get('name') if patient else ''}: {message}",
+            notif_type='ALERT',
+            patient_id=patient_id,
+            severity='INFO'
+        )
+    except Exception as e:
+        print(f"[TRANSFER REQUEST INFO] Warning: {e}")
+
+    AuditLog.log(
+        action='request_info',
+        user_id=user_id,
+        entity_type='transfer',
+        entity_id=transfer_id,
+        new_value={'message': message, 'patient_id': patient_id},
+        ip_address=request.remote_addr,
+        description=f"Dr. {doctor_name} requested clinical information for transfer #{transfer_id}: {message}"
+    )
+
+    return jsonify({
+        'success': True,
+        'message': 'Information request sent to attending nursing staff successfully.',
+        'transfer_id': transfer_id
+    }), 200

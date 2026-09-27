@@ -159,6 +159,22 @@ def get_patient_vitals(patient_id):
     if not patient:
         return jsonify({'success': False, 'error': f'Patient with ID {patient_id} not found.'}), 404
 
+    user = get_current_authenticated_user()
+    if user and getattr(user, 'role', None) == 'doctor':
+        assigned_doc = patient.get('assigned_doctor') if isinstance(patient, dict) else getattr(patient, 'assigned_doctor', None)
+        if assigned_doc is not None and int(assigned_doc) != int(user.id):
+            AuditLog.log(
+                action='UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
+                user_id=user.id,
+                entity_type='patient',
+                entity_id=patient_id,
+                description=f"Unauthorized access attempt by Dr. {user.username} to unassigned patient vitals #{patient_id}"
+            )
+            return jsonify({
+                'success': False,
+                'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'
+            }), 403
+
     limit = request.args.get('limit', 50, type=int)
     history = Vitals.get_history(patient_id, limit=limit)
 
@@ -183,6 +199,22 @@ def get_latest_vitals(patient_id):
     patient = Patient.get_by_id(patient_id)
     if not patient:
         return jsonify({'success': False, 'error': f'Patient with ID {patient_id} not found.'}), 404
+
+    user = get_current_authenticated_user()
+    if user and getattr(user, 'role', None) == 'doctor':
+        assigned_doc = patient.get('assigned_doctor') if isinstance(patient, dict) else getattr(patient, 'assigned_doctor', None)
+        if assigned_doc is not None and int(assigned_doc) != int(user.id):
+            AuditLog.log(
+                action='UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
+                user_id=user.id,
+                entity_type='patient',
+                entity_id=patient_id,
+                description=f"Unauthorized access attempt by Dr. {user.username} to unassigned patient latest vitals #{patient_id}"
+            )
+            return jsonify({
+                'success': False,
+                'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'
+            }), 403
 
     vitals = Vitals.get_latest(patient_id)
     if not vitals:
@@ -217,6 +249,22 @@ def get_vitals_history(patient_id):
     patient = Patient.get_by_id(patient_id)
     if not patient:
         return jsonify({'success': False, 'error': f'Patient with ID {patient_id} not found.'}), 404
+
+    user = get_current_authenticated_user()
+    if user and getattr(user, 'role', None) == 'doctor':
+        assigned_doc = patient.get('assigned_doctor') if isinstance(patient, dict) else getattr(patient, 'assigned_doctor', None)
+        if assigned_doc is not None and int(assigned_doc) != int(user.id):
+            AuditLog.log(
+                action='UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
+                user_id=user.id,
+                entity_type='patient',
+                entity_id=patient_id,
+                description=f"Unauthorized access attempt by Dr. {user.username} to unassigned patient vitals history #{patient_id}"
+            )
+            return jsonify({
+                'success': False,
+                'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'
+            }), 403
 
     limit = request.args.get('limit', 50, type=int)
     history = Vitals.get_history(patient_id, limit=limit)

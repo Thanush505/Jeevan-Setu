@@ -6,7 +6,7 @@
  * and Nurse pages without requiring navigation back to the dashboard.
  * 
  * Role Access Rules:
- * - Nurse: Review, View, Acknowledge/Dismiss ONLY. Never render or attach "Approve Transfer" controls.
+ * - Nurse: Review, View, Acknowledge/Dismiss ONLY. Never render or attach 'Approve Transfer' controls.
  * - Doctor/Admin: Review, View, Acknowledge/Dismiss, and Approve Transfer.
  * 
  * Includes fully self-contained, isolated CSS styling to ensure flawless rendering
@@ -23,7 +23,7 @@
     let pollTimer = null;
     let activeModals = new Map(); // alert_id -> DOM element
 
-    // Self-contained CSS injection
+    // Self-contained CSS injection matching exact Jeevan Setu UI
     function injectGlobalAlertStyles() {
         if (document.getElementById('js-global-alert-styles')) return;
 
@@ -46,9 +46,10 @@
 
             .js-alert-card {
                 pointer-events: auto;
-                background: #ffffff;
+                background: #18181b;
+                color: #f4f4f5;
                 border-radius: 16px;
-                box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.08);
+                box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
                 overflow: hidden;
                 transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
                 animation: jsAlertSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -66,14 +67,19 @@
                 }
             }
 
+            @keyframes jsSpin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+
             .js-alert-card-critical {
                 border: 2px solid #ef4444;
-                box-shadow: 0 20px 40px -8px rgba(239, 68, 68, 0.4), 0 0 0 1px rgba(239, 68, 68, 0.2);
+                box-shadow: 0 20px 40px -8px rgba(239, 68, 68, 0.5), 0 0 0 1px rgba(239, 68, 68, 0.3);
             }
 
             .js-alert-card-transfer {
-                border: 2px solid #f59e0b;
-                box-shadow: 0 20px 40px -8px rgba(245, 158, 11, 0.35), 0 0 0 1px rgba(245, 158, 11, 0.2);
+                border: 2px solid #b45309;
+                box-shadow: 0 20px 40px -8px rgba(245, 158, 11, 0.4), 0 0 0 1px rgba(245, 158, 11, 0.25);
             }
 
             .js-alert-header {
@@ -89,7 +95,7 @@
             }
 
             .js-alert-header-transfer {
-                background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+                background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
             }
 
             .js-alert-header-left {
@@ -112,29 +118,21 @@
             .js-alert-title-main {
                 font-weight: 700;
                 font-size: 14px;
-                letter-spacing: 0.02em;
+                letter-spacing: 0.03em;
                 margin: 0;
                 line-height: 1.2;
                 display: flex;
                 align-items: center;
                 gap: 8px;
+                color: #ffffff;
+                text-transform: uppercase;
             }
 
             .js-alert-subtitle {
-                font-size: 11px;
-                opacity: 0.9;
-                margin: 2px 0 0 0;
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.9);
+                margin: 3px 0 0 0;
                 font-weight: 500;
-            }
-
-            .js-alert-badge-tag {
-                background: rgba(255, 255, 255, 0.25);
-                padding: 2px 8px;
-                border-radius: 9999px;
-                font-size: 10px;
-                font-weight: 800;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
             }
 
             .js-alert-btn-close {
@@ -147,6 +145,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                font-size: 18px;
+                line-height: 1;
                 transition: all 0.2s;
             }
             .js-alert-btn-close:hover {
@@ -159,7 +159,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 12px;
-                background: #ffffff;
+                background: #18181b;
             }
 
             .js-alert-patient-box {
@@ -168,27 +168,27 @@
                 justify-content: space-between;
                 padding: 12px 14px;
                 border-radius: 12px;
-                background: #fef2f2;
-                border: 1px solid #fee2e2;
+                background: #2a1b1b;
+                border: 1px solid #4a2323;
             }
 
             .js-alert-patient-box-transfer {
-                background: #fffbeb;
-                border: 1px solid #fef3c7;
+                background: #221808;
+                border: 1px solid #452b0d;
             }
 
             .js-alert-patient-name {
                 font-weight: 700;
                 font-size: 16px;
-                color: #111827;
-                margin: 0 0 2px 0;
+                color: #ffffff;
+                margin: 0 0 3px 0;
             }
 
             .js-alert-patient-sub {
                 font-size: 12px;
-                color: #4b5563;
+                color: #a1a1aa;
                 margin: 0;
-                font-family: monospace;
+                font-family: inherit;
             }
 
             .js-alert-score-badge {
@@ -213,12 +213,12 @@
             }
 
             .js-alert-notice-box {
-                padding: 10px 12px;
+                padding: 12px 14px;
                 border-radius: 10px;
-                background: #f9fafb;
-                border: 1px solid #e5e7eb;
-                font-size: 12px;
-                color: #374151;
+                background: #27272a;
+                border: 1px solid #3f3f46;
+                font-size: 13px;
+                color: #e4e4e7;
                 line-height: 1.45;
             }
 
@@ -242,22 +242,24 @@
                 text-decoration: none;
                 transition: all 0.2s;
                 border: none;
+                box-sizing: border-box;
             }
 
             .js-btn-outline {
-                background: #ffffff;
-                border: 1px solid #d1d5db;
-                color: #374151;
+                background: transparent;
+                border: 1px solid #3f3f46;
+                color: #e4e4e7;
             }
             .js-btn-outline:hover {
-                background: #f3f4f6;
-                border-color: #9ca3af;
+                background: #27272a;
+                border-color: #71717a;
+                color: #ffffff;
             }
 
             .js-btn-critical {
                 background: #dc2626;
                 color: #ffffff;
-                box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
+                box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4);
             }
             .js-btn-critical:hover {
                 background: #b91c1c;
@@ -266,24 +268,11 @@
             .js-btn-approve {
                 background: #059669;
                 color: #ffffff;
-                box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
+                border: 1px solid #10b981;
+                box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
             }
             .js-btn-approve:hover {
                 background: #047857;
-            }
-
-            .js-badge-pending-doctor {
-                display: inline-flex;
-                align-items: center;
-                gap: 4px;
-                background: #fef3c7;
-                color: #92400e;
-                font-size: 11px;
-                font-weight: 700;
-                padding: 6px 10px;
-                border-radius: 8px;
-                border: 1px solid #fde68a;
-                margin-right: auto;
             }
         `;
         document.head.appendChild(style);
@@ -376,33 +365,60 @@
 
             const dismissed = getDismissedAlertIds();
 
-            // Strict Role Resolution
+            // 1. Determine Portal Context
             const pathLower = (window.location.pathname || '').toLowerCase();
-            const isNursePage = pathLower.includes('/nurse') || pathLower.includes('nurse_');
-            const isDoctorPage = pathLower.includes('/doctor') || pathLower.includes('doctor_');
+            const isNursePortal = pathLower.includes('/nurse') || pathLower.includes('nurse_');
+            const isDoctorPortal = pathLower.includes('/doctor') || pathLower.includes('doctor_');
+            const isAdminPortal = pathLower.includes('/admin') || pathLower.includes('admin_');
 
+            // 2. Extract Authenticated User Role from Token, LocalStorage, and API Feed
             let storedRole = '';
             try {
                 const userObj = JSON.parse(localStorage.getItem('jeevan_setu_user') || sessionStorage.getItem('jeevan_setu_user') || '{}');
                 storedRole = (userObj.role || '').toLowerCase();
             } catch (e) {}
 
+            let jwtRole = '';
+            try {
+                const token = localStorage.getItem('jeevan_setu_token');
+                if (token && token.includes('.')) {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    jwtRole = (payload.role || '').toLowerCase();
+                }
+            } catch (e) {}
+
             const apiRole = (data.role || '').toLowerCase();
+            const canApproveTransfersApi = data.can_approve_transfers === true;
 
-            // Strict Role Enforcement: If on Nurse page, or user role is nurse, STRICTLY Nurse.
-            const isNurse = isNursePage || storedRole === 'nurse' || apiRole === 'nurse';
-            // Only Doctors / Admins outside of Nurse Portal can approve transfers
-            const isDoctor = !isNurse && (isDoctorPage || storedRole === 'doctor' || storedRole === 'admin' || apiRole === 'doctor' || apiRole === 'admin' || data.can_approve_transfers === true);
+            // 3. Strict Role-Aware Flag Assignment
+            // - Within Nurse Portal: Always strictly Nurse (Review/Dismiss only, NO Approve button).
+            // - Within Doctor/Admin Portal or for authorized Doctor: Doctor (Approve button enabled).
+            let isNurse = false;
+            let isDoctor = false;
 
-            // 1. Process CRITICAL Emergency Alerts (Render top 1 active modal at a time to prevent screen flooding)
+            if (isNursePortal) {
+                isNurse = true;
+                isDoctor = false;
+            } else if (isDoctorPortal || isAdminPortal) {
+                isDoctor = true;
+                isNurse = false;
+            } else {
+                if (apiRole === 'nurse' || jwtRole === 'nurse' || storedRole === 'nurse') {
+                    isNurse = true;
+                    isDoctor = false;
+                } else if (canApproveTransfersApi || apiRole === 'doctor' || apiRole === 'admin' || jwtRole === 'doctor' || jwtRole === 'admin' || storedRole === 'doctor' || storedRole === 'admin') {
+                    isDoctor = true;
+                    isNurse = false;
+                }
+            }
+
+            // 4. Process CRITICAL Emergency Alerts (Top 1 active modal)
             if (Array.isArray(data.emergency_alerts) && data.emergency_alerts.length > 0) {
-                // Filter out dismissed
                 const pendingCrit = data.emergency_alerts.filter(a => !dismissed.includes(`crit_${a.alert_id}`));
                 if (pendingCrit.length > 0) {
                     const topAlert = pendingCrit[0];
                     const alertKey = `crit_${topAlert.alert_id}`;
                     if (!activeModals.has(alertKey)) {
-                        // If another emergency modal is displayed, remove it before showing new one
                         for (let [k, modalEl] of activeModals.entries()) {
                             if (k.startsWith('crit_')) {
                                 removeModalWithAnimation(k);
@@ -413,7 +429,7 @@
                 }
             }
 
-            // 2. Process Prolonged Ready-to-Transfer Alerts (Top 1 at a time)
+            // 5. Process Prolonged Ready-to-Transfer Alerts (Top 1 active modal)
             if (Array.isArray(data.transfer_alerts) && data.transfer_alerts.length > 0) {
                 const pendingTrans = data.transfer_alerts.filter(t => !dismissed.includes(`trans_${t.recommendation_id}_${t.patient_id}`));
                 if (pendingTrans.length > 0) {
@@ -436,12 +452,8 @@
         } catch (err) {}
     }
 
-    // Render CRITICAL Emergency Modal Popup with bulletproof styling
+    // Render CRITICAL Emergency Modal Popup
     function renderCriticalEmergencyPopup(alert, alertKey, isDoctor, isNurse, remainingCount = 0) {
-        if (isNurse) {
-            isDoctor = false;
-        }
-
         injectGlobalAlertStyles();
         const root = getOverlayContainer();
 
@@ -452,26 +464,31 @@
         const patientName = alert.patient_name || 'Patient';
         const uhid = alert.patient_code || `P${alert.patient_id}`;
         const ward = alert.ward_type || 'ICU';
-        const bed = alert.bed_number || 'N/A';
-        const score = alert.value !== undefined ? alert.value : (alert.latest_ews_score || 8);
+        const bed = alert.bed_number || '--';
+        const score = alert.ews_score ?? alert.score ?? '--';
+        const param = alert.parameter ? alert.parameter.toUpperCase() : 'VITAL SIGN';
         const patientId = alert.patient_id;
 
-        let targetPatientUrl = `/Doctor/Doctor_patient_reports/Doctor_patient_reports.html?patient_id=${patientId}`;
-        if (isNurse) {
-            targetPatientUrl = `/Nurse/Nurse_enter_vitals/Nurse_enter_vitals.html?patient_id=${patientId}`;
-        }
+        const pathLower = (window.location.pathname || '').toLowerCase();
+        const isNursePortal = pathLower.includes('/nurse') || pathLower.includes('nurse_');
+        const isDoctorPortal = pathLower.includes('/doctor') || pathLower.includes('doctor_');
 
-        const moreTag = remainingCount > 0 ? `<span class="js-alert-badge-tag">+${remainingCount} more</span>` : '';
+        let targetPatientUrl = '#';
+        if (isDoctorPortal) {
+            targetPatientUrl = `../Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}`;
+        } else if (isNursePortal) {
+            targetPatientUrl = `../Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+        } else {
+            targetPatientUrl = isDoctor ? `/Doctor/Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}` : `/Nurse/Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+        }
 
         modal.innerHTML = `
             <div class="js-alert-header js-alert-header-critical">
                 <div class="js-alert-header-left">
-                    <div class="js-alert-icon-box">⚠️</div>
+                    <div class="js-alert-icon-box">🚨</div>
                     <div>
-                        <h3 class="js-alert-title-main">
-                            CRITICAL EMERGENCY ${moreTag}
-                        </h3>
-                        <p class="js-alert-subtitle">Immediate Clinical Review Required</p>
+                        <h3 class="js-alert-title-main">CRITICAL EMERGENCY ALERT</h3>
+                        <p class="js-alert-subtitle">${ward} (Bed ${bed}) • ${param} DETERIORATION</p>
                     </div>
                 </div>
                 <button type="button" class="js-alert-btn-close btn-dismiss-alert" title="Dismiss">✕</button>
@@ -480,7 +497,7 @@
             <div class="js-alert-body">
                 <div class="js-alert-patient-box">
                     <div>
-                        <div style="font-size: 10px; font-weight: 700; color: #b91c1c; text-transform: uppercase;">PATIENT DETAILS</div>
+                        <div style="font-size: 10px; font-weight: 700; color: #ef4444; text-transform: uppercase;">PATIENT DETAILS</div>
                         <h4 class="js-alert-patient-name">${patientName}</h4>
                         <p class="js-alert-patient-sub">UHID: ${uhid} • ${ward} (Bed ${bed})</p>
                     </div>
@@ -501,7 +518,7 @@
                         ✓ Acknowledge
                     </button>
                     <a href="${targetPatientUrl}" class="js-btn js-btn-critical">
-                        👁 View Patient
+                        👁️ View Patient
                     </a>
                 </div>
             </div>
@@ -530,12 +547,8 @@
         });
     }
 
-    // Render Ready-to-Transfer Modal Popup with bulletproof styling
+    // Render Ready-to-Transfer Modal Popup with role-aware actions
     function renderTransferAlertPopup(transfer, transferKey, isDoctor, isNurse, remainingCount = 0) {
-        if (isNurse) {
-            isDoctor = false;
-        }
-
         injectGlobalAlertStyles();
         const root = getOverlayContainer();
 
@@ -552,13 +565,22 @@
         const recId = transfer.recommendation_id;
         const transferId = transfer.transfer_id;
 
-        let targetPatientUrl = `/Doctor/Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}`;
-        if (isNurse) {
-            targetPatientUrl = `/Nurse/Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+        const pathLower = (window.location.pathname || '').toLowerCase();
+        const isNursePortal = pathLower.includes('/nurse') || pathLower.includes('nurse_');
+        const isDoctorPortal = pathLower.includes('/doctor') || pathLower.includes('doctor_');
+
+        let targetPatientUrl = '#';
+        if (isDoctorPortal) {
+            targetPatientUrl = `../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}`;
+        } else if (isNursePortal) {
+            targetPatientUrl = `../Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+        } else {
+            targetPatientUrl = isDoctor ? `/Doctor/Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}` : `/Nurse/Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
         }
 
         let actionButtonsHtml = '';
-        if (isDoctor) {
+        if (isDoctor && !isNurse) {
+            // Doctor View: Dismiss, Review, and Approve Transfer
             actionButtonsHtml = `
                 <button type="button" class="js-btn js-btn-outline btn-dismiss-transfer">Dismiss</button>
                 <a href="${targetPatientUrl}" class="js-btn js-btn-outline">Review</a>
@@ -567,7 +589,7 @@
                 </button>
             `;
         } else {
-            // Nurse View: Review & Dismiss only. Strictly NO approval button rendered.
+            // Nurse View: Review & Dismiss ONLY. Strictly NO approval button rendered.
             actionButtonsHtml = `
                 <button type="button" class="js-btn js-btn-outline btn-dismiss-transfer">Dismiss</button>
                 <a href="${targetPatientUrl}" class="js-btn js-btn-outline">Review</a>
@@ -579,9 +601,7 @@
                 <div class="js-alert-header-left">
                     <div class="js-alert-icon-box">📋</div>
                     <div>
-                        <h3 class="js-alert-title-main">
-                            ${isDoctor ? 'TRANSFER APPROVAL REQUIRED' : 'READY TO TRANSFER'}
-                        </h3>
+                        <h3 class="js-alert-title-main">READY TO TRANSFER</h3>
                         <p class="js-alert-subtitle">${fromWard} → ${toWard} (${waitingTime} waiting)</p>
                     </div>
                 </div>
@@ -591,18 +611,18 @@
             <div class="js-alert-body">
                 <div class="js-alert-patient-box js-alert-patient-box-transfer">
                     <div>
-                        <div style="font-size: 10px; font-weight: 700; color: #b45309; text-transform: uppercase;">PATIENT</div>
+                        <div style="font-size: 10px; font-weight: 700; color: #f59e0b; text-transform: uppercase;">PATIENT</div>
                         <h4 class="js-alert-patient-name">${patientName}</h4>
                         <p class="js-alert-patient-sub">UHID: ${uhid} • Current: ${fromWard}</p>
                     </div>
                     <div style="text-align: right;">
-                        <div style="font-size: 11px; font-weight: 700; color: #b45309;">TARGET</div>
-                        <div style="font-size: 16px; font-weight: 800; color: #0053db;">${toWard}</div>
+                        <div style="font-size: 11px; font-weight: 700; color: #f59e0b;">TARGET</div>
+                        <div style="font-size: 16px; font-weight: 800; color: #38bdf8;">${toWard}</div>
                     </div>
                 </div>
 
                 <div class="js-alert-notice-box">
-                    <strong>Recommendation:</strong> ${transfer.message || `Patient ${patientName} is clinically stable and ready for step-down transfer from ${fromWard} to ${toWard}. Attending Doctor authorization required.`}
+                    <strong>Recommendation:</strong> ${transfer.message || ('Patient ' + patientName + ' is Ready to Transfer (' + waitingTime + ' waiting). Doctor approval is required to proceed.')}
                 </div>
 
                 <div class="js-alert-actions">
@@ -633,36 +653,52 @@
                 approveBtn.addEventListener('click', async (e) => {
                     const btn = e.currentTarget;
                     btn.disabled = true;
-                    btn.innerText = 'Approving...';
+                    btn.innerHTML = `
+                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" style="animation: jsSpin 0.8s linear infinite;">
+                            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                            <path d="M12 2a10 10 0 0 1 10 10"></path>
+                        </svg> Approving...`;
 
                     try {
-                        let approveUrl = transferId ? `/api/v1/transfers/${transferId}/approve` : (recId ? `/api/v1/decision/approve/${recId}` : null);
+                        let approveUrl = transferId ? `/api/v1/transfers/${transferId}/approve` : (recId ? `/api/v1/decision/approve/${recId}` : `/api/v1/transfers`);
+                        let reqMethod = 'POST';
+                        let reqBody = { remarks: 'Approved via Doctor Global Alert Layer' };
+
+                        if (!transferId && !recId) {
+                            reqBody = {
+                                patient_id: patientId,
+                                to_ward: toWard,
+                                reason: 'Approved step-down to HDU'
+                            };
+                        }
+
                         const res = await fetch(approveUrl, {
-                            method: 'POST',
+                            method: reqMethod,
                             headers: {
                                 ...getAuthHeaders(),
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ remarks: 'Approved via Global Emergency & Transfer Alert Layer' })
+                            body: JSON.stringify(reqBody)
                         });
 
                         const json = await res.json();
                         if (res.ok && json.success) {
-                            btn.innerText = '✓ Approved!';
+                            btn.innerHTML = '✓ Approved!';
+                            btn.style.background = '#047857';
                             setTimeout(() => {
                                 markAlertDismissedInSession(transferKey);
                                 removeModalWithAnimation(transferKey);
                                 setTimeout(fetchGlobalAlertFeed, 400);
-                            }, 1000);
+                            }, 900);
                         } else {
                             alert(json.error || 'Failed to approve transfer.');
                             btn.disabled = false;
-                            btn.innerText = '✓ Approve Transfer';
+                            btn.innerHTML = '✓ Approve Transfer';
                         }
                     } catch (err) {
-                        alert('Error approving transfer.');
+                        alert('Network or server error while approving transfer.');
                         btn.disabled = false;
-                        btn.innerText = '✓ Approve Transfer';
+                        btn.innerHTML = '✓ Approve Transfer';
                     }
                 });
             }
