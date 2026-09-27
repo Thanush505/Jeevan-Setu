@@ -97,6 +97,42 @@ def create_app():
     app.after_request(apply_security_headers)
 
     # Global QR Scan Redirection Route
+        # Universal Asset Endpoints for Logos & Images
+    @app.route('/assets/<path:filename>')
+    def serve_assets(filename):
+        for candidate in [
+            os.path.join(frontend_dir, 'assets', filename),
+            os.path.join(frontend_dir, 'images', filename),
+            os.path.join(frontend_dir, filename),
+            os.path.join(os.path.dirname(__file__), 'static', 'assets', filename),
+            os.path.join(os.path.dirname(__file__), 'static', 'images', filename),
+            os.path.join(os.path.dirname(__file__), 'static', filename)
+        ]:
+            if os.path.exists(candidate):
+                return send_from_directory(os.path.dirname(candidate), os.path.basename(candidate))
+        return {'error': 'Asset not found'}, 404
+
+    @app.route('/images/<path:filename>')
+    def serve_images(filename):
+        for candidate in [
+            os.path.join(frontend_dir, 'images', filename),
+            os.path.join(frontend_dir, 'assets', filename),
+            os.path.join(frontend_dir, filename),
+            os.path.join(os.path.dirname(__file__), 'static', 'images', filename),
+            os.path.join(os.path.dirname(__file__), 'static', 'assets', filename),
+            os.path.join(os.path.dirname(__file__), 'static', filename)
+        ]:
+            if os.path.exists(candidate):
+                return send_from_directory(os.path.dirname(candidate), os.path.basename(candidate))
+        return {'error': 'Image not found'}, 404
+
+    @app.route('/jeevan_setu_logo.png')
+    def serve_root_logo():
+        logo_path = os.path.join(frontend_dir, 'assets', 'jeevan_setu_logo.png')
+        if os.path.exists(logo_path):
+            return send_from_directory(os.path.dirname(logo_path), 'jeevan_setu_logo.png')
+        return {'error': 'Logo not found'}, 404
+
     @app.route('/qr/<path:token_or_code>', methods=['GET'])
     def root_qr_redirect(token_or_code):
         from routes.attendant_routes import handle_qr_redirect
