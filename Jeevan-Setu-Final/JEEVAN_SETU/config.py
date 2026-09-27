@@ -10,40 +10,56 @@ load_dotenv()
 
 def get_lan_ip():
     """
-    Dynamically determine the host machine's active local Wi-Fi / Ethernet IP address.
-    Filters out loopback (127.0.0.1) and virtual network adapters (e.g. VirtualBox 192.168.56.x).
+    Dynamically determine the host machine's active local Wi-Fi / Ethernet / Hotspot IPv4 address.
+    Filters out loopback (127.0.0.1), VirtualBox (192.168.56.x), and APIPA (169.254.x.x).
+    Adapts in real-time if network changes between Wi-Fi and mobile hotspot.
     """
+    import sys, subprocess, socket
+    
+    # 1. Explicit environment override
     env_ip = os.getenv('LAN_IP')
-    if env_ip and env_ip != '0.0.0.0' and not env_ip.startswith('127.') and not env_ip.startswith('192.168.56.'):
-        return env_ip
+    if env_ip and env_ip != '0.0.0.0' and not env_ip.startswith(('127.', '192.168.56.', '169.254.')):
+        return env_ip.strip()
 
-    # 1. Quick UDP routing socket detection
-    try:
-        import socket
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.settimeout(0.5)
-        s.connect(('8.8.8.8', 80))
-        ip = s.getsockname()[0]
-        s.close()
-        if ip and not ip.startswith('127.') and not ip.startswith('192.168.56.'):
-            return ip
-    except Exception:
-        pass
+    # 2. Quick UDP routing socket detection
+    for target in [('8.8.8.8', 80), ('1.1.1.1', 80), ('10.255.255.255', 1)]:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.settimeout(0.3)
+            s.connect(target)
+            ip = s.getsockname()[0]
+            s.close()
+            if ip and not ip.startswith(('127.', '192.168.56.', '169.254.')):
+                return ip
+        except Exception:
+            pass
 
-    # 2. Hostname interface enumeration
+    # 3. Windows PowerShell NetIPAddress query (ordered by active interface metric)
+    if sys.platform == 'win32':
+        try:
+            ps_cmd = "Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notlike '*Loopback*' -and $_.InterfaceAlias -notlike '*VirtualBox*' -and $_.IPAddress -notlike '169.254.*' } | Select-Object -ExpandProperty IPAddress"
+            res = subprocess.run(['powershell', '-Command', ps_cmd], capture_output=True, text=True, timeout=2)
+            if res.returncode == 0 and res.stdout.strip():
+                lines = [l.strip() for l in res.stdout.strip().splitlines() if l.strip()]
+                for ip in lines:
+                    if ip and not ip.startswith(('127.', '192.168.56.', '169.254.')):
+                        return ip
+        except Exception:
+            pass
+
+    # 4. Hostname interface enumeration
     try:
-        import socket
         hostname = socket.gethostname()
         _, _, ip_list = socket.gethostbyname_ex(hostname)
         for ip in ip_list:
-            if ip.startswith('127.') or ip.startswith('192.168.56.'):
+            if ip.startswith(('127.', '192.168.56.', '169.254.')):
                 continue
             if ip.startswith(('192.168.', '10.', '172.')):
                 return ip
     except Exception:
         pass
 
-    return '192.168.1.3'
+    return '127.0.0.1'
 
 
 class Config:
