@@ -55,6 +55,23 @@ def list_user_notifications():
     }), 200
 
 
+@notification_bp.route('/unread-count', methods=['GET'])
+def get_user_unread_count():
+    """Fetch only unread notification count for current user."""
+    user = get_current_authenticated_user()
+    if not user or not user.is_authenticated:
+        return jsonify({'success': True, 'unread_count': 0, 'count': 0}), 200
+
+    user_role = getattr(user, 'role', '').lower()
+    unread_count = Notification.get_unread_count(user.id, role=user_role)
+    return jsonify({
+        'success': True,
+        'user_id': user.id,
+        'unread_count': unread_count,
+        'count': unread_count
+    }), 200
+
+
 # ─────────────────────────────────────────────────────────────
 # 2. PUT /notifications/{id}/read & POST /notifications/{id}/read
 # ─────────────────────────────────────────────────────────────

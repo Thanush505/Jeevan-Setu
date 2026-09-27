@@ -26,13 +26,6 @@
           icon: `<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 12a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1v-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>`
         },
         {
-          id: 'my_patients',
-          label: 'My Patients',
-          href: '../Nurse_my_patients/Nurse_my_patients.html',
-          match: ['nurse_my_patients', 'my_patients'],
-          icon: `<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>`
-        },
-        {
           id: 'alerts',
           label: 'Alerts',
           href: '../Nurse_alerts/Nurse_alerts.html',
@@ -69,7 +62,10 @@
     const path = window.location.pathname.toLowerCase();
 
     if (path.includes('nurse_dashboard')) return 'dashboard';
-    if (path.includes('nurse_my_patients')) return 'my_patients';
+    if (path.includes('nurse_my_patients')) {
+      window.location.replace('../nurse_patient_monitoring/nurse_patient_monitoring.html');
+      return 'patient_monitoring';
+    }
     if (path.includes('nurse_patient_monitoring')) return 'patient_monitoring';
     if (path.includes('nurse_enter_vitals')) return 'enter_vitals';
     if (path.includes('nurse_nursing_notes')) return 'nursing_notes';

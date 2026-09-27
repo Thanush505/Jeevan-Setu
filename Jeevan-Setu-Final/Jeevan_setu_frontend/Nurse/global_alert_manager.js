@@ -317,11 +317,11 @@
 
         let targetPatientUrl = '#';
         if (isNursePortal) {
-            targetPatientUrl = `../Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+            targetPatientUrl = `../nurse_patient_monitoring/nurse_patient_monitoring.html?patient_id=${patientId}`;
         } else if (isDoctorPortal) {
             targetPatientUrl = `../Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}`;
         } else {
-            targetPatientUrl = isNurse ? `/Nurse/Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}` : `/Doctor/Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}`;
+            targetPatientUrl = isNurse ? `/Nurse/nurse_patient_monitoring/nurse_patient_monitoring.html?patient_id=${patientId}` : `/Doctor/Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}`;
         }
 
         modal.innerHTML = `
@@ -644,9 +644,9 @@
         if (isDoctorPortal) {
             targetPatientUrl = `../Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}`;
         } else if (isNursePortal) {
-            targetPatientUrl = `../Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+            targetPatientUrl = `../nurse_patient_monitoring/nurse_patient_monitoring.html?patient_id=${patientId}`;
         } else {
-            targetPatientUrl = isDoctor ? `/Doctor/Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}` : `/Nurse/Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+            targetPatientUrl = isDoctor ? `/Doctor/Doctor_my_patients/Doctor_my_patients.html?patient_id=${patientId}` : `/Nurse/nurse_patient_monitoring/nurse_patient_monitoring.html?patient_id=${patientId}`;
         }
 
         modal.innerHTML = `
@@ -740,9 +740,9 @@
         if (isDoctorPortal) {
             targetPatientUrl = `../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}`;
         } else if (isNursePortal) {
-            targetPatientUrl = `../Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+            targetPatientUrl = `../nurse_patient_monitoring/nurse_patient_monitoring.html?patient_id=${patientId}`;
         } else {
-            targetPatientUrl = isDoctor ? `/Doctor/Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}` : `/Nurse/Nurse_my_patients/Nurse_my_patients.html?patient_id=${patientId}`;
+            targetPatientUrl = isDoctor ? `/Doctor/Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}` : `/Nurse/nurse_patient_monitoring/nurse_patient_monitoring.html?patient_id=${patientId}`;
         }
 
         let actionButtonsHtml = '';

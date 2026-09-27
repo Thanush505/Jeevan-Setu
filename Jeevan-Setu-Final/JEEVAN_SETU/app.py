@@ -244,6 +244,13 @@ def create_app():
     def attendant_home():
         return render_template('Attendant/attendant_login_mobile_revised/attendant_login_mobile_revised.html')
 
+    @app.route('/Nurse/Nurse_my_patients/Nurse_my_patients.html')
+    @app.route('/Nurse/Nurse_my_patients')
+    @app.route('/Nurse_my_patients/Nurse_my_patients.html')
+    @app.route('/Nurse_my_patients')
+    def redirect_nurse_my_patients():
+        return redirect('/Nurse/nurse_patient_monitoring/nurse_patient_monitoring.html')
+
     @app.route('/Nurse/Nurse_tasks/Nurse_tasks.html')
     @app.route('/Nurse_tasks/Nurse_tasks.html')
     @app.route('/Nurse_tasks')
