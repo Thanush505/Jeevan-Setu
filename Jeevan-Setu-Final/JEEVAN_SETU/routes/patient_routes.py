@@ -61,10 +61,12 @@ def list_patients():
     page = request.args.get('page', 1, type=int)
     limit = request.args.get('limit', 20, type=int)
 
-    # Scoping: if authenticated user is a Doctor, restrict strictly to their assigned patients
+    # Scoping: if authenticated user is a Doctor or Nurse, restrict strictly to their assigned patients
     user = get_current_authenticated_user()
-    if user and getattr(user, 'role', '') == 'doctor':
+    if user and getattr(user, 'role', '').lower() == 'doctor':
         doctor_id = user.id
+    elif user and getattr(user, 'role', '').lower() == 'nurse':
+        nurse_id = user.id
 
     result = Patient.get_filtered(
         search=search,
@@ -114,6 +116,8 @@ def search_patients():
 
     if user_role == 'doctor' and user_id:
         results = [p for p in results if p.get('assigned_doctor') and int(p.get('assigned_doctor')) == int(user_id)]
+    elif user_role == 'nurse' and user_id:
+        results = [p for p in results if p.get('assigned_nurse') and int(p.get('assigned_nurse')) == int(user_id)]
 
     return jsonify({
         'success': True,
@@ -142,6 +146,13 @@ def nurse_patient_search():
         }), 200
 
     results = Patient.search(query)
+    user = get_current_authenticated_user()
+    user_role = getattr(user, 'role', '').lower() if user else ''
+    user_id = getattr(user, 'id', getattr(user, 'user_id', None)) if user else None
+    if user_role == 'nurse' and user_id:
+        results = [p for p in results if p.get('assigned_nurse') and int(p.get('assigned_nurse')) == int(user_id)]
+    elif user_role == 'doctor' and user_id:
+        results = [p for p in results if p.get('assigned_doctor') and int(p.get('assigned_doctor')) == int(user_id)]
     formatted = []
     for p in results[:8]:
         formatted.append({
@@ -185,7 +196,7 @@ def get_patient(patient_id):
         flash('Patient not found.', 'error')
         return redirect(url_for('patient.dashboard'))
 
-    # Strict Doctor IDOR check
+    # Strict Doctor and Nurse IDOR check
     if user_role == 'doctor' and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
         AuditLog.log(
             'UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
@@ -193,6 +204,18 @@ def get_patient(patient_id):
             entity_type='Patient',
             entity_id=patient_id,
             description=f"Security Alert: Dr. {getattr(user, 'full_name', 'Unknown')} attempted unauthorized access to Patient #{patient_id} ({patient.get('name')})"
+        )
+        return jsonify({
+            'success': False,
+            'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'
+        }), 403
+    elif user_role == 'nurse' and patient.get('assigned_nurse') and int(patient.get('assigned_nurse')) != int(user_id):
+        AuditLog.log(
+            'UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
+            user_id=user_id,
+            entity_type='Patient',
+            entity_id=patient_id,
+            description=f"Security Alert: Nurse {getattr(user, 'full_name', 'Unknown')} attempted unauthorized access to Patient #{patient_id} ({patient.get('name')})"
         )
         return jsonify({
             'success': False,

@@ -31,13 +31,8 @@ class Alert:
                 where_clauses.append("p.assigned_doctor = %s")
                 params.append(user_id)
             elif role == 'nurse' and user_id:
-                dept = getattr(user, 'department', None)
-                if dept:
-                    where_clauses.append("(p.assigned_nurse = %s OR p.assigned_nurse IS NULL OR p.ward_type = %s)")
-                    params.extend([user_id, dept])
-                else:
-                    where_clauses.append("(p.assigned_nurse = %s OR p.assigned_nurse IS NULL)")
-                    params.append(user_id)
+                where_clauses.append("p.assigned_nurse = %s")
+                params.append(user_id)
             elif role == 'attendant':
                 return []
         
@@ -91,6 +86,9 @@ class Alert:
             user_id = getattr(user, 'id', getattr(user, 'user_id', None))
             if role == 'doctor' and user_id:
                 where_clauses.append("p.assigned_doctor = %s")
+                params.append(user_id)
+            elif role == 'nurse' and user_id:
+                where_clauses.append("p.assigned_nurse = %s")
                 params.append(user_id)
             elif role == 'attendant':
                 return []
@@ -171,6 +169,9 @@ class Alert:
             user_id = getattr(user, 'id', getattr(user, 'user_id', None))
             if role == 'doctor' and user_id:
                 where_clauses.append("p.assigned_doctor = %s")
+                params.append(user_id)
+            elif role == 'nurse' and user_id:
+                where_clauses.append("p.assigned_nurse = %s")
                 params.append(user_id)
             elif role == 'attendant':
                 return []

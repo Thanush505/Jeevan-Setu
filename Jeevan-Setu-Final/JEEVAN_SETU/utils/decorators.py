@@ -14,15 +14,11 @@ from utils.constants import ROLES
 def get_current_authenticated_user():
     """
     Retrieve authenticated user from:
-    1. Flask g.current_user (if JWT token was decoded in request)
-    2. Bearer token in Authorization header
+    1. Bearer token in Authorization header or query param
+    2. Flask g.current_user (if already decoded for this token/session)
     3. Flask-Login current_user session
     """
-    # 1. Already decoded in request context
-    if hasattr(g, 'current_user') and g.current_user:
-        return g.current_user
-
-    # 2. Check Authorization Header
+    # 1. Check Authorization Header & Query Param Token
     auth_header = request.headers.get('Authorization', '')
     token = None
     if auth_header.startswith('Bearer '):
@@ -31,6 +27,10 @@ def get_current_authenticated_user():
         token = request.args.get('token')
 
     if token:
+        # Check if already decoded for this specific token
+        if getattr(g, 'jwt_token', None) == token and hasattr(g, 'current_user') and g.current_user:
+            return g.current_user
+
         payload, err = AuthService.decode_access_token(token)
         if not err and payload:
             sub = payload.get('sub')
@@ -47,6 +47,10 @@ def get_current_authenticated_user():
                     g.jwt_payload = payload
                     g.jwt_token = token
                     return user
+
+    # 2. Already decoded in request context (only if no new auth token was provided)
+    if hasattr(g, 'current_user') and g.current_user and not auth_header:
+        return g.current_user
 
     # 3. Check Flask-Login current_user
     if current_user and current_user.is_authenticated:

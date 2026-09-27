@@ -490,9 +490,12 @@ def get_pending_decisions():
     """
     params = []
 
-    # Strict Doctor Scoping
+    # Strict Doctor / Nurse Scoping
     if user_role == 'doctor':
         query += " AND p.assigned_doctor = %s"
+        params.append(user_id)
+    elif user_role == 'nurse':
+        query += " AND p.assigned_nurse = %s"
         params.append(user_id)
 
     query += " ORDER BY r.created_at DESC"

@@ -265,6 +265,20 @@ def get_vitals_history(patient_id):
                 'success': False,
                 'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'
             }), 403
+    elif user and getattr(user, 'role', None) == 'nurse':
+        assigned_nurse = patient.get('assigned_nurse') if isinstance(patient, dict) else getattr(patient, 'assigned_nurse', None)
+        if assigned_nurse is not None and int(assigned_nurse) != int(user.id):
+            AuditLog.log(
+                action='UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
+                user_id=user.id,
+                entity_type='patient',
+                entity_id=patient_id,
+                description=f"Unauthorized access attempt by Nurse {user.username} to unassigned patient vitals history #{patient_id}"
+            )
+            return jsonify({
+                'success': False,
+                'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'
+            }), 403
 
     limit = request.args.get('limit', 50, type=int)
     history = Vitals.get_history(patient_id, limit=limit)
