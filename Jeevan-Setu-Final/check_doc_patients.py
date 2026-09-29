@@ -1,9 +1,9 @@
 import urllib.request
 import json
+import os
 import sys
-
-sys.path.append('c:/Users/Admin/Downloads/Jeevan-Setu-main/Jeevan-Setu-main')
-from JEEVAN_SETU.utils.security import generate_token
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'JEEVAN_SETU'))
+from services.auth_service import AuthService
 
 doctors = [
     (2, 'Dr. Sharma', 'dr.sharma@hospital.org'),
@@ -12,7 +12,13 @@ doctors = [
 ]
 
 for doc_id, name, email in doctors:
-    token = generate_token(user_id=doc_id, email=email, role='doctor')
+    token_dict = AuthService.generate_access_token({
+        'user_id': doc_id,
+        'username': email.split('@')[0],
+        'email': email,
+        'role': 'doctor'
+    })
+    token = token_dict['access_token']
     req = urllib.request.Request(
         'http://127.0.0.1:5000/api/v1/patients',
         headers={'Authorization': f'Bearer {token}'}

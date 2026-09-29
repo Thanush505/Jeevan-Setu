@@ -146,7 +146,7 @@
         <span>Logout</span>
       </a>
     </div>
-  </aside><div class="pl-64 w-full"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-margin-desktop"><div class="flex-1 max-w-xl"><div class="relative flex items-center bg-surface-container-low rounded-full px-md py-xs border border-outline-variant/30 hover:border-outline/50 transition-colors"><span class="material-symbols-outlined text-outline">search</span><input class="bg-transparent border-none focus:ring-0 w-full ml-sm text-body-sm text-on-surface outline-none" placeholder="Search patient ID, bed number or records..." type="text"></div></div><div class="flex items-center gap-lg"><button class="relative p-sm rounded-full text-on-surface-variant hover:bg-surface-variant/20 transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span></button><div class="flex items-center gap-md pl-lg border-l border-outline-variant/30"><div class="text-right hidden sm:block"><p class="font-label-md text-label-md text-on-surface">Dr. Ananya Sharma</p><p class="font-label-sm text-label-sm text-on-surface-variant">Chief Administrator</p></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary">person</span></div></div></div></header><main class="relative pt-16 bg-background min-h-screen"><div class="flex flex-col w-full h-full p-margin-desktop gap-lg bg-background">
+  </aside><div class="pl-64 w-full"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-margin-desktop"><div class="flex-1 max-w-xl"><div class="relative flex items-center bg-surface-container-low rounded-full px-md py-xs border border-outline-variant/30 hover:border-outline/50 transition-colors"><span class="material-symbols-outlined text-outline">search</span><input class="bg-transparent border-none focus:ring-0 w-full ml-sm text-body-sm text-on-surface outline-none" placeholder="Search patient ID, bed number or records..." type="text"></div></div><div class="flex items-center gap-lg"><button class="relative p-sm rounded-full text-on-surface-variant hover:bg-surface-variant/20 transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span></button><div class="flex items-center gap-md pl-lg border-l border-outline-variant/30"><div class="text-right hidden sm:block"><p class="font-label-md text-label-md text-on-surface"><span id="header-doctor-name" class="doctor-profile-name">Dr. Doctor</span></p><p class="font-label-sm text-label-sm text-on-surface-variant"><span id="header-doctor-dept" class="doctor-profile-dept">Consultant Intensivist</span></p></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary">person</span></div></div></div></header><main class="relative pt-16 bg-background min-h-screen"><div class="flex flex-col w-full h-full p-margin-desktop gap-lg bg-background">
 <!-- Header/Search Section -->
 <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md">
 <div class="flex flex-col gap-xs w-full max-w-3xl">
@@ -227,12 +227,16 @@
 
 <script>
   const PATIENT_API = '/api/v1/patients';
-  const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
   let debounceTimer = null;
 
+  function getAuthToken() {
+    return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
+  }
+
   function getAuthHeaders() {
-    const headers = { 'Content-Type': 'application/json' };
-    if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    const token = getAuthToken();
+    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
     return headers;
   }
 

@@ -250,7 +250,7 @@
       </button>
       <div class="flex items-center gap-sm pl-md border-l border-outline-variant">
         <div class="text-right hidden sm:block">
-          <div id="header-doctor-name" class="font-label-md text-label-md text-on-surface">Dr. Anil Sharma</div>
+          <div id="header-doctor-name" class="font-label-md text-label-md text-on-surface">Dr. Doctor</div>
           <div id="header-doctor-dept" class="font-label-sm text-label-sm text-on-surface-variant">Consultant Intensivist</div>
         </div>
         <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
@@ -534,21 +534,25 @@
   let currentPatientId = 1;
   const API_BASE = '/api/v1/vitals';
   const PATIENT_API = '/api/v1/patients';
-  const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
+
+  function getAuthToken() {
+    return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
+  }
 
   // Extract doctor user_id from JWT token for filtering
   function getDoctorIdFromToken() {
-    if (!AUTH_TOKEN) return null;
+    const token = getAuthToken();
+    if (!token) return null;
     try {
-      const payload = JSON.parse(atob(AUTH_TOKEN.split('.')[1]));
+      const payload = JSON.parse(atob(token.split('.')[1]));
       return payload.sub || null;
     } catch (e) { return null; }
   }
-  const DOCTOR_ID = getDoctorIdFromToken();
 
   function getAuthHeaders() {
-    const headers = { 'Content-Type': 'application/json' };
-    if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    const token = getAuthToken();
+    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
     return headers;
   }
 

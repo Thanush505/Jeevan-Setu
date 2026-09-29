@@ -504,18 +504,22 @@
         let filterOptions = { ward: 'all', priority: 'all' };
 
         // Authentication & User retrieval
-        const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || '';
+        function getAuthToken() {
+            return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
+        }
 
         function getAuthHeaders() {
-            const headers = { 'Content-Type': 'application/json' };
-            if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+            const token = getAuthToken();
+            const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+            if (token) headers['Authorization'] = 'Bearer ' + token;
             return headers;
         }
 
         function getUserFromToken() {
-            if (!AUTH_TOKEN) return null;
+            const token = getAuthToken();
+            if (!token) return null;
             try {
-                const parts = AUTH_TOKEN.split('.');
+                const parts = token.split('.');
                 if (parts.length === 3) {
                     return JSON.parse(atob(parts[1]));
                 }
@@ -564,7 +568,7 @@
         // Fetch user metadata & setup profile
         function setupDoctorProfile(doctorName, department) {
             const tokenUser = getUserFromToken();
-            const name = doctorName || (tokenUser ? tokenUser.username : 'Dr. Rajesh Sharma');
+            const name = doctorName || (tokenUser ? tokenUser.username : 'Doctor');
             const dept = department || (tokenUser ? (tokenUser.department || 'Critical Care') : 'Consultant Intensivist');
             
             const nameEl = document.getElementById('header-doctor-name');

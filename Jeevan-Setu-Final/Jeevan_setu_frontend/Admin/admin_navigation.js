@@ -127,24 +127,28 @@
       const u = localStorage.getItem('jeevan_setu_user') || sessionStorage.getItem('jeevan_setu_user');
       if (u) {
         const parsed = JSON.parse(u);
-        return {
-          id: parsed.id || parsed.user_id || 1,
-          name: parsed.full_name || parsed.username || 'Admin User',
-          username: parsed.username || 'admin_js',
-          role: (parsed.role === 'admin' ? 'Administrator' : (parsed.role || 'Administrator')),
-          email: parsed.email || 'admin@jeevansetu.org',
-          avatar: parsed.avatar_url || DEFAULT_ADMIN_AVATAR
-        };
+        const role = String(parsed.role || '').toLowerCase();
+        // Strict guard: In the Admin Portal, NEVER display non-admin (doctor/nurse/attendant) credentials
+        if (role === 'admin' || role === 'administrator' || role === 'superadmin' || role === 'system_admin') {
+          return {
+            id: parsed.id || parsed.user_id || 1,
+            name: parsed.full_name || parsed.username || 'System Administrator',
+            username: parsed.username || 'admin_js',
+            role: 'Administrator',
+            email: parsed.email || 'admin@jeevansetu.in',
+            avatar: parsed.avatar_url || DEFAULT_ADMIN_AVATAR
+          };
+        }
       }
     } catch (e) {
       console.warn('Could not parse stored admin user:', e);
     }
     return {
       id: 1,
-      name: 'Admin User',
+      name: 'System Administrator',
       username: 'admin_js',
       role: 'Administrator',
-      email: 'admin@jeevansetu.org',
+      email: 'admin@jeevansetu.in',
       avatar: DEFAULT_ADMIN_AVATAR
     };
   }
@@ -279,6 +283,17 @@
 
     aside.setAttribute('data-purpose', 'sidebar');
     aside.classList.add('sidebar-transition');
+
+    // Ensure Admin Brand Header has the official logo
+    const brandContainer = aside.querySelector('.p-6.flex.items-center, .p-4.flex.items-center');
+    if (brandContainer) {
+      const logoBox = brandContainer.querySelector('div:first-child');
+      if (logoBox && (!logoBox.querySelector('img') || logoBox.querySelector('svg'))) {
+        logoBox.className = 'w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0';
+        logoBox.innerHTML = `<img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">`;
+      }
+    }
+
 
     const nav = aside.querySelector('nav');
     if (!nav) return;
@@ -1084,10 +1099,54 @@
       .replace(/'/g, '&#039;');
   }
 
+  async function fetchAdminProfileLive() {
+    try {
+      const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
+      if (!token) return;
+      const res = await fetch('/api/v1/auth/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          const user = json.data;
+          const role = String(user.role || '').toLowerCase();
+          if (role === 'admin' || role === 'administrator') {
+            const adminObj = {
+              id: user.id,
+              full_name: user.full_name || 'System Administrator',
+              username: user.username || 'admin_js',
+              email: user.email || 'admin@jeevansetu.in',
+              role: 'admin',
+              avatar_url: user.avatar_url || DEFAULT_ADMIN_AVATAR
+            };
+            localStorage.setItem('jeevan_setu_user', JSON.stringify(adminObj));
+            
+            // Update UI elements in header and sidebar
+            const headerName = document.getElementById('header-admin-name');
+            const headerRole = document.getElementById('header-admin-role');
+            const dropdownName = document.getElementById('dropdown-user-name');
+            const dropdownEmail = document.getElementById('dropdown-user-email');
+            const sidebarName = document.getElementById('sidebar-admin-name');
+            const sidebarRole = document.getElementById('sidebar-admin-role');
+            
+            if (headerName) headerName.textContent = adminObj.full_name;
+            if (headerRole) headerRole.textContent = 'Administrator';
+            if (dropdownName) dropdownName.textContent = adminObj.full_name;
+            if (dropdownEmail) dropdownEmail.textContent = adminObj.email;
+            if (sidebarName) sidebarName.textContent = adminObj.full_name;
+            if (sidebarRole) sidebarRole.textContent = 'Administrator';
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Could not fetch admin profile:', e);
+    }
+  }
+
   // Global Logout helper
   window.logoutAdmin = function () {
-    localStorage.removeItem('jeevan_setu_token');
-    localStorage.removeItem('jeevan_setu_user');
+    localStorage.clear();
     sessionStorage.clear();
     window.location.href = '../../Login/Login.html';
   };
@@ -1096,6 +1155,7 @@
   function initAdminPortal() {
     renderSidebarNav();
     renderSharedAdminHeader();
+    fetchAdminProfileLive();
   }
 
   if (document.readyState === 'loading') {

@@ -10,7 +10,7 @@ This document contains the complete set of commands, configuration details, cred
 From the project root:
 ```powershell
 # Navigate to the workspace root
-cd d:\Major_Project\JSA-1
+cd D:\Major_Project\JSF\Jeevan-Setu-Final
 
 # Activate the virtual environment
 .venv\Scripts\Activate.ps1

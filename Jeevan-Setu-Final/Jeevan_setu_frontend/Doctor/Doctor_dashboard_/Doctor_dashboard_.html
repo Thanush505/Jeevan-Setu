@@ -207,8 +207,8 @@
 </div>
 <div class="flex items-center space-x-3 border-l pl-8">
 <div class="text-right">
-<p class="text-sm font-bold">Dr. Arjun Mehta</p>
-<p class="text-[11px] text-gray-500">Consultant Intensivist</p>
+<p class="text-sm font-bold"><span id="header-doctor-name" class="doctor-profile-name">Dr. Arjun Mehta</span></p>
+<p class="text-[11px] text-gray-500"><span id="header-doctor-dept" class="doctor-profile-dept">Consultant Intensivist</span></p>
 <div class="flex items-center justify-end">
 <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
 <span class="text-[10px] text-gray-400">Online</span>
@@ -738,33 +738,38 @@
 <script data-purpose="api-integration">
   // ─── Jeevan Setu: Authoritative Doctor Dashboard Synchronization ───
   const PATIENT_API = '/api/v1/patients';
-  const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
   let searchTimeout = null;
+
+  function getAuthToken() {
+    return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
+  }
 
   // Extract doctor user_id from JWT token for filtering
   function getDoctorIdFromToken() {
-    if (!AUTH_TOKEN) return null;
+    const token = getAuthToken();
+    if (!token) return null;
     try {
-      const payload = JSON.parse(atob(AUTH_TOKEN.split('.')[1]));
+      const payload = JSON.parse(atob(token.split('.')[1]));
       return payload.sub || null;
     } catch (e) { return null; }
   }
-  const DOCTOR_ID = getDoctorIdFromToken();
 
   function getAuthHeaders() {
-    const headers = { 'Content-Type': 'application/json' };
-    if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    const token = getAuthToken();
+    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
     return headers;
   }
 
   async function refreshDoctorDashboard() {
     try {
+      const doctorId = getDoctorIdFromToken();
       const searchInput = document.getElementById('doctor-search-input');
       const query = searchInput ? searchInput.value.trim() : '';
       let url = query 
         ? `${PATIENT_API}?status=admitted&search=${encodeURIComponent(query)}&limit=50`
         : `${PATIENT_API}?status=admitted&limit=20`;
-      if (DOCTOR_ID) url += `&doctor_id=${DOCTOR_ID}`;
+      if (doctorId) url += `&doctor_id=${doctorId}`;
 
       const res = await fetch(url, { headers: getAuthHeaders() });
       if (!res.ok) return;

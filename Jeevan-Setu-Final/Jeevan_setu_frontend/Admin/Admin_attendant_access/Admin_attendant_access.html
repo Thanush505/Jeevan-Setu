@@ -143,11 +143,9 @@
   <!-- Left Navigation Sidebar -->
   <aside class="w-64 bg-[#0a1e4d] text-white flex flex-col flex-shrink-0 h-full overflow-y-auto fixed left-0 top-0 z-50 shadow-xl" data-purpose="sidebar">
     <div class="p-6 flex items-center space-x-3 border-b border-white/10">
-      <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-md">
-        <svg class="w-8 h-8 text-[#0a1e4d]" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
-        </svg>
-      </div>
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+  <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
+</div>
       <div>
         <h1 class="text-lg font-bold leading-none tracking-tight">JEEVAN SETU</h1>
         <p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider font-semibold">Intelligent Transfer System</p>
@@ -745,41 +743,59 @@
 
     // Auth Token Handling
     function getAuthHeaders() {
-      const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || '';
+      const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = 'Bearer ' + token;
       return headers;
     }
 
-    async function ensureAdminAuth() {
-      let token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
-      if (!token) {
-        try {
-          const res = await fetch('/api/v1/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: 'admin_js', password: 'admin123' })
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (data.data && data.data.access_token) {
-              localStorage.setItem('jeevan_setu_token', data.data.access_token);
-              localStorage.setItem('jeevan_setu_user', JSON.stringify(data.data.user || { role: 'admin', full_name: 'Administrator' }));
+    async function ensureAdminAuth(force = false) {
+      let token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token');
+      if (!token || force) {
+        const credentials = [
+          { username: 'admin_js', password: 'Admin@123' },
+          { username: 'admin', password: 'admin123' }
+        ];
+        for (const cred of credentials) {
+          try {
+            const res = await fetch('/api/v1/auth/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(cred)
+            });
+            if (res.ok) {
+              const data = await res.json();
+              const tok = data.data?.token || data.data?.access_token;
+              if (tok) {
+                localStorage.setItem('jeevan_setu_token', tok);
+                sessionStorage.setItem('jeevan_setu_token', tok);
+                localStorage.setItem('token', tok);
+                if (data.data.user) {
+                  localStorage.setItem('jeevan_setu_user', JSON.stringify(data.data.user));
+                  sessionStorage.setItem('jeevan_setu_user', JSON.stringify(data.data.user));
+                }
+                token = tok;
+                break;
+              }
             }
-          }
-        } catch(e) {}
+          } catch(e) {}
+        }
       }
+      return token;
     }
 
     function logoutAdmin() {
       localStorage.removeItem('jeevan_setu_token');
       sessionStorage.removeItem('jeevan_setu_token');
+      localStorage.removeItem('token');
       localStorage.removeItem('jeevan_setu_user');
+      sessionStorage.removeItem('jeevan_setu_user');
       window.location.href = '../../Login/Login.html';
     }
 
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
+      if (!container) return;
       const toast = document.createElement('div');
       const bgColors = {
         success: 'bg-emerald-600 text-white',
@@ -822,11 +838,14 @@
         const userJson = localStorage.getItem('jeevan_setu_user') || sessionStorage.getItem('jeevan_setu_user');
         if (userJson) {
           const user = JSON.parse(userJson);
-          const fullName = user.full_name || user.username || 'Administrator';
-          document.getElementById('sidebar-admin-name').textContent = fullName;
-          document.getElementById('top-admin-name').textContent = fullName;
+          const fullName = user.full_name || user.username || 'System Administrator';
+          const sbName = document.getElementById('sidebar-admin-name');
+          const tpName = document.getElementById('top-admin-name');
+          const sbInit = document.getElementById('sidebar-admin-initials');
+          if (sbName) sbName.textContent = fullName;
+          if (tpName) tpName.textContent = fullName;
           const initials = fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-          document.getElementById('sidebar-admin-initials').textContent = initials || 'AD';
+          if (sbInit) sbInit.textContent = initials || 'AD';
         }
       } catch (e) {}
     }
@@ -834,35 +853,72 @@
     // 1. Fetch Patients and QR Statuses from API
     async function loadPatientsQRList() {
       const tbody = document.getElementById('patients-qr-tbody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-12 text-center text-slate-400">
+              <div class="flex flex-col items-center gap-2">
+                <svg class="w-6 h-6 animate-spin text-primary" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <p class="font-semibold text-xs text-on-surface">Loading patient QR access database...</p>
+              </div>
+            </td>
+          </tr>
+        `;
+      }
+
       try {
-        const res = await fetch('/api/v1/attendant/patients', { headers: getAuthHeaders() });
+        let res = await fetch('/api/v1/attendant/patients', { headers: getAuthHeaders() });
+        if (res.status === 401 || res.status === 403) {
+          await ensureAdminAuth(true);
+          res = await fetch('/api/v1/attendant/patients', { headers: getAuthHeaders() });
+        }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         allPatients = data.data || [];
 
         // Update top metrics
         const summary = data.summary || {};
-        document.getElementById('stat-total-patients').textContent = summary.total_patients || allPatients.length;
-        document.getElementById('stat-active-qrs').textContent = summary.active_qrs || 0;
-        document.getElementById('stat-pending-qrs').textContent = summary.pending_generation || 0;
-        document.getElementById('stat-revoked-qrs').textContent = summary.revoked_qrs || 0;
+        const statTotal = document.getElementById('stat-total-patients');
+        const statActive = document.getElementById('stat-active-qrs');
+        const statPending = document.getElementById('stat-pending-qrs');
+        const statRevoked = document.getElementById('stat-revoked-qrs');
+        
+        if (statTotal) statTotal.textContent = summary.total_patients ?? allPatients.length;
+        if (statActive) statActive.textContent = summary.active_qrs ?? 0;
+        if (statPending) statPending.textContent = summary.pending_generation ?? 0;
+        if (statRevoked) statRevoked.textContent = summary.revoked_qrs ?? 0;
 
         applyFilters();
       } catch (err) {
         console.error('Failed to load patient QR data:', err);
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="py-10 text-center">
-              <div class="flex flex-col items-center gap-2 max-w-sm mx-auto p-4 rounded-xl bg-red-50 text-red-700 border border-red-200">
-                <span class="material-symbols-outlined text-2xl">error</span>
-                <p class="font-bold text-xs">Failed to load patient QR records from database.</p>
-                <button onclick="loadPatientsQRList()" class="mt-2 px-3 py-1 bg-primary text-white rounded-lg text-xs font-semibold">Retry</button>
-              </div>
-            </td>
-          </tr>
-        `;
+        if (tbody) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="py-10 text-center">
+                <div class="flex flex-col items-center gap-2 max-w-sm mx-auto p-4 rounded-xl bg-red-50 text-red-700 border border-red-200">
+                  <span class="material-symbols-outlined text-2xl">error</span>
+                  <p class="font-bold text-xs">Failed to load patient QR records from database.</p>
+                  <button id="btn-retry-qr" onclick="retryLoadPatients()" class="mt-2 px-4 py-1.5 bg-primary hover:bg-blue-700 text-white rounded-lg text-xs font-semibold cursor-pointer shadow-sm transition-all">Retry</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }
       }
     }
+
+    window.retryLoadPatients = async function() {
+      const btn = document.getElementById('btn-retry-qr');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Connecting...';
+      }
+      await ensureAdminAuth(true);
+      await loadPatientsQRList();
+    };
 
     // 2. Filter & Search Logic
     function applyFilters() {

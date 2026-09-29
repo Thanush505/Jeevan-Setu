@@ -229,8 +229,8 @@ tailwind.config = {
 </div>
 <div class="flex items-center space-x-3 border-l pl-8">
 <div class="text-right">
-<p class="text-sm font-bold">Dr. Arjun Mehta</p>
-<p class="text-[11px] text-gray-500">Consultant Intensivist</p>
+<p class="text-sm font-bold"><span id="header-doctor-name" class="doctor-profile-name">Dr. Arjun Mehta</span></p>
+<p class="text-[11px] text-gray-500"><span id="header-doctor-dept" class="doctor-profile-dept">Consultant Intensivist</span></p>
 <div class="flex items-center justify-end">
 <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
 <span class="text-[10px] text-gray-400">Online</span>
@@ -315,13 +315,14 @@ tailwind.config = {
 </div>
 
 <script>
-  const PATIENT_API = '/api/v1/patients';
-  const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
-  let currentDoctorAllSearch = '';
+  function getAuthToken() {
+    return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
+  }
 
   function getAuthHeaders() {
-    const headers = { 'Content-Type': 'application/json' };
-    if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    const token = getAuthToken();
+    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
     return headers;
   }
 
