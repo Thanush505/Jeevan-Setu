@@ -5,6 +5,7 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Jeevan Setu - Doctor Pending Approvals</title>
+    <script src="/auto_refresh_manager.js"></script>
     <style>
         @layer base {
             html, body { margin: 0; padding: 0; }
@@ -1117,11 +1118,15 @@
             }
         });
 
-        // Initialize on load & setup auto-refresh every 8s
+        // Initialize on load & setup centralized auto-refresh every 10s
         document.addEventListener('DOMContentLoaded', () => {
             setupDoctorProfile();
-            fetchPendingApprovals();
-            setInterval(fetchPendingApprovals, 8000);
+            if (window.AutoRefreshManager) {
+                window.AutoRefreshManager.start('doctor_pending_approvals', fetchPendingApprovals, 10000);
+            } else {
+                fetchPendingApprovals();
+                setInterval(fetchPendingApprovals, 10000);
+            }
         });
     </script>
     <script src="../global_alert_manager.js"></script>

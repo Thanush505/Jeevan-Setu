@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Jeevan Setu - Patient Update</title>
+<script src="/auto_refresh_manager.js"></script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script>tailwind.config = {theme: {extend: {colors: {primary: "#004ac6", primaryLight: "#eff6ff", secondary: "#006591", warning: "#f59e0b", danger: "#ef4444", surface: "#f9f9ff", textMain: "#0f172a", textMuted: "#64748b", "on-primary-fixed-variant": "#003ea8", "surface-tint": "#0053db", tertiary: "#46566c", "on-secondary-fixed": "#001e2f", "on-primary-container": "#eeefff", "primary-fixed": "#dbe1ff", "inverse-primary": "#b4c5ff", outline: "#737686", "tertiary-fixed-dim": "#b7c8e1", "outline-variant": "#c3c6d7", "on-error": "#ffffff", "on-error-container": "#93000a", "on-tertiary-fixed": "#0b1c30", "on-primary": "#ffffff", "on-background": "#111c2d", background: "#f9f9ff", "on-tertiary-fixed-variant": "#38485d", "tertiary-container": "#5e6e85", "secondary-container": "#39b8fd", "primary-container": "#2563eb", "on-secondary-fixed-variant": "#004c6e", "on-tertiary-container": "#e9f0ff", "surface-variant": "#d8e3fb", "surface-container-highest": "#d8e3fb", "on-primary-fixed": "#00174b", "on-secondary": "#ffffff", "on-secondary-container": "#004666", "surface-container-lowest": "#ffffff", "surface-bright": "#f9f9ff", error: "#ba1a1a", "inverse-on-surface": "#ecf1ff", "surface-container-low": "#f0f3ff", "surface-container": "#e7eeff", "on-surface-variant": "#434655", "surface-container-high": "#dee8ff", "secondary-fixed-dim": "#89ceff", "error-container": "#ffdad6", "primary-fixed-dim": "#b4c5ff", "on-tertiary": "#ffffff", "surface-dim": "#cfdaf2", "secondary-fixed": "#c9e6ff", "inverse-surface": "#263143", "on-surface": "#111c2d", "tertiary-fixed": "#d3e4fe"}, fontFamily: {sans: ["Inter", "sans-serif"], "body-sm": ["Inter"], "body-md": ["Inter"], "headline-md": ["Poppins"], "headline-lg-mobile": ["Poppins"], "label-md": ["Inter"], "label-sm": ["Inter"], "body-lg": ["Inter"], "headline-lg": ["Poppins"], display: ["Poppins"], "headline-sm": ["Poppins"]}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, fontSize: {"body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "500"}], "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "600"}], "label-md": ["14px", {lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "600"}], "label-sm": ["12px", {lineHeight: "16px", fontWeight: "600"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", fontWeight: "600"}], display: ["48px", {lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600"}], "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "500"}]}, spacing: {"margin-mobile": "16px", "margin-desktop": "32px", sm: "8px", lg: "24px", xs: "4px", md: "16px", gutter: "16px", xl: "32px", base: "4px"}}}};</script>
 <style data-purpose="custom-styles">
@@ -384,10 +385,12 @@
   }
 
   var AUTH_TOKEN = urlToken || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('jeevan_setu_token') || '';
+  var hasInitialDataLoaded = false;
 
   function getHeaders() {
+    var token = urlToken || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('jeevan_setu_token') || '';
     var headers = { 'Content-Type': 'application/json' };
-    if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    if (token) headers['Authorization'] = 'Bearer ' + token;
     return headers;
   }
 
@@ -427,32 +430,39 @@
       var res = await fetch(queryUrl, { headers: getHeaders() });
 
       if (res.status === 401 || res.status === 403) {
-        var errData = await res.json().catch(function(){ return {}; });
-        showUnauthorizedState(errData.error || "Attendant access required. Please scan the patient's QR code.");
+        if (!hasInitialDataLoaded) {
+          var errData = await res.json().catch(function(){ return {}; });
+          showUnauthorizedState(errData.error || "Attendant access required. Please scan the patient's QR code.");
+        }
         return;
       }
 
       if (!res.ok) {
-        // If staff view fallback
         var staffRes = await fetch('/api/v1/patients/' + (PATIENT_ID || 1), { headers: getHeaders() });
         if (staffRes.ok) {
           res = staffRes;
         } else {
-          showUnauthorizedState("Attendant access required. Please scan the patient's QR code.");
+          if (!hasInitialDataLoaded) {
+            showUnauthorizedState("Attendant access required. Please scan the patient's QR code.");
+          }
           return;
         }
       }
 
       var json = await res.json();
       if (!json.success || !json.data) {
-        showUnauthorizedState(json.error || "Attendant access required. Please scan the patient's QR code.");
+        if (!hasInitialDataLoaded) {
+          showUnauthorizedState(json.error || "Attendant access required. Please scan the patient's QR code.");
+        }
         return;
       }
 
       var p = json.data;
+      hasInitialDataLoaded = true;
 
       // Update name & greeting
       if (p.attendant_name) {
+        sessionStorage.setItem('jeevan_setu_attendant_name', p.attendant_name);
         var gEl = document.getElementById('attendant-greeting-name');
         if (gEl) gEl.textContent = 'Hello, ' + p.attendant_name + ' 👋';
       }
@@ -475,7 +485,7 @@
         if (admEl) admEl.textContent = 'Admitted: ' + d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
       }
 
-      // Condition & EWS
+      // Persisted condition & EWS from backend
       var rawCondition = p.condition || (p.total_score >= 7 ? 'Critical' : (p.total_score >= 4 ? 'Moderate Risk' : 'Stable'));
       var condition = (rawCondition || '').replace(/\bCare\b/gi, '').trim() || rawCondition;
       var colors = getConditionColor(condition);
@@ -505,7 +515,7 @@
         if (rrEl) rrEl.textContent = vitals.respiratory_rate !== null && vitals.respiratory_rate !== undefined ? vitals.respiratory_rate : '--';
       }
 
-      // Status banner
+      // Status banner & Recommendations
       var headingEl = document.getElementById('attendant-status-heading');
       var descEl = document.getElementById('attendant-status-desc');
       var bannerBox = document.getElementById('attendant-banner-box');
@@ -515,7 +525,9 @@
         headingEl.className = 'text-sm font-bold ' + colors.text;
       }
       if (descEl) {
-        if (condition === 'Stable') {
+        if (p.recommendation && p.recommendation.trim()) {
+          descEl.textContent = p.recommendation;
+        } else if (condition === 'Stable') {
           descEl.textContent = 'All recorded vital parameters are within normal recovery range. Attendant updates refresh in real time.';
         } else if (condition === 'Moderate Risk') {
           descEl.textContent = 'Some vital parameters require close medical observation. Clinical team is monitoring.';
@@ -525,13 +537,18 @@
       }
 
     } catch (e) {
-      console.warn('[Jeevan Setu] Attendant refresh error:', e);
+      console.warn('[Jeevan Setu] Attendant background refresh error (will retry automatically):', e);
     }
   }
 
-  // Initial fetch + auto-refresh every 8 seconds
-  refreshAttendantView();
-  setInterval(refreshAttendantView, 8000);
+  // Centralized 10-second background polling
+  if (window.AutoRefreshManager) {
+    window.AutoRefreshManager.start('attendant_live_view', refreshAttendantView, 10000);
+  } else {
+    refreshAttendantView();
+    setInterval(refreshAttendantView, 10000);
+  }
 })();
 </script>
+<script src="/auto_refresh_manager.js"></script>
 </body></html>

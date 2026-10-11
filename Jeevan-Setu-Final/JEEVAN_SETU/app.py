@@ -5,7 +5,7 @@ app.py — Main Flask application entry point for Jeevan Setu.
 import os
 import logging
 from flask import Flask, redirect, url_for, request, make_response
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 
 from config import get_config
 
@@ -26,6 +26,7 @@ from routes.report_routes import report_bp
 from routes.attendant_routes import attendant_bp
 from routes.notification_routes import notification_bp
 from routes.analytics_routes import analytics_bp
+from routes.developer_routes import developer_bp
 
 
 
@@ -91,6 +92,7 @@ def create_app():
     app.register_blueprint(notification_bp, url_prefix='/notifications')
     app.register_blueprint(analytics_bp, url_prefix='/api/v1/analytics', name='analytics_api_alias')
     app.register_blueprint(analytics_bp, url_prefix='/analytics')
+    app.register_blueprint(developer_bp, url_prefix='/api/v1/developer')
 
     # Security Middleware & HTTP Headers
     from utils.security import apply_security_headers
@@ -227,6 +229,13 @@ def create_app():
     @app.route('/code.html')
     def login_direct():
         return render_template('Login/Login.html')
+
+    @app.route('/Developer/Telemetry_Simulator/')
+    @app.route('/Developer/Telemetry_Simulator')
+    @app.route('/Developer/Telemetry_Simulator/Telemetry_Simulator.html')
+    @app.route('/Developer/Telemetry_Simulator/code.html')
+    def developer_telemetry_simulator():
+        return render_template('Developer/Telemetry_Simulator/Telemetry_Simulator.html')
 
     @app.route('/admin')
     def admin_home():

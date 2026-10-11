@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nurse Alerts &amp; Clinical Tasks — Jeevan Setu</title>
+  <script src="/auto_refresh_manager.js"></script>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -491,10 +492,12 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       populatePatientDropdowns();
-      refreshAlertsData();
-
-      // Poll every 6 seconds to synchronize live alerts
-      setInterval(refreshAlertsData, 6000);
+      if (window.AutoRefreshManager) {
+        window.AutoRefreshManager.start('nurse_alerts_live', refreshAlertsData, 10000);
+      } else {
+        refreshAlertsData();
+        setInterval(refreshAlertsData, 10000);
+      }
     });
 
     async function populatePatientDropdowns() {

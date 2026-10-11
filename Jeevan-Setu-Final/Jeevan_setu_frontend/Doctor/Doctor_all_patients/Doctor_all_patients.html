@@ -3,6 +3,7 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>All Patients - Jeevan Setu</title>
+<script src="/auto_refresh_manager.js"></script>
 <style>
 @layer base{
   html,body{margin:0;padding:0;}
@@ -422,8 +423,13 @@ tailwind.config = {
     });
   }
 
-  refreshDoctorAllPatients();
-  setInterval(refreshDoctorAllPatients, 8000);
+  // Centralized 10-second auto-refresh
+  if (window.AutoRefreshManager) {
+    window.AutoRefreshManager.start('doctor_all_patients', refreshDoctorAllPatients, 10000);
+  } else {
+    refreshDoctorAllPatients();
+    setInterval(refreshDoctorAllPatients, 10000);
+  }
 </script>
   <script src="../global_alert_manager.js"></script>
   <script src="../doctor_sidebar.js"></script>

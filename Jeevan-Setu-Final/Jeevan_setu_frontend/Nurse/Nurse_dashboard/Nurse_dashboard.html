@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Jeevan Setu - Nurse Dashboard</title>
+<script src="/auto_refresh_manager.js"></script>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Lucide Icons (using CDN for simplicity in this demo) -->
@@ -766,9 +767,13 @@
   setupSearchInput('nurse-header-search');
   setupSearchInput('nurse-table-search');
 
-  // Initial fetch + auto-refresh every 8 seconds
-  refreshDashboard();
-  setInterval(refreshDashboard, 8000);
+  // Centralized 10-second auto-refresh
+  if (window.AutoRefreshManager) {
+    window.AutoRefreshManager.start('nurse_dashboard', refreshDashboard, 10000);
+  } else {
+    refreshDashboard();
+    setInterval(refreshDashboard, 10000);
+  }
 </script>
 <script src="../nurse_navigation.js"></script>
   <script src="../global_alert_manager.js"></script>

@@ -254,8 +254,12 @@
   function initDoctorSidebar() {
     highlightActiveSidebarItem();
     syncLiveDoctorHeader();
-    fetchSidebarBadgeCounts();
-    setInterval(fetchSidebarBadgeCounts, 15000);
+    if (window.AutoRefreshManager) {
+      window.AutoRefreshManager.start('doctor_sidebar_badges', fetchSidebarBadgeCounts, 10000);
+    } else {
+      fetchSidebarBadgeCounts();
+      setInterval(fetchSidebarBadgeCounts, 10000);
+    }
   }
 
   if (document.readyState === 'loading') {

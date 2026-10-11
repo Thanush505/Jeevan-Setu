@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Jeevan Setu - ICU Dashboard</title>
+<script src="/auto_refresh_manager.js"></script>
 <!-- Tailwind CSS v3 CDN with Plugins -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Google Fonts for professional medical look -->
@@ -855,10 +856,15 @@
     });
   }
 
-  // Initial fetch + auto-refresh every 10 seconds
-  refreshDoctorDashboard();
-  setInterval(refreshDoctorDashboard, 10000);
+  // Centralized 10-second auto-refresh
+  if (window.AutoRefreshManager) {
+    window.AutoRefreshManager.start('doctor_dashboard', refreshDoctorDashboard, 10000);
+  } else {
+    refreshDoctorDashboard();
+    setInterval(refreshDoctorDashboard, 10000);
+  }
 </script>
+  <script src="/auto_refresh_manager.js"></script>
   <script src="../global_alert_manager.js"></script>
   <script src="../doctor_sidebar.js"></script>
 </body></html>
