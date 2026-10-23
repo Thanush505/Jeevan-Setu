@@ -276,8 +276,9 @@ class PatientQRToken:
                FROM patient_qr_tokens t
                JOIN patients p ON t.patient_id = p.patient_id
                LEFT JOIN users u ON p.assigned_doctor = u.user_id
-               WHERE t.token_hash = %s OR t.access_code = %s""",
-            (h, token_clean), fetch=True
+               WHERE t.token_hash = %s OR t.access_code = %s OR p.patient_code = %s
+               ORDER BY t.is_active DESC, t.token_id DESC""",
+            (h, token_clean, token_clean), fetch=True
         )
 
         if not records:

@@ -632,6 +632,7 @@ def api_verify_qr_access_and_name():
 
 
 @attendant_bp.route('/validate-token', methods=['POST'])
+@attendant_bp.route('/validate', methods=['POST'])
 def api_validate_qr_token():
     """
     Public: Validate QR token or access code on page load.
@@ -657,11 +658,19 @@ def api_validate_qr_token():
             'error': validation['error']
         }), 401
 
-    return jsonify({
+    resp_data = {
         'success': True,
         'valid': True,
-        'status': 'active'
-    }), 200
+        'status': 'active',
+        'patient_id': validation.get('patient_id')
+    }
+    if 'patient_code' in validation:
+        resp_data['patient_code'] = validation['patient_code']
+    if 'bed_number' in validation:
+        resp_data['bed_number'] = validation['bed_number']
+    if 'ward_type' in validation:
+        resp_data['ward_type'] = validation['ward_type']
+    return jsonify(resp_data), 200
 
 
 @attendant_bp.route('/manual-login', methods=['POST'])
@@ -877,6 +886,17 @@ def api_get_attendant_patient_data():
         # Strict session isolation: use the authorized patient_id encoded in the signed JWT
         patient_id = session['patient_id']
         attendant_name = session.get('attendant_name', 'Attendant')
+    elif request.args.get('token') or request.args.get('qr_token'):
+        raw_qr = (request.args.get('token') or request.args.get('qr_token') or '').strip()
+        val = PatientQRToken.validate_token(raw_qr)
+        if val.get('valid') and val.get('patient_id'):
+            patient_id = val['patient_id']
+            attendant_name = 'Family Attendant'
+        else:
+            return jsonify({
+                'success': False,
+                'error': val.get('error', 'Invalid or expired QR token.')
+            }), 401
     elif user and getattr(user, 'role', '').lower() in ('doctor', 'nurse', 'admin'):
         # Explicit clinical staff token preview
         req_pid = request.args.get('patient_id') or request.args.get('id') or 1
@@ -895,6 +915,12 @@ def api_get_attendant_patient_data():
     patient = Patient.get_by_id(patient_id)
     if not patient:
         return jsonify({'success': False, 'error': f'Patient #{patient_id} not found'}), 404
+
+    try:
+        from models.audit_log_model import AuditLog
+        AuditLog.log(action='view_attendant_api', entity_type='patient', entity_id=patient_id, description=f'Attendant view for patient {patient_id}')
+    except Exception:
+        pass
 
     vitals = Vitals.get_latest(patient_id)
     vitals_history = Vitals.get_history(patient_id, limit=5)

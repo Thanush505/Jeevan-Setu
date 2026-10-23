@@ -55,7 +55,11 @@
     }
 
     reset(scenarioName, manualValues) {
-      this.scenarioName = (scenarioName || 'STABLE').toUpperCase();
+      let scen = (scenarioName || 'STABLE').toUpperCase();
+      if (scen === 'GRADUAL_DETERIORATION' || scen === 'DETERIORATION') {
+        scen = 'MODERATE';
+      }
+      this.scenarioName = scen;
       this.manualValues = manualValues || null;
       this.tick = 0;
 
@@ -64,24 +68,24 @@
         this.rr = randomBetween(14, 18);
         this.sbp = randomBetween(116, 124);
         this.temp = randomBetween(36.6, 37.0);
-      } else if (this.scenarioName === 'GRADUAL_DETERIORATION') {
-        // Start near-normal
-        this.hr = randomBetween(72, 78);
-        this.rr = randomBetween(15, 17);
-        this.sbp = randomBetween(118, 122);
-        this.temp = randomBetween(36.6, 36.9);
+      } else if (this.scenarioName === 'MODERATE') {
+        // Moderate clinical deviation (EWS 3-5)
+        this.hr = randomBetween(96, 106);
+        this.rr = randomBetween(21, 24);
+        this.sbp = randomBetween(92, 98);
+        this.temp = randomBetween(38.2, 38.6);
       } else if (this.scenarioName === 'CRITICAL') {
-        // Rapid onset from slightly elevated to severely abnormal
-        this.hr = randomBetween(80, 95);
-        this.rr = randomBetween(18, 22);
-        this.sbp = randomBetween(110, 118);
-        this.temp = randomBetween(37.2, 37.6);
+        // Severe physiological distress (EWS >= 7)
+        this.hr = randomBetween(136, 152);
+        this.rr = randomBetween(28, 36);
+        this.sbp = randomBetween(56, 68);
+        this.temp = randomBetween(39.4, 40.2);
       } else if (this.scenarioName === 'RECOVERY') {
-        // Starts in abnormal state
-        this.hr = randomBetween(125, 138);
-        this.rr = randomBetween(28, 34);
-        this.sbp = randomBetween(65, 75);
-        this.temp = randomBetween(39.1, 39.8);
+        // Stabilizing convalescent state
+        this.hr = randomBetween(76, 84);
+        this.rr = randomBetween(16, 19);
+        this.sbp = randomBetween(112, 120);
+        this.temp = randomBetween(36.9, 37.3);
       } else if (this.scenarioName === 'MANUAL' && this.manualValues) {
         this.hr = parseFloat(this.manualValues.heart_rate) || 75.0;
         this.rr = parseFloat(this.manualValues.respiratory_rate) || 16.0;
@@ -90,10 +94,38 @@
       }
     }
 
-    setScenario(scenarioName) {
-      this.scenarioName = (scenarioName || 'STABLE').toUpperCase();
-      // Smooth transition: keep current physiological values and reset tick progression
+    setScenario(scenarioName, immediate) {
+      let scen = (scenarioName || 'STABLE').toUpperCase();
+      if (scen === 'GRADUAL_DETERIORATION' || scen === 'DETERIORATION') {
+        scen = 'MODERATE';
+      }
+      this.scenarioName = scen;
       this.tick = 0;
+
+      // Immediate physiological transition aligns subsequent reading to target profile
+      if (immediate !== false) {
+        if (scen === 'STABLE') {
+          this.hr = randomBetween(70, 78);
+          this.rr = randomBetween(14, 18);
+          this.sbp = randomBetween(116, 124);
+          this.temp = randomBetween(36.6, 37.0);
+        } else if (scen === 'MODERATE') {
+          this.hr = randomBetween(96, 106);
+          this.rr = randomBetween(21, 24);
+          this.sbp = randomBetween(92, 98);
+          this.temp = randomBetween(38.2, 38.6);
+        } else if (scen === 'CRITICAL') {
+          this.hr = randomBetween(136, 152);
+          this.rr = randomBetween(28, 36);
+          this.sbp = randomBetween(56, 68);
+          this.temp = randomBetween(39.4, 40.2);
+        } else if (scen === 'RECOVERY') {
+          this.hr = randomBetween(76, 84);
+          this.rr = randomBetween(16, 19);
+          this.sbp = randomBetween(112, 120);
+          this.temp = randomBetween(36.9, 37.3);
+        }
+      }
     }
 
     setManualValues(values) {
@@ -115,8 +147,9 @@
           return this._manualNext();
         case 'STABLE':
           return this._stableNext();
+        case 'MODERATE':
         case 'GRADUAL_DETERIORATION':
-          return this._deteriorationNext();
+          return this._moderateNext();
         case 'CRITICAL':
           return this._criticalNext();
         case 'RECOVERY':
@@ -156,34 +189,17 @@
       return this._snapshot();
     }
 
-    _deteriorationNext() {
-      const t = this.tick;
-      if (t <= 10) {
-        // Phase 1: Near normal with slight drift
-        this.hr = clamp(drift(this.hr, 82, 0.8, 0.5), 68, 92);
-        this.rr = clamp(drift(this.rr, 18, 0.4, 0.3), 14, 21);
-        this.sbp = clamp(drift(this.sbp, 116, 1.0, 0.8), 105, 130);
-        this.temp = clamp(drift(this.temp, 37.1, 0.04, 0.02), 36.5, 37.5);
-      } else if (t <= 22) {
-        // Phase 2: Moderate deviation
-        this.hr = clamp(drift(this.hr, 98, 1.5, 0.8), 75, 115);
-        this.rr = clamp(drift(this.rr, 23, 0.7, 0.4), 16, 26);
-        this.sbp = clamp(drift(this.sbp, 96, 1.8, 1.2), 85, 120);
-        this.temp = clamp(drift(this.temp, 37.9, 0.08, 0.03), 36.8, 38.6);
-      } else if (t <= 34) {
-        // Phase 3: Significant abnormality
-        this.hr = clamp(drift(this.hr, 122, 2.2, 1.0), 95, 140);
-        this.rr = clamp(drift(this.rr, 29, 0.9, 0.5), 22, 36);
-        this.sbp = clamp(drift(this.sbp, 78, 2.0, 1.4), 65, 98);
-        this.temp = clamp(drift(this.temp, 38.9, 0.1, 0.04), 37.6, 39.7);
-      } else {
-        // Phase 4: Critical territory
-        this.hr = clamp(drift(this.hr, 142, 2.5, 1.5), 125, 168);
-        this.rr = clamp(drift(this.rr, 35, 1.2, 0.6), 28, 46);
-        this.sbp = clamp(drift(this.sbp, 64, 2.5, 1.5), 45, 80);
-        this.temp = clamp(drift(this.temp, 39.6, 0.12, 0.05), 38.6, 40.8);
-      }
+    _moderateNext() {
+      // Fluctuate in moderate range (EWS 3-5: HR 95-108, RR 21-25, SBP 92-100, Temp 38.1-38.6)
+      this.hr = clamp(drift(this.hr, 102, 1.2, 0.8), 92, 110);
+      this.rr = clamp(drift(this.rr, 22, 0.6, 0.4), 18, 25);
+      this.sbp = clamp(drift(this.sbp, 95, 1.5, 1.0), 85, 105);
+      this.temp = clamp(drift(this.temp, 38.3, 0.05, 0.02), 37.8, 38.8);
       return this._snapshot();
+    }
+
+    _deteriorationNext() {
+      return this._moderateNext();
     }
 
     _criticalNext() {
@@ -237,7 +253,7 @@
 
   // Factory/Manager
   return {
-    SCENARIO_LIST: ['STABLE', 'GRADUAL_DETERIORATION', 'CRITICAL', 'RECOVERY', 'MANUAL'],
+    SCENARIO_LIST: ['STABLE', 'MODERATE', 'CRITICAL', 'RECOVERY', 'MANUAL'],
     createPatientState: function (scenarioName, manualValues) {
       return new PatientScenarioState(scenarioName, manualValues);
     }

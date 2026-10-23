@@ -209,12 +209,12 @@
               <span class="text-[10px] text-slate-400">Resting vitals</span>
             </label>
 
-            <!-- Gradual Deterioration -->
-            <label class="scenario-card p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-amber-500/50 cursor-pointer text-center transition-all select-none flex flex-col items-center justify-center gap-1.5" data-scenario="GRADUAL_DETERIORATION">
-              <input type="radio" name="activeScenario" value="GRADUAL_DETERIORATION" class="sr-only">
+            <!-- Moderate Deterioration -->
+            <label class="scenario-card p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-amber-500/50 cursor-pointer text-center transition-all select-none flex flex-col items-center justify-center gap-1.5" data-scenario="MODERATE">
+              <input type="radio" name="activeScenario" value="MODERATE" class="sr-only">
               <span class="material-symbols-outlined text-amber-400 text-[22px]">trending_down</span>
-              <span class="text-xs font-bold text-slate-200">Deterioration</span>
-              <span class="text-[10px] text-slate-400">4-stage drift</span>
+              <span class="text-xs font-bold text-slate-200">Moderate</span>
+              <span class="text-[10px] text-slate-400">Deterioration (EWS 3-5)</span>
             </label>
 
             <!-- Critical -->
@@ -416,7 +416,7 @@
             <tr>
               <th class="p-3">Patient</th>
               <th class="p-3">UHID / Bed</th>
-              <th class="p-3">Scenario</th>
+              <th class="p-3 min-w-[280px]">Scenario Transition</th>
               <th class="p-3 text-emerald-400 font-mono">HR (bpm)</th>
               <th class="p-3 text-cyan-400 font-mono">RR (/min)</th>
               <th class="p-3 text-amber-400 font-mono">SBP (mmHg)</th>

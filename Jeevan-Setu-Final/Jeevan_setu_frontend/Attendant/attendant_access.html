@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
   
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Maintained Local QR Scanner Engine for Mobile Camera Streaming -->
+  <script src="/Attendant/html5-qrcode.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -103,6 +105,31 @@
       border-color: #0052cc;
       box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15);
       background-color: #ffffff;
+    }
+
+    /* Video Stream Frame & Scanner Styling */
+    #qr-camera-stream {
+      width: 100% !important;
+      height: 100% !important;
+      position: relative !important;
+      overflow: hidden !important;
+      border-radius: 1rem !important;
+    }
+    #qr-camera-stream video {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      border-radius: 1rem !important;
+    }
+    #qr-camera-stream canvas {
+      display: none !important;
+    }
+    #qr-canvas-visible {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      border-radius: 1rem !important;
+      display: block !important;
     }
   </style>
 </head>
@@ -314,42 +341,174 @@
       <!-- ========================================================= -->
       <div id="tab-content-qr" class="hidden space-y-3.5">
         
-        <!-- Interactive Simulated Camera Viewfinder -->
-        <div class="bg-slate-900 rounded-2xl p-4 text-white text-center relative overflow-hidden shadow-lg border border-slate-800">
+        <!-- Camera Privacy & Clinical Scope Notice -->
+        <div class="bg-blue-900/30 border border-blue-400/20 rounded-xl p-2.5 text-left text-white flex items-start gap-2">
+          <span class="material-symbols-outlined text-cyan-400 text-base mt-0.5 shrink-0">privacy_tip</span>
+          <p class="text-[10px] text-blue-100/90 leading-relaxed">
+            <strong>Bedside QR Verification:</strong> Camera access is used solely to scan the admitted patient's bedside QR badge. No video is recorded, saved, or uploaded.
+          </p>
+        </div>
+
+        <!-- Insecure Context Notice (when accessed over plain HTTP on LAN IP) -->
+        <div id="banner-insecure-context" class="hidden bg-amber-500/15 border border-amber-400/30 rounded-xl p-3 text-left text-amber-200 space-y-1.5">
+          <div class="flex items-center gap-1.5 font-bold text-xs text-amber-300">
+            <span class="material-symbols-outlined text-base">lock_open</span>
+            <span>Mobile Camera Security Notice</span>
+          </div>
+          <p class="text-[10px] text-amber-100/90 leading-relaxed">
+            Mobile browsers restrict live camera video to secure HTTPS connections. Switch to the secure gateway or use the <strong>Photo Scan</strong> button below.
+          </p>
+          <a id="btn-switch-https" href="#" class="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-300 hover:text-cyan-200 underline pt-0.5">
+            <span class="material-symbols-outlined text-xs">open_in_new</span>
+            <span>Switch to Secure HTTPS Gateway (Port 5443) →</span>
+          </a>
+        </div>
+
+        <!-- Camera Permission / Hardware Error Card -->
+        <div id="banner-camera-error" class="hidden bg-red-500/15 border border-red-500/30 rounded-2xl p-3.5 text-left text-white space-y-2">
+          <div class="flex items-center gap-2 text-red-400 font-bold text-xs">
+            <span id="camera-error-icon" class="material-symbols-outlined text-base">no_photography</span>
+            <span id="camera-error-title">Camera Permission Denied</span>
+          </div>
+          <p id="camera-error-desc" class="text-[11px] text-red-200/90 leading-relaxed">
+            Please allow camera permissions in your browser settings to scan patient badges.
+          </p>
+          <div class="flex items-center gap-2 pt-1 flex-wrap">
+            <button 
+              type="button" 
+              id="btn-retry-camera" 
+              onclick="startLiveCamera()" 
+              class="px-3 py-1.5 bg-red-600 hover:bg-red-500 active:scale-95 text-white font-bold text-[11px] rounded-lg transition-all flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-xs">refresh</span>
+              <span>Retry Camera</span>
+            </button>
+            <label 
+              for="input-camera-photo" 
+              class="cursor-pointer px-3 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-cyan-300 font-semibold text-[11px] rounded-lg border border-slate-700 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-xs">photo_camera</span>
+              <span>Use Photo Scan</span>
+            </label>
+            <a 
+              id="btn-error-switch-https" 
+              href="#" 
+              class="hidden px-3 py-1.5 bg-cyan-600/30 hover:bg-cyan-600/50 active:scale-95 text-cyan-200 font-semibold text-[11px] rounded-lg border border-cyan-500/40 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-xs">open_in_new</span>
+              <span>Open HTTPS (Port 5443)</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- QR Scan Success Flash Card -->
+        <div id="banner-scan-success" class="hidden bg-emerald-500/20 border border-emerald-500/40 rounded-xl p-2.5 text-center text-emerald-300 flex items-center justify-center gap-2 text-xs font-bold animate-in fade-in">
+          <span class="material-symbols-outlined text-base text-emerald-400">check_circle</span>
+          <span>QR Badge Detected! Validating with clinical gateway...</span>
+        </div>
+
+        <!-- Interactive Camera Viewfinder & Controls Container -->
+        <div class="bg-slate-900 rounded-2xl p-3.5 text-white text-center relative overflow-hidden shadow-lg border border-slate-800 space-y-3">
           
           <!-- Viewfinder Frame -->
-          <div class="w-48 h-48 mx-auto relative rounded-2xl border-2 border-blue-400/40 bg-slate-950/70 flex flex-col items-center justify-center overflow-hidden my-1">
+          <div class="w-full max-w-[280px] h-[240px] mx-auto relative rounded-2xl border-2 border-blue-400/40 bg-slate-950 flex flex-col items-center justify-center overflow-hidden my-0 shadow-inner">
             
-            <!-- Corner Accents -->
-            <div class="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-cyan-400"></div>
-            <div class="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-cyan-400"></div>
-            <div class="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-cyan-400"></div>
-            <div class="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-cyan-400"></div>
+            <!-- Live Camera Video Stream (HTML5-QRCode attaches video elements here) -->
+            <div id="qr-camera-stream" class="w-full h-full object-cover"></div>
 
-            <!-- Scanning Laser Line -->
-            <div class="absolute left-3 right-3 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_8px_#22d3ee] animate-laser pointer-events-none"></div>
+            <!-- Corner Accents (Medical Device Viewfinder Guides) -->
+            <div class="absolute top-2 left-2 w-5 h-5 border-t-2 border-l-2 border-cyan-400 z-10 pointer-events-none"></div>
+            <div class="absolute top-2 right-2 w-5 h-5 border-t-2 border-r-2 border-cyan-400 z-10 pointer-events-none"></div>
+            <div class="absolute bottom-2 left-2 w-5 h-5 border-b-2 border-l-2 border-cyan-400 z-10 pointer-events-none"></div>
+            <div class="absolute bottom-2 right-2 w-5 h-5 border-b-2 border-r-2 border-cyan-400 z-10 pointer-events-none"></div>
 
-            <span class="material-symbols-outlined text-4xl text-blue-400/60 mb-1">qr_code_2</span>
-            <p class="text-[10px] text-blue-200/80 font-medium px-4">Align patient QR code badge within frame</p>
+            <!-- Scanning Laser Line (active during live streaming) -->
+            <div id="scanner-laser" class="hidden absolute left-3 right-3 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_8px_#22d3ee] animate-laser pointer-events-none z-10"></div>
+
+            <!-- Idle Viewfinder Overlay (prior to camera start) -->
+            <div id="scanner-idle-overlay" class="absolute inset-0 flex flex-col items-center justify-center p-4 bg-slate-950/90 z-5 text-center">
+              <span class="material-symbols-outlined text-4xl text-blue-400/70 mb-1.5">qr_code_scanner</span>
+              <p class="text-xs font-bold text-white mb-0.5">Mobile QR Scanner</p>
+              <p class="text-[10px] text-blue-200/70 max-w-[210px] leading-tight">Tap "Start Camera" to scan patient bed badge, or capture a photo</p>
+            </div>
+
+            <!-- Loading Overlay (while camera hardware initializes) -->
+            <div id="scanner-loading-overlay" class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 bg-slate-950/95 z-20 text-center">
+              <span class="material-symbols-outlined text-3xl text-cyan-400 animate-spin-custom mb-2">progress_activity</span>
+              <p class="text-xs font-bold text-cyan-300">Starting Camera...</p>
+              <p class="text-[10px] text-blue-200/70 mt-0.5">Requesting rear camera access</p>
+            </div>
           </div>
 
-          <div class="mt-2.5 flex items-center justify-center gap-2">
-            <button 
-              type="button" 
-              onclick="triggerDemoScan(1)" 
-              class="text-[11px] bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold px-3 py-1.5 rounded-lg transition-all shadow-sm flex items-center gap-1"
-            >
-              <span class="material-symbols-outlined text-xs">camera</span>
-              <span>Demo Scan (Rajesh)</span>
-            </button>
-            <button 
-              type="button" 
-              onclick="toggleManualTokenBox()" 
-              class="text-[11px] bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 font-semibold px-3 py-1.5 rounded-lg transition-all border border-slate-700 flex items-center gap-1"
-            >
-              <span class="material-symbols-outlined text-xs">dialpad</span>
-              <span>Type Code</span>
-            </button>
+          <!-- Primary Camera Buttons: Start & Stop & Photo Fallback -->
+          <div class="flex flex-col gap-2 pt-1">
+            <div class="flex items-center justify-center gap-2">
+              <button 
+                type="button" 
+                id="btn-start-camera" 
+                onclick="startLiveCamera()" 
+                class="flex-1 py-2.5 px-3 bg-gradient-to-r from-blue-600 to-primary hover:from-blue-500 hover:to-primaryHover active:scale-95 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+              >
+                <span class="material-symbols-outlined text-base">videocam</span>
+                <span>Start Camera</span>
+              </button>
+              
+              <button 
+                type="button" 
+                id="btn-stop-camera" 
+                onclick="stopLiveCamera()" 
+                class="hidden flex-1 py-2.5 px-3 bg-red-600/90 hover:bg-red-600 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+              >
+                <span class="material-symbols-outlined text-base">videocam_off</span>
+                <span>Stop Camera</span>
+              </button>
+              
+              <!-- Native Mobile Photo Capture Fallback (works over HTTP & HTTPS) -->
+              <label 
+                for="input-camera-photo" 
+                class="cursor-pointer py-2.5 px-3 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 shrink-0"
+                title="Capture photo with mobile camera app"
+              >
+                <span class="material-symbols-outlined text-base text-cyan-400">photo_camera</span>
+                <span>Photo Scan</span>
+                <input 
+                  type="file" 
+                  id="input-camera-photo" 
+                  accept="image/*" 
+                  capture="environment" 
+                  class="hidden" 
+                  onchange="handleNativeCameraCapture(event)"
+                >
+              </label>
+            </div>
+
+            <!-- Demo Scan & Manual Token Buttons -->
+            <div class="flex items-center justify-center gap-1.5 pt-1 flex-wrap">
+              <button 
+                type="button" 
+                onclick="triggerDemoScan(7)" 
+                class="text-[11px] bg-slate-800/90 hover:bg-slate-700 active:scale-95 text-blue-300 font-semibold px-2.5 py-1.5 rounded-lg transition-all border border-slate-700/80 flex items-center gap-1"
+              >
+                <span class="material-symbols-outlined text-xs text-blue-400">bolt</span>
+                <span>Amit (P7)</span>
+              </button>
+              <button 
+                type="button" 
+                onclick="triggerDemoScan(1)" 
+                class="text-[11px] bg-slate-800/90 hover:bg-slate-700 active:scale-95 text-blue-300 font-semibold px-2.5 py-1.5 rounded-lg transition-all border border-slate-700/80 flex items-center gap-1"
+              >
+                <span class="material-symbols-outlined text-xs text-blue-400">bolt</span>
+                <span>Rajesh (P1)</span>
+              </button>
+              <button 
+                type="button" 
+                onclick="toggleManualTokenBox()" 
+                class="text-[11px] bg-slate-800/90 hover:bg-slate-700 active:scale-95 text-slate-300 font-semibold px-2.5 py-1.5 rounded-lg transition-all border border-slate-700/80 flex items-center gap-1"
+              >
+                <span class="material-symbols-outlined text-xs">dialpad</span>
+                <span>Type Code</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -543,8 +702,13 @@
   <script>
     let currentToken = '';
     let searchDebounceTimer = null;
+    let html5QrCode = null;
+    let isCameraStreaming = false;
+    let isScanLocked = false;
 
     document.addEventListener('DOMContentLoaded', () => {
+      checkSecurityContext();
+
       const urlParams = new URLSearchParams(window.location.search);
       let token = urlParams.get('token') || urlParams.get('t') || '';
 
@@ -568,8 +732,31 @@
       }
     });
 
+    // Check Secure Context for Mobile Camera API
+    function checkSecurityContext() {
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const isSecure = window.isSecureContext || isLocal;
+      const insecureBanner = document.getElementById('banner-insecure-context');
+      const httpsLink = document.getElementById('btn-switch-https');
+      
+      if (!isSecure && insecureBanner && httpsLink) {
+        const currentPath = window.location.pathname.includes('attendant_access.html') 
+          ? window.location.pathname 
+          : '/Attendant/attendant_access.html';
+        httpsLink.href = `https://${window.location.hostname}:5443${currentPath}${window.location.search}`;
+        insecureBanner.classList.remove('hidden');
+      } else if (isSecure && insecureBanner) {
+        insecureBanner.classList.add('hidden');
+      }
+    }
+
     // Tab Switcher
     function switchTab(tab) {
+      // Release camera tracks immediately when navigating away from QR tab
+      if (tab === 'manual' && isCameraStreaming) {
+        stopLiveCamera();
+      }
+
       const btnManual = document.getElementById('tab-btn-manual');
       const btnQr = document.getElementById('tab-btn-qr');
       const contentManual = document.getElementById('tab-content-manual');
@@ -798,22 +985,359 @@
     }
 
     // =========================================================
-    // 2. QR CODE SCAN / TOKEN LOGIC
     // =========================================================
+    // 2. LIVE MOBILE CAMERA QR SCAN ENGINE & PHOTO FALLBACK
+    // =========================================================
+
+    // Clean up scanner instance and release media hardware tracks
+    async function cleanupScannerInstance() {
+      if (html5QrCode) {
+        try {
+          if (html5QrCode.isScanning) {
+            await html5QrCode.stop();
+          }
+        } catch (e) {
+          console.warn("Scanner stop warning:", e);
+        }
+        try {
+          html5QrCode.clear();
+        } catch (e) {
+          console.warn("Scanner clear warning:", e);
+        }
+        html5QrCode = null;
+      }
+
+      // Explicitly stop all remaining video stream tracks
+      const streamContainer = document.getElementById('qr-camera-stream');
+      if (streamContainer) {
+        const videos = streamContainer.querySelectorAll('video');
+        videos.forEach(v => {
+          if (v.srcObject && v.srcObject.getTracks) {
+            v.srcObject.getTracks().forEach(t => {
+              try { t.stop(); } catch (_) {}
+            });
+          }
+          v.srcObject = null;
+        });
+        streamContainer.innerHTML = '';
+      }
+
+      isCameraStreaming = false;
+    }
+
+    // Start Live Hardware Camera Preview and Real-Time Decoder
+    async function startLiveCamera() {
+      const errorBanner = document.getElementById('banner-camera-error');
+      const successBanner = document.getElementById('banner-scan-success');
+      const idleOverlay = document.getElementById('scanner-idle-overlay');
+      const loadingOverlay = document.getElementById('scanner-loading-overlay');
+      const laserLine = document.getElementById('scanner-laser');
+      const btnStart = document.getElementById('btn-start-camera');
+      const btnStop = document.getElementById('btn-stop-camera');
+
+      errorBanner.classList.add('hidden');
+      successBanner.classList.add('hidden');
+
+      // 1. Verify library is available
+      if (typeof Html5Qrcode === 'undefined') {
+        showCameraError("Scanner Engine Loading", "The camera scanning engine is initializing. Please tap Retry in a few seconds.");
+        return;
+      }
+
+      // 2. Check Secure Context requirement on mobile
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const isSecure = window.isSecureContext || isLocal;
+      if (!isSecure) {
+        showCameraError(
+          "HTTPS Gateway Required for Live Camera",
+          "Mobile browsers (Safari/Chrome) strictly block live camera video over plain HTTP LAN addresses. Switch to our Secure HTTPS Gateway (Port 5443) or use the Photo Scan button.",
+          true
+        );
+        return;
+      }
+
+      // 3. Check device media devices API support
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showCameraError(
+          "Camera API Unavailable",
+          "This browser does not support live video capture. Use 'Photo Scan' to take a photo of the badge, or type the 8-character code below."
+        );
+        return;
+      }
+
+      // 4. Clean up any previous stream/scanner instance to prevent duplicate streams
+      await cleanupScannerInstance();
+
+      loadingOverlay.classList.remove('hidden');
+      idleOverlay.classList.add('hidden');
+
+      try {
+        html5QrCode = new Html5Qrcode("qr-camera-stream", { verbose: false });
+
+        const qrConfig = {
+          fps: 15,
+          qrbox: (viewfinderWidth, viewfinderHeight) => {
+            const edge = Math.min(viewfinderWidth, viewfinderHeight) * 0.75;
+            return { width: Math.round(edge), height: Math.round(edge) };
+          },
+          aspectRatio: 1.0
+        };
+
+        // Camera Selection: Enumerate devices first, preferring rear camera
+        let cameraStarted = false;
+        try {
+          const cameras = await Html5Qrcode.getCameras().catch(() => []);
+          if (cameras && cameras.length > 0) {
+            const backCamera = cameras.find(c => {
+              const lbl = (c.label || '').toLowerCase();
+              return lbl.includes('back') || lbl.includes('rear') || lbl.includes('environment');
+            });
+
+            if (backCamera) {
+              await html5QrCode.start(backCamera.id, qrConfig, onScanSuccess, onScanFailure);
+              cameraStarted = true;
+            }
+          }
+        } catch (enumErr) {
+          console.warn("Camera enumeration note:", enumErr);
+        }
+
+        // Fallback to facingMode "environment" string (standard Html5Qrcode constraint)
+        if (!cameraStarted) {
+          try {
+            await html5QrCode.start({ facingMode: "environment" }, qrConfig, onScanSuccess, onScanFailure);
+            cameraStarted = true;
+          } catch (rearErr) {
+            console.warn("FacingMode 'environment' not satisfied, falling back to default camera:", rearErr);
+            await html5QrCode.start({ facingMode: "user" }, qrConfig, onScanSuccess, onScanFailure);
+            cameraStarted = true;
+          }
+        }
+
+        // Camera stream is live!
+        isCameraStreaming = true;
+        isScanLocked = false;
+        loadingOverlay.classList.add('hidden');
+        laserLine.classList.remove('hidden');
+        btnStart.classList.add('hidden');
+        btnStop.classList.remove('hidden');
+
+      } catch (err) {
+        console.error("Camera startup error:", err);
+        await cleanupScannerInstance();
+
+        loadingOverlay.classList.add('hidden');
+        idleOverlay.classList.remove('hidden');
+        laserLine.classList.add('hidden');
+        btnStart.classList.remove('hidden');
+        btnStop.classList.add('hidden');
+        isCameraStreaming = false;
+
+        let errName = '';
+        let errMsg = '';
+        if (typeof err === 'string') {
+          errMsg = err;
+        } else if (err && typeof err === 'object') {
+          errName = err.name || '';
+          errMsg = err.message || '';
+        }
+        const fullErr = (errName + ' ' + errMsg).toLowerCase();
+
+        if (errName === 'NotAllowedError' || errName === 'PermissionDeniedError' || fullErr.includes('permission') || fullErr.includes('notallowed')) {
+          showCameraError(
+            "Camera Permission Denied",
+            "Camera permission was denied. Tap the lock/site settings icon in your browser address bar to allow Camera, then tap Retry Camera."
+          );
+        } else if (errName === 'NotFoundError' || errName === 'DevicesNotFoundError' || fullErr.includes('notfound') || fullErr.includes('no camera')) {
+          showCameraError(
+            "No Camera Detected",
+            "No functional camera hardware was detected on this device. You can enter the 8-character token code below or use Manual Search."
+          );
+        } else if (errName === 'NotReadableError' || errName === 'TrackStartError' || fullErr.includes('in use') || fullErr.includes('notreadable')) {
+          showCameraError(
+            "Camera Hardware In Use",
+            "The camera is currently locked by another app or browser tab. Please close other camera apps and tap Retry Camera."
+          );
+        } else if (errName === 'SecurityError' || fullErr.includes('security') || fullErr.includes('secure context') || fullErr.includes('https')) {
+          showCameraError(
+            "HTTPS Gateway Required for Live Camera",
+            "Mobile browsers strictly restrict live camera streaming to secure HTTPS connections. Switch to our Secure HTTPS Gateway (Port 5443) or use the Photo Scan button.",
+            true
+          );
+        } else if (errName === 'OverconstrainedError' || fullErr.includes('overconstrained')) {
+          showCameraError(
+            "Camera Constraint Unmet",
+            "The requested camera constraints are not supported on this device. Tap Retry Camera to attempt standard initialization, or use Photo Scan."
+          );
+        } else {
+          showCameraError(
+            "Camera Initialization Error",
+            errMsg ? `Unable to start video preview: ${errMsg}` : "Unable to start video preview. Switch to our HTTPS gateway or use the Photo Scan button.",
+            !isSecure
+          );
+        }
+      }
+    }
+
+    // Stop Live Camera and Release All Hardware Resources
+    async function stopLiveCamera() {
+      const idleOverlay = document.getElementById('scanner-idle-overlay');
+      const loadingOverlay = document.getElementById('scanner-loading-overlay');
+      const laserLine = document.getElementById('scanner-laser');
+      const btnStart = document.getElementById('btn-start-camera');
+      const btnStop = document.getElementById('btn-stop-camera');
+
+      loadingOverlay.classList.add('hidden');
+      laserLine.classList.add('hidden');
+      idleOverlay.classList.remove('hidden');
+      btnStop.classList.add('hidden');
+      btnStart.classList.remove('hidden');
+
+      await cleanupScannerInstance();
+    }
+
+    function showCameraError(title, desc, showHttpsBtn = false) {
+      const banner = document.getElementById('banner-camera-error');
+      const titleEl = document.getElementById('camera-error-title');
+      const descEl = document.getElementById('camera-error-desc');
+      const httpsBtn = document.getElementById('btn-error-switch-https');
+
+      titleEl.textContent = title;
+      descEl.textContent = desc;
+
+      if (httpsBtn) {
+        if (showHttpsBtn) {
+          const currentPath = window.location.pathname.includes('attendant_access.html')
+            ? window.location.pathname
+            : '/Attendant/attendant_access.html';
+          httpsBtn.href = `https://${window.location.hostname}:5443${currentPath}${window.location.search}`;
+          httpsBtn.classList.remove('hidden');
+        } else {
+          httpsBtn.classList.add('hidden');
+        }
+      }
+
+      banner.classList.remove('hidden');
+    }
+
+    function onScanFailure(error) {
+      // Periodic per-frame scanning heartbeat
+    }
+
+    // QR Detection Callback
+    function onScanSuccess(decodedText, decodedResult) {
+      if (isScanLocked) return;
+      isScanLocked = true;
+
+      // Haptic confirmation
+      if (typeof navigator.vibrate === 'function') {
+        try { navigator.vibrate(120); } catch (_) {}
+      }
+
+      // Show scan success badge
+      const successBanner = document.getElementById('banner-scan-success');
+      successBanner.classList.remove('hidden');
+
+      // Stop camera preview immediately on successful scan
+      stopLiveCamera();
+
+      // Extract raw token from QR string (supports full URLs and direct tokens)
+      let token = (decodedText || '').trim();
+      try {
+        if (token.includes('/qr/')) {
+          token = token.split('/qr/')[1].split('?')[0].split('#')[0].trim();
+        } else if (token.includes('/qr-redirect/')) {
+          token = token.split('/qr-redirect/')[1].split('?')[0].split('#')[0].trim();
+        } else if (token.includes('/access/')) {
+          token = token.split('/access/')[1].split('?')[0].split('#')[0].trim();
+        } else if (token.includes('token=')) {
+          const parsedUrl = new URL(token, window.location.origin);
+          token = parsedUrl.searchParams.get('token') || token;
+        } else if (token.includes('t=')) {
+          const parsedUrl = new URL(token, window.location.origin);
+          token = parsedUrl.searchParams.get('t') || token;
+        }
+      } catch (_) {}
+
+      currentToken = token;
+
+      // Validate token through existing server-side endpoint
+      setTimeout(() => {
+        validateTokenOnServer(token);
+      }, 350);
+    }
+
+    // Native Camera Photo Capture Fallback (Works 100% over HTTP and HTTPS)
+    async function handleNativeCameraCapture(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const loadingOverlay = document.getElementById('scanner-loading-overlay');
+      const idleOverlay = document.getElementById('scanner-idle-overlay');
+      const errorBanner = document.getElementById('banner-camera-error');
+      
+      errorBanner.classList.add('hidden');
+      loadingOverlay.classList.remove('hidden');
+      idleOverlay.classList.add('hidden');
+
+      const loadingTitle = loadingOverlay.querySelector('p:nth-of-type(1)');
+      const loadingSub = loadingOverlay.querySelector('p:nth-of-type(2)');
+      const originalTitle = loadingTitle ? loadingTitle.textContent : 'Starting Camera...';
+      const originalSub = loadingSub ? loadingSub.textContent : 'Requesting rear camera access';
+      if (loadingTitle) loadingTitle.textContent = "Analyzing Photo...";
+      if (loadingSub) loadingSub.textContent = "Decoding patient bedside QR badge";
+
+      try {
+        // Ensure any previous live stream is released
+        await cleanupScannerInstance();
+
+        // Create fresh scanner instance for image file decoding
+        html5QrCode = new Html5Qrcode("qr-camera-stream", { verbose: false });
+
+        // Scan QR from mobile camera photo (client-side decoding, zero upload)
+        const decodedText = await html5QrCode.scanFile(file, true);
+        
+        loadingOverlay.classList.add('hidden');
+        onScanSuccess(decodedText);
+      } catch (err) {
+        console.warn("Photo QR scan failed:", err);
+        await cleanupScannerInstance();
+
+        loadingOverlay.classList.add('hidden');
+        idleOverlay.classList.remove('hidden');
+
+        showCameraError(
+          "QR Code Not Detected in Photo",
+          "Could not detect a clear QR badge in that photo. Please take a closer photo with good lighting, or enter the 8-character token code below."
+        );
+      } finally {
+        event.target.value = '';
+        if (loadingTitle) loadingTitle.textContent = originalTitle;
+        if (loadingSub) loadingSub.textContent = originalSub;
+      }
+    }
+
     function toggleManualTokenBox() {
       const input = document.getElementById('input-raw-qr-code');
       input.focus();
     }
 
-    function triggerDemoScan(patientId = 1) {
-      // Simulate demo camera recognition
-      const token = `DEMO-QR-${patientId}`;
-      currentToken = token;
-      
-      // Pre-fill manual search for robust fallback
-      quickFillPatient(1, 'Rajesh Kumar', 'UHID-2026-00001', 'ICU', 'ICU-A01');
+    function triggerDemoScan(patientId = 7) {
+      stopLiveCamera();
+      if (patientId === 7) {
+        quickFillPatient(7, 'Amit Patel', 'UHID-2026-00007', 'ICU', 'ICU-B01');
+      } else {
+        quickFillPatient(1, 'Rajesh Kumar', 'UHID-2026-00001', 'ICU', 'ICU-A01');
+      }
       switchTab('manual');
     }
+
+    // Release camera tracks immediately when window unloads, page hides, or tab visibility changes
+    window.addEventListener('beforeunload', () => { if (isCameraStreaming) stopLiveCamera(); });
+    window.addEventListener('pagehide', () => { if (isCameraStreaming) stopLiveCamera(); });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && isCameraStreaming) stopLiveCamera();
+    });
 
     async function validateTokenOnServer(token) {
       const qrLoading = document.getElementById('section-qr-loading');
@@ -837,8 +1361,11 @@
         qrLoading.classList.add('hidden');
 
         if (!data.valid) {
+          isScanLocked = false;
           if (data.status === 'revoked') {
             showQRError('Access QR Revoked', 'This patient access QR code has been revoked by hospital staff.', 'block');
+          } else if (data.status === 'expired') {
+            showQRError('Access QR Expired', 'This patient access QR code has expired. Please contact hospital staff.', 'schedule');
           } else if (data.status === 'patient_discharged') {
             showQRError('Patient Discharged', 'This patient is discharged. QR attendant access is closed.', 'check_circle');
           } else {

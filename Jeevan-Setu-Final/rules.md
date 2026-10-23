@@ -128,3 +128,44 @@ This document establishes the mandatory operational, architectural, clinical, an
 2. **Environment File Integrity**:
    - Keep `.env` up to date with valid database credentials (`DB_HOST=localhost`, `DB_PORT=3306`, `DB_USER=root`, `DB_PASSWORD=NewPassword123!`, `DB_NAME=jeevan_setu`).
    - Do not commit production secrets or API keys into public repositories.
+
+---
+
+## 📱 8. Attendant Portal Network Address Configuration
+
+1. **Designated Demo Base URL**:
+   - The designated Attendant Portal base URL for local-network demonstrations is:
+     ```
+     http://172.20.10.4:5000
+     ```
+
+2. **Local Network & Mobile Device Accessibility**:
+   - The Attendant Portal must be accessible to authorized mobile devices connected to the same local network, provided the Flask server is running and network/firewall configuration permits access.
+
+3. **Key Pages & Routes**:
+   - The following pages and routes must be considered when configuring or testing Attendant Portal access:
+     - **Base URL**: `http://172.20.10.4:5000`
+     - **Attendant Access Page**: `http://172.20.10.4:5000/Attendant/attendant_access.html`
+     - **QR Access Routes**: Use the existing `/qr/<token>` route and preserve its server-side token verification.
+
+4. **No Hardcoded Localhost in Browser-Side Requests**:
+   - Do not hardcode `127.0.0.1` or `localhost` into browser-side API requests intended to be accessed from a mobile device.
+   - Prefer relative URLs (e.g. `/api/v1/attendant/...`) or the existing application URL-generation mechanism so client requests automatically resolve to the reachable host.
+
+5. **Network Interface & Port Binding**:
+   - When running the Flask application for LAN demonstrations, configure the server to listen on an appropriate network interface, such as `0.0.0.0`, when required.
+   - Keep the existing application port `5000` unless a documented requirement justifies changing it.
+
+6. **Designated Demo IP Scope**:
+   - Treat `172.20.10.4` as the designated demo IP, not a guaranteed permanent address.
+   - If the host computer's network IP changes (e.g. switching between Wi-Fi and mobile hotspot), update the demo configuration and documentation accordingly.
+
+7. **Security & Patient Data Protection Preservation**:
+   - Preserve all existing security requirements, including authentication, authorization, RBAC, QR token validation, session handling, and patient-data protection.
+   - Do not weaken access controls or bypass server-side token validation to make mobile demonstrations easier.
+
+8. **Camera Access & Secure Context Requirements**:
+   - Camera access must respect browser secure-context requirements (`window.isSecureContext`).
+   - Do not assume that the HTTP LAN URL automatically supports live camera video streaming on every mobile browser (such as iOS Safari or Android Chrome).
+   - Document any necessary HTTPS development configuration separately (e.g., development SSL gateway on port 5443 or native mobile photo capture fallback).
+

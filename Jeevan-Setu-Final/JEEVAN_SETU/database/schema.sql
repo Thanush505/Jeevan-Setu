@@ -1,7 +1,7 @@
 -- =============================================================
 -- JEEVAN SETU — Complete Live Database Schema (schema.sql)
 -- Smart ICU/HDU Patient Monitoring & Clinical Decision Support
--- Scanned and synchronized on 2026-10-11 14:14:13
+-- Scanned and synchronized on 2026-10-13 15:19:07
 -- =============================================================
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -33,7 +33,41 @@ CREATE TABLE IF NOT EXISTS `alerts` (
   CONSTRAINT `alerts_ibfk_2` FOREIGN KEY (`acknowledged_by`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=448 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 2. Table: attendants
+-- 2. Table: attendant_assistance_requests
+CREATE TABLE IF NOT EXISTS `attendant_assistance_requests` (
+  `request_id` int NOT NULL AUTO_INCREMENT,
+  `patient_id` int NOT NULL,
+  `attendant_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attendant_id` int DEFAULT NULL,
+  `category` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `status` enum('submitted','pending','acknowledged','in_progress','resolved','cancelled','rejected') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `assigned_ward_id` int DEFAULT NULL,
+  `assigned_nurse_id` int DEFAULT NULL,
+  `assigned_user_id` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `acknowledged_at` timestamp NULL DEFAULT NULL,
+  `started_at` timestamp NULL DEFAULT NULL,
+  `resolved_at` timestamp NULL DEFAULT NULL,
+  `cancelled_at` timestamp NULL DEFAULT NULL,
+  `rejected_at` timestamp NULL DEFAULT NULL,
+  `closed_by_user_id` int DEFAULT NULL,
+  `resolution_note` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `rejection_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`request_id`),
+  KEY `idx_aar_patient` (`patient_id`),
+  KEY `idx_aar_status` (`status`),
+  KEY `idx_aar_category` (`category`),
+  KEY `idx_aar_created_at` (`created_at`),
+  KEY `fk_aar_closed_by` (`closed_by_user_id`),
+  KEY `fk_aar_assigned_user` (`assigned_user_id`),
+  CONSTRAINT `fk_aar_assigned_user` FOREIGN KEY (`assigned_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_aar_closed_by` FOREIGN KEY (`closed_by_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_aar_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 3. Table: attendants
 CREATE TABLE IF NOT EXISTS `attendants` (
   `attendant_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
@@ -50,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `attendants` (
   CONSTRAINT `attendants_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 3. Table: audit_log
+-- 4. Table: audit_log
 CREATE TABLE IF NOT EXISTS `audit_log` (
   `log_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
@@ -68,17 +102,17 @@ CREATE TABLE IF NOT EXISTS `audit_log` (
   CONSTRAINT `audit_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 4. Table: audit_logs
+-- 5. Table: audit_logs
 CREATE TABLE IF NOT EXISTS `audit_logs` (
   `log_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `action` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `entity_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `action` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `entity_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `entity_id` int DEFAULT NULL,
   `old_value` json DEFAULT NULL,
   `new_value` json DEFAULT NULL,
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `ip_address` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`log_id`),
   KEY `idx_audit_logs_user` (`user_id`),
@@ -86,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `audit_logs` (
   CONSTRAINT `audit_logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5186 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 5. Table: bed_management
+-- 6. Table: bed_management
 CREATE TABLE IF NOT EXISTS `bed_management` (
   `allocation_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
@@ -94,9 +128,9 @@ CREATE TABLE IF NOT EXISTS `bed_management` (
   `ward_id` int NOT NULL,
   `allocated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `released_at` datetime DEFAULT NULL,
-  `status` enum('allocated','occupied','released','transferred') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `status` enum('allocated','occupied','released','transferred') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
   `allocated_by` int DEFAULT NULL,
-  `notes` text COLLATE utf8mb4_unicode_ci,
+  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`allocation_id`),
@@ -111,12 +145,12 @@ CREATE TABLE IF NOT EXISTS `bed_management` (
   CONSTRAINT `bed_management_ibfk_4` FOREIGN KEY (`allocated_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 6. Table: beds
+-- 7. Table: beds
 CREATE TABLE IF NOT EXISTS `beds` (
   `bed_id` int NOT NULL AUTO_INCREMENT,
   `ward_id` int NOT NULL,
-  `bed_number` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('available','occupied','maintenance','reserved') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'available',
+  `bed_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('available','occupied','maintenance','reserved') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'available',
   `is_active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -127,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `beds` (
   CONSTRAINT `beds_ibfk_1` FOREIGN KEY (`ward_id`) REFERENCES `wards` (`ward_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=428 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 7. Table: chatbot_conversations
+-- 8. Table: chatbot_conversations
 CREATE TABLE IF NOT EXISTS `chatbot_conversations` (
   `conversation_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -144,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `chatbot_conversations` (
   CONSTRAINT `chatbot_conversations_ibfk_2` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=665 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 8. Table: clinical_notes
+-- 9. Table: clinical_notes
 CREATE TABLE IF NOT EXISTS `clinical_notes` (
   `note_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
@@ -154,7 +188,7 @@ CREATE TABLE IF NOT EXISTS `clinical_notes` (
   PRIMARY KEY (`note_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 9. Table: decisions
+-- 10. Table: decisions
 CREATE TABLE IF NOT EXISTS `decisions` (
   `decision_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
@@ -178,17 +212,17 @@ CREATE TABLE IF NOT EXISTS `decisions` (
   CONSTRAINT `decisions_ibfk_3` FOREIGN KEY (`decided_by`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 10. Table: doctors
+-- 11. Table: doctors
 CREATE TABLE IF NOT EXISTS `doctors` (
   `doctor_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `full_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `specialization` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `license_number` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `qualification` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `full_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `specialization` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `license_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `qualification` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `experience_years` int DEFAULT '0',
   `is_active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -201,14 +235,14 @@ CREATE TABLE IF NOT EXISTS `doctors` (
   CONSTRAINT `doctors_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=459 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 11. Table: ews_scores
+-- 12. Table: ews_scores
 CREATE TABLE IF NOT EXISTS `ews_scores` (
   `ews_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
-  `patient_name` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `patient_name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vital_id` int NOT NULL,
   `total_score` int NOT NULL DEFAULT '0',
-  `risk_level` enum('LOW','MEDIUM','HIGH','CRITICAL') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'LOW',
+  `risk_level` enum('LOW','MEDIUM','HIGH','CRITICAL') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'LOW',
   `hr_score` int DEFAULT '0',
   `bp_score` int DEFAULT '0',
   `rr_score` int DEFAULT '0',
@@ -222,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `ews_scores` (
   CONSTRAINT `ews_scores_ibfk_2` FOREIGN KEY (`vital_id`) REFERENCES `vitals` (`vital_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2969 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 12. Table: explanations
+-- 13. Table: explanations
 CREATE TABLE IF NOT EXISTS `explanations` (
   `explanation_id` int NOT NULL AUTO_INCREMENT,
   `decision_id` int NOT NULL,
@@ -240,14 +274,14 @@ CREATE TABLE IF NOT EXISTS `explanations` (
   CONSTRAINT `explanations_ibfk_2` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=294 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 13. Table: notifications
+-- 14. Table: notifications
 CREATE TABLE IF NOT EXISTS `notifications` (
   `notification_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `patient_id` int DEFAULT NULL,
-  `type` enum('alert','transfer','system','ews','broadcast') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'system',
-  `title` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('alert','transfer','system','ews','broadcast') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'system',
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_read` tinyint(1) DEFAULT '0',
   `read_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -259,19 +293,19 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=64748 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 14. Table: nurses
+-- 15. Table: nurses
 CREATE TABLE IF NOT EXISTS `nurses` (
   `nurse_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `full_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `specialization` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `license_number` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `qualification` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ward_assignment` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shift` enum('Day','Night','Rotating') COLLATE utf8mb4_unicode_ci DEFAULT 'Rotating',
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `full_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `specialization` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `license_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `qualification` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ward_assignment` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shift` enum('Day','Night','Rotating') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Rotating',
   `experience_years` int DEFAULT '0',
   `is_active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -284,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `nurses` (
   CONSTRAINT `nurses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=334 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 15. Table: password_reset_tokens
+-- 16. Table: password_reset_tokens
 CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
   `reset_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -299,13 +333,13 @@ CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
   CONSTRAINT `password_reset_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 16. Table: patient_qr_tokens
+-- 17. Table: patient_qr_tokens
 CREATE TABLE IF NOT EXISTS `patient_qr_tokens` (
   `token_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
-  `token_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `access_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `qr_code_data` text COLLATE utf8mb4_unicode_ci,
+  `token_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `qr_code_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `valid_from` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `expires_at` datetime NOT NULL,
   `is_active` tinyint(1) DEFAULT '1',
@@ -322,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `patient_qr_tokens` (
   CONSTRAINT `patient_qr_tokens_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=636 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 17. Table: patients
+-- 18. Table: patients
 CREATE TABLE IF NOT EXISTS `patients` (
   `patient_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
@@ -362,19 +396,19 @@ CREATE TABLE IF NOT EXISTS `patients` (
   CONSTRAINT `patients_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 18. Table: recommendations
+-- 19. Table: recommendations
 CREATE TABLE IF NOT EXISTS `recommendations` (
   `recommendation_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
   `vital_id` int DEFAULT NULL,
   `ews_id` int DEFAULT NULL,
-  `from_ward` enum('ICU','HDU','General') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `to_ward` enum('ICU','HDU','General') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_ward` enum('ICU','HDU','General') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `to_ward` enum('ICU','HDU','General') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `score` int DEFAULT '0',
   `confidence` float DEFAULT '0',
-  `recommendation_text` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `reason` text COLLATE utf8mb4_unicode_ci,
-  `status` enum('pending','approved','rejected','auto') COLLATE utf8mb4_unicode_ci DEFAULT 'pending',
+  `recommendation_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `status` enum('pending','approved','rejected','auto') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'pending',
   `decided_by` int DEFAULT NULL,
   `decided_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -390,7 +424,7 @@ CREATE TABLE IF NOT EXISTS `recommendations` (
   CONSTRAINT `recommendations_ibfk_4` FOREIGN KEY (`decided_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3015 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 19. Table: reports
+-- 20. Table: reports
 CREATE TABLE IF NOT EXISTS `reports` (
   `report_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int DEFAULT NULL,
@@ -408,29 +442,29 @@ CREATE TABLE IF NOT EXISTS `reports` (
   CONSTRAINT `reports_ibfk_2` FOREIGN KEY (`generated_by`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=528 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 20. Table: roles
+-- 21. Table: roles
 CREATE TABLE IF NOT EXISTS `roles` (
   `role_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `display_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 21. Table: schema_migrations
+-- 22. Table: schema_migrations
 CREATE TABLE IF NOT EXISTS `schema_migrations` (
   `migration_id` int NOT NULL AUTO_INCREMENT,
-  `version` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `version` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `applied_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`migration_id`),
   UNIQUE KEY `version` (`version`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 22. Table: token_blacklist
+-- 23. Table: token_blacklist
 CREATE TABLE IF NOT EXISTS `token_blacklist` (
   `blacklist_id` int NOT NULL AUTO_INCREMENT,
   `token_jti` varchar(255) NOT NULL,
@@ -445,21 +479,21 @@ CREATE TABLE IF NOT EXISTS `token_blacklist` (
   CONSTRAINT `token_blacklist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 23. Table: transfers
+-- 24. Table: transfers
 CREATE TABLE IF NOT EXISTS `transfers` (
   `transfer_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
   `recommendation_id` int DEFAULT NULL,
-  `from_ward` enum('ICU','HDU','General') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `to_ward` enum('ICU','HDU','General') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_ward` enum('ICU','HDU','General') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `to_ward` enum('ICU','HDU','General') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `from_bed_id` int DEFAULT NULL,
   `to_bed_id` int DEFAULT NULL,
-  `from_bed_number` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `to_bed_number` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `transfer_reason` text COLLATE utf8mb4_unicode_ci,
+  `from_bed_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `to_bed_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `transfer_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `requested_by` int DEFAULT NULL,
   `approved_by` int DEFAULT NULL,
-  `status` enum('pending','approved','completed','cancelled','rejected') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `status` enum('pending','approved','completed','cancelled','rejected') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
   `requested_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `completed_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -480,7 +514,7 @@ CREATE TABLE IF NOT EXISTS `transfers` (
   CONSTRAINT `transfers_ibfk_6` FOREIGN KEY (`approved_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 24. Table: user_preferences
+-- 25. Table: user_preferences
 CREATE TABLE IF NOT EXISTS `user_preferences` (
   `user_id` int NOT NULL,
   `in_app_notifications` tinyint(1) DEFAULT '1',
@@ -494,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `user_preferences` (
   CONSTRAINT `user_preferences_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 25. Table: users
+-- 26. Table: users
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
@@ -516,7 +550,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   CONSTRAINT `fk_user_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1226 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 26. Table: vitals
+-- 27. Table: vitals
 CREATE TABLE IF NOT EXISTS `vitals` (
   `vital_id` int NOT NULL AUTO_INCREMENT,
   `patient_id` int NOT NULL,
@@ -540,14 +574,14 @@ CREATE TABLE IF NOT EXISTS `vitals` (
   CONSTRAINT `vitals_ibfk_2` FOREIGN KEY (`recorded_by`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3283 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 27. Table: wards
+-- 28. Table: wards
 CREATE TABLE IF NOT EXISTS `wards` (
   `ward_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ward_type` enum('ICU','HDU','General') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ICU',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ward_type` enum('ICU','HDU','General') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ICU',
   `floor_number` int DEFAULT '1',
   `total_beds` int NOT NULL DEFAULT '10',
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

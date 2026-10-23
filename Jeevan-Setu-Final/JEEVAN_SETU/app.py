@@ -27,6 +27,7 @@ from routes.attendant_routes import attendant_bp
 from routes.notification_routes import notification_bp
 from routes.analytics_routes import analytics_bp
 from routes.developer_routes import developer_bp
+from routes.assistance_request_routes import assistance_request_bp
 
 
 
@@ -93,6 +94,8 @@ def create_app():
     app.register_blueprint(analytics_bp, url_prefix='/api/v1/analytics', name='analytics_api_alias')
     app.register_blueprint(analytics_bp, url_prefix='/analytics')
     app.register_blueprint(developer_bp, url_prefix='/api/v1/developer')
+    app.register_blueprint(developer_bp, url_prefix='/api/v1', name='developer_v1_alias')
+    app.register_blueprint(assistance_request_bp)
 
     # Security Middleware & HTTP Headers
     from utils.security import apply_security_headers
@@ -134,6 +137,13 @@ def create_app():
         if os.path.exists(logo_path):
             return send_from_directory(os.path.dirname(logo_path), 'jeevan_setu_logo.png')
         return {'error': 'Logo not found'}, 404
+
+    @app.route('/auto_refresh_manager.js')
+    def serve_auto_refresh_manager():
+        cand = os.path.join(frontend_dir, 'Attendant', 'auto_refresh_manager.js')
+        if os.path.exists(cand):
+            return send_from_directory(os.path.dirname(cand), 'auto_refresh_manager.js', mimetype='application/javascript')
+        return {'error': 'auto_refresh_manager.js not found'}, 404
 
     @app.route('/qr/<path:token_or_code>', methods=['GET'])
     def root_qr_redirect(token_or_code):
@@ -388,4 +398,23 @@ def setup_logging(app):
 if __name__ == '__main__':
     app = create_app()
     app.logger.info('Jeevan Setu is starting...')
+
+    # Dual-protocol support: Launch HTTPS on port 5443 for mobile camera access
+    cert_path = os.path.join(os.path.dirname(__file__), 'cert.pem')
+    key_path = os.path.join(os.path.dirname(__file__), 'key.pem')
+    if os.path.exists(cert_path) and os.path.exists(key_path):
+        import subprocess, socket, sys
+        sock = socket.socket()
+        sock.settimeout(1)
+        is_5443_busy = (sock.connect_ex(('127.0.0.1', 5443)) == 0)
+        sock.close()
+        
+        # Only spawn once (in parent process before reloader or when not yet listening)
+        if not is_5443_busy and os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
+            gateway_script = os.path.join(os.path.dirname(__file__), 'run_https_gateway.py')
+            if os.path.exists(gateway_script):
+                subprocess.Popen([sys.executable, gateway_script], creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+                app.logger.info('Launched HTTPS Camera Gateway child process on port 5443')
+
     app.run(host='0.0.0.0', port=5000, debug=True)
+

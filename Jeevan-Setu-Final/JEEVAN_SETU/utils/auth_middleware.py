@@ -38,8 +38,25 @@ def jwt_required(f):
             return jsonify({'success': False, 'error': err}), 401
 
         sub_val = payload.get('sub')
-        user_id = int(sub_val) if sub_val is not None else None
-        user = User.get_by_id(user_id)
+        user_id = None
+        if sub_val is not None:
+            try:
+                user_id = int(sub_val)
+            except (ValueError, TypeError):
+                user_id = None
+
+        user = User.get_by_id(user_id) if user_id is not None else None
+        if not user and payload.get('role') == 'attendant':
+            user = User(
+                user_id=sub_val,
+                username=payload.get('attendant_name', 'Attendant'),
+                full_name=payload.get('attendant_name', 'Patient Attendant'),
+                email='',
+                role='attendant',
+                department='Attendant',
+                is_active=True
+            )
+
         if not user:
             return jsonify({'success': False, 'error': 'User associated with token not found'}), 401
 
@@ -51,7 +68,6 @@ def jwt_required(f):
         g.jwt_payload = payload
         g.jwt_token = token
         request.user = user
-
         return f(*args, **kwargs)
     return decorated
 
@@ -71,8 +87,25 @@ def auth_required(f):
                 return jsonify({'success': False, 'error': err}), 401
 
             sub_val = payload.get('sub')
-            user_id = int(sub_val) if sub_val is not None else None
-            user = User.get_by_id(user_id)
+            user_id = None
+            if sub_val is not None:
+                try:
+                    user_id = int(sub_val)
+                except (ValueError, TypeError):
+                    user_id = None
+
+            user = User.get_by_id(user_id) if user_id is not None else None
+            if not user and payload.get('role') == 'attendant':
+                user = User(
+                    user_id=sub_val,
+                    username=payload.get('attendant_name', 'Attendant'),
+                    full_name=payload.get('attendant_name', 'Patient Attendant'),
+                    email='',
+                    role='attendant',
+                    department='Attendant',
+                    is_active=True
+                )
+
             if not user:
                 return jsonify({'success': False, 'error': 'User not found'}), 401
             if not user.is_active:

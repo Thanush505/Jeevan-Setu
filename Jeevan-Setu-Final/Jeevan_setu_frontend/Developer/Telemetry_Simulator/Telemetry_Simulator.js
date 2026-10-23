@@ -211,6 +211,9 @@
           engine.registerPatient(p, 'STABLE');
         });
 
+        // Load authoritative persistent scenario states from MySQL
+        await engine.loadAuthoritativeScenarios();
+
         renderPatientList(allPatients);
 
         // Auto-select first patient if available
@@ -466,6 +469,108 @@
     });
   }
 
+  function getScenarioBadgeClass(scenario) {
+    const s = (scenario || 'STABLE').toUpperCase();
+    switch (s) {
+      case 'STABLE': return 'scenario-badge-stable';
+      case 'MODERATE':
+      case 'GRADUAL_DETERIORATION': return 'scenario-badge-moderate';
+      case 'CRITICAL': return 'scenario-badge-critical';
+      case 'RECOVERY': return 'scenario-badge-recovery';
+      case 'MANUAL': return 'scenario-badge-manual';
+      default: return 'scenario-badge-stable';
+    }
+  }
+
+  function getScenarioIcon(scenario) {
+    const s = (scenario || 'STABLE').toUpperCase();
+    switch (s) {
+      case 'STABLE': return '<span class="material-symbols-outlined text-[13px]">favorite</span>';
+      case 'MODERATE':
+      case 'GRADUAL_DETERIORATION': return '<span class="material-symbols-outlined text-[13px]">trending_down</span>';
+      case 'CRITICAL': return '<span class="material-symbols-outlined text-[13px]">crisis_alert</span>';
+      case 'RECOVERY': return '<span class="material-symbols-outlined text-[13px]">healing</span>';
+      case 'MANUAL': return '<span class="material-symbols-outlined text-[13px]">edit_note</span>';
+      default: return '<span class="material-symbols-outlined text-[13px]">favorite</span>';
+    }
+  }
+
+  function renderTransitionOptions(currentScenario) {
+    const current = (currentScenario || 'STABLE').toUpperCase();
+    const all = [
+      { id: 'STABLE', label: 'Stable (Healthy Baseline)' },
+      { id: 'MODERATE', label: 'Moderate (Deterioration)' },
+      { id: 'CRITICAL', label: 'Critical (Acute Severe)' },
+      { id: 'RECOVERY', label: 'Recovery (Stabilizing)' },
+      { id: 'MANUAL', label: 'Manual Parameters' }
+    ];
+
+    const targets = all.filter(item => item.id !== current && (current !== 'GRADUAL_DETERIORATION' || item.id !== 'MODERATE'));
+    return targets.map(item => `<option value="${item.id}">→ ${item.label}</option>`).join('');
+  }
+
+  function getNextWorsenScenario(currentScenario) {
+    const s = (currentScenario || 'STABLE').toUpperCase();
+    if (s === 'STABLE') return 'MODERATE';
+    if (s === 'MODERATE' || s === 'GRADUAL_DETERIORATION') return 'CRITICAL';
+    if (s === 'RECOVERY') return 'MODERATE';
+    if (s === 'MANUAL') return 'MODERATE';
+    return null; // Already at highest deterioration
+  }
+
+  function getNextImproveScenario(currentScenario) {
+    const s = (currentScenario || 'STABLE').toUpperCase();
+    if (s === 'CRITICAL') return 'MODERATE';
+    if (s === 'MODERATE' || s === 'GRADUAL_DETERIORATION') return 'STABLE';
+    if (s === 'RECOVERY') return 'STABLE';
+    if (s === 'MANUAL') return 'STABLE';
+    return null; // Already at stable baseline
+  }
+
+  async function performScenarioTransition(patientId, targetScenario, reason) {
+    const pState = engine.getPatient(patientId);
+    if (!pState) return;
+
+    const tr = document.getElementById(`multi-row-${patientId}`);
+    const statusEl = tr ? tr.querySelector('.cell-trans-status') : null;
+    const worsenBtn = tr ? tr.querySelector('.btn-stepper-worsen') : null;
+    const improveBtn = tr ? tr.querySelector('.btn-stepper-improve') : null;
+    const targetSelect = tr ? tr.querySelector('.transition-target-select') : null;
+    const applyBtn = tr ? tr.querySelector('.btn-apply-transition') : null;
+
+    if (statusEl) {
+      statusEl.innerHTML = `<span class="text-amber-400 flex items-center gap-1"><span class="material-symbols-outlined text-[13px] animate-spin">sync</span> Transitioning to ${targetScenario}...</span>`;
+    }
+    if (worsenBtn) worsenBtn.disabled = true;
+    if (improveBtn) improveBtn.disabled = true;
+    if (targetSelect) targetSelect.disabled = true;
+    if (applyBtn) applyBtn.disabled = true;
+
+    try {
+      const res = await engine.transitionPatientScenario(patientId, targetScenario, reason);
+      const newScenario = res.data.current_scenario || targetScenario;
+
+      if (statusEl) {
+        statusEl.innerHTML = `<span class="text-emerald-400 font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">check_circle</span> Transitioned to ${newScenario}</span>`;
+      }
+
+      // If viewing this patient in single monitor mode, keep card selection aligned
+      if (currentSinglePatientId === patientId) {
+        currentScenario = newScenario;
+        document.querySelectorAll('.scenario-card').forEach(c => {
+          c.classList.toggle('border-cyan-500', c.dataset.scenario === newScenario);
+          c.classList.toggle('bg-cyan-950/40', c.dataset.scenario === newScenario);
+        });
+      }
+    } catch (err) {
+      if (statusEl) {
+        statusEl.innerHTML = `<span class="text-rose-400 font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">error</span> ${err.message}</span>`;
+      }
+    } finally {
+      updateMultiTableRow(pState);
+    }
+  }
+
   function createMultiTableRow(pState) {
     const tr = document.createElement('tr');
     tr.id = `multi-row-${pState.patientId}`;
@@ -474,18 +579,55 @@
     const p = pState.patient;
     const pCode = p.patient_code || `P${String(p.patientId).padStart(3, '0')}`;
     const bed = p.bed_number || 'ICU-Bed';
+    const normScen = (pState.scenario === 'GRADUAL_DETERIORATION' ? 'MODERATE' : pState.scenario) || 'STABLE';
+
+    const canWorsen = getNextWorsenScenario(normScen) !== null && !pState.isTransitioning;
+    const canImprove = getNextImproveScenario(normScen) !== null && !pState.isTransitioning;
 
     tr.innerHTML = `
       <td class="p-3 font-bold text-white">${p.name}</td>
       <td class="p-3 text-[11px] font-mono text-slate-400">${pCode} • ${bed}</td>
       <td class="p-3">
-        <select class="row-scenario-select bg-slate-900 text-slate-200 text-[11px] rounded border border-slate-700 px-2 py-1" data-patient-id="${pState.patientId}">
-          <option value="STABLE" ${pState.scenario === 'STABLE' ? 'selected' : ''}>Stable</option>
-          <option value="GRADUAL_DETERIORATION" ${pState.scenario === 'GRADUAL_DETERIORATION' ? 'selected' : ''}>Deterioration</option>
-          <option value="CRITICAL" ${pState.scenario === 'CRITICAL' ? 'selected' : ''}>Critical</option>
-          <option value="RECOVERY" ${pState.scenario === 'RECOVERY' ? 'selected' : ''}>Recovery</option>
-          <option value="MANUAL" ${pState.scenario === 'MANUAL' ? 'selected' : ''}>Manual</option>
-        </select>
+        <div class="scenario-transition-box" id="trans-box-${pState.patientId}">
+          <!-- Current Scenario & Quick Stepper Controls -->
+          <div class="flex items-center justify-between gap-1.5 flex-wrap">
+            <div class="flex items-center gap-1">
+              <span class="text-[10px] text-slate-400 font-semibold uppercase">Current:</span>
+              <span class="scenario-badge ${getScenarioBadgeClass(normScen)} cell-current-scenario">
+                ${getScenarioIcon(normScen)}
+                <span>${normScen}</span>
+              </span>
+            </div>
+            <div class="flex items-center gap-1">
+              <button class="btn-stepper btn-stepper-worsen" data-patient-id="${pState.patientId}" title="Deteriorate (Stable → Moderate → Critical)" ${!canWorsen ? 'disabled' : ''}>
+                <span class="material-symbols-outlined text-[13px]">trending_up</span>
+                <span>⚡ Worsen</span>
+              </button>
+              <button class="btn-stepper btn-stepper-improve" data-patient-id="${pState.patientId}" title="Improve (Critical → Moderate → Stable)" ${!canImprove ? 'disabled' : ''}>
+                <span class="material-symbols-outlined text-[13px]">trending_down</span>
+                <span>🌱 Improve</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Destination Target Dropdown & Apply Action -->
+          <div class="flex items-center gap-1.5 mt-1">
+            <span class="text-[10px] text-slate-400 font-semibold uppercase">To:</span>
+            <select class="transition-target-select flex-1 bg-slate-900 text-slate-200 text-[11px] rounded border border-slate-700 px-1.5 py-0.5 focus:border-cyan-500 focus:outline-none" data-patient-id="${pState.patientId}" ${pState.isTransitioning ? 'disabled' : ''}>
+              ${renderTransitionOptions(normScen)}
+            </select>
+            <button class="btn-apply-transition px-2 py-0.5 rounded text-[11px] font-bold bg-cyan-900 hover:bg-cyan-800 text-cyan-200 border border-cyan-700/60 transition-colors" data-patient-id="${pState.patientId}" ${pState.isTransitioning ? 'disabled' : ''}>
+              Apply
+            </button>
+          </div>
+
+          <!-- Transition Status Feedback -->
+          <div class="cell-trans-status text-[10px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
+            ${pState.isTransitioning 
+              ? '<span class="text-amber-400 flex items-center gap-1"><span class="material-symbols-outlined text-[13px] animate-spin">sync</span> Transitioning...</span>' 
+              : (pState.lastTransition ? `<span class="text-emerald-400 font-medium">✓ Authoritative: ${normScen}</span>` : '<span class="text-slate-500">Ready</span>')}
+          </div>
+        </div>
       </td>
       <td class="p-3 font-mono font-bold text-emerald-400 text-sm cell-hr">${pState.lastReading ? pState.lastReading.heart_rate : '--'}</td>
       <td class="p-3 font-mono font-bold text-cyan-400 text-sm cell-rr">${pState.lastReading ? pState.lastReading.respiratory_rate : '--'}</td>
@@ -522,9 +664,28 @@
     `;
 
     // Row Event Listeners
-    const select = tr.querySelector('.row-scenario-select');
-    select.addEventListener('change', (e) => {
-      engine.setPatientScenario(pState.patientId, e.target.value);
+    const worsenBtn = tr.querySelector('.btn-stepper-worsen');
+    worsenBtn.addEventListener('click', () => {
+      const cur = pState.scenario === 'GRADUAL_DETERIORATION' ? 'MODERATE' : pState.scenario;
+      const next = getNextWorsenScenario(cur);
+      if (next) performScenarioTransition(pState.patientId, next, `Deterioration step: ${cur} → ${next}`);
+    });
+
+    const improveBtn = tr.querySelector('.btn-stepper-improve');
+    improveBtn.addEventListener('click', () => {
+      const cur = pState.scenario === 'GRADUAL_DETERIORATION' ? 'MODERATE' : pState.scenario;
+      const next = getNextImproveScenario(cur);
+      if (next) performScenarioTransition(pState.patientId, next, `Improvement step: ${cur} → ${next}`);
+    });
+
+    const targetSelect = tr.querySelector('.transition-target-select');
+    const applyBtn = tr.querySelector('.btn-apply-transition');
+    applyBtn.addEventListener('click', () => {
+      const target = targetSelect.value;
+      if (target) {
+        const cur = pState.scenario === 'GRADUAL_DETERIORATION' ? 'MODERATE' : pState.scenario;
+        performScenarioTransition(pState.patientId, target, `Manual transition: ${cur} → ${target}`);
+      }
     });
 
     const toggleBtn = tr.querySelector('.btn-row-toggle');
@@ -552,6 +713,48 @@
       tr.classList.add('table-row-running');
     } else {
       tr.classList.remove('table-row-running');
+    }
+
+    const normScen = (pState.scenario === 'GRADUAL_DETERIORATION' ? 'MODERATE' : pState.scenario) || 'STABLE';
+
+    // Update Scenario Transition Controller elements
+    const badge = tr.querySelector('.cell-current-scenario');
+    if (badge) {
+      badge.className = `scenario-badge ${getScenarioBadgeClass(normScen)} cell-current-scenario`;
+      badge.innerHTML = `${getScenarioIcon(normScen)}<span>${normScen}</span>`;
+    }
+
+    const worsenBtn = tr.querySelector('.btn-stepper-worsen');
+    if (worsenBtn) {
+      const canWorsen = getNextWorsenScenario(normScen) !== null && !pState.isTransitioning;
+      worsenBtn.disabled = !canWorsen;
+    }
+
+    const improveBtn = tr.querySelector('.btn-stepper-improve');
+    if (improveBtn) {
+      const canImprove = getNextImproveScenario(normScen) !== null && !pState.isTransitioning;
+      improveBtn.disabled = !canImprove;
+    }
+
+    const targetSelect = tr.querySelector('.transition-target-select');
+    if (targetSelect && !pState.isTransitioning) {
+      targetSelect.disabled = false;
+      // Refresh options if selected value matches current scenario
+      if (targetSelect.value === normScen || !targetSelect.querySelector(`option[value="${targetSelect.value}"]`)) {
+        targetSelect.innerHTML = renderTransitionOptions(normScen);
+      }
+    } else if (targetSelect) {
+      targetSelect.disabled = true;
+    }
+
+    const applyBtn = tr.querySelector('.btn-apply-transition');
+    if (applyBtn) {
+      applyBtn.disabled = !!pState.isTransitioning;
+    }
+
+    const statusEl = tr.querySelector('.cell-trans-status');
+    if (statusEl && pState.isTransitioning) {
+      statusEl.innerHTML = `<span class="text-amber-400 flex items-center gap-1"><span class="material-symbols-outlined text-[13px] animate-spin">sync</span> Transitioning...</span>`;
     }
 
     if (pState.lastReading) {
@@ -720,18 +923,19 @@
           el.manualInputsPanel.classList.add('hidden');
         }
 
-        // Apply scenario to selected patient(s)
+        // Apply scenario transition to selected patient(s)
         selectedPatientIds.forEach(pid => {
-          let manualValues = null;
           if (scenario === 'MANUAL') {
-            manualValues = {
+            const manualValues = {
               heart_rate: el.manualHr.value,
               respiratory_rate: el.manualRr.value,
               systolic_bp: el.manualSbp.value,
               temperature: el.manualTemp.value
             };
+            engine.setPatientScenario(pid, scenario, manualValues);
+          } else {
+            performScenarioTransition(pid, scenario, `Card selection: ${scenario}`);
           }
-          engine.setPatientScenario(pid, scenario, manualValues);
         });
 
         if (selectionMode === 'multi') {

@@ -125,6 +125,10 @@
     <span id="attendant-ews-score" class="text-3xl font-black text-primary leading-none">--</span>
   </div>
 </div>
+<button onclick="openRequestAssistanceModal()" id="patient-card-request-btn" class="mt-2.5 w-full py-2 px-3 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-xl border border-blue-200 flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
+  <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
+  Request Assistance
+</button>
 </div>
 </section>
 <!-- END: Patient Profile Card -->
@@ -326,17 +330,126 @@
 </div>
 <div>
 <h4 class="text-sm font-bold text-blue-800">Need Help?</h4>
-<p class="text-xs text-blue-600">Contact hospital staff</p>
+<p class="text-xs text-blue-600">Contact hospital care team</p>
 </div>
 </div>
-<button class="bg-white border border-blue-200 text-blue-600 font-semibold text-xs px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm hover:bg-gray-50">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path clip-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" fill-rule="evenodd"></path>
+<button id="open-assistance-modal-btn" onclick="openRequestAssistanceModal()" class="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 shadow-sm transition-all cursor-pointer">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
 </svg>
-        Call Nurse
-      </button>
+Request Assistance
+</button>
 </section>
 <!-- END: Support Action -->
+
+<!-- BEGIN: My Assistance Requests Section -->
+<section id="my-assistance-requests-section" class="mt-3 bg-white border border-gray-100 rounded-card p-4 shadow-sm">
+  <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-2.5">
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+      <h3 class="text-sm font-bold text-primary">My Assistance Requests</h3>
+      <span id="requests-count-badge" class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold">0</span>
+    </div>
+    <button type="button" onclick="loadMyAssistanceRequests()" id="refresh-requests-btn" class="text-slate-500 hover:text-blue-600 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"></path>
+      </svg>
+      Refresh
+    </button>
+  </div>
+  <div id="assistance-requests-list" class="space-y-2.5">
+    <div class="text-center py-4 text-xs text-textMuted">
+      Loading your assistance requests...
+    </div>
+  </div>
+</section>
+<!-- END: My Assistance Requests Section -->
+
+<!-- BEGIN: Request Assistance Modal -->
+<div id="request-assistance-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+    <!-- Modal Header -->
+    <div class="px-5 py-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold leading-tight">Request Hospital Assistance</h3>
+          <p class="text-[10px] text-blue-100">Care team support for admitted patient</p>
+        </div>
+      </div>
+      <button type="button" onclick="closeRequestAssistanceModal()" class="text-white/80 hover:text-white rounded-lg p-1 transition-colors cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+
+    <!-- Modal Form Body -->
+    <form id="assistance-request-form" onsubmit="handleAssistanceRequestSubmit(event)" class="p-5 space-y-4 overflow-y-auto">
+      <!-- Emergency Warning Notice (Mandatory Section 3.F) -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2.5">
+        <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"></path>
+        </svg>
+        <div class="text-[11px] leading-relaxed text-amber-900">
+          <span class="font-bold text-amber-800 uppercase tracking-wider block text-[10px] mb-0.5">Emergency Notice</span>
+          For emergencies or immediate danger, contact hospital staff directly or use the hospital's designated emergency procedure. This request form may not receive an immediate response.
+        </div>
+      </div>
+
+      <!-- Feedback Banner -->
+      <div id="modal-feedback-box" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+      <!-- Category Selection (Mandatory Section 3.A) -->
+      <div>
+        <label for="assistance-category" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+          Request Category <span class="text-red-500">*</span>
+        </label>
+        <select id="assistance-category" name="category" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+          <option value="" disabled selected>Select assistance type...</option>
+          <option value="Request nursing assistance">Request nursing assistance</option>
+          <option value="Request patient status update">Request patient status update</option>
+          <option value="Request to speak with the care team">Request to speak with the care team</option>
+          <option value="Request bedside assistance">Request bedside assistance</option>
+          <option value="Other non-emergency assistance">Other non-emergency assistance</option>
+        </select>
+      </div>
+
+      <!-- Description (Max 500 chars Section 3.B) -->
+      <div>
+        <div class="flex justify-between items-center mb-1.5">
+          <label for="assistance-description" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+            Details / Notes
+          </label>
+          <span id="desc-char-counter" class="text-[11px] font-semibold text-slate-400">0 / 500</span>
+        </div>
+        <textarea id="assistance-description" name="description" rows="3" maxlength="500" placeholder="Please describe how we can assist you or what the patient needs..." oninput="updateCharCounter(this)" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none"></textarea>
+      </div>
+
+      <!-- Privacy Notice (Mandatory Section 3.E) -->
+      <div class="flex items-center gap-2 text-[11px] text-slate-500">
+        <svg class="w-3.5 h-3.5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"></path>
+        </svg>
+        <span>This request will be shared with authorized hospital staff caring for this patient.</span>
+      </div>
+
+      <!-- Action Buttons (Section 3.C & 3.D) -->
+      <div class="pt-2 flex items-center justify-end gap-2.5 border-t border-slate-100">
+        <button type="button" onclick="closeRequestAssistanceModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors cursor-pointer">
+          Cancel
+        </button>
+        <button type="submit" id="submit-assistance-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md shadow-blue-500/20 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer">
+          <span id="submit-btn-spinner" class="hidden">
+            <svg class="animate-spin w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          </span>
+          <span id="submit-btn-label">Send Request</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- END: Request Assistance Modal -->
 </main>
 
 <script>
@@ -541,14 +654,250 @@
     }
   }
 
+  // -------------------------------------------------------------
+  // ASSISTANCE REQUESTS WORKFLOW (ATTENDANT PORTAL)
+  // -------------------------------------------------------------
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  window.openRequestAssistanceModal = function() {
+    var modal = document.getElementById('request-assistance-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      var fb = document.getElementById('modal-feedback-box');
+      if (fb) fb.classList.add('hidden');
+      var form = document.getElementById('assistance-request-form');
+      if (form) form.reset();
+      var counter = document.getElementById('desc-char-counter');
+      if (counter) counter.textContent = '0 / 500';
+    }
+  };
+
+  window.closeRequestAssistanceModal = function() {
+    var modal = document.getElementById('request-assistance-modal');
+    if (modal) modal.classList.add('hidden');
+  };
+
+  window.updateCharCounter = function(textarea) {
+    var counter = document.getElementById('desc-char-counter');
+    if (counter && textarea) {
+      var len = (textarea.value || '').length;
+      counter.textContent = len + ' / 500';
+      if (len > 480) {
+        counter.className = 'text-[11px] font-semibold text-amber-500';
+      } else {
+        counter.className = 'text-[11px] font-semibold text-slate-400';
+      }
+    }
+  };
+
+  window.handleAssistanceRequestSubmit = async function(e) {
+    e.preventDefault();
+    var categorySelect = document.getElementById('assistance-category');
+    var descTextarea = document.getElementById('assistance-description');
+    var submitBtn = document.getElementById('submit-assistance-btn');
+    var spinner = document.getElementById('submit-btn-spinner');
+    var btnLabel = document.getElementById('submit-btn-label');
+    var feedbackBox = document.getElementById('modal-feedback-box');
+
+    if (!categorySelect || !categorySelect.value) {
+      if (feedbackBox) {
+        feedbackBox.textContent = 'Please choose a request category.';
+        feedbackBox.className = 'p-3 rounded-xl text-xs font-semibold bg-red-50 text-red-700 border border-red-200 block';
+      }
+      return;
+    }
+
+    var category = categorySelect.value;
+    var description = (descTextarea ? descTextarea.value : '').trim();
+
+    submitBtn.disabled = true;
+    if (spinner) spinner.classList.remove('hidden');
+    if (btnLabel) btnLabel.textContent = 'Sending...';
+    if (feedbackBox) feedbackBox.classList.add('hidden');
+
+    try {
+      var res = await fetch('/api/v1/attendant/assistance-requests', {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({
+          category: category,
+          description: description || null
+        })
+      });
+
+      var data = await res.json();
+
+      if (res.ok && data.success) {
+        if (feedbackBox) {
+          feedbackBox.textContent = 'Your assistance request has been submitted.';
+          feedbackBox.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 block';
+        }
+        if (btnLabel) btnLabel.textContent = 'Submitted!';
+        setTimeout(function() {
+          closeRequestAssistanceModal();
+          loadMyAssistanceRequests();
+          if (submitBtn) submitBtn.disabled = false;
+          if (spinner) spinner.classList.add('hidden');
+          if (btnLabel) btnLabel.textContent = 'Send Request';
+        }, 800);
+      } else {
+        var err = data.error || 'Failed to submit assistance request. Please try again.';
+        if (feedbackBox) {
+          feedbackBox.textContent = err;
+          feedbackBox.className = 'p-3 rounded-xl text-xs font-semibold bg-red-50 text-red-700 border border-red-200 block';
+        }
+        submitBtn.disabled = false;
+        if (spinner) spinner.classList.add('hidden');
+        if (btnLabel) btnLabel.textContent = 'Send Request';
+      }
+    } catch (err) {
+      if (feedbackBox) {
+        feedbackBox.textContent = 'Network error. Please check your connection and retry.';
+        feedbackBox.className = 'p-3 rounded-xl text-xs font-semibold bg-red-50 text-red-700 border border-red-200 block';
+      }
+      submitBtn.disabled = false;
+      if (spinner) spinner.classList.add('hidden');
+      if (btnLabel) btnLabel.textContent = 'Send Request';
+    }
+  };
+
+  function getStatusBadge(status) {
+    switch ((status || '').toLowerCase()) {
+      case 'submitted':
+      case 'pending':
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Pending</span>';
+      case 'acknowledged':
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">Acknowledged</span>';
+      case 'in_progress':
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">In Progress</span>';
+      case 'resolved':
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Resolved</span>';
+      case 'cancelled':
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">Cancelled</span>';
+      case 'rejected':
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Rejected</span>';
+      default:
+        return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">${escapeHtml(status)}</span>`;
+    }
+  }
+
+  window.loadMyAssistanceRequests = async function() {
+    var container = document.getElementById('assistance-requests-list');
+    var badge = document.getElementById('requests-count-badge');
+    if (!container) return;
+
+    try {
+      var res = await fetch('/api/v1/attendant/assistance-requests', { headers: getHeaders() });
+      if (!res.ok) return;
+
+      var data = await res.json();
+      var list = data.requests || [];
+      if (badge) badge.textContent = list.length;
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-6 px-4 bg-slate-50/60 rounded-xl border border-dashed border-slate-200">
+            <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center mx-auto mb-2 text-base">💬</div>
+            <p class="text-xs font-semibold text-slate-700">No Assistance Requests Yet</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Need help from the nursing team? Tap 'Request Assistance'.</p>
+          </div>
+        `;
+        return;
+      }
+
+      var html = '';
+      list.forEach(function(r) {
+        var isCancellable = ['submitted', 'pending', 'acknowledged'].indexOf((r.status || '').toLowerCase()) !== -1;
+        var cancelBtnHtml = isCancellable ? `
+          <button onclick="cancelAssistanceRequest(${r.request_id})" class="text-[11px] font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-lg border border-rose-200 transition-colors cursor-pointer">
+            Cancel Request
+          </button>
+        ` : '';
+
+        var staffNoteHtml = '';
+        if (r.resolution_note) {
+          staffNoteHtml = `
+            <div class="mt-2 p-2 bg-emerald-50/70 border border-emerald-100 rounded-lg text-[11px] text-emerald-900">
+              <span class="font-bold block text-[10px] uppercase text-emerald-800">Care Team Resolution:</span>
+              ${escapeHtml(r.resolution_note)}
+            </div>
+          `;
+        } else if (r.rejection_reason) {
+          staffNoteHtml = `
+            <div class="mt-2 p-2 bg-rose-50/70 border border-rose-100 rounded-lg text-[11px] text-rose-900">
+              <span class="font-bold block text-[10px] uppercase text-rose-800">Reason:</span>
+              ${escapeHtml(r.rejection_reason)}
+            </div>
+          `;
+        }
+
+        html += `
+          <div class="p-3 bg-slate-50/80 hover:bg-slate-50 border border-slate-200/80 rounded-xl transition-all space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-bold text-slate-900">Ref #${r.request_id}</span>
+                <span class="text-[10px] text-slate-400 font-medium">• ${r.time_since_submission || 'Just now'}</span>
+              </div>
+              <div>${getStatusBadge(r.status)}</div>
+            </div>
+            <div class="text-xs font-semibold text-blue-900">
+              ${escapeHtml(r.category)}
+            </div>
+            ${r.description ? `<p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(r.description)}</p>` : ''}
+            ${staffNoteHtml}
+            ${isCancellable ? `<div class="pt-1.5 flex justify-end">${cancelBtnHtml}</div>` : ''}
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    } catch(err) {
+      console.warn('[Jeevan Setu] Failed to load attendant requests:', err);
+    }
+  };
+
+  window.cancelAssistanceRequest = async function(requestId) {
+    if (!confirm('Are you sure you want to cancel assistance request #' + requestId + '?')) {
+      return;
+    }
+
+    try {
+      var res = await fetch('/api/v1/attendant/assistance-requests/' + requestId + '/cancel', {
+        method: 'POST',
+        headers: getHeaders()
+      });
+      var data = await res.json();
+      if (res.ok && data.success) {
+        loadMyAssistanceRequests();
+      } else {
+        alert(data.error || 'Unable to cancel this request.');
+      }
+    } catch(err) {
+      alert('Network error while cancelling request.');
+    }
+  };
+
+  function pollEverything() {
+    refreshAttendantView();
+    loadMyAssistanceRequests();
+  }
+
   // Centralized 10-second background polling
   if (window.AutoRefreshManager) {
-    window.AutoRefreshManager.start('attendant_live_view', refreshAttendantView, 10000);
+    window.AutoRefreshManager.start('attendant_live_view', pollEverything, 10000);
   } else {
-    refreshAttendantView();
-    setInterval(refreshAttendantView, 10000);
+    pollEverything();
+    setInterval(pollEverything, 10000);
   }
 })();
+
 </script>
 <script src="/auto_refresh_manager.js"></script>
 </body></html>

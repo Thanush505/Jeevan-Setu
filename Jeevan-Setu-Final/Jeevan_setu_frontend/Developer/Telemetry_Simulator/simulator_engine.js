@@ -128,13 +128,98 @@
     setPatientScenario(patientId, scenarioName, manualValues) {
       const p = this.getPatient(patientId);
       if (!p) return;
-      p.scenario = scenarioName.toUpperCase();
+      let scen = (scenarioName || 'STABLE').toUpperCase();
+      if (scen === 'GRADUAL_DETERIORATION' || scen === 'DETERIORATION') {
+        scen = 'MODERATE';
+      }
+      p.scenario = scen;
       if (p.scenario === 'MANUAL' && manualValues) {
         p.scenarioEngine.setManualValues(manualValues);
       } else {
-        p.scenarioEngine.setScenario(p.scenario);
+        p.scenarioEngine.setScenario(p.scenario, true);
       }
       if (this.onPatientUpdate) this.onPatientUpdate(p.patientId, p);
+    }
+
+    async transitionPatientScenario(patientId, targetScenario, reason) {
+      const p = this.getPatient(patientId);
+      if (!p) throw new Error(`Patient ${patientId} is not registered in simulator.`);
+
+      let scen = (targetScenario || 'STABLE').toUpperCase();
+      if (scen === 'GRADUAL_DETERIORATION' || scen === 'DETERIORATION') {
+        scen = 'MODERATE';
+      }
+
+      // Mark in-flight transition to disable conflicting controls
+      p.isTransitioning = true;
+      if (this.onPatientUpdate) this.onPatientUpdate(p.patientId, p);
+
+      try {
+        const url = `/api/v1/telemetry-simulator/patients/${patientId}/transition`;
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+          body: JSON.stringify({
+            target_scenario: scen,
+            reason: reason || 'Interactive test scenario transition'
+          })
+        });
+
+        const json = await res.json();
+        if (!res.ok || !json.success) {
+          throw new Error(json.error || `HTTP ${res.status}: Failed to transition scenario`);
+        }
+
+        const data = json.data;
+        const authoritativeScenario = (data.current_scenario || scen).toUpperCase();
+
+        // Authoritative update: update scenario state and target vital generation
+        p.scenario = authoritativeScenario;
+        p.scenarioEngine.setScenario(authoritativeScenario, true);
+        p.lastTransition = data;
+        p.lastTransitionError = null;
+
+        if (this.onPatientUpdate) this.onPatientUpdate(p.patientId, p);
+        return { success: true, data: data };
+      } catch (err) {
+        p.lastTransitionError = err.message;
+        if (this.onPatientUpdate) this.onPatientUpdate(p.patientId, p);
+        throw err;
+      } finally {
+        p.isTransitioning = false;
+        if (this.onPatientUpdate) this.onPatientUpdate(p.patientId, p);
+      }
+    }
+
+    async loadAuthoritativeScenarios() {
+      try {
+        const url = '/api/v1/telemetry-simulator/scenarios';
+        const res = await fetch(url, { headers: this.getAuthHeaders() });
+        if (!res.ok) return null;
+        const json = await res.json();
+        if (!json.success || !json.data) return null;
+
+        const patientStates = json.data.patient_states || {};
+        Object.keys(patientStates).forEach(pidStr => {
+          const pid = parseInt(pidStr, 10);
+          const p = this.getPatient(pid);
+          if (p) {
+            let serverScen = (patientStates[pidStr].current_scenario || 'STABLE').toUpperCase();
+            if (serverScen === 'GRADUAL_DETERIORATION' || serverScen === 'DETERIORATION') {
+              serverScen = 'MODERATE';
+            }
+            p.scenario = serverScen;
+            p.scenarioEngine.setScenario(serverScen, true);
+            p.authoritativeState = patientStates[pidStr];
+            if (this.onPatientUpdate) this.onPatientUpdate(p.patientId, p);
+          }
+        });
+
+        return json.data;
+      } catch (e) {
+        console.warn('Failed to load authoritative simulator scenarios:', e);
+        return null;
+      }
     }
 
     setInterval(ms) {

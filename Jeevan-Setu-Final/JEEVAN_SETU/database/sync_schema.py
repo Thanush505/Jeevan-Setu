@@ -72,13 +72,14 @@ def sync_all():
     print(f"Updated MySQL DDL: {schema_sql_path}")
 
     # Update SQLite database snapshots (.db files)
-    workspace_root = os.path.abspath(os.path.join(base_dir, '..', '..'))
-    db_paths = [
+    project_root = os.path.abspath(os.path.join(base_dir, '..', '..'))
+    repo_root = os.path.abspath(os.path.join(base_dir, '..', '..', '..'))
+    db_paths = list(dict.fromkeys([
         os.path.join(base_dir, 'schema.db'),
         os.path.join(base_dir, 'jeevan_setu.db'),
-        os.path.join(workspace_root, 'Jeevan-Setu-Final', 'schema.db'),
-        os.path.join(workspace_root, 'schema.db')
-    ]
+        os.path.join(project_root, 'schema.db'),
+        os.path.join(repo_root, 'schema.db')
+    ]))
 
     for target_db in db_paths:
         if os.path.exists(target_db):

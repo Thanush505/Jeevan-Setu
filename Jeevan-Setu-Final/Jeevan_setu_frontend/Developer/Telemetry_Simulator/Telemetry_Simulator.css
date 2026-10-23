@@ -166,3 +166,101 @@ body {
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
+/* Scenario Transition Controls */
+.scenario-transition-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 260px;
+}
+
+.scenario-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.scenario-badge-stable {
+  background: rgba(6, 78, 59, 0.7);
+  color: #6ee7b7;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+.scenario-badge-moderate {
+  background: rgba(120, 53, 15, 0.7);
+  color: #fcd34d;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+
+.scenario-badge-critical {
+  background: rgba(136, 19, 55, 0.8);
+  color: #fda4af;
+  border: 1px solid rgba(244, 63, 94, 0.5);
+  animation: pulseCritical 1.8s infinite ease-in-out;
+}
+
+.scenario-badge-recovery {
+  background: rgba(22, 78, 99, 0.7);
+  color: #67e8f9;
+  border: 1px solid rgba(34, 211, 238, 0.4);
+}
+
+.scenario-badge-manual {
+  background: rgba(88, 28, 135, 0.7);
+  color: #d8b4fe;
+  border: 1px solid rgba(192, 132, 252, 0.4);
+}
+
+@keyframes pulseCritical {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+  50% { box-shadow: 0 0 10px 2px rgba(244, 63, 94, 0.6); }
+}
+
+.btn-stepper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.375rem;
+  font-size: 10px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.btn-stepper:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-stepper-worsen {
+  background: rgba(159, 18, 57, 0.4);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+.btn-stepper-worsen:hover:not(:disabled) {
+  background: rgba(159, 18, 57, 0.8);
+  color: #ffffff;
+  border-color: #ef4444;
+}
+
+.btn-stepper-improve {
+  background: rgba(6, 78, 59, 0.4);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+.btn-stepper-improve:hover:not(:disabled) {
+  background: rgba(6, 78, 59, 0.8);
+  color: #ffffff;
+  border-color: #22c55e;
+}
+
