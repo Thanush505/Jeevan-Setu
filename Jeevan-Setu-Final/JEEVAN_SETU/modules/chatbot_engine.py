@@ -1040,46 +1040,46 @@ def verify_user_patient_access(user, patient_id):
             pass
         return False, "Access forbidden. Attendant is not authorized for this patient."
 
-    # Doctor: verify assigned doctor
+    # Doctor: verify assigned doctor strictly
     if role == 'doctor':
         try:
-            patient_row = db.execute_query("SELECT assigned_doctor, ward_type, ward_id FROM patients WHERE patient_id = %s", (pid,), fetch=True) if db else []
-            if patient_row:
-                assigned_doc = patient_row[0].get('assigned_doctor')
-                if assigned_doc is None or assigned_doc == uid:
-                    return True, ""
-                doc_pts = db.execute_query("SELECT patient_id FROM patients WHERE assigned_doctor = %s", (uid,), fetch=True) if db else []
-                if not doc_pts or any(p['patient_id'] == pid for p in doc_pts):
-                    return True, ""
-                return False, "Access forbidden. Doctor is not authorized for this patient."
-        except Exception:
-            pass
+            if db:
+                patient_row = db.execute_query("SELECT assigned_doctor, ward_type, ward_id FROM patients WHERE patient_id = %s", (pid,), fetch=True)
+                if patient_row:
+                    assigned_doc = patient_row[0].get('assigned_doctor')
+                    if assigned_doc is not None and int(assigned_doc) == int(uid):
+                        return True, ""
+                    return False, "Access forbidden. Doctor is not authorized for this patient."
+                return False, "Patient not found."
+        except Exception as e:
+            print(f"[AUTH VERIFY DOCTOR ERROR] {e}")
 
-        # If in mock store
-        k = _resolve_pid_key(pid)
-        if k:
-            return True, ""
-        return False, "Patient not found."
+        # Fallback ONLY when database is offline/None
+        if not db:
+            k = _resolve_pid_key(pid)
+            if k:
+                return True, ""
+        return False, "Access forbidden. Doctor is not authorized for this patient."
 
-    # Nurse: verify assigned nurse
+    # Nurse: verify assigned nurse strictly
     if role == 'nurse':
         try:
-            patient_row = db.execute_query("SELECT assigned_nurse, ward_type, ward_id FROM patients WHERE patient_id = %s", (pid,), fetch=True) if db else []
-            if patient_row:
-                assigned_nurse = patient_row[0].get('assigned_nurse')
-                if assigned_nurse is None or assigned_nurse == uid:
-                    return True, ""
-                nurse_pts = db.execute_query("SELECT patient_id FROM patients WHERE assigned_nurse = %s", (uid,), fetch=True) if db else []
-                if not nurse_pts or any(p['patient_id'] == pid for p in nurse_pts):
-                    return True, ""
-                return False, "Access forbidden. Nurse is not authorized for this patient."
-        except Exception:
-            pass
+            if db:
+                patient_row = db.execute_query("SELECT assigned_nurse, ward_type, ward_id FROM patients WHERE patient_id = %s", (pid,), fetch=True)
+                if patient_row:
+                    assigned_nurse = patient_row[0].get('assigned_nurse')
+                    if assigned_nurse is not None and int(assigned_nurse) == int(uid):
+                        return True, ""
+                    return False, "Access forbidden. Nurse is not authorized for this patient."
+                return False, "Patient not found."
+        except Exception as e:
+            print(f"[AUTH VERIFY NURSE ERROR] {e}")
 
-        k = _resolve_pid_key(pid)
-        if k:
-            return True, ""
-        return False, "Patient not found."
+        if not db:
+            k = _resolve_pid_key(pid)
+            if k:
+                return True, ""
+        return False, "Access forbidden. Nurse is not authorized for this patient."
 
     return True, ""
 
@@ -1099,16 +1099,10 @@ def get_authorized_patients_for_user(user):
                 patients = res.get('patients', []) if isinstance(res, dict) else (res or [])
             elif role == 'doctor':
                 res = Patient.get_filtered(status='admitted', doctor_id=uid, limit=100)
-                patients = res.get('patients', []) if isinstance(res, dict) else []
-                if not patients:
-                    res_all = Patient.get_filtered(status='admitted', limit=100)
-                    patients = res_all.get('patients', []) if isinstance(res_all, dict) else []
+                patients = res.get('patients', []) if isinstance(res, dict) else (res or [])
             elif role == 'nurse':
                 res = Patient.get_filtered(status='admitted', nurse_id=uid, limit=100)
-                patients = res.get('patients', []) if isinstance(res, dict) else []
-                if not patients:
-                    res_all = Patient.get_filtered(status='admitted', limit=100)
-                    patients = res_all.get('patients', []) if isinstance(res_all, dict) else []
+                patients = res.get('patients', []) if isinstance(res, dict) else (res or [])
             elif role == 'attendant':
                 token_pid = getattr(user, 'patient_id', None)
                 if token_pid:
@@ -1128,8 +1122,8 @@ def get_authorized_patients_for_user(user):
         print(f"[AUTH PATIENTS ERROR] {e}")
         patients = []
 
-    # Fallback to mock dataset if DB returned nothing
-    if not patients:
+    # Fallback to mock dataset ONLY if database is offline/not initialized
+    if not patients and not db:
         for pid, data in MOCK_PATIENT_STORE.items():
             p_info = dict(data['patient'])
             p_info['ews_score'] = data['latest_vitals'].get('ews_score', 0) if 'latest_vitals' in data else 0
@@ -3326,6 +3320,17 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
 
     effective_patient_id = state.get('active_patient_id')
 
+    # Security check: ensure active patient is authorized for current doctor/nurse
+    if effective_patient_id and user_role.lower() not in ('admin', 'superadmin'):
+        class _ContextUser:
+            id = user_id
+            role = user_role
+        _is_auth, _ = verify_user_patient_access(_ContextUser(), effective_patient_id)
+        if not _is_auth:
+            effective_patient_id = None
+            state['active_patient_id'] = None
+            state['active_patient_name'] = None
+
     # RBAC Attendant check: attendants can only access their assigned patient
     if user_role.lower() == 'attendant':
         if not effective_patient_id:
@@ -3343,6 +3348,12 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
 
     if is_explicit_mention and cand_name:
         match_type, patients = search_patients_for_chat(cand_name)
+        if user_role.lower() not in ('admin', 'superadmin'):
+            class _ContextUser:
+                id = user_id
+                role = user_role
+            patients = [p for p in patients if verify_user_patient_access(_ContextUser(), p.get('patient_id') or p.get('id'))[0]]
+            match_type = 'single' if len(patients) == 1 else ('multiple' if len(patients) > 1 else 'none')
 
         if match_type == "none":
             return {
@@ -3482,6 +3493,12 @@ def process_conversational_message(user_id=1, message="", active_patient_id=None
         is_name_query = len(msg.split()) <= 4 and not any(w in msg.lower() for w in ['what', 'why', 'how', 'when', 'who', 'is', 'are', 'can', 'explain', 'tell', 'define', 'which', 'should', 'list', 'calculate', 'describe', 'difference', 'treatment', 'causes', 'symptoms'])
         if is_name_query:
             match_type, patients = search_patients_for_chat(msg)
+            if user_role.lower() not in ('admin', 'superadmin'):
+                class _ContextUser:
+                    id = user_id
+                    role = user_role
+                patients = [p for p in patients if verify_user_patient_access(_ContextUser(), p.get('patient_id') or p.get('id'))[0]]
+                match_type = 'single' if len(patients) == 1 else ('multiple' if len(patients) > 1 else 'none')
             if match_type == "single":
                 p = patients[0]
                 new_id = p['patient_id']

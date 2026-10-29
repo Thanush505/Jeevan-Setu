@@ -218,16 +218,22 @@ class Transfer:
                     (rejected_by, transfer['recommendation_id'])
                 )
 
-        # Notification
+        # Notification: Only notify assigned nurse
         try:
             patient_name = transfer.get('patient_name') or f"Patient #{transfer['patient_id']}"
-            Notification.broadcast_to_role(
-                role='nurse',
-                title='Patient Transfer Rejected',
-                message=f"Transfer #{transfer_id} for {patient_name} to {transfer['to_ward']} was rejected. Reason: {remarks or 'None'}",
-                notif_type='transfer',
-                patient_id=transfer['patient_id']
-            )
+            assigned_nurse_id = transfer.get('assigned_nurse')
+            if not assigned_nurse_id:
+                p_rec = Patient.get_by_id(transfer['patient_id'])
+                assigned_nurse_id = p_rec.get('assigned_nurse') if p_rec else None
+
+            if assigned_nurse_id:
+                Notification.create(
+                    user_id=assigned_nurse_id,
+                    title='Patient Transfer Rejected',
+                    message=f"Transfer #{transfer_id} for {patient_name} to {transfer['to_ward']} was rejected. Reason: {remarks or 'None'}",
+                    notif_type='transfer',
+                    patient_id=transfer['patient_id']
+                )
         except Exception:
             pass
 

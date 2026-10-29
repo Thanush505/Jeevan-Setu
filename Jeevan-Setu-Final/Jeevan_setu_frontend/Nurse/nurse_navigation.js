@@ -53,6 +53,13 @@
           href: '../Nurse_nursing_notes/Nurse_nursing_notes.html',
           match: ['nurse_nursing_notes', 'nursing_notes', 'notes'],
           icon: `<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>`
+        },
+        {
+          id: 'patient_summary_ai',
+          label: 'Patient Summary (AI)',
+          href: '../Nurse_patient_summary_ai/Nurse_patient_summary_ai.html',
+          match: ['nurse_patient_summary_ai', 'patient_summary_ai'],
+          icon: `<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>`
         }
       ]
     }
@@ -69,6 +76,7 @@
     if (path.includes('nurse_patient_monitoring')) return 'patient_monitoring';
     if (path.includes('nurse_enter_vitals')) return 'enter_vitals';
     if (path.includes('nurse_nursing_notes')) return 'nursing_notes';
+    if (path.includes('nurse_patient_summary_ai') || path.includes('patient_summary_ai')) return 'patient_summary_ai';
     if (path.includes('nurse_settings') || path.includes('settings')) return 'settings';
     if (path.includes('nurse_alerts')) return 'alerts';
     if (path.includes('nurse_tasks')) {
@@ -210,31 +218,56 @@
                     width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
       }
       @media (max-width: 1024px) {
+        html, body {
+          max-width: 100vw;
+          overflow-x: hidden;
+        }
+        .pl-64, .pl-72, .ml-64, .ml-72 {
+          padding-left: 0 !important;
+          margin-left: 0 !important;
+        }
+        .left-64, .left-72 {
+          left: 0 !important;
+        }
+      }
+      @media (max-width: 767px) {
         aside[data-purpose="sidebar"],
         aside.w-64,
         aside {
-          transform: translateX(-100%) !important;
-          position: fixed !important;
-          left: 0 !important;
-          top: 0 !important;
-          bottom: 0 !important;
-          z-index: 50 !important;
+          max-width: 82vw !important;
         }
         body.sidebar-mobile-open aside[data-purpose="sidebar"],
         body.sidebar-mobile-open aside.w-64,
         body.sidebar-mobile-open aside {
           transform: translateX(0) !important;
           width: 16rem !important;
-          min-width: 16rem !important;
-          max-width: 16rem !important;
+          max-width: 82vw !important;
           opacity: 1 !important;
           pointer-events: auto !important;
         }
-        .pl-64 {
-          padding-left: 0 !important;
+        .nurse-top-header {
+          padding-left: 0.75rem !important;
+          padding-right: 0.75rem !important;
         }
-        .left-64 {
+        #nurse-notifications-dropdown,
+        #nurse-profile-dropdown,
+        #nurse-search-results-dropdown {
+          position: fixed !important;
+          left: 12px !important;
+          right: 12px !important;
+          top: 68px !important;
+          width: calc(100vw - 24px) !important;
+          max-width: calc(100vw - 24px) !important;
+        }
+        #active-patient-bar {
+          padding: 0.5rem 0.75rem !important;
+          flex-wrap: wrap !important;
+          gap: 0.5rem !important;
+        }
+        #patient-dropdown-menu {
           left: 0 !important;
+          right: auto !important;
+          width: min(18rem, calc(100vw - 24px)) !important;
         }
       }
     `;
@@ -243,7 +276,12 @@
 
   function renderNurseSidebar() {
     let aside = document.querySelector('aside[data-purpose="sidebar"], aside.w-64, aside.w-72, aside');
-    if (!aside) return;
+    if (!aside) {
+      aside = document.createElement('aside');
+      aside.setAttribute('data-purpose', 'sidebar');
+      aside.className = 'w-64 bg-[#0f172a] text-slate-300 flex flex-col flex-shrink-0 h-screen fixed left-0 top-0 z-50 shadow-xl select-none -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out';
+      document.body.insertBefore(aside, document.body.firstChild);
+    }
 
     const currentActiveId = detectCurrentNursePage();
 
@@ -301,7 +339,7 @@
                 ${item.icon}
                 <span class="text-xs font-medium tracking-wide">${item.label}</span>
               </div>
-              ${item.badge ? `<span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">${item.badge}</span>` : ''}
+              ${item.badge ? `<span id="nurse-sidebar-${item.id}-badge" class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">${item.badge}</span>` : ''}
             </a>
           </li>
         `;
@@ -346,6 +384,17 @@
 
   function renderSharedNurseHeader() {
     injectNurseStyles();
+
+    if (detectCurrentNursePage() === 'patient_summary_ai') {
+      const user = getStoredNurseUser();
+      document.querySelectorAll('.nurse-profile-name, #header-nurse-name, #topbar-nurse-name').forEach(el => {
+        el.textContent = user.name;
+      });
+      document.querySelectorAll('#header-nurse-ward, #topbar-nurse-ward').forEach(el => {
+        el.textContent = user.ward;
+      });
+      return;
+    }
 
     let header = document.querySelector('header.nurse-top-header, header[data-purpose="nurse-header"], header');
     if (!header) {
@@ -810,6 +859,16 @@
         }
       }
 
+      const sidebarAlertsBadge = document.getElementById('nurse-sidebar-alerts-badge');
+      if (sidebarAlertsBadge) {
+        if (unreadCount > 0) {
+          sidebarAlertsBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+          sidebarAlertsBadge.style.display = 'inline-block';
+        } else {
+          sidebarAlertsBadge.style.display = 'none';
+        }
+      }
+
       if (countPill) {
         countPill.textContent = unreadCount > 0 ? `${unreadCount} Unread` : 'All caught up';
       }
@@ -891,9 +950,11 @@
     const isClosed = aside.classList.contains('-translate-x-full');
     if (isClosed) {
       aside.classList.remove('-translate-x-full');
+      document.body.classList.add('sidebar-mobile-open');
       if (backdrop) backdrop.classList.remove('hidden');
     } else {
       aside.classList.add('-translate-x-full');
+      document.body.classList.remove('sidebar-mobile-open');
       if (backdrop) backdrop.classList.add('hidden');
     }
   };

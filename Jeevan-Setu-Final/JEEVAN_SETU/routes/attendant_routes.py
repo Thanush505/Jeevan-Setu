@@ -69,19 +69,35 @@ def generate_attendant_session_token(patient_id, attendant_name, token_hash, exp
 
 
 def get_current_attendant_session():
-    """Retrieve and decode attendant session from Authorization header, session param, or cookies."""
+    """Retrieve and decode attendant session from Authorization header, session param, cookies, or QR token."""
     auth_header = request.headers.get('Authorization', '')
     token = None
     if auth_header.startswith('Bearer '):
         token = auth_header.split(' ', 1)[1].strip()
     elif request.args.get('session_token'):
         token = request.args.get('session_token')
-    elif request.args.get('token') and not request.args.get('token', '').startswith('JS-QR-'):
+    elif request.args.get('token'):
         token = request.args.get('token')
+    elif request.args.get('qr_token'):
+        token = request.args.get('qr_token')
     elif request.cookies.get('jeevan_setu_token'):
         token = request.cookies.get('jeevan_setu_token')
 
     if not token:
+        return None
+
+    if token.startswith('JS-QR-'):
+        try:
+            val = PatientQRToken.validate_token(token)
+            if val.get('valid') and val.get('patient_id'):
+                return {
+                    'role': 'attendant',
+                    'patient_id': val['patient_id'],
+                    'attendant_name': 'Family Attendant',
+                    'qr_token': token
+                }
+        except Exception:
+            pass
         return None
 
     config = get_config()

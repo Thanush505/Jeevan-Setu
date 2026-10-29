@@ -72,7 +72,7 @@ def get_patient_alerts(patient_id):
     if not patient:
         return jsonify({'success': False, 'error': f'Patient #{patient_id} not found'}), 404
 
-    if user_role == 'doctor' and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
+    if user_role == 'doctor' and (not patient.get('assigned_doctor') or int(patient.get('assigned_doctor')) != int(user_id)):
         AuditLog.log(
             'UNAUTHORIZED_PATIENT_ALERT_ACCESS_ATTEMPT',
             user_id=user_id,
@@ -82,7 +82,7 @@ def get_patient_alerts(patient_id):
         )
         return jsonify({'success': False, 'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'}), 403
 
-    if user_role == 'nurse' and patient.get('assigned_nurse') and int(patient.get('assigned_nurse')) != int(user_id):
+    if user_role == 'nurse' and (not patient.get('assigned_nurse') or int(patient.get('assigned_nurse')) != int(user_id)):
         AuditLog.log(
             'UNAUTHORIZED_PATIENT_ALERT_ACCESS_ATTEMPT',
             user_id=user_id,
@@ -234,7 +234,7 @@ def get_global_alert_feed():
     transfer_alerts = get_active_transfer_alerts_for_user(user, limit=20)
 
     # 4. Get unread notifications count and unread approved transfer notifications
-    unread_notifs = Notification.get_unread_count(user_id) if user_id else len(emergency_alerts)
+    unread_notifs = Notification.get_unread_count(user_id, role=role) if user_id else len(emergency_alerts)
     
     approved_transfers = []
     if user_id and role == 'nurse':
@@ -245,11 +245,12 @@ def get_global_alert_feed():
                    FROM notifications n
                    JOIN patients p ON n.patient_id = p.patient_id
                    WHERE n.user_id = %s 
+                     AND (n.patient_id IS NULL OR p.assigned_nurse = %s)
                      AND n.type = 'transfer' 
                      AND n.is_read = 0
                    ORDER BY n.created_at DESC
                    LIMIT 5""",
-                (user_id,), fetch=True
+                (user_id, user_id), fetch=True
             ) or []
         except Exception as e:
             print(f"[GLOBAL FEED] Warning fetching approved transfers: {e}")

@@ -29,7 +29,11 @@ class AssistanceRequest:
         'request bedside assistance': 'Request bedside assistance',
         'other': 'Other non-emergency assistance',
         'other_non_emergency': 'Other non-emergency assistance',
-        'other non-emergency assistance': 'Other non-emergency assistance'
+        'other non-emergency assistance': 'Other non-emergency assistance',
+        'general': 'Request nursing assistance',
+        'general assistance': 'Request nursing assistance',
+        'general_assistance': 'Request nursing assistance',
+        'assistance': 'Request nursing assistance'
     }
 
     VALID_CATEGORIES = [
@@ -67,7 +71,7 @@ class AssistanceRequest:
         return None
 
     @classmethod
-    def create(cls, patient_id, attendant_name, category, description=None, attendant_id=None):
+    def create(cls, patient_id, attendant_name='Attendant', category='Request nursing assistance', description=None, attendant_id=None):
         """
         Create a new assistance request for an authorized patient.
         """
@@ -76,17 +80,17 @@ class AssistanceRequest:
         if not patient:
             raise ValueError(f"Patient #{patient_id} not found.")
 
-        # Normalize & validate category
+        # Normalize & validate category with robust server-side fallback
+        if not category:
+            category = 'Request nursing assistance'
         norm_category = cls.normalize_category(category)
         if not norm_category:
-            raise ValueError(
-                f"Invalid request category '{category}'. Must be one of: {', '.join(cls.VALID_CATEGORIES)}"
-            )
+            raise ValueError(f"Invalid request category: '{category}'. Please choose a valid category from the list.")
 
         # Sanitize & validate attendant name
         clean_name = str(attendant_name or '').strip()
         if not clean_name or len(clean_name) < 2:
-            raise ValueError("Attendant name must be at least 2 characters.")
+            clean_name = "Family Attendant"
 
         # Sanitize & validate description (max 500 characters)
         clean_desc = None
@@ -98,7 +102,7 @@ class AssistanceRequest:
                 clean_desc = None
 
         # Resolve ward/bed info from patient
-        ward_id = None
+        ward_id = patient.get('ward_id')
         assigned_nurse_id = patient.get('assigned_nurse')
 
         # Check for recent duplicate submission (within 15 seconds) to prevent accidental double clicks
@@ -114,7 +118,10 @@ class AssistanceRequest:
             fetch=True
         )
         if dup and len(dup) > 0:
-            return cls.get_by_id(dup[0]['request_id'])
+            rec = cls.get_by_id(dup[0]['request_id'])
+            if rec:
+                rec['is_duplicate'] = True
+            return rec
 
         # Insert new request record with 'pending' status
         req_id = db.execute_query(
@@ -125,7 +132,10 @@ class AssistanceRequest:
             (patient_id, clean_name, attendant_id, norm_category, clean_desc, ward_id, assigned_nurse_id)
         )
 
-        return cls.get_by_id(req_id)
+        rec = cls.get_by_id(req_id)
+        if rec:
+            rec['is_duplicate'] = False
+        return rec
 
     @classmethod
     def get_by_id(cls, request_id):
@@ -182,13 +192,21 @@ class AssistanceRequest:
         return [cls._format_record(r) for r in rows]
 
     @classmethod
-    def get_for_staff(cls, status=None, ward=None, patient_id=None, q=None, limit=100, offset=0):
+    def get_for_staff(cls, status=None, ward=None, patient_id=None, q=None, limit=100, offset=0, nurse_id=None, doctor_id=None):
         """
         Fetch requests for authorized staff members (Nurse, Doctor, Admin).
-        Supports filtering by status, ward, patient_id, and search terms.
+        Supports filtering by status, ward, patient_id, nurse_id, and search terms.
         """
         clauses = []
         params = []
+
+        if nurse_id:
+            clauses.append("(p.assigned_nurse = %s OR r.assigned_nurse_id = %s)")
+            params.extend([int(nurse_id), int(nurse_id)])
+
+        if doctor_id:
+            clauses.append("p.assigned_doctor = %s")
+            params.append(int(doctor_id))
 
         if status and status != 'all':
             if status in cls.VALID_STATUSES:

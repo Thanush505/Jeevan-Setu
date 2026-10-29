@@ -91,6 +91,11 @@ class Notification:
     @staticmethod
     def get_by_user(user_id, unread_only=False, notif_type=None, limit=50, role=None):
         """Fetch notifications for a user with optional unread filter and doctor-patient authorization."""
+        if role is None and user_id:
+            u_row = db.execute_query("SELECT role FROM users WHERE user_id = %s", (user_id,), fetch=True)
+            if u_row:
+                role = (u_row[0]['role'] or '').lower()
+
         conditions = ["n.user_id = %s"]
         params = [user_id]
 
@@ -102,10 +107,13 @@ class Notification:
             conditions.append("n.type = %s")
             params.append(db_type)
 
-        # Stale & Cross-Doctor Protection: If user is a doctor, filter out notifications for unassigned patients and exclude TRANSFER APPROVED
+        # Stale & Cross-Doctor/Nurse Protection: filter notifications to assigned patients
         if role == 'doctor':
             conditions.append("(n.patient_id IS NULL OR p.assigned_doctor = %s)")
             conditions.append("(n.title NOT LIKE '%[TRANSFER APPROVED]%')")
+            params.append(user_id)
+        elif role == 'nurse':
+            conditions.append("(n.patient_id IS NULL OR p.assigned_nurse = %s)")
             params.append(user_id)
 
         where_clause = " AND ".join(conditions)
@@ -140,6 +148,11 @@ class Notification:
     @staticmethod
     def get_unread_count(user_id, role=None):
         """Get count of unread notifications for a user scoped to assigned patients."""
+        if role is None and user_id:
+            u_row = db.execute_query("SELECT role FROM users WHERE user_id = %s", (user_id,), fetch=True)
+            if u_row:
+                role = (u_row[0]['role'] or '').lower()
+
         if role == 'doctor':
             res = db.execute_query(
                 """SELECT COUNT(*) AS unread_count 
@@ -148,6 +161,15 @@ class Notification:
                    WHERE n.user_id = %s AND n.is_read = FALSE
                      AND (n.patient_id IS NULL OR p.assigned_doctor = %s)
                      AND (n.title NOT LIKE '%[TRANSFER APPROVED]%')""",
+                (user_id, user_id), fetch=True
+            )
+        elif role == 'nurse':
+            res = db.execute_query(
+                """SELECT COUNT(*) AS unread_count 
+                   FROM notifications n
+                   LEFT JOIN patients p ON n.patient_id = p.patient_id
+                   WHERE n.user_id = %s AND n.is_read = FALSE
+                     AND (n.patient_id IS NULL OR p.assigned_nurse = %s)""",
                 (user_id, user_id), fetch=True
             )
         else:

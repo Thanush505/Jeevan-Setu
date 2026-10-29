@@ -78,28 +78,41 @@ def get_current_request_user():
             from services.auth_service import AuthService
             payload, err = AuthService.decode_access_token(token)
             if not err and payload:
+                sub = payload.get('sub')
+                uid = int(sub) if sub is not None and str(sub).isdigit() else 1
                 class TokenUser:
-                    id = payload.get('sub') or 1
-                    user_id = payload.get('sub') or 1
+                    id = uid
+                    user_id = uid
                     role = payload.get('role', 'doctor')
                     username = payload.get('username', 'clinician')
+                    patient_id = payload.get('patient_id')
+                    is_authenticated = True
                 return TokenUser()
         except Exception:
             pass
+        return None
 
+    # Check Flask-Login current_user
     try:
-        user = get_current_authenticated_user()
-        if user:
-            return user
+        from flask_login import current_user
+        if current_user and current_user.is_authenticated:
+            return current_user
     except Exception:
         pass
 
-    class DefaultUser:
-        id = 1
-        user_id = 1
-        role = 'doctor'
-        username = 'clinician'
-    return DefaultUser()
+    # Check Flask session
+    try:
+        from flask import session
+        uid = session.get('user_id')
+        if uid:
+            from models.user_model import User
+            user = User.get_by_id(uid)
+            if user:
+                return user
+    except Exception:
+        pass
+
+    return None
 
 
 chatbot_bp = Blueprint('chatbot', __name__)
@@ -270,7 +283,7 @@ def chatbot_query():
 @permission_required('use_chatbot')
 def search_patients_endpoint():
     """Search patients by name or ID for chatbot selection without data leakage."""
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     query = request.args.get('query') or request.args.get('q') or ''
     match_type, patients = search_patients_for_chat(query)
 
@@ -297,7 +310,7 @@ def search_patients_endpoint():
 @permission_required('use_chatbot')
 def get_patient_summary_endpoint(patient_id):
     """Retrieve 6-section structured clinical summary."""
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     is_auth, err_msg = verify_user_patient_access(user, patient_id)
     if not is_auth:
         return jsonify({'success': False, 'error': err_msg or 'Access forbidden: Unauthorized patient.'}), 403
@@ -331,7 +344,7 @@ def get_patient_summary_endpoint(patient_id):
 @permission_required('use_chatbot')
 def get_patient_vitals_endpoint(patient_id):
     """Retrieve current and historical vitals telemetry."""
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     is_auth, err_msg = verify_user_patient_access(user, patient_id)
     if not is_auth:
         return jsonify({'success': False, 'error': err_msg or 'Access forbidden: Unauthorized patient.'}), 403
@@ -355,7 +368,7 @@ def get_patient_vitals_endpoint(patient_id):
 @permission_required('use_chatbot')
 def get_patient_trends_endpoint(patient_id):
     """Retrieve vital parameters trend analysis."""
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     is_auth, err_msg = verify_user_patient_access(user, patient_id)
     if not is_auth:
         return jsonify({'success': False, 'error': err_msg or 'Access forbidden: Unauthorized patient.'}), 403
@@ -376,7 +389,7 @@ def get_patient_trends_endpoint(patient_id):
 @permission_required('use_chatbot')
 def get_patient_decisions_endpoint(patient_id):
     """Retrieve transfer recommendation, explainability, and clinician override history."""
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     is_auth, err_msg = verify_user_patient_access(user, patient_id)
     if not is_auth:
         return jsonify({'success': False, 'error': err_msg or 'Access forbidden: Unauthorized patient.'}), 403
@@ -406,7 +419,7 @@ def get_patient_decisions_endpoint(patient_id):
 @permission_required('use_chatbot')
 def get_patient_context(patient_id):
     """Retrieve verified factual clinical context for a specific patient."""
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     is_auth, err_msg = verify_user_patient_access(user, patient_id)
     if not is_auth:
         return jsonify({'success': False, 'error': err_msg or 'Access forbidden: Unauthorized patient.'}), 403
@@ -432,7 +445,7 @@ def get_patient_context(patient_id):
 @permission_required('use_chatbot')
 def get_patient_chat_history(patient_id):
     """Get conversation history for a specific patient."""
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     is_auth, err_msg = verify_user_patient_access(user, patient_id)
     if not is_auth:
         return jsonify({'success': False, 'error': err_msg or 'Access forbidden.'}), 403
@@ -451,7 +464,7 @@ def get_patient_chat_history(patient_id):
 @permission_required('use_chatbot')
 def get_user_chat_history():
     """Get conversation history for the current authenticated user."""
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
     limit = request.args.get('limit', 20, type=int)
     history = ChatbotConversation.get_history(user.id if user else 1, limit=limit)
     return jsonify({
@@ -468,6 +481,8 @@ def get_user_chat_history():
 @permission_required('use_chatbot')
 def chatbot_page():
     """Render the clinical assistant chatbot UI interface."""
-    user = get_current_authenticated_user()
+    user = get_current_request_user()
+    if user and getattr(user, 'role', '') == 'nurse':
+        return redirect('/Nurse/Nurse_patient_summary_ai/Nurse_patient_summary_ai.html')
     history = ChatbotConversation.get_history(user.id if user else 1, limit=20)
-    return render_template('Doctor_patient_summary_ai.html', history=history)
+    return render_template('Doctor/Doctor_patient_summary_ai/Doctor_patient_summary_ai.html', history=history)

@@ -152,9 +152,9 @@
 </header>
 <!-- END: Top Navbar -->
 <!-- BEGIN: Dashboard Content Grid -->
-<div class="p-8 space-y-8">
+<div class="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
 <!-- BEGIN: Page Header & Date -->
-<div class="flex justify-between items-center">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
 <div>
 <h2 class="text-2xl font-bold text-slate-800">Dashboard Overview</h2>
 <p class="text-sm text-slate-500">Welcome back, Admin! Here's what's happening in your system.</p>
@@ -280,7 +280,7 @@ Attendant Portal requests
 <!-- END: Stats Summary Row -->
 
 <!-- BEGIN: Main Dashboard Grid -->
-<div class="grid grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 <!-- Patient Status Distribution -->
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
 <h3 class="font-bold text-slate-800 mb-6">Patient Status Distribution</h3>
@@ -437,14 +437,14 @@ Attendant Portal requests
 <a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="#">View all alerts →</a>
 </div>
 </div>
-<div class="grid grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 <!-- Beds Overview -->
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
 <div class="flex items-center justify-between mb-6">
 <h3 class="font-bold text-slate-800">Beds Overview</h3>
 <a class="text-xs font-bold text-blue-600" href="#">View All Beds →</a>
 </div>
-<table class="w-full text-left text-xs">
+<div class="overflow-x-auto"><table class="w-full text-left text-xs">
 <thead>
 <tr class="text-slate-400 font-bold uppercase tracking-wider">
 <th class="pb-4">Unit</th>
@@ -504,7 +504,7 @@ Attendant Portal requests
 </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
 <!-- Transfers Summary -->
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
@@ -584,14 +584,14 @@ Attendant Portal requests
 </div>
 </div>
 </div>
-<div class="grid grid-cols-5 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
 <!-- Recent Patients Table -->
-<div class="col-span-3 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="lg:col-span-3 bg-white p-4 sm:p-6 rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 <div class="flex items-center justify-between mb-6">
 <h3 class="font-bold text-slate-800">Recent Patients</h3>
 <a class="text-xs font-bold text-blue-600" href="#">View All →</a>
 </div>
-<table class="w-full text-left text-xs">
+<div class="overflow-x-auto"><table class="w-full text-left text-xs">
 <thead>
 <tr class="text-slate-400 font-bold uppercase tracking-wider">
 <th class="pb-4">Patient ID</th>
@@ -656,14 +656,14 @@ Attendant Portal requests
 <td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
 <!-- Recent Transfers Table -->
-<div class="col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+<div class="lg:col-span-2 bg-white p-4 sm:p-6 rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 <div class="flex items-center justify-between mb-6">
 <h3 class="font-bold text-slate-800">Recent Transfers</h3>
 </div>
-<table class="w-full text-left text-xs">
+<div class="overflow-x-auto"><table class="w-full text-left text-xs">
 <thead>
 <tr class="text-slate-400 font-bold uppercase tracking-wider">
 <th class="pb-4">Transfer ID</th>
@@ -716,7 +716,7 @@ Attendant Portal requests
 <td class="py-4">3 hr ago</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
 </div>
 <!-- Footer -->
@@ -763,4 +763,4 @@ Attendant Portal requests
   setInterval(loadAssistanceRequestStats, 15000);
 </script>
 <script src="../admin_navigation.js"></script>
-</body></html>
+</body></html>

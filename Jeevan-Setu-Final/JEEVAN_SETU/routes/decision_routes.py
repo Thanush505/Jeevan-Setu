@@ -246,18 +246,20 @@ def approve_decision(recommendation_id):
         description=f"Approved transfer recommendation #{recommendation_id} for patient {patient.get('name')} by Dr. {doctor_name}"
     )
 
-    # 5. Notify Nurse of approval
+    # 5. Notify assigned nurse of approval
     try:
-        Notification.broadcast_to_role(
-            role='nurse',
-            title=f"[TRANSFER APPROVED] {patient.get('name')}",
-            message=f"Transfer recommendation for {patient.get('name')} (#{patient.get('patient_code', '')}) has been approved by Dr. {doctor_name}.",
-            notif_type='TRANSFER',
-            patient_id=patient_id,
-            severity='TRANSFER'
-        )
+        assigned_nurse = patient.get('assigned_nurse')
+        if assigned_nurse:
+            Notification.create(
+                user_id=assigned_nurse,
+                title=f"[TRANSFER APPROVED] {patient.get('name')}",
+                message=f"Transfer recommendation for {patient.get('name')} (#{patient.get('patient_code', '')}) has been approved by Dr. {doctor_name}.",
+                notif_type='TRANSFER',
+                patient_id=patient_id,
+                severity='TRANSFER'
+            )
     except Exception as e:
-        print(f"[DECISION APPROVE] Warning broadcasting nurse notification: {e}")
+        print(f"[DECISION APPROVE] Warning notifying nurse: {e}")
 
     return jsonify({
         'success': True,
@@ -351,16 +353,18 @@ def reject_decision(recommendation_id):
     )
 
     try:
-        Notification.broadcast_to_role(
-            role='nurse',
-            title=f"[TRANSFER REJECTED] {patient.get('name')}",
-            message=f"Transfer recommendation for {patient.get('name')} was rejected by Dr. {doctor_name}. Remarks: {remarks}",
-            notif_type='TRANSFER',
-            patient_id=patient_id,
-            severity='WARNING'
-        )
+        assigned_nurse = patient.get('assigned_nurse')
+        if assigned_nurse:
+            Notification.create(
+                user_id=assigned_nurse,
+                title=f"[TRANSFER REJECTED] {patient.get('name')}",
+                message=f"Transfer recommendation for {patient.get('name')} was rejected by Dr. {doctor_name}. Remarks: {remarks}",
+                notif_type='TRANSFER',
+                patient_id=patient_id,
+                severity='WARNING'
+            )
     except Exception as e:
-        print(f"[DECISION REJECT] Warning broadcasting nurse notification: {e}")
+        print(f"[DECISION REJECT] Warning notifying nurse: {e}")
 
     return jsonify({
         'success': True,
@@ -409,18 +413,20 @@ def request_info_decision(recommendation_id):
 
     doctor_name = getattr(user, 'full_name', 'Doctor')
 
-    # Record notification for nurses
+    # Record notification for assigned nurse
     try:
-        Notification.broadcast_to_role(
-            role='nurse',
-            title=f"[INFO REQUEST] {patient.get('name')}",
-            message=f"Dr. {doctor_name} requested clinical details for patient {patient.get('name')} (#{patient.get('patient_code', '')}): {message}",
-            notif_type='ALERT',
-            patient_id=patient_id,
-            severity='INFO'
-        )
+        assigned_nurse = patient.get('assigned_nurse')
+        if assigned_nurse:
+            Notification.create(
+                user_id=assigned_nurse,
+                title=f"[INFO REQUEST] {patient.get('name')}",
+                message=f"Dr. {doctor_name} requested clinical details for patient {patient.get('name')} (#{patient.get('patient_code', '')}): {message}",
+                notif_type='ALERT',
+                patient_id=patient_id,
+                severity='INFO'
+            )
     except Exception as e:
-        print(f"[REQUEST INFO] Warning broadcasting notification: {e}")
+        print(f"[REQUEST INFO] Warning notifying nurse: {e}")
 
     AuditLog.log(
         action='request_info',

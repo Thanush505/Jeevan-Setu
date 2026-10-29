@@ -264,3 +264,15 @@ body {
   border-color: #22c55e;
 }
 
+
+@media (max-width: 640px) {
+  .vital-val {
+    font-size: 1.85rem;
+  }
+  .vital-tile {
+    padding: 0.75rem 0.9rem;
+  }
+  .scenario-transition-box {
+    min-width: 200px;
+  }
+}

@@ -195,8 +195,8 @@
 </button>
 <h2 class="font-bold text-lg">Dashboard</h2>
 </div>
-<div class="flex items-center space-x-8">
-<div class="flex items-center text-gray-500 space-x-2 text-sm font-medium">
+<div class="flex items-center space-x-2 sm:space-x-4 lg:space-x-8">
+<div class="hidden md:flex items-center text-gray-500 space-x-2 text-sm font-medium">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
 <span class="">21 May 2025 | 10:45 AM</span>
 </div>
@@ -206,7 +206,7 @@
 <option>HDU - Cardiac</option>
 </select>
 </div>
-<div class="flex items-center space-x-3 border-l pl-8">
+<div class="flex items-center space-x-2 sm:space-x-3 border-l pl-2 sm:pl-4 lg:pl-8">
 <div class="text-right">
 <p class="text-sm font-bold"><span id="header-doctor-name" class="doctor-profile-name">Dr. Arjun Mehta</span></p>
 <p class="text-[11px] text-gray-500"><span id="header-doctor-dept" class="doctor-profile-dept">Consultant Intensivist</span></p>
@@ -222,7 +222,7 @@
 <!-- END: TopHeader -->
 <div class="p-4 space-y-4">
 <!-- BEGIN: StatsGrid -->
-<section class="grid grid-cols-6 gap-4" data-purpose="dashboard-stats">
+<section class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4" data-purpose="dashboard-stats">
 <!-- Stat Card 1 -->
 <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3">
 <div class="flex items-center space-x-3 mb-2">
@@ -321,18 +321,18 @@
 </div>
 </section>
 <!-- END: StatsGrid -->
-<div class="grid grid-cols-12 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 <!-- BEGIN: LeftContentColumn -->
-<div class="col-span-8 space-y-6">
+<div class="lg:col-span-8 space-y-6">
 <!-- Patient Monitoring Overview -->
 <section class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-purpose="monitoring-table">
-<div class="p-4 border-b flex items-center justify-between">
+<div class="p-4 border-b flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
 <h3 class="font-bold text-gray-800">Patient Monitoring Overview</h3>
 <div class="relative">
 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
 <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
 </span>
-<input id="doctor-search-input" class="text-sm border-gray-200 rounded-lg pl-10 pr-3 py-1 w-64 focus:ring-blue-500 focus:border-blue-500" placeholder="Search patient name, ID, bed..." type="text"/>
+<input id="doctor-search-input" class="text-sm border-gray-200 rounded-lg pl-10 pr-3 py-1 w-full sm:w-64 focus:ring-blue-500 focus:border-blue-500" placeholder="Search patient name, ID, bed..." type="text"/>
 </div>
 </div>
 <div class="overflow-x-auto">
@@ -377,7 +377,7 @@
 </div>
 </section>
 <!-- Charts Row -->
-<div class="grid grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <!-- EWS Trend Line Chart Placeholder -->
 <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm col-span-1">
 <h4 class="font-bold text-gray-800 text-sm mb-4">EWS Trend (Last 24 Hours)</h4>
@@ -455,7 +455,7 @@
 </div>
 </div>
 <!-- Bottom Summary Panels -->
-<div class="grid grid-cols-3 gap-6 pb-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6">
 <!-- Recent Explanations -->
 <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
 <div class="flex justify-between items-center mb-4">
@@ -541,7 +541,7 @@
 </div>
 <!-- END: LeftContentColumn -->
 <!-- BEGIN: RightContentColumn -->
-<div class="col-span-4 space-y-6">
+<div class="lg:col-span-4 space-y-6">
 <!-- Critical Alerts -->
 <section class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden" data-purpose="critical-alerts">
 <div class="border-b flex items-center justify-between bg-red-50/30 p-3">

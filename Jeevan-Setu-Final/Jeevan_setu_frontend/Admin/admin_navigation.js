@@ -246,6 +246,10 @@
                     width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
       }
       @media (max-width: 1024px) {
+        html, body {
+          max-width: 100vw;
+          overflow-x: hidden;
+        }
         aside[data-purpose="sidebar"],
         aside.w-64,
         aside {
@@ -254,7 +258,10 @@
           left: 0 !important;
           top: 0 !important;
           bottom: 0 !important;
-          z-index: 50 !important;
+          height: 100dvh !important;
+          z-index: 60 !important;
+          width: 16rem !important;
+          max-width: 82vw !important;
         }
         body.sidebar-mobile-open aside[data-purpose="sidebar"],
         body.sidebar-mobile-open aside.w-64,
@@ -262,15 +269,53 @@
           transform: translateX(0) !important;
           width: 16rem !important;
           min-width: 16rem !important;
-          max-width: 16rem !important;
+          max-width: 82vw !important;
           opacity: 1 !important;
           pointer-events: auto !important;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
         }
-        .pl-64 {
+        .pl-64, .md\:pl-64, .lg\:pl-64 {
           padding-left: 0 !important;
         }
-        .left-64 {
+        .left-64, header.left-64, header.fixed {
           left: 0 !important;
+        }
+        .admin-top-header {
+          padding-left: 0.75rem !important;
+          padding-right: 0.75rem !important;
+        }
+      }
+      @media (max-width: 640px) {
+        #admin-notifications-dropdown,
+        #admin-messages-dropdown,
+        #admin-profile-dropdown,
+        #admin-search-results-dropdown {
+          position: fixed !important;
+          left: 12px !important;
+          right: 12px !important;
+          top: 68px !important;
+          width: calc(100vw - 24px) !important;
+          max-width: calc(100vw - 24px) !important;
+        }
+        .admin-ctrl-k-badge {
+          display: none !important;
+        }
+        #admin-fullscreen-btn {
+          display: none !important;
+        }
+        .grid-cols-12 > .col-span-8,
+        .grid-cols-12 > .col-span-4,
+        .grid-cols-12 > .col-span-7,
+        .grid-cols-12 > .col-span-5,
+        .grid-cols-12 > .col-span-6 {
+          grid-column: span 12 / span 12 !important;
+        }
+        .grid-cols-5:not(.sm\:grid-cols-5):not(.md\:grid-cols-5):not(.lg\:grid-cols-5),
+        .grid-cols-4:not(.sm\:grid-cols-4):not(.md\:grid-cols-4):not(.lg\:grid-cols-4) {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+        .grid-cols-3:not(.sm\:grid-cols-3):not(.md\:grid-cols-3):not(.lg\:grid-cols-3) {
+          grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
         }
       }
     `;
@@ -284,7 +329,7 @@
     aside.setAttribute('data-purpose', 'sidebar');
     aside.classList.add('sidebar-transition');
 
-    // Ensure Admin Brand Header has the official logo
+    // Ensure Admin Brand Header has the official logo & mobile close button
     const brandContainer = aside.querySelector('.p-6.flex.items-center, .p-4.flex.items-center');
     if (brandContainer) {
       const logoBox = brandContainer.querySelector('div:first-child');
@@ -292,7 +337,43 @@
         logoBox.className = 'w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0';
         logoBox.innerHTML = `<img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">`;
       }
+      if (!brandContainer.querySelector('#admin-sidebar-close-btn')) {
+        brandContainer.classList.add('justify-between');
+        const closeBtn = document.createElement('button');
+        closeBtn.id = 'admin-sidebar-close-btn';
+        closeBtn.type = 'button';
+        closeBtn.className = 'lg:hidden text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer ml-auto';
+        closeBtn.setAttribute('aria-label', 'Close sidebar');
+        closeBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>`;
+        closeBtn.addEventListener('click', () => {
+          document.body.classList.remove('sidebar-mobile-open');
+          const bd = document.getElementById('admin-sidebar-backdrop');
+          if (bd) bd.classList.add('hidden');
+        });
+        brandContainer.appendChild(closeBtn);
+      }
     }
+
+    // Ensure mobile backdrop exists
+    let backdrop = document.getElementById('admin-sidebar-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.id = 'admin-sidebar-backdrop';
+      backdrop.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 lg:hidden hidden transition-opacity';
+      backdrop.addEventListener('click', () => {
+        document.body.classList.remove('sidebar-mobile-open');
+        backdrop.classList.add('hidden');
+      });
+      document.body.appendChild(backdrop);
+    }
+
+    // Wrap any unwrapped tables in overflow-x-auto
+    document.querySelectorAll('table').forEach(tbl => {
+      const parent = tbl.parentElement;
+      if (parent && !parent.classList.contains('overflow-x-auto') && !parent.classList.contains('overflow-auto')) {
+        parent.classList.add('overflow-x-auto');
+      }
+    });
 
 
     const nav = aside.querySelector('nav');
@@ -557,7 +638,9 @@
     if (sidebarToggle) {
       sidebarToggle.addEventListener('click', () => {
         if (window.innerWidth <= 1024) {
-          document.body.classList.toggle('sidebar-mobile-open');
+          const isOpen = document.body.classList.toggle('sidebar-mobile-open');
+          const bd = document.getElementById('admin-sidebar-backdrop');
+          if (bd) bd.classList.toggle('hidden', !isOpen);
         } else {
           document.body.classList.toggle('sidebar-collapsed');
           const isCollapsed = document.body.classList.contains('sidebar-collapsed');

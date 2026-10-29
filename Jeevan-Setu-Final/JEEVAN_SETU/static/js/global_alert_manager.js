@@ -289,6 +289,40 @@
                 background: #064e3b22;
                 border: 1px solid #05966944;
             }
+            @media (max-width: 640px) {
+                #jeevan-setu-global-overlay-root {
+                    top: 10px;
+                    right: 10px;
+                    left: 10px;
+                    width: calc(100vw - 20px);
+                    max-width: calc(100vw - 20px);
+                    max-height: calc(100dvh - 20px);
+                    overflow-y: auto;
+                    gap: 10px;
+                }
+                .js-alert-header {
+                    padding: 10px 12px;
+                }
+                .js-alert-body {
+                    padding: 12px;
+                    gap: 10px;
+                }
+                .js-alert-patient-box {
+                    padding: 10px 12px;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                }
+                .js-alert-actions {
+                    flex-wrap: wrap;
+                    justify-content: stretch;
+                }
+                .js-alert-actions .js-btn {
+                    flex: 1 1 auto;
+                    justify-content: center;
+                    padding: 8px 10px;
+                }
+            }
+
         
         `;
         document.head.appendChild(style);

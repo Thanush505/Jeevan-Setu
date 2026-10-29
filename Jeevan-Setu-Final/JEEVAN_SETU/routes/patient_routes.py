@@ -197,7 +197,7 @@ def get_patient(patient_id):
         return redirect(url_for('patient.dashboard'))
 
     # Strict Doctor and Nurse IDOR check
-    if user_role == 'doctor' and patient.get('assigned_doctor') and int(patient.get('assigned_doctor')) != int(user_id):
+    if user_role == 'doctor' and (not patient.get('assigned_doctor') or int(patient.get('assigned_doctor')) != int(user_id)):
         AuditLog.log(
             'UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
             user_id=user_id,
@@ -209,7 +209,7 @@ def get_patient(patient_id):
             'success': False,
             'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'
         }), 403
-    elif user_role == 'nurse' and patient.get('assigned_nurse') and int(patient.get('assigned_nurse')) != int(user_id):
+    elif user_role == 'nurse' and (not patient.get('assigned_nurse') or int(patient.get('assigned_nurse')) != int(user_id)):
         AuditLog.log(
             'UNAUTHORIZED_PATIENT_ACCESS_ATTEMPT',
             user_id=user_id,
@@ -723,6 +723,19 @@ def get_patient_history(patient_id):
     """
     Get comprehensive clinical history timeline: vitals, EWS, transfers, beds, alerts.
     """
+    user = get_current_authenticated_user()
+    user_role = getattr(user, 'role', '').lower() if user else ''
+    user_id = getattr(user, 'id', getattr(user, 'user_id', None)) if user else None
+
+    patient = Patient.get_by_id(patient_id)
+    if not patient:
+        return jsonify({'success': False, 'error': f'Patient with ID {patient_id} not found'}), 404
+
+    if user_role == 'doctor' and (not patient.get('assigned_doctor') or int(patient.get('assigned_doctor')) != int(user_id)):
+        return jsonify({'success': False, 'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'}), 403
+    elif user_role == 'nurse' and (not patient.get('assigned_nurse') or int(patient.get('assigned_nurse')) != int(user_id)):
+        return jsonify({'success': False, 'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'}), 403
+
     history = Patient.get_history_timeline(patient_id)
     if not history:
         return jsonify({'success': False, 'error': f'Patient with ID {patient_id} not found'}), 404
@@ -745,6 +758,15 @@ def get_patient_transfers(patient_id):
     patient = Patient.get_by_id(patient_id)
     if not patient:
         return jsonify({'success': False, 'error': f'Patient with ID {patient_id} not found'}), 404
+
+    user = get_current_authenticated_user()
+    user_role = getattr(user, 'role', '').lower() if user else ''
+    user_id = getattr(user, 'id', getattr(user, 'user_id', None)) if user else None
+
+    if user_role == 'doctor' and (not patient.get('assigned_doctor') or int(patient.get('assigned_doctor')) != int(user_id)):
+        return jsonify({'success': False, 'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'}), 403
+    elif user_role == 'nurse' and (not patient.get('assigned_nurse') or int(patient.get('assigned_nurse')) != int(user_id)):
+        return jsonify({'success': False, 'error': 'Permission denied: Access forbidden. You are not assigned to this patient.'}), 403
 
     from models.transfer_model import Transfer
     transfers = Transfer.get_by_patient(patient_id)

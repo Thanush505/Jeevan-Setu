@@ -470,14 +470,16 @@ def request_info_transfer(transfer_id):
 
     doctor_name = getattr(user, 'full_name', 'Doctor')
     try:
-        Notification.broadcast_to_role(
-            role='nurse',
-            title=f"[INFO REQUEST] {patient.get('name') if patient else 'Patient'}",
-            message=f"Dr. {doctor_name} requested clinical details for patient {patient.get('name') if patient else ''}: {message}",
-            notif_type='ALERT',
-            patient_id=patient_id,
-            severity='INFO'
-        )
+        assigned_nurse = patient.get('assigned_nurse') if patient else None
+        if assigned_nurse:
+            Notification.create(
+                user_id=assigned_nurse,
+                title=f"[INFO REQUEST] {patient.get('name') if patient else 'Patient'}",
+                message=f"Dr. {doctor_name} requested clinical details for patient {patient.get('name') if patient else ''}: {message}",
+                notif_type='ALERT',
+                patient_id=patient_id,
+                severity='INFO'
+            )
     except Exception as e:
         print(f"[TRANSFER REQUEST INFO] Warning: {e}")
 

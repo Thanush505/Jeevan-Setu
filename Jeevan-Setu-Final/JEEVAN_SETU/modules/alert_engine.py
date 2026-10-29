@@ -277,7 +277,7 @@ def check_and_generate_prolonged_transfer_alerts(patient_id=None, waiting_period
             threshold=float(waiting_period_minutes)
         )
 
-        # Targeted Notification: Assigned Doctor (with approval action), Nurse (view-only notification)
+        # Targeted Notification: Only patient's assigned doctor & assigned nurse
         try:
             assigned_doc = rec.get('assigned_doctor')
             if assigned_doc:
@@ -291,23 +291,36 @@ def check_and_generate_prolonged_transfer_alerts(patient_id=None, waiting_period
                 )
             else:
                 Notification.broadcast_to_role(
-                    role='doctor',
-                    title=f"[TRANSFER APPROVAL REQUIRED] {p_name}",
+                    role='admin',
+                    title=f"[TRANSFER APPROVAL REQUIRED - UNASSIGNED DOCTOR] {p_name}",
                     message=message,
                     notif_type='TRANSFER_READY',
                     patient_id=p_id,
                     severity='TRANSFER'
                 )
-            Notification.broadcast_to_role(
-                role='nurse',
-                title=f"[TRANSFER PENDING DOCTOR APPROVAL] {p_name}",
-                message=f"Patient {p_name} is Ready to Transfer ({time_str}). Waiting for attending doctor approval.",
-                notif_type='TRANSFER_READY',
-                patient_id=p_id,
-                severity='TRANSFER'
-            )
+
+            assigned_nurse = rec.get('assigned_nurse')
+            if assigned_nurse:
+                Notification.create(
+                    user_id=assigned_nurse,
+                    title=f"[TRANSFER PENDING DOCTOR APPROVAL] {p_name}",
+                    message=f"Patient {p_name} is Ready to Transfer ({time_str}). Waiting for attending doctor approval.",
+                    notif_type='TRANSFER_READY',
+                    patient_id=p_id,
+                    severity='TRANSFER'
+                )
+            else:
+                # If unassigned nurse, escalate to admin rather than broadcasting to all nurses
+                Notification.broadcast_to_role(
+                    role='admin',
+                    title=f"[TRANSFER PENDING - UNASSIGNED NURSE] {p_name}",
+                    message=f"Patient {p_name} is Ready to Transfer ({time_str}). No nurse currently assigned.",
+                    notif_type='TRANSFER_READY',
+                    patient_id=p_id,
+                    severity='TRANSFER'
+                )
         except Exception as e:
-            print(f"[ALERT ENGINE] Warning broadcasting transfer notification: {e}")
+            print(f"[ALERT ENGINE] Warning creating transfer notification: {e}")
 
         generated.append({
             'alert_id': alert_id,
@@ -357,13 +370,8 @@ def get_active_transfer_alerts_for_user(user=None, limit=20):
             where_clauses.append("p.assigned_doctor = %s")
             params.append(user_id)
         elif user_role == 'nurse' and user_id:
-            dept = getattr(user, 'department', None) if not isinstance(user, dict) else user.get('department')
-            if dept:
-                where_clauses.append("(p.assigned_nurse = %s OR p.assigned_nurse IS NULL OR p.ward_type = %s)")
-                params.extend([user_id, dept])
-            else:
-                where_clauses.append("(p.assigned_nurse = %s OR p.assigned_nurse IS NULL)")
-                params.append(user_id)
+            where_clauses.append("p.assigned_nurse = %s")
+            params.append(user_id)
 
     where_sql = " AND ".join(where_clauses)
     params.append(limit)

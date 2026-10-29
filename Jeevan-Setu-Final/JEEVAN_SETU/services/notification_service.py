@@ -78,7 +78,7 @@ class NotificationService:
             f"Doctor review & authorization required."
         )
 
-        # Targeted Notification: Only patient's assigned doctor receives approval alert
+        # Targeted Notification: Only patient's assigned doctor & assigned nurse receive notification
         assigned_doc = patient.get('assigned_doctor') if patient else None
         if assigned_doc:
             Notification.create(
@@ -91,21 +91,33 @@ class NotificationService:
             )
         else:
             Notification.broadcast_to_role(
-                role='doctor',
+                role='admin',
+                title=f"[UNASSIGNED DOCTOR] {title}",
+                message=message,
+                notif_type='TRANSFER_READY',
+                patient_id=patient_id,
+                severity='TRANSFER'
+            )
+
+        assigned_nurse = patient.get('assigned_nurse') if patient else None
+        if assigned_nurse:
+            Notification.create(
+                user_id=assigned_nurse,
                 title=title,
                 message=message,
                 notif_type='TRANSFER_READY',
                 patient_id=patient_id,
                 severity='TRANSFER'
             )
-        Notification.broadcast_to_role(
-            role='nurse',
-            title=title,
-            message=message,
-            notif_type='TRANSFER_READY',
-            patient_id=patient_id,
-            severity='TRANSFER'
-        )
+        else:
+            Notification.broadcast_to_role(
+                role='admin',
+                title=f"[UNASSIGNED NURSE] {title}",
+                message=message,
+                notif_type='TRANSFER_READY',
+                patient_id=patient_id,
+                severity='TRANSFER'
+            )
 
         return {
             'event': 'TRANSFER_READY',

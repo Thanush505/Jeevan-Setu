@@ -288,6 +288,14 @@ def create_app():
     def redirect_nurse_reports():
         return redirect('/Nurse/Nurse_dashboard/Nurse_dashboard.html')
 
+    @app.route('/Nurse/Nurse_patient_summary_ai')
+    @app.route('/Nurse_patient_summary_ai')
+    @app.route('/Nurse_patient_summary_ai/Nurse_patient_summary_ai.html')
+    @app.route('/nurse/patient-summary-ai')
+    @app.route('/nurse/summary')
+    def nurse_patient_summary_ai_direct():
+        return render_template('Nurse/Nurse_patient_summary_ai/Nurse_patient_summary_ai.html')
+
     # Universal 1-level route (e.g., /Doctor_all_patients/Doctor_all_patients.html, /Administrator_dashboard_/code.html)
     @app.route('/<page_name>/<filename>.html')
     def serve_single_level_page(page_name, filename):

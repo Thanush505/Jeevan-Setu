@@ -32,7 +32,7 @@ class TestDoctorApproveButtonAndNurseGuardrail(unittest.TestCase):
 
     def test_01_global_alert_manager_code_structure(self):
         """Verify global_alert_manager.js has role-aware actions and strict Nurse restrictions."""
-        js_path = r'd:\Major_Project\JSF\Jeevan-Setu-Final\Jeevan_setu_frontend\global_alert_manager.js'
+        js_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'Jeevan_setu_frontend', 'global_alert_manager.js')
         with open(js_path, 'r', encoding='utf-8') as f:
             js_content = f.read()
 

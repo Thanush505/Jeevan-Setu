@@ -66,11 +66,22 @@ def attendant_create_assistance_request():
             'error': f"Patient '{patient.get('name')}' is no longer admitted. Assistance requests can only be placed for admitted patients."
         }), 403
 
-    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    # Step 1: Resolve assigned nurse automatically from authoritative patient record
+    assigned_nurse_id = patient.get('assigned_nurse')
+    if not assigned_nurse_id:
+        return jsonify({
+            'success': False,
+            'error': 'No nurse assignment was found for this patient. Please contact hospital staff directly.',
+            'nurse_assigned': False
+        }), 400
 
-    category = data.get('category')
-    if not category:
-        return jsonify({'success': False, 'error': 'Request category is required.'}), 400
+    from models.user_model import User
+    assigned_nurse_user = User.get_by_id(assigned_nurse_id)
+    nurse_name = assigned_nurse_user.full_name if assigned_nurse_user else f"Nurse #{assigned_nurse_id}"
+
+    # Step 2: Handle default category and description server-side (no manual popup required)
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    category = data.get('category') or 'Request nursing assistance'
 
     raw_description = data.get('description')
     clean_description = None
@@ -83,6 +94,8 @@ def attendant_create_assistance_request():
             }), 400
         if raw_stripped:
             clean_description = sanitize_input(raw_stripped)
+    if not clean_description:
+        clean_description = 'Attendant requested bedside assistance.'
 
     try:
         new_request = AssistanceRequest.create(
@@ -94,7 +107,7 @@ def attendant_create_assistance_request():
     except ValueError as ve:
         return jsonify({'success': False, 'error': str(ve)}), 400
     except Exception as e:
-        return jsonify({'success': False, 'error': 'An internal error occurred while creating the request.'}), 500
+        return jsonify({'success': False, 'error': 'Unable to send your request. Please try again or contact hospital staff directly.'}), 500
 
     req_id = new_request['request_id']
     req_cat = new_request['category']
@@ -103,19 +116,21 @@ def attendant_create_assistance_request():
     ward = new_request.get('ward_type', patient.get('ward_type', 'ICU'))
     bed = new_request.get('bed_number', patient.get('bed_number', ''))
 
-    # Dispatch notification to nursing staff
-    try:
-        notif_severity = 'HIGH' if 'nursing' in req_cat.lower() else 'INFO'
-        Notification.broadcast_to_role(
-            role='nurse',
-            title=f"Assistance Request #{req_id}: {req_cat}",
-            message=f"Patient {p_name} ({p_code}) in {ward} Bed {bed}: {req_cat}. Requested by {attendant_name}.",
-            notif_type='alert',
-            patient_id=patient_id,
-            severity=notif_severity
-        )
-    except Exception:
-        pass
+    # Step 3: Dispatch notification strictly to the assigned nurse (prevent duplicate alerts)
+    if not new_request.get('is_duplicate'):
+        try:
+            nurse_title = f"[Assistance Request] Patient {p_name} ({p_code})"
+            nurse_message = f"Attendant requested assistance for Patient {p_name} ({p_code}) in {ward} Bed {bed}. Requested by {attendant_name}."
+            Notification.create(
+                user_id=assigned_nurse_id,
+                title=nurse_title,
+                message=nurse_message,
+                notif_type='alert',
+                patient_id=patient_id,
+                severity='HIGH'
+            )
+        except Exception as ne:
+            print(f"[ASSISTANCE NOTIF ERROR] {ne}")
 
     # Record Audit Log
     try:
@@ -128,17 +143,24 @@ def attendant_create_assistance_request():
                 'request_id': req_id,
                 'patient_id': patient_id,
                 'category': req_cat,
-                'attendant_name': attendant_name
+                'attendant_name': attendant_name,
+                'assigned_nurse_id': assigned_nurse_id
             },
             ip_address=request.remote_addr,
-            description=f"Attendant '{attendant_name}' submitted assistance request #{req_id} for Patient #{patient_id} ({req_cat})"
+            description=f"Attendant '{attendant_name}' created assistance request #{req_id} routed to Nurse '{nurse_name}' for Patient #{patient_id}"
         )
     except Exception:
         pass
 
     return jsonify({
         'success': True,
-        'message': 'Your assistance request has been submitted.',
+        'message': 'Assistance request sent to your assigned nurse.',
+        'request_id': req_id,
+        'status': new_request.get('status', 'pending'),
+        'assigned_nurse_id': assigned_nurse_id,
+        'assigned_nurse_name': nurse_name,
+        'patient_id': patient_id,
+        'is_duplicate': bool(new_request.get('is_duplicate', False)),
         'request': new_request
     }), 201
 
@@ -299,13 +321,18 @@ def staff_list_assistance_requests():
         limit = 100
         offset = 0
 
+    nurse_scope = user.id if role == 'nurse' else None
+    doc_scope = user.id if role == 'doctor' else None
+
     requests_list = AssistanceRequest.get_for_staff(
         status=status_filter,
         ward=ward_filter,
         patient_id=patient_id_filter,
         q=query_filter,
         limit=limit,
-        offset=offset
+        offset=offset,
+        nurse_id=nurse_scope,
+        doctor_id=doc_scope
     )
 
     return jsonify({

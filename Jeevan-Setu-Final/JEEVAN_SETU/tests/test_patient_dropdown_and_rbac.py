@@ -40,11 +40,14 @@ from models.user_model import User
 class TestPatientDropdownAndRBAC(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "http://localhost:6060"
+        self.base_url = "http://127.0.0.1:5000"
+        doc = User.get_by_id(2)
+        tok = AuthService.generate_access_token(doc)['access_token']
+        self.auth_headers = {'Authorization': f'Bearer {tok}'}
 
     def test_01_chatbot_html_no_pdf_button_and_has_dropdown(self):
         """Verify PDF Report button is removed and patient dropdown container exists in /chatbot HTML."""
-        req = urllib.request.Request(f"{self.base_url}/chatbot")
+        req = urllib.request.Request(f"{self.base_url}/chatbot", headers=self.auth_headers)
         with urllib.request.urlopen(req) as resp:
             html = resp.read().decode('utf-8')
 
@@ -62,7 +65,7 @@ class TestPatientDropdownAndRBAC(unittest.TestCase):
 
     def test_02_patient_list_endpoint_database_backed(self):
         """Verify /chatbot/patients returns database-backed patients with persisted EWS and vitals."""
-        req = urllib.request.Request(f"{self.base_url}/chatbot/patients")
+        req = urllib.request.Request(f"{self.base_url}/chatbot/patients", headers=self.auth_headers)
         with urllib.request.urlopen(req) as resp:
             self.assertEqual(resp.status, 200)
             data = json.loads(resp.read().decode('utf-8'))
@@ -84,7 +87,7 @@ class TestPatientDropdownAndRBAC(unittest.TestCase):
     def test_03_patient_context_switching_no_data_mixing(self):
         """Verify switching from Patient 1 to Patient 2 changes context strictly without data mixing."""
         # Patient 1 (Rajesh Kumar)
-        req1 = urllib.request.Request(f"{self.base_url}/chatbot/patient/1/summary")
+        req1 = urllib.request.Request(f"{self.base_url}/chatbot/patient/1/summary", headers=self.auth_headers)
         with urllib.request.urlopen(req1) as resp1:
             data1 = json.loads(resp1.read().decode('utf-8'))
             name1 = data1['context']['patient']['name']
@@ -92,7 +95,7 @@ class TestPatientDropdownAndRBAC(unittest.TestCase):
             diag1 = data1['context']['patient']['diagnosis']
 
         # Patient 2 (Anita Devi)
-        req2 = urllib.request.Request(f"{self.base_url}/chatbot/patient/2/summary")
+        req2 = urllib.request.Request(f"{self.base_url}/chatbot/patient/2/summary", headers=self.auth_headers)
         with urllib.request.urlopen(req2) as resp2:
             data2 = json.loads(resp2.read().decode('utf-8'))
             name2 = data2['context']['patient']['name']
@@ -105,7 +108,7 @@ class TestPatientDropdownAndRBAC(unittest.TestCase):
 
         # Test Chatbot Query for Patient 1
         body1 = json.dumps({'message': 'What is the patient diagnosis?', 'patient_id': 1}).encode('utf-8')
-        req_chat1 = urllib.request.Request(f"{self.base_url}/chatbot/message", data=body1, headers={'Content-Type': 'application/json'})
+        req_chat1 = urllib.request.Request(f"{self.base_url}/chatbot/message", data=body1, headers={**self.auth_headers, 'Content-Type': 'application/json'})
         with urllib.request.urlopen(req_chat1) as resp_chat1:
             res1 = json.loads(resp_chat1.read().decode('utf-8'))
             text1 = res1.get('text', res1.get('response', ''))
@@ -113,7 +116,7 @@ class TestPatientDropdownAndRBAC(unittest.TestCase):
 
         # Test Chatbot Query for Patient 2
         body2 = json.dumps({'message': 'What is the patient diagnosis?', 'patient_id': 2}).encode('utf-8')
-        req_chat2 = urllib.request.Request(f"{self.base_url}/chatbot/message", data=body2, headers={'Content-Type': 'application/json'})
+        req_chat2 = urllib.request.Request(f"{self.base_url}/chatbot/message", data=body2, headers={**self.auth_headers, 'Content-Type': 'application/json'})
         with urllib.request.urlopen(req_chat2) as resp_chat2:
             res2 = json.loads(resp_chat2.read().decode('utf-8'))
             text2 = res2.get('text', res2.get('response', ''))

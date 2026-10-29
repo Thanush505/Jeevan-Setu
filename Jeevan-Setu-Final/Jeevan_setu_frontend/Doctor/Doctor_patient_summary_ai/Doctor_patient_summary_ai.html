@@ -221,7 +221,7 @@
     <!-- MAIN CHAT INTERFACE -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
         <!-- TOP HEADER -->
-        <header class="bg-white border-b border-gray-200 px-6 py-3.5 flex items-center justify-between shadow-xs flex-shrink-0 z-10">
+        <header class="bg-white border-b border-gray-200 px-3 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-2 shadow-xs flex-shrink-0 z-10">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 font-bold shadow-xs">
                     <span class="material-symbols-outlined text-2xl">clinical_notes</span>
@@ -233,12 +233,12 @@
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 live-pulse"></span> LIVE TELEMETRY
                         </span>
                     </div>
-                    <p class="text-xs text-slate-500 font-medium">Real-time bedside vitals retrieval & explainable transfer decision support</p>
+                    <p class="hidden sm:block text-xs text-slate-500 font-medium">Real-time bedside vitals retrieval & explainable transfer decision support</p>
                 </div>
             </div>
 
             <!-- SEARCH PATIENT INPUT -->
-            <div class="relative w-96">
+            <div class="relative w-full sm:w-72 lg:w-96">
                 <div class="relative flex items-center">
                     <span class="material-symbols-outlined absolute left-3 text-gray-400 text-lg">search</span>
                     <input type="text" id="top-patient-search" placeholder="Search patient by name or ID (e.g. Rajesh Kumar)..." 
@@ -253,7 +253,7 @@
         </header>
 
         <!-- LIVE PATIENT TELEMETRY & MODE BAR -->
-        <div id="active-patient-bar" class="bg-[#0f172a] text-white px-6 py-2.5 flex items-center justify-between shadow-md flex-shrink-0 border-b border-slate-800 relative z-30">
+        <div id="active-patient-bar" class="bg-[#0f172a] text-white px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2 shadow-md flex-shrink-0 border-b border-slate-800 relative z-30">
             <div class="flex items-center space-x-3 flex-wrap">
                 
                 <!-- MODE TOGGLE CONTROLS -->
@@ -1054,6 +1054,8 @@
             const patient = authorizedPatients.find(p => String(p.patient_id || p.id) === String(pid));
             if (patient) {
                 selectPatient(patient, true);
+            } else {
+                appendMessage('bot', '⚠️ **Access Forbidden**: Patient #' + pid + ' is not assigned to your clinician account.');
             }
         }
 
@@ -1248,8 +1250,12 @@
         }
 
         function confirmShowSummary(patientId) {
-            activePatientId = patientId;
-            if (chatMode !== 'patient') setChatMode('patient');
+            const authP = authorizedPatients.find(p => String(p.patient_id || p.id) === String(patientId));
+            if (!authP) {
+                appendMessage('bot', '⚠️ **Access Forbidden**: You are not authorized to view clinical data for patient #' + patientId + '.');
+                return;
+            }
+            selectPatient(authP, false);
             sendMessage('Show complete patient summary');
         }
 
