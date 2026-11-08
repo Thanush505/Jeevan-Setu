@@ -1,108 +1,132 @@
 <!DOCTYPE html>
 
-<html lang="en"><head>
+<html lang="en">
+
+<head>
   <link rel="icon" type="image/png" href="/assets/jeevan_setu_logo.png">
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<style>
-        @layer base {
-            html, body { margin: 0; padding: 0; }
-            body { overscroll-behavior: none; }
-            main > :first-child { margin-top: 0 !important; }
-            main > :last-child { margin-bottom: 0 !important; }
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <style>
+    @layer base {
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overscroll-behavior: none;
+      }
+
+      main> :first-child {
+        margin-top: 0 !important;
+      }
+
+      main> :last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed": "#dbe1ff",
+            "outline-variant": "#c3c6d7",
+            "surface-container-lowest": "#ffffff",
+            "background": "#f9f9ff",
+            "on-tertiary-container": "#e9f0ff",
+            "inverse-primary": "#b4c5ff",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#f0f3ff",
+            "secondary-container": "#39b8fd",
+            "error": "#ba1a1a",
+            "secondary-fixed": "#c9e6ff",
+            "on-secondary-fixed-variant": "#004c6e",
+            "on-background": "#111c2d",
+            "surface-container": "#e7eeff",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed-dim": "#b7c8e1",
+            "inverse-surface": "#263143",
+            "on-error": "#ffffff",
+            "surface-bright": "#f9f9ff",
+            "secondary": "#006591",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed": "#d3e4fe",
+            "surface-container-high": "#dee8ff",
+            "primary-fixed-dim": "#b4c5ff",
+            "outline": "#737686",
+            "inverse-on-surface": "#ecf1ff",
+            "on-secondary-fixed": "#001e2f",
+            "tertiary-container": "#5e6e85",
+            "surface": "#ffffff",
+            "on-primary-fixed": "#00174b",
+            "tertiary": "#46566c",
+            "on-error-container": "#93000a",
+            "surface-container-highest": "#d8e3fb",
+            "on-surface": "#111c2d",
+            "on-tertiary-fixed": "#0b1c30",
+            "primary-container": "#2563eb",
+            "on-surface-variant": "#434655",
+            "on-tertiary-fixed-variant": "#38485d",
+            "on-secondary-container": "#004666",
+            "primary": "#004ac6",
+            "on-primary-container": "#eeefff",
+            "secondary-fixed-dim": "#89ceff",
+            "surface-variant": "#d8e3fb",
+            "surface-dim": "#cfdaf2",
+            "surface-tint": "#0053db",
+            "error-container": "#ffdad6",
+            "on-primary-fixed-variant": "#003ea8"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "md": "16px",
+            "margin-desktop": "32px",
+            "xl": "32px",
+            "base": "4px",
+            "sm": "8px",
+            "lg": "24px",
+            "margin-mobile": "16px",
+            "gutter": "16px",
+            "xs": "4px"
+          },
+          "fontFamily": {
+            "sans": ["Inter", "sans-serif"],
+            "body": ["Inter", "sans-serif"]
+          }
         }
-        ::-webkit-scrollbar { display: none; }
-    </style>
-<script src="https://cdn.tailwindcss.com"></script>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "primary-fixed": "#dbe1ff",
-                        "outline-variant": "#c3c6d7",
-                        "surface-container-lowest": "#ffffff",
-                        "background": "#f9f9ff",
-                        "on-tertiary-container": "#e9f0ff",
-                        "inverse-primary": "#b4c5ff",
-                        "on-primary": "#ffffff",
-                        "surface-container-low": "#f0f3ff",
-                        "secondary-container": "#39b8fd",
-                        "error": "#ba1a1a",
-                        "secondary-fixed": "#c9e6ff",
-                        "on-secondary-fixed-variant": "#004c6e",
-                        "on-background": "#111c2d",
-                        "surface-container": "#e7eeff",
-                        "on-secondary": "#ffffff",
-                        "tertiary-fixed-dim": "#b7c8e1",
-                        "inverse-surface": "#263143",
-                        "on-error": "#ffffff",
-                        "surface-bright": "#f9f9ff",
-                        "secondary": "#006591",
-                        "on-tertiary": "#ffffff",
-                        "tertiary-fixed": "#d3e4fe",
-                        "surface-container-high": "#dee8ff",
-                        "primary-fixed-dim": "#b4c5ff",
-                        "outline": "#737686",
-                        "inverse-on-surface": "#ecf1ff",
-                        "on-secondary-fixed": "#001e2f",
-                        "tertiary-container": "#5e6e85",
-                        "surface": "#ffffff",
-                        "on-primary-fixed": "#00174b",
-                        "tertiary": "#46566c",
-                        "on-error-container": "#93000a",
-                        "surface-container-highest": "#d8e3fb",
-                        "on-surface": "#111c2d",
-                        "on-tertiary-fixed": "#0b1c30",
-                        "primary-container": "#2563eb",
-                        "on-surface-variant": "#434655",
-                        "on-tertiary-fixed-variant": "#38485d",
-                        "on-secondary-container": "#004666",
-                        "primary": "#004ac6",
-                        "on-primary-container": "#eeefff",
-                        "secondary-fixed-dim": "#89ceff",
-                        "surface-variant": "#d8e3fb",
-                        "surface-dim": "#cfdaf2",
-                        "surface-tint": "#0053db",
-                        "error-container": "#ffdad6",
-                        "on-primary-fixed-variant": "#003ea8"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "md": "16px",
-                        "margin-desktop": "32px",
-                        "xl": "32px",
-                        "base": "4px",
-                        "sm": "8px",
-                        "lg": "24px",
-                        "margin-mobile": "16px",
-                        "gutter": "16px",
-                        "xs": "4px"
-                    },
-                    "fontFamily": {
-                        "sans": ["Inter", "sans-serif"],
-                        "body": ["Inter", "sans-serif"]
-                    }
-                }
-            }
-        }
-    </script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
 </head>
+
 <body class="bg-background font-sans text-on-surface">
   <!-- STANDARDIZED DOCTOR SIDEBAR -->
-  <aside id="doctor-sidebar" class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col fixed left-0 top-0 h-full z-50 shadow-xl overflow-y-auto select-none border-r border-slate-800">
+  <aside id="doctor-sidebar"
+    class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col fixed left-0 top-0 h-full z-50 shadow-xl overflow-y-auto select-none border-r border-slate-800">
     <!-- Branding -->
     <div class="p-5 border-b border-white/10 flex items-center gap-3">
       <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-        <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
+        <img src="/assets/jeevan_setu_logo.png"
+          onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo"
+          class="w-full h-full object-contain">
       </div>
       <div>
         <h1 class="font-bold text-base tracking-tight leading-tight text-white font-['Poppins']">JEEVAN SETU</h1>
@@ -116,8 +140,10 @@
       <div>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_dashboard_/Doctor_dashboard_.html" data-page="dashboard" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">dashboard</span>
+            <a href="../Doctor_dashboard_/Doctor_dashboard_.html" data-page="dashboard"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">dashboard</span>
               <span>Dashboard</span>
             </a>
           </li>
@@ -129,20 +155,26 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">PATIENT MANAGEMENT</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_my_patients/Doctor_my_patients.html" data-page="my_patients" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">groups</span>
+            <a href="../Doctor_my_patients/Doctor_my_patients.html" data-page="my_patients"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">groups</span>
               <span>My Patients</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_all_patients/Doctor_all_patients.html" data-page="all_patients" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">domain</span>
+            <a href="../Doctor_all_patients/Doctor_all_patients.html" data-page="all_patients"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">domain</span>
               <span>All Patients</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_patient_search/Doctor_patient_search.html" data-page="patient_search" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">search</span>
+            <a href="../Doctor_patient_search/Doctor_patient_search.html" data-page="patient_search"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">search</span>
               <span>Patient Search</span>
             </a>
           </li>
@@ -154,27 +186,36 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">CLINICAL TOOLS</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_ews_calculator/Doctor_ews_calculator.html" data-page="ews_calculator" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">calculate</span>
+            <a href="../Doctor_ews_calculator/Doctor_ews_calculator.html" data-page="ews_calculator"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">calculate</span>
               <span>EWS Calculator</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html" data-page="transfer_recommendations" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">swap_horiz</span>
+            <a href="../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html"
+              data-page="transfer_recommendations"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">swap_horiz</span>
               <span>Transfer Recommendations</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_ews_trends/Doctor_ews_trends.html" data-page="ews_trends" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">trending_up</span>
+            <a href="../Doctor_ews_trends/Doctor_ews_trends.html" data-page="ews_trends"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">trending_up</span>
               <span>EWS Trends</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html" data-page="patient_summary_ai" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">psychology</span>
-              <span>Patient Summary (AI)</span>
+            <a href="../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html" data-page="patient_summary_ai"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">psychology</span>
+              <span>Clinical Assistant</span>
             </a>
           </li>
         </ul>
@@ -185,21 +226,26 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">TASKS & ALERTS</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_pending_approvals/Doctor_pending_approvals.html" data-page="pending_approvals" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <a href="../Doctor_pending_approvals/Doctor_pending_approvals.html" data-page="pending_approvals"
+              class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
               <div class="flex items-center">
-                <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">check_circle</span>
+                <span
+                  class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">check_circle</span>
                 <span>Pending Approvals</span>
               </div>
-              <span id="sidebar-pending-count" class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">5</span>
+              <span id="sidebar-pending-count"
+                class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">5</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_alerts_notifications/Doctor_alerts_notifications.html" data-page="alerts_notifications" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg bg-white/10 text-cyan-400 font-semibold border-l-4 border-cyan-400 transition-all group text-sm">
+            <a href="../Doctor_alerts_notifications/Doctor_alerts_notifications.html" data-page="alerts_notifications"
+              class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg bg-white/10 text-cyan-400 font-semibold border-l-4 border-cyan-400 transition-all group text-sm">
               <div class="flex items-center">
                 <span class="material-symbols-outlined mr-3 text-[20px] text-cyan-400">notifications</span>
                 <span>Alerts & Notifications</span>
               </div>
-              <span id="sidebar-alerts-count" class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
+              <span id="sidebar-alerts-count"
+                class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
             </a>
           </li>
         </ul>
@@ -210,20 +256,26 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">REPORTS</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_patient_reports/Doctor_patient_reports.html" data-page="patient_reports" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">description</span>
+            <a href="../Doctor_patient_reports/Doctor_patient_reports.html" data-page="patient_reports"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">description</span>
               <span>Patient Reports</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_transfer_reports/Doctor_transfer_reports.html" data-page="transfer_reports" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">summarize</span>
+            <a href="../Doctor_transfer_reports/Doctor_transfer_reports.html" data-page="transfer_reports"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">summarize</span>
               <span>Transfer Reports</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_audit_logs/Doctor_audit_logs.html" data-page="audit_logs" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">verified_user</span>
+            <a href="../Doctor_audit_logs/Doctor_audit_logs.html" data-page="audit_logs"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">verified_user</span>
               <span>Audit Logs</span>
             </a>
           </li>
@@ -233,175 +285,214 @@
 
     <!-- Bottom Actions -->
     <div class="p-3 border-t border-white/10 space-y-1 mt-auto bg-[#081426]/50">
-      <a href="../Doctor_settings_jeevan/Doctor_settings_jeevan.html" data-page="settings" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-        <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">settings</span>
+      <a href="../Doctor_settings_jeevan/Doctor_settings_jeevan.html" data-page="settings"
+        class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+        <span
+          class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">settings</span>
         <span>Settings</span>
       </a>
-      <a href="../../Login/Login.html" onclick="if(typeof handleDoctorLogout==='function'){handleDoctorLogout(event);}" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all group text-sm font-medium">
-        <span class="material-symbols-outlined mr-3 text-[20px] text-red-400 group-hover:text-red-300 transition-colors">logout</span>
+      <a href="../../Login/Login.html" onclick="if(typeof handleDoctorLogout==='function'){handleDoctorLogout(event);}"
+        class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all group text-sm font-medium">
+        <span
+          class="material-symbols-outlined mr-3 text-[20px] text-red-400 group-hover:text-red-300 transition-colors">logout</span>
         <span>Logout</span>
       </a>
     </div>
   </aside>
-<div class="pl-64 flex flex-col min-h-screen">
-<header class="h-16 bg-surface border-b border-outline-variant/30 z-40 flex items-center justify-between px-lg sticky top-0">
-<div class="flex items-center gap-sm text-[14px] text-on-surface-variant">
-<span class="">Dashboard</span>
-<span class="material-symbols-outlined text-[18px]">chevron_right</span>
-<span class="font-semibold text-on-surface">Alerts &amp; Notifications</span>
-</div>
-<div class="flex items-center gap-lg">
-<div class="text-[14px] text-on-surface-variant hidden md:block">
-                    21 May 2025 | 10:45 AM
+  <div class="pl-64 flex flex-col min-h-screen">
+    <header
+      class="h-16 bg-surface border-b border-outline-variant/30 z-40 flex items-center justify-between px-lg sticky top-0">
+      <div class="flex items-center gap-sm text-[14px] text-on-surface-variant">
+        <span class="">Dashboard</span>
+        <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+        <span class="font-semibold text-on-surface">Alerts &amp; Notifications</span>
+      </div>
+      <div class="flex items-center gap-lg">
+        <div class="text-[14px] text-on-surface-variant hidden md:block">
+          21 May 2025 | 10:45 AM
+        </div>
+        <div class="relative hidden sm:block">
+          <select
+            class="appearance-none bg-surface border border-outline-variant/50 text-on-surface text-[14px] rounded-lg pl-md pr-xl py-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer min-w-[180px]">
+            <option>ICU - General Ward</option>
+          </select>
+          <span
+            class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
+        </div>
+        <div class="flex items-center gap-md pl-lg border-l border-outline-variant/30">
+          <div class="hidden sm:block text-right">
+            <div class="text-[14px] text-on-surface font-semibold"><span id="header-doctor-name"
+                class="doctor-profile-name">Dr. Arjun Mehta</span></div>
+            <div class="text-[12px] text-on-surface-variant"><span id="header-doctor-dept"
+                class="doctor-profile-dept">Cardiologist</span></div>
+          </div>
+          <div class="relative">
+            <div
+              class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[14px]">
+              AM
+            </div>
+            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-surface rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex-1 bg-background p-lg">
+      <div class="max-w-6xl mx-auto space-y-lg">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-md">
+          <h1 class="text-[28px] font-semibold text-on-surface tracking-tight m-0">Active Alerts</h1>
+          <div class="flex items-center gap-sm overflow-x-auto pb-sm sm:pb-0 w-full sm:w-auto">
+            <button
+              class="px-md py-sm rounded-full bg-primary text-on-primary text-[14px] font-medium whitespace-nowrap">All
+              (12)</button>
+            <button
+              class="px-md py-sm rounded-full bg-surface border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container text-[14px] font-medium whitespace-nowrap">Unread
+              (8)</button>
+            <button
+              class="px-md py-sm rounded-full bg-error/10 text-error text-[14px] font-medium flex items-center gap-xs whitespace-nowrap">
+              <span class="w-2 h-2 rounded-full bg-error"></span> Critical (3)
+            </button>
+            <button
+              class="px-md py-sm rounded-full bg-surface border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container text-[14px] font-medium whitespace-nowrap">System</button>
+          </div>
+        </div>
+        <div class="space-y-xl">
+          <!-- Today Section -->
+          <div class="space-y-md">
+            <h3
+              class="text-[12px] font-semibold text-on-surface-variant uppercase tracking-wider flex items-center gap-md">
+              Today <div class="flex-1 h-[1px] bg-outline-variant/30"></div>
+            </h3>
+            <!-- Critical Alert Card -->
+            <div
+              class="bg-surface rounded-xl border border-error/20 overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
+              <div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+              <div class="p-lg flex flex-col lg:flex-row gap-lg">
+                <div class="flex-1 space-y-sm">
+                  <div class="flex items-center gap-sm text-[13px]">
+                    <span
+                      class="px-2 py-0.5 rounded bg-error/10 text-error font-semibold uppercase tracking-wider text-[11px]">Critical</span>
+                    <span class="text-on-surface-variant">10:42 AM</span>
+                    <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                    <span class="text-primary font-medium">PT-8942-JS</span>
+                  </div>
+                  <h4 class="text-[18px] font-semibold text-on-surface m-0">EWS Score Exceeds Threshold (Score: 8)</h4>
+                  <p class="text-[14px] text-on-surface-variant m-0 leading-relaxed max-w-3xl">
+                    Patient <strong class="text-on-surface font-semibold">Rahul Verma (Bed 12, ICU)</strong> shows
+                    significant drop in SpO2 (88%) and elevated heart rate (115 bpm). Immediate intervention required.
+                  </p>
+                  <div class="flex flex-wrap gap-sm pt-sm">
+                    <button
+                      class="px-md py-2 bg-error text-white rounded-lg text-[14px] font-medium hover:bg-error/90 transition-colors flex items-center gap-sm">
+                      <span class="material-symbols-outlined text-[18px]">quick_reference_all</span>
+                      View Chart
+                    </button>
+                    <button
+                      class="px-md py-2 bg-surface border border-outline-variant/50 text-on-surface rounded-lg text-[14px] font-medium hover:bg-surface-container transition-colors">
+                      Acknowledge
+                    </button>
+                  </div>
                 </div>
-<div class="relative hidden sm:block">
-<select class="appearance-none bg-surface border border-outline-variant/50 text-on-surface text-[14px] rounded-lg pl-md pr-xl py-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer min-w-[180px]">
-<option>ICU - General Ward</option>
-</select>
-<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
-</div>
-<div class="flex items-center gap-md pl-lg border-l border-outline-variant/30">
-<div class="hidden sm:block text-right">
-<div class="text-[14px] text-on-surface font-semibold"><span id="header-doctor-name" class="doctor-profile-name">Dr. Arjun Mehta</span></div>
-<div class="text-[12px] text-on-surface-variant"><span id="header-doctor-dept" class="doctor-profile-dept">Cardiologist</span></div>
-</div>
-<div class="relative">
-<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[14px]">
-                            AM
-                        </div>
-<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-surface rounded-full"></div>
-</div>
-</div>
-</div>
-</header>
-<main class="flex-1 bg-background p-lg">
-<div class="max-w-6xl mx-auto space-y-lg">
-<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-md">
-<h1 class="text-[28px] font-semibold text-on-surface tracking-tight m-0">Active Alerts</h1>
-<div class="flex items-center gap-sm overflow-x-auto pb-sm sm:pb-0 w-full sm:w-auto">
-<button class="px-md py-sm rounded-full bg-primary text-on-primary text-[14px] font-medium whitespace-nowrap">All (12)</button>
-<button class="px-md py-sm rounded-full bg-surface border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container text-[14px] font-medium whitespace-nowrap">Unread (8)</button>
-<button class="px-md py-sm rounded-full bg-error/10 text-error text-[14px] font-medium flex items-center gap-xs whitespace-nowrap">
-<span class="w-2 h-2 rounded-full bg-error"></span> Critical (3)
-                        </button>
-<button class="px-md py-sm rounded-full bg-surface border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container text-[14px] font-medium whitespace-nowrap">System</button>
-</div>
-</div>
-<div class="space-y-xl">
-<!-- Today Section -->
-<div class="space-y-md">
-<h3 class="text-[12px] font-semibold text-on-surface-variant uppercase tracking-wider flex items-center gap-md">
-                            Today <div class="flex-1 h-[1px] bg-outline-variant/30"></div>
-</h3>
-<!-- Critical Alert Card -->
-<div class="bg-surface rounded-xl border border-error/20 overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
-<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
-<div class="p-lg flex flex-col lg:flex-row gap-lg">
-<div class="flex-1 space-y-sm">
-<div class="flex items-center gap-sm text-[13px]">
-<span class="px-2 py-0.5 rounded bg-error/10 text-error font-semibold uppercase tracking-wider text-[11px]">Critical</span>
-<span class="text-on-surface-variant">10:42 AM</span>
-<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
-<span class="text-primary font-medium">PT-8942-JS</span>
-</div>
-<h4 class="text-[18px] font-semibold text-on-surface m-0">EWS Score Exceeds Threshold (Score: 8)</h4>
-<p class="text-[14px] text-on-surface-variant m-0 leading-relaxed max-w-3xl">
-                                        Patient <strong class="text-on-surface font-semibold">Rahul Verma (Bed 12, ICU)</strong> shows significant drop in SpO2 (88%) and elevated heart rate (115 bpm). Immediate intervention required.
-                                    </p>
-<div class="flex flex-wrap gap-sm pt-sm">
-<button class="px-md py-2 bg-error text-white rounded-lg text-[14px] font-medium hover:bg-error/90 transition-colors flex items-center gap-sm">
-<span class="material-symbols-outlined text-[18px]">quick_reference_all</span>
-                                            View Chart
-                                        </button>
-<button class="px-md py-2 bg-surface border border-outline-variant/50 text-on-surface rounded-lg text-[14px] font-medium hover:bg-surface-container transition-colors">
-                                            Acknowledge
-                                        </button>
-</div>
-</div>
-<div class="hidden lg:flex flex-col justify-center shrink-0 w-48 border-l border-outline-variant/30 pl-lg gap-sm">
-<div class="flex justify-between items-center">
-<span class="text-[13px] text-on-surface-variant">SpO2</span>
-<span class="text-[16px] font-bold text-error flex items-center gap-xs">88% <span class="material-symbols-outlined text-[16px]">arrow_downward</span></span>
-</div>
-<div class="flex justify-between items-center">
-<span class="text-[13px] text-on-surface-variant">HR</span>
-<span class="text-[16px] font-bold text-error flex items-center gap-xs">115 <span class="material-symbols-outlined text-[16px]">arrow_upward</span></span>
-</div>
-</div>
-</div>
-</div>
-<!-- Urgent Alert Card -->
-<div class="bg-surface rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
-<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
-<div class="p-lg flex flex-col lg:flex-row gap-lg">
-<div class="flex-1 space-y-sm">
-<div class="flex items-center gap-sm text-[13px]">
-<span class="px-2 py-0.5 rounded bg-secondary/10 text-secondary font-semibold uppercase tracking-wider text-[11px]">Urgent</span>
-<span class="text-on-surface-variant">09:15 AM</span>
-<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
-<span class="text-primary font-medium">PT-2109-JS</span>
-</div>
-<h4 class="text-[18px] font-semibold text-on-surface m-0">Stat Lab Results Available</h4>
-<p class="text-[14px] text-on-surface-variant m-0 leading-relaxed max-w-3xl">
-                                        Complete Blood Count (CBC) and Comprehensive Metabolic Panel (CMP) results for <strong class="text-on-surface font-semibold">Anita Desai (Bed 04, Gen Ward)</strong> have been uploaded. Potassium levels require review.
-                                    </p>
-<div class="flex flex-wrap gap-sm pt-sm">
-<button class="px-md py-2 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-primary/90 transition-colors flex items-center gap-sm">
-<span class="material-symbols-outlined text-[18px]">visibility</span>
-                                            View Results
-                                        </button>
-</div>
-</div>
-</div>
-</div>
-<!-- Standard Alert Card -->
-<div class="bg-surface rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm opacity-80">
-<div class="p-lg flex flex-col lg:flex-row gap-lg">
-<div class="flex-1 space-y-sm">
-<div class="flex items-center gap-sm text-[13px]">
-<span class="px-2 py-0.5 rounded border border-outline-variant/50 text-on-surface-variant font-semibold uppercase tracking-wider text-[11px]">Transfer</span>
-<span class="text-on-surface-variant">08:30 AM</span>
-<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
-<span class="text-primary font-medium">PT-5512-JS</span>
-</div>
-<h4 class="text-[18px] font-semibold text-on-surface m-0">Patient Transfer Request Approved</h4>
-<p class="text-[14px] text-on-surface-variant m-0 leading-relaxed max-w-3xl">
-                                        Request to transfer <strong class="text-on-surface font-semibold">Karan Singh</strong> from Emergency to General Ward B has been approved. Bed allocation pending.
-                                    </p>
-</div>
-</div>
-</div>
-</div>
-<!-- Yesterday Section -->
-<div class="space-y-md">
-<h3 class="text-[12px] font-semibold text-on-surface-variant uppercase tracking-wider flex items-center gap-md">
-                            Yesterday <div class="flex-1 h-[1px] bg-outline-variant/30"></div>
-</h3>
-<!-- System Alert Card -->
-<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
-<div class="p-lg flex flex-col lg:flex-row gap-lg">
-<div class="flex-1 space-y-sm">
-<div class="flex items-center gap-sm text-[13px]">
-<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-semibold uppercase tracking-wider text-[11px]">System</span>
-<span class="text-on-surface-variant">Yesterday, 11:00 PM</span>
-</div>
-<h4 class="text-[18px] font-semibold text-on-surface m-0">EMR Maintenance Scheduled</h4>
-<p class="text-[14px] text-on-surface-variant m-0 leading-relaxed max-w-3xl">
-                                        The Electronic Medical Record system will undergo brief maintenance on Sunday from 02:00 AM to 04:00 AM. Offline charting protocols will be in effect.
-                                    </p>
-<div class="flex flex-wrap gap-sm pt-sm">
-<button class="px-md py-2 bg-surface border border-outline-variant/50 text-on-surface rounded-lg text-[14px] font-medium hover:bg-surface-container transition-colors">
-                                            View Details
-                                        </button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</main>
-</div>
+                <div
+                  class="hidden lg:flex flex-col justify-center shrink-0 w-48 border-l border-outline-variant/30 pl-lg gap-sm">
+                  <div class="flex justify-between items-center">
+                    <span class="text-[13px] text-on-surface-variant">SpO2</span>
+                    <span class="text-[16px] font-bold text-error flex items-center gap-xs">88% <span
+                        class="material-symbols-outlined text-[16px]">arrow_downward</span></span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-[13px] text-on-surface-variant">HR</span>
+                    <span class="text-[16px] font-bold text-error flex items-center gap-xs">115 <span
+                        class="material-symbols-outlined text-[16px]">arrow_upward</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Urgent Alert Card -->
+            <div
+              class="bg-surface rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
+              <div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+              <div class="p-lg flex flex-col lg:flex-row gap-lg">
+                <div class="flex-1 space-y-sm">
+                  <div class="flex items-center gap-sm text-[13px]">
+                    <span
+                      class="px-2 py-0.5 rounded bg-secondary/10 text-secondary font-semibold uppercase tracking-wider text-[11px]">Urgent</span>
+                    <span class="text-on-surface-variant">09:15 AM</span>
+                    <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                    <span class="text-primary font-medium">PT-2109-JS</span>
+                  </div>
+                  <h4 class="text-[18px] font-semibold text-on-surface m-0">Stat Lab Results Available</h4>
+                  <p class="text-[14px] text-on-surface-variant m-0 leading-relaxed max-w-3xl">
+                    Complete Blood Count (CBC) and Comprehensive Metabolic Panel (CMP) results for <strong
+                      class="text-on-surface font-semibold">Anita Desai (Bed 04, Gen Ward)</strong> have been uploaded.
+                    Potassium levels require review.
+                  </p>
+                  <div class="flex flex-wrap gap-sm pt-sm">
+                    <button
+                      class="px-md py-2 bg-primary text-white rounded-lg text-[14px] font-medium hover:bg-primary/90 transition-colors flex items-center gap-sm">
+                      <span class="material-symbols-outlined text-[18px]">visibility</span>
+                      View Results
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Standard Alert Card -->
+            <div class="bg-surface rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm opacity-80">
+              <div class="p-lg flex flex-col lg:flex-row gap-lg">
+                <div class="flex-1 space-y-sm">
+                  <div class="flex items-center gap-sm text-[13px]">
+                    <span
+                      class="px-2 py-0.5 rounded border border-outline-variant/50 text-on-surface-variant font-semibold uppercase tracking-wider text-[11px]">Transfer</span>
+                    <span class="text-on-surface-variant">08:30 AM</span>
+                    <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                    <span class="text-primary font-medium">PT-5512-JS</span>
+                  </div>
+                  <h4 class="text-[18px] font-semibold text-on-surface m-0">Patient Transfer Request Approved</h4>
+                  <p class="text-[14px] text-on-surface-variant m-0 leading-relaxed max-w-3xl">
+                    Request to transfer <strong class="text-on-surface font-semibold">Karan Singh</strong> from
+                    Emergency to General Ward B has been approved. Bed allocation pending.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Yesterday Section -->
+          <div class="space-y-md">
+            <h3
+              class="text-[12px] font-semibold text-on-surface-variant uppercase tracking-wider flex items-center gap-md">
+              Yesterday <div class="flex-1 h-[1px] bg-outline-variant/30"></div>
+            </h3>
+            <!-- System Alert Card -->
+            <div
+              class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
+              <div class="p-lg flex flex-col lg:flex-row gap-lg">
+                <div class="flex-1 space-y-sm">
+                  <div class="flex items-center gap-sm text-[13px]">
+                    <span
+                      class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-semibold uppercase tracking-wider text-[11px]">System</span>
+                    <span class="text-on-surface-variant">Yesterday, 11:00 PM</span>
+                  </div>
+                  <h4 class="text-[18px] font-semibold text-on-surface m-0">EMR Maintenance Scheduled</h4>
+                  <p class="text-[14px] text-on-surface-variant m-0 leading-relaxed max-w-3xl">
+                    The Electronic Medical Record system will undergo brief maintenance on Sunday from 02:00 AM to 04:00
+                    AM. Offline charting protocols will be in effect.
+                  </p>
+                  <div class="flex flex-wrap gap-sm pt-sm">
+                    <button
+                      class="px-md py-2 bg-surface border border-outline-variant/50 text-on-surface rounded-lg text-[14px] font-medium hover:bg-surface-container transition-colors">
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
   <script src="../global_alert_manager.js"></script>
   <script src="../doctor_sidebar.js"></script>
-</body></html>
+</body>
+
+</html>

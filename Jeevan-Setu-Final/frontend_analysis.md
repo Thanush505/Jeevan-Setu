@@ -57,7 +57,7 @@ Clinical decision-making focus:
 | EWS Calculator | Vitals → NEWS2 score calculator with clinical guidance |
 | EWS Trends | 24h score trend charts |
 | Transfer Recommendations | AI-generated ICU→HDU or HDU→ICU recommendations |
-| Patient Summary (AI) | XAI-powered patient condition summary |
+| Clinical Assistant | XAI-powered patient condition summary |
 | Pending Approvals | Transfer requests awaiting doctor sign-off |
 | Alerts & Notifications | Critical/warning alert feed |
 | Patient Reports | Generate/download clinical reports |

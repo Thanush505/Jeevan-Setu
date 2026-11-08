@@ -878,6 +878,7 @@ def api_get_attendant_session():
 
 @attendant_bp.route('/patient', methods=['GET'])
 @attendant_bp.route('/view', methods=['GET'])
+@attendant_bp.route('/api/view', methods=['GET'])
 def api_get_attendant_patient_data():
     """
     Read-only patient recovery status and vitals for the attendant dashboard.
@@ -913,13 +914,26 @@ def api_get_attendant_patient_data():
                 'success': False,
                 'error': val.get('error', 'Invalid or expired QR token.')
             }), 401
+    elif request.args.get('code') or request.args.get('access_code'):
+        code_str = (request.args.get('code') or request.args.get('access_code') or '').strip()
+        val = PatientQRToken.validate_access_code(code_str)
+        if val.get('valid') and val.get('patient_id'):
+            patient_id = val['patient_id']
+            attendant_name = 'Family Attendant'
+        else:
+            return jsonify({
+                'success': False,
+                'error': val.get('error', 'Invalid or expired access code.')
+            }), 401
     elif user and getattr(user, 'role', '').lower() in ('doctor', 'nurse', 'admin'):
         # Explicit clinical staff token preview
-        req_pid = request.args.get('patient_id') or request.args.get('id') or 1
+        req_pid = request.args.get('patient_id') or request.args.get('id')
+        if not req_pid:
+            return jsonify({'success': False, 'error': 'Missing required patient_id parameter'}), 400
         try:
             patient_id = int(req_pid)
         except (ValueError, TypeError):
-            patient_id = 1
+            return jsonify({'success': False, 'error': 'patient_id must be a valid integer'}), 400
         attendant_name = getattr(user, 'full_name', 'Clinical Staff')
     else:
         # Unauthenticated direct access is blocked
@@ -993,6 +1007,7 @@ def api_get_attendant_patient_data():
             'condition': condition,
             'attendant_name': attendant_name,
             'latest_vitals': vitals_summary,
+            'latest_vitals_summary': vitals_summary,
             'vitals_history': vitals_history
         }
     }), 200

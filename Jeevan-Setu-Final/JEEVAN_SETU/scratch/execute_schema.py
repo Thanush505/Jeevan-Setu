@@ -4,7 +4,9 @@ import mysql.connector
 from mysql.connector import Error
 
 # Load environment configuration
-env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+_root_env = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), '.env')
+_backend_env = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+env_path = _root_env if os.path.isfile(_root_env) else _backend_env
 config = {
     'DB_HOST': 'localhost',
     'DB_PORT': 3306,

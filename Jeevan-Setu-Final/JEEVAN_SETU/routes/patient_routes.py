@@ -61,12 +61,33 @@ def list_patients():
     page = request.args.get('page', 1, type=int)
     limit = request.args.get('limit', 20, type=int)
 
-    # Scoping: if authenticated user is a Doctor or Nurse, restrict strictly to their assigned patients
+    # Scoping: if authenticated user is a Doctor, default to their assigned patients
+    # UNLESS:
+    # 1. Hospital-wide / all scope is explicitly requested (scope=all, all=true, doctor_id=all)
+    # 2. A search query is provided (searching hospital-wide directory)
     user = get_current_authenticated_user()
-    if user and getattr(user, 'role', '').lower() == 'doctor':
-        doctor_id = user.id
-    elif user and getattr(user, 'role', '').lower() == 'nurse':
-        nurse_id = user.id
+    scope = (request.args.get('scope') or '').strip().lower()
+    view_all = (
+        scope == 'all' or
+        request.args.get('all') in ('true', '1') or
+        str(doctor_id).lower() == 'all' or
+        str(nurse_id).lower() == 'all' or
+        bool(search)
+    )
+
+    if view_all:
+        if str(doctor_id).lower() == 'all':
+            doctor_id = None
+        if str(nurse_id).lower() == 'all':
+            nurse_id = None
+    else:
+        if str(doctor_id).lower() == 'my' and user:
+            doctor_id = user.id
+        elif user and getattr(user, 'role', '').lower() == 'doctor' and not doctor_id:
+            doctor_id = user.id
+
+        if str(nurse_id).lower() == 'my' and user:
+            nurse_id = user.id
 
     result = Patient.get_filtered(
         search=search,
@@ -117,7 +138,7 @@ def search_patients():
     if user_role == 'doctor' and user_id:
         results = [p for p in results if p.get('assigned_doctor') and int(p.get('assigned_doctor')) == int(user_id)]
     elif user_role == 'nurse' and user_id:
-        results = [p for p in results if p.get('assigned_nurse') and int(p.get('assigned_nurse')) == int(user_id)]
+        results = [p for p in results if (p.get('assigned_nurse') and int(p.get('assigned_nurse')) == int(user_id)) or (p.get('created_by') and int(p.get('created_by')) == int(user_id))]
 
     return jsonify({
         'success': True,

@@ -16,8 +16,8 @@
 (function () {
     'use strict';
 
-    // Configuration
-    const POLL_INTERVAL_MS = 5000; // 5 seconds
+    // Centralized 10-second refresh configuration
+    const POLL_INTERVAL_MS = (typeof window !== 'undefined' && window.AUTO_REFRESH_INTERVAL) ? window.AUTO_REFRESH_INTERVAL : 10000; // 10 seconds
     const DISMISSED_SESSION_KEY = 'jeevan_setu_dismissed_alerts';
     let isPollingActive = false;
     let pollTimer = null;

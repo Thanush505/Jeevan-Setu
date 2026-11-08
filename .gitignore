@@ -17,6 +17,8 @@ __pycache__/
 .env
 !.env.example
 .venv/
+.venv*/
+**/.venv*/
 env/
 venv/
 .idea/

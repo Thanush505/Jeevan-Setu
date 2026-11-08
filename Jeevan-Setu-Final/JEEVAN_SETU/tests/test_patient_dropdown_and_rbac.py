@@ -26,7 +26,7 @@ if os.path.exists(JEEVAN_SETU_ROOT) and JEEVAN_SETU_ROOT not in sys.path:
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from modules.chatbot_engine import (
+from chatbot.services.chatbot_engine import (
     verify_user_patient_access,
     get_authorized_patients_for_user,
     getPatient,

@@ -81,7 +81,7 @@ except ImportError:
             return {'access_token': f"mock_token_{getattr(user, 'role', 'doctor')}"}
 
 from unittest.mock import MagicMock
-from modules.chatbot_engine import (
+from chatbot.services.chatbot_engine import (
     detect_intent,
     get_patient_clinical_context,
     process_conversational_message

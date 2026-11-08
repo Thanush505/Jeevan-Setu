@@ -323,7 +323,12 @@
 </div>
 <script>
   // ─── End-to-End Authoritative Patient Vitals & Profile Synchronization ───
-  let currentPatientId = 1;
+  let currentPatientId = null;
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramId = urlParams.get('patient_id') || urlParams.get('id');
+  if (paramId && !isNaN(parseInt(paramId)) && parseInt(paramId) > 0) {
+    currentPatientId = parseInt(paramId);
+  }
   const API_BASE = '/api/v1/vitals';
   const PATIENT_API = '/api/v1/patients';
   const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
@@ -476,12 +481,25 @@
             `;
             opt.addEventListener('click', () => {
               currentPatientId = p.patient_id;
+              try {
+                const u = new URL(window.location.href);
+                u.searchParams.set('patient_id', String(currentPatientId));
+                window.history.replaceState({ patient_id: currentPatientId }, '', u.toString());
+              } catch(e) {}
               dropdown.classList.add('hidden');
               loadPatientProfile(currentPatientId);
               document.getElementById('ews-result-panel').classList.add('hidden');
             });
             listEl.appendChild(opt);
           });
+          if (json.data.length > 0 && !currentPatientId) {
+            currentPatientId = json.data[0].patient_id;
+            try {
+              const u = new URL(window.location.href);
+              u.searchParams.set('patient_id', String(currentPatientId));
+              window.history.replaceState({ patient_id: currentPatientId }, '', u.toString());
+            } catch(e) {}
+          }
         }
       }
     } catch (e) {
@@ -603,8 +621,11 @@
   });
 
   // Initial initialization & 10-second background patient card refresh
-  loadPatientProfile(currentPatientId);
-  setupPatientDropdown();
+  setupPatientDropdown().then(() => {
+    if (currentPatientId) {
+      loadPatientProfile(currentPatientId);
+    }
+  });
 
   if (window.AutoRefreshManager) {
     window.AutoRefreshManager.start('nurse_enter_vitals_card', () => {
@@ -619,5 +640,6 @@
 </script>
 <script src="../nurse_navigation.js"></script>
 </main></div>
+  <script src="/static/js/patient_context.js"></script>
   <script src="../global_alert_manager.js"></script>
 </body></html>

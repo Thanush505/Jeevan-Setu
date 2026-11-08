@@ -158,13 +158,21 @@ class Patient:
             where_clauses.append("p.ward_type = %s")
             params.append(ward_type)
 
-        if doctor_id:
-            where_clauses.append("p.assigned_doctor = %s")
-            params.append(int(doctor_id))
+        if doctor_id is not None and str(doctor_id).lower() not in ('all', '', 'none', 'null', 'undefined'):
+            try:
+                doc_int = int(doctor_id)
+                where_clauses.append("p.assigned_doctor = %s")
+                params.append(doc_int)
+            except (ValueError, TypeError):
+                pass
 
-        if nurse_id:
-            where_clauses.append("p.assigned_nurse = %s")
-            params.append(int(nurse_id))
+        if nurse_id is not None and str(nurse_id).lower() not in ('all', '', 'none', 'null', 'undefined'):
+            try:
+                nurse_int = int(nurse_id)
+                where_clauses.append("p.assigned_nurse = %s")
+                params.append(nurse_int)
+            except (ValueError, TypeError):
+                pass
 
         if gender:
             where_clauses.append("p.gender = %s")

@@ -10,14 +10,14 @@ from unittest.mock import patch, MagicMock
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app import create_app
-from modules.chatbot_engine import (
+from chatbot.services.chatbot_engine import (
     process_conversational_message,
     process_message,
     _fmt_val,
     _fmt_bp,
     _fmt_spo2
 )
-from modules.openrouter_service import (
+from chatbot.services.openrouter_service import (
     query_openrouter_gemini,
     build_controlled_patient_context
 )

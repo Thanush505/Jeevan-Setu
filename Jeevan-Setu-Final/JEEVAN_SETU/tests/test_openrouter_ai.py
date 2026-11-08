@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from modules.openrouter_service import (
+from chatbot.services.openrouter_service import (
     get_openrouter_api_key,
     get_openrouter_model,
     is_ai_configured,
@@ -27,7 +27,7 @@ from modules.openrouter_service import (
     OPENROUTER_ENDPOINT,
     SYSTEM_PROMPT
 )
-from modules.chatbot_engine import (
+from chatbot.services.chatbot_engine import (
     process_conversational_message,
     process_message,
     get_patient_clinical_context,

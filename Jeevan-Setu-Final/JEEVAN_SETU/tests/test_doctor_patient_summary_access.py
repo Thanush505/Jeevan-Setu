@@ -28,7 +28,12 @@ import os
 import sys
 
 from dotenv import load_dotenv
-load_dotenv('c:/Major_Project/JSF-Web_Broswer_simulator/Jeevan-Setu-Final/JEEVAN_SETU/.env')
+_root_env = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
+_backend_env = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.env'))
+if os.path.isfile(_root_env):
+    load_dotenv(_root_env, override=True)
+elif os.path.isfile(_backend_env):
+    load_dotenv(_backend_env, override=True)
 
 sys.path.insert(0, 'c:/Major_Project/JSF-Web_Broswer_simulator/Jeevan-Setu-Final/JEEVAN_SETU')
 from services.auth_service import AuthService
@@ -59,8 +64,11 @@ class TestDoctorPatientSummaryAccess(unittest.TestCase):
         user_gupta = User.get_by_id(4)
         cls.gupta_token = AuthService.generate_access_token(user_gupta)['access_token']
 
-        # Doctor with zero assigned patients (user_id=1241)
-        user_zero = User.get_by_id(1241)
+        # Doctor with zero assigned patients
+        user_zero = User.get_by_id(1241) or User.get_by_username('dr_zero_test')
+        if not user_zero:
+            User.create(username='dr_zero_test', password='Password123!', full_name='Dr. Zero Assignment', email='dr_zero@test.com', role='doctor')
+            user_zero = User.get_by_username('dr_zero_test')
         cls.zero_doc_token = AuthService.generate_access_token(user_zero)['access_token']
 
         # Admin (user_id=1, role='admin')

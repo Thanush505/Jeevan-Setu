@@ -6,7 +6,7 @@ Test Matrix:
 1. Frontend & Routing:
    - Cloned Nurse page loads (HTTP 200) at /Nurse/Nurse_patient_summary_ai/Nurse_patient_summary_ai.html
    - Route aliases (/Nurse/Nurse_patient_summary_ai, /nurse/summary) resolve cleanly
-   - Standard Nurse Sidebar with Patient Care and active Patient Summary (AI)
+   - Standard Nurse Sidebar with Patient Care and active Clinical Assistant
    - Dr. Setu Assistant Header, Live Telemetry badge, top search input & clear button
    - Live Patient Telemetry & Mode bar (Patient Chat vs General Chat)
    - Quick action handover chips and custom telemetry simulator modal

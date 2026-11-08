@@ -8,16 +8,18 @@ Never hardcodes secrets, IPs, or patient identifiers.
 import os
 from dotenv import load_dotenv
 
-# Load .env from the simulator directory first, then project root
+# Load canonical .env from the project root (Jeevan-Setu-Final/.env)
 _sim_dir = os.path.dirname(os.path.abspath(__file__))
-_env_path = os.path.join(_sim_dir, '.env')
-if os.path.exists(_env_path):
-    load_dotenv(_env_path)
-else:
-    # Try the parent project .env as fallback
-    _parent_env = os.path.join(os.path.dirname(_sim_dir), 'JEEVAN_SETU', '.env')
-    if os.path.exists(_parent_env):
-        load_dotenv(_parent_env)
+_root_env = os.path.join(os.path.dirname(_sim_dir), '.env')
+_sim_env = os.path.join(_sim_dir, '.env')
+_backend_env = os.path.join(os.path.dirname(_sim_dir), 'JEEVAN_SETU', '.env')
+
+if os.path.isfile(_root_env):
+    load_dotenv(_root_env, override=True)
+elif os.path.isfile(_sim_env):
+    load_dotenv(_sim_env, override=True)
+elif os.path.isfile(_backend_env):
+    load_dotenv(_backend_env, override=True)
 
 # Minimum allowed telemetry interval (seconds) to prevent API flooding
 _MIN_INTERVAL_SECONDS = 1

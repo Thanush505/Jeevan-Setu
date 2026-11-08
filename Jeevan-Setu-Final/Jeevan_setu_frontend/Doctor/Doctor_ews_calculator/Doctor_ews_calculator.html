@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="/assets/jeevan_setu_logo.png">
   <meta charset="utf-8">
@@ -7,31 +8,58 @@
   <title>Jeevan Setu - Doctor EWS Calculator</title>
   <style>
     @layer base {
-      html, body { margin: 0; padding: 0; }
-      body { overscroll-behavior: none; }
-      main > :first-child { margin-top: 0 !important; }
-      main > :last-child { margin-bottom: 0 !important; }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overscroll-behavior: none;
+      }
+
+      main> :first-child {
+        margin-top: 0 !important;
+      }
+
+      main> :last-child {
+        margin-bottom: 0 !important;
+      }
     }
-    ::-webkit-scrollbar { display: none; }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
     .sidebar-active {
       background-color: #2563eb;
       border-radius: 0.375rem;
     }
+
     aside::-webkit-scrollbar {
       width: 6px;
       display: block;
     }
+
     aside::-webkit-scrollbar-track {
       background: #0a1931;
     }
+
     aside::-webkit-scrollbar-thumb {
       background: #1e3a8a;
       border-radius: 10px;
     }
   </style>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap"
+    rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -80,15 +108,19 @@
     };
   </script>
 </head>
+
 <body class="bg-background font-body-md text-on-background flex h-screen overflow-hidden">
 
-<!-- BEGIN: Doctor LeftSidebar -->
+  <!-- BEGIN: Doctor LeftSidebar -->
   <!-- STANDARDIZED DOCTOR SIDEBAR -->
-  <aside id="doctor-sidebar" class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col h-screen overflow-y-auto select-none border-r border-slate-800">
+  <aside id="doctor-sidebar"
+    class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col h-screen overflow-y-auto select-none border-r border-slate-800">
     <!-- Branding -->
     <div class="p-5 border-b border-white/10 flex items-center gap-3">
       <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-        <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
+        <img src="/assets/jeevan_setu_logo.png"
+          onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo"
+          class="w-full h-full object-contain">
       </div>
       <div>
         <h1 class="font-bold text-base tracking-tight leading-tight text-white font-['Poppins']">JEEVAN SETU</h1>
@@ -102,8 +134,10 @@
       <div>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_dashboard_/Doctor_dashboard_.html" data-page="dashboard" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">dashboard</span>
+            <a href="../Doctor_dashboard_/Doctor_dashboard_.html" data-page="dashboard"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">dashboard</span>
               <span>Dashboard</span>
             </a>
           </li>
@@ -115,20 +149,26 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">PATIENT MANAGEMENT</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_my_patients/Doctor_my_patients.html" data-page="my_patients" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">groups</span>
+            <a href="../Doctor_my_patients/Doctor_my_patients.html" data-page="my_patients"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">groups</span>
               <span>My Patients</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_all_patients/Doctor_all_patients.html" data-page="all_patients" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">domain</span>
+            <a href="../Doctor_all_patients/Doctor_all_patients.html" data-page="all_patients"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">domain</span>
               <span>All Patients</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_patient_search/Doctor_patient_search.html" data-page="patient_search" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">search</span>
+            <a href="../Doctor_patient_search/Doctor_patient_search.html" data-page="patient_search"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">search</span>
               <span>Patient Search</span>
             </a>
           </li>
@@ -140,27 +180,35 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">CLINICAL TOOLS</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_ews_calculator/Doctor_ews_calculator.html" data-page="ews_calculator" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg bg-white/10 text-cyan-400 font-semibold border-l-4 border-cyan-400 transition-all group text-sm">
+            <a href="../Doctor_ews_calculator/Doctor_ews_calculator.html" data-page="ews_calculator"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg bg-white/10 text-cyan-400 font-semibold border-l-4 border-cyan-400 transition-all group text-sm">
               <span class="material-symbols-outlined mr-3 text-[20px] text-cyan-400">calculate</span>
               <span>EWS Calculator</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html" data-page="transfer_recommendations" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">swap_horiz</span>
+            <a href="../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html"
+              data-page="transfer_recommendations"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">swap_horiz</span>
               <span>Transfer Recommendations</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_ews_trends/Doctor_ews_trends.html" data-page="ews_trends" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">trending_up</span>
+            <a href="../Doctor_ews_trends/Doctor_ews_trends.html" data-page="ews_trends"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">trending_up</span>
               <span>EWS Trends</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html" data-page="patient_summary_ai" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">psychology</span>
-              <span>Patient Summary (AI)</span>
+            <a href="../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html" data-page="patient_summary_ai"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">psychology</span>
+              <span>Clinical Assistant</span>
             </a>
           </li>
         </ul>
@@ -171,21 +219,27 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">TASKS & ALERTS</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_pending_approvals/Doctor_pending_approvals.html" data-page="pending_approvals" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <a href="../Doctor_pending_approvals/Doctor_pending_approvals.html" data-page="pending_approvals"
+              class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
               <div class="flex items-center">
-                <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">check_circle</span>
+                <span
+                  class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">check_circle</span>
                 <span>Pending Approvals</span>
               </div>
-              <span id="sidebar-pending-count" class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">5</span>
+              <span id="sidebar-pending-count"
+                class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">5</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_alerts_notifications/Doctor_alerts_notifications.html" data-page="alerts_notifications" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <a href="../Doctor_alerts_notifications/Doctor_alerts_notifications.html" data-page="alerts_notifications"
+              class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
               <div class="flex items-center">
-                <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">notifications</span>
+                <span
+                  class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">notifications</span>
                 <span>Alerts & Notifications</span>
               </div>
-              <span id="sidebar-alerts-count" class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
+              <span id="sidebar-alerts-count"
+                class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
             </a>
           </li>
         </ul>
@@ -196,20 +250,26 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">REPORTS</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_patient_reports/Doctor_patient_reports.html" data-page="patient_reports" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">description</span>
+            <a href="../Doctor_patient_reports/Doctor_patient_reports.html" data-page="patient_reports"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">description</span>
               <span>Patient Reports</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_transfer_reports/Doctor_transfer_reports.html" data-page="transfer_reports" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">summarize</span>
+            <a href="../Doctor_transfer_reports/Doctor_transfer_reports.html" data-page="transfer_reports"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">summarize</span>
               <span>Transfer Reports</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_audit_logs/Doctor_audit_logs.html" data-page="audit_logs" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">verified_user</span>
+            <a href="../Doctor_audit_logs/Doctor_audit_logs.html" data-page="audit_logs"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">verified_user</span>
               <span>Audit Logs</span>
             </a>
           </li>
@@ -219,696 +279,983 @@
 
     <!-- Bottom Actions -->
     <div class="p-3 border-t border-white/10 space-y-1 mt-auto bg-[#081426]/50">
-      <a href="../Doctor_settings_jeevan/Doctor_settings_jeevan.html" data-page="settings" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-        <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">settings</span>
+      <a href="../Doctor_settings_jeevan/Doctor_settings_jeevan.html" data-page="settings"
+        class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+        <span
+          class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">settings</span>
         <span>Settings</span>
       </a>
-      <a href="../../Login/Login.html" onclick="if(typeof handleDoctorLogout==='function'){handleDoctorLogout(event);}" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all group text-sm font-medium">
-        <span class="material-symbols-outlined mr-3 text-[20px] text-red-400 group-hover:text-red-300 transition-colors">logout</span>
+      <a href="../../Login/Login.html" onclick="if(typeof handleDoctorLogout==='function'){handleDoctorLogout(event);}"
+        class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all group text-sm font-medium">
+        <span
+          class="material-symbols-outlined mr-3 text-[20px] text-red-400 group-hover:text-red-300 transition-colors">logout</span>
         <span>Logout</span>
       </a>
     </div>
   </aside>
-<!-- END: Doctor LeftSidebar -->
+  <!-- END: Doctor LeftSidebar -->
 
-<!-- Main Content Area -->
-<div class="flex-1 overflow-y-auto flex flex-col">
-  <!-- Top Header -->
-  <header class="h-16 bg-surface/90 backdrop-blur-md sticky top-0 z-40 px-8 flex items-center justify-between border-b border-outline-variant/30">
-    <div class="flex items-center gap-md">
-      <span class="material-symbols-outlined text-primary">clinical_notes</span>
-      <span class="font-headline-sm text-headline-sm text-on-surface">Doctor Decision Support</span>
-    </div>
-    <div class="flex items-center gap-lg">
-      <div class="relative flex items-center bg-surface-container rounded-full px-md py-xs">
-        <span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
-        <input class="bg-transparent border-none focus:ring-0 text-body-sm px-sm w-48" placeholder="Search patients..." type="text">
+  <!-- Main Content Area -->
+  <div class="flex-1 overflow-y-auto flex flex-col">
+    <!-- Top Header -->
+    <header
+      class="h-16 bg-surface/90 backdrop-blur-md sticky top-0 z-40 px-8 flex items-center justify-between border-b border-outline-variant/30">
+      <div class="flex items-center gap-md">
+        <span class="material-symbols-outlined text-primary">clinical_notes</span>
+        <span class="font-headline-sm text-headline-sm text-on-surface">Doctor Decision Support</span>
       </div>
-      <button class="relative p-xs text-on-surface-variant">
-        <span class="material-symbols-outlined">notifications</span>
-        <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
-      </button>
-      <div class="flex items-center gap-sm pl-md border-l border-outline-variant">
-        <div class="text-right hidden sm:block">
-          <div id="header-doctor-name" class="font-label-md text-label-md text-on-surface">Dr. Doctor</div>
-          <div id="header-doctor-dept" class="font-label-sm text-label-sm text-on-surface-variant">Consultant Intensivist</div>
+      <div class="flex items-center gap-lg">
+        <div class="relative flex items-center bg-surface-container rounded-full px-md py-xs">
+          <span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+          <input class="bg-transparent border-none focus:ring-0 text-body-sm px-sm w-48"
+            placeholder="Search patients..." type="text">
         </div>
-        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
-          <span class="material-symbols-outlined text-[18px]">person</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Body Content -->
-  <main class="min-h-screen bg-background">
-    <div class="flex flex-col w-full p-lg gap-lg max-w-7xl mx-auto">
-      
-      <!-- Header Section -->
-      <div class="flex items-center justify-between bg-surface p-lg rounded-xl shadow-sm border border-outline-variant/20">
-        <div class="flex items-center gap-md">
-          <div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container">
-            <span class="material-symbols-outlined text-[24px]">calculate</span>
+        <button class="relative p-xs text-on-surface-variant">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+        </button>
+        <div class="flex items-center gap-sm pl-md border-l border-outline-variant">
+          <div class="text-right hidden sm:block">
+            <div id="header-doctor-name" class="font-label-md text-label-md text-on-surface">Dr. Doctor</div>
+            <div id="header-doctor-dept" class="font-label-sm text-label-sm text-on-surface-variant">Consultant
+              Intensivist</div>
           </div>
-          <div>
-            <h1 class="font-headline-md text-headline-md text-on-surface">Enter Patient Vitals &amp; Calculate EWS</h1>
-            <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Record physiological measurements to compute Early Warning Score (EWS) and evaluate ICU/HDU transfer candidacy.</p>
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+            <span class="material-symbols-outlined text-[18px]">person</span>
           </div>
         </div>
-        <div class="flex items-center gap-sm bg-surface-container px-md py-sm rounded-lg">
-          <span class="material-symbols-outlined text-on-surface-variant">verified_user</span>
-          <span class="font-label-md text-label-md text-on-surface">Doctor Clinical Review</span>
-        </div>
       </div>
+    </header>
 
-      <!-- Main Content Split (12-col grid) -->
-      <div class="grid grid-cols-12 gap-lg items-start">
-        
-        <!-- Left Sidebar: Patient Selection & Context (4 columns) -->
-        <div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
-          
-          <!-- Patient Selector Card -->
-          <div class="bg-surface rounded-xl p-lg shadow-sm relative border border-outline-variant/20">
-            <h2 class="font-headline-sm text-headline-sm text-on-surface mb-md">Select Patient</h2>
-            <div class="relative">
-              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-              <input id="patient-selector-input" class="w-full pl-10 pr-20 py-sm bg-surface-container rounded-lg font-body-md text-body-md text-on-surface border border-outline-variant/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none cursor-pointer" readonly="" type="text" value="Loading patient...">
-              <button id="patient-change-btn" class="absolute right-3 top-1/2 -translate-y-1/2 text-primary font-label-md text-label-md hover:underline font-semibold">Change</button>
+    <!-- Main Body Content -->
+    <main class="min-h-screen bg-background">
+      <div class="flex flex-col w-full p-lg gap-lg max-w-7xl mx-auto">
+
+        <!-- Header Section -->
+        <div
+          class="flex items-center justify-between bg-surface p-lg rounded-xl shadow-sm border border-outline-variant/20">
+          <div class="flex items-center gap-md">
+            <div
+              class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container">
+              <span class="material-symbols-outlined text-[24px]">calculate</span>
             </div>
-            
-            <!-- Patient Dropdown Menu (Hidden by default) -->
-            <div id="patient-select-dropdown" class="hidden absolute left-4 right-4 top-full mt-1 bg-surface border border-outline-variant/40 rounded-xl shadow-xl z-50 overflow-hidden max-h-64 overflow-y-auto">
-              <div class="p-2 border-b border-outline-variant/20 text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Select Authorized Patient</div>
-              <div id="patient-options-list" class="divide-y divide-outline-variant/10">
-                <!-- Populated dynamically -->
+            <div>
+              <h1 class="font-headline-md text-headline-md text-on-surface">Enter Patient Vitals &amp; Calculate EWS
+              </h1>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Record physiological measurements to
+                compute Early Warning Score (EWS) and evaluate ICU/HDU transfer candidacy.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-sm bg-surface-container px-md py-sm rounded-lg">
+            <span class="material-symbols-outlined text-on-surface-variant">verified_user</span>
+            <span class="font-label-md text-label-md text-on-surface">Doctor Clinical Review</span>
+          </div>
+        </div>
+
+        <!-- Main Content Split (12-col grid) -->
+        <div class="grid grid-cols-12 gap-lg items-start">
+
+          <!-- Left Sidebar: Patient Selection & Context (4 columns) -->
+          <div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+
+            <!-- Patient Selector Card -->
+            <div class="bg-surface rounded-xl p-lg shadow-sm relative border border-outline-variant/20">
+              <h2 class="font-headline-sm text-headline-sm text-on-surface mb-md">Select Patient</h2>
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                <input id="patient-selector-input"
+                  class="w-full pl-10 pr-20 py-sm bg-surface-container rounded-lg font-body-md text-body-md text-on-surface border border-outline-variant/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none cursor-pointer"
+                  readonly="" type="text" value="Loading patient...">
+                <button id="patient-change-btn"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-primary font-label-md text-label-md hover:underline font-semibold">Change</button>
+              </div>
+
+              <!-- Patient Dropdown Menu (Hidden by default) -->
+              <div id="patient-select-dropdown"
+                class="hidden absolute left-4 right-4 top-full mt-1 bg-surface border border-outline-variant/40 rounded-xl shadow-xl z-50 overflow-hidden max-h-64 overflow-y-auto">
+                <div
+                  class="p-2 border-b border-outline-variant/20 text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">
+                  Select Authorized Patient</div>
+                <div id="patient-options-list" class="divide-y divide-outline-variant/10">
+                  <!-- Populated dynamically -->
+                </div>
               </div>
             </div>
+
+            <!-- Patient Context Card -->
+            <div
+              class="bg-surface rounded-xl shadow-sm overflow-hidden flex flex-col relative group border border-outline-variant/20">
+              <div id="patient-card-accent" class="h-2 bg-gradient-to-r from-primary to-secondary w-full"></div>
+              <div class="p-lg">
+                <div class="flex items-start justify-between mb-md">
+                  <div>
+                    <h3 id="patient-card-name" class="font-headline-sm text-headline-sm text-on-surface font-bold">--
+                    </h3>
+                    <div id="patient-card-badge-bed"
+                      class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs mt-xs">
+                      <span class="material-symbols-outlined text-[16px]">badge</span> <span
+                        id="patient-card-code">--</span> &nbsp;•&nbsp;
+                      <span class="material-symbols-outlined text-[16px]">bed</span> <span
+                        id="patient-card-bed">--</span>
+                    </div>
+                  </div>
+                  <div id="patient-card-ews-container"
+                    class="bg-surface-container text-on-surface px-sm py-xs rounded text-center min-w-[70px]">
+                    <div class="font-label-sm text-label-sm uppercase font-semibold">Current EWS</div>
+                    <div id="patient-card-ews" class="font-headline-lg text-headline-lg font-bold">--</div>
+                  </div>
+                </div>
+                <div class="space-y-sm mt-md">
+                  <div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Age / Gender</span>
+                    <span id="patient-card-age-gender" class="font-label-md text-label-md text-on-surface">-- /
+                      --</span>
+                  </div>
+                  <div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Admitted</span>
+                    <span id="patient-card-admitted" class="font-label-md text-label-md text-on-surface">--</span>
+                  </div>
+                  <div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Primary Diagnosis</span>
+                    <span id="patient-card-diagnosis" class="font-label-md text-label-md text-on-surface">--</span>
+                  </div>
+                  <div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Last Vitals Recorded</span>
+                    <span id="patient-card-last-recorded"
+                      class="font-label-md text-label-md text-on-surface text-right">
+                      <span id="patient-card-last-recorded-time">--</span><br>
+                      <span id="patient-card-recorder" class="text-on-surface-variant font-normal">--</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <!-- Decorative background pattern -->
+              <div
+                class="absolute -bottom-8 -right-8 opacity-5 pointer-events-none transition-transform group-hover:scale-110 duration-500">
+                <span class="material-symbols-outlined text-[120px]">monitor_heart</span>
+              </div>
+            </div>
+
+            <!-- Mini Trend Chart -->
+            <div class="bg-surface rounded-xl p-lg shadow-sm border border-outline-variant/20">
+              <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-sm">EWS Trend
+                (Recent History)</h3>
+              <div id="patient-sparkline-container"
+                class="h-32 w-full bg-surface-container rounded flex items-end justify-between p-sm relative overflow-hidden group">
+                <!-- Simulated sparkline -->
+                <div class="absolute inset-0 w-full h-full p-sm pointer-events-none">
+                  <svg id="trend-svg" class="w-full h-full overflow-visible" preserveAspectRatio="none"
+                    viewBox="0 0 100 40">
+                    <path id="trend-svg-path" class="text-primary" d="M0,30 L20,28 L40,35 L60,15 L80,5 L100,2"
+                      fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    </path>
+                    <path id="trend-svg-fill" class="text-primary/10"
+                      d="M0,30 L20,28 L40,35 L60,15 L80,5 L100,2 L100,40 L0,40 Z" fill="currentColor" stroke="none">
+                    </path>
+                  </svg>
+                </div>
+                <div id="trend-points-container" class="w-full h-full relative flex items-end justify-between z-10">
+                  <!-- Dynamic points -->
+                </div>
+              </div>
+              <div class="flex justify-between mt-xs font-body-sm text-label-sm text-on-surface-variant">
+                <span id="trend-label-old">Earlier</span>
+                <span id="trend-label-now">Latest</span>
+              </div>
+            </div>
+
           </div>
 
-          <!-- Patient Context Card -->
-          <div class="bg-surface rounded-xl shadow-sm overflow-hidden flex flex-col relative group border border-outline-variant/20">
-            <div id="patient-card-accent" class="h-2 bg-gradient-to-r from-primary to-secondary w-full"></div>
-            <div class="p-lg">
-              <div class="flex items-start justify-between mb-md">
+          <!-- Right Side: Data Entry Form (8 columns) -->
+          <div class="col-span-12 lg:col-span-8">
+            <div class="bg-surface rounded-xl shadow-sm border border-outline-variant/30 flex flex-col h-full">
+              <div
+                class="p-lg border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low rounded-t-xl">
                 <div>
-                  <h3 id="patient-card-name" class="font-headline-sm text-headline-sm text-on-surface font-bold">--</h3>
-                  <div id="patient-card-badge-bed" class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs mt-xs">
-                    <span class="material-symbols-outlined text-[16px]">badge</span> <span id="patient-card-code">--</span> &nbsp;•&nbsp; 
-                    <span class="material-symbols-outlined text-[16px]">bed</span> <span id="patient-card-bed">--</span>
+                  <h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+                    <span class="material-symbols-outlined text-primary">add_circle</span>
+                    New Vitals Entry
+                  </h2>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Fields marked with <span
+                      class="text-error">*</span> are required for EWS calculation.</p>
+                </div>
+                <div
+                  class="flex items-center gap-sm bg-surface rounded-lg px-md py-sm border border-outline-variant/50">
+                  <label class="font-label-sm text-label-sm text-on-surface-variant uppercase">Time of Recording</label>
+                  <input id="input-record-time"
+                    class="bg-transparent border-none font-headline-sm text-headline-sm text-on-surface focus:ring-0 p-0 outline-none w-24 text-center cursor-pointer"
+                    type="time">
+                </div>
+              </div>
+
+              <form class="p-lg flex-1 flex flex-col" id="vitals-form">
+                <!-- Bento Grid for 4 Core Parameters -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-md mb-lg">
+                  <!-- Heart Rate -->
+                  <div
+                    class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
+                    <label
+                      class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
+                      HR <span class="text-error">*</span>
+                      <span
+                        class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">favorite</span>
+                    </label>
+                    <div class="flex items-end gap-sm mt-sm">
+                      <input id="input-heart-rate"
+                        class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50"
+                        placeholder="--" required="" min="20" max="300" type="number">
+                      <span class="font-body-sm text-body-sm text-on-surface-variant pb-1">bpm</span>
+                    </div>
+                  </div>
+                  <!-- Respiratory Rate -->
+                  <div
+                    class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
+                    <label
+                      class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
+                      RR <span class="text-error">*</span>
+                      <span
+                        class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">air</span>
+                    </label>
+                    <div class="flex items-end gap-sm mt-sm">
+                      <input id="input-respiratory-rate"
+                        class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50"
+                        placeholder="--" required="" min="4" max="80" type="number">
+                      <span class="font-body-sm text-body-sm text-on-surface-variant pb-1">rpm</span>
+                    </div>
+                  </div>
+                  <!-- Systolic BP -->
+                  <div
+                    class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
+                    <label
+                      class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
+                      SBP <span class="text-error">*</span>
+                      <span
+                        class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">blood_pressure</span>
+                    </label>
+                    <div class="flex items-end gap-sm mt-sm">
+                      <input id="input-systolic-bp"
+                        class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50"
+                        placeholder="--" required="" min="40" max="300" type="number">
+                      <span class="font-body-sm text-body-sm text-on-surface-variant pb-1 leading-tight">mmHg</span>
+                    </div>
+                  </div>
+                  <!-- Temperature -->
+                  <div
+                    class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
+                    <label
+                      class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
+                      Temp <span class="text-error">*</span>
+                      <span
+                        class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">device_thermostat</span>
+                    </label>
+                    <div class="flex items-end gap-sm mt-sm">
+                      <input id="input-temperature"
+                        class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50"
+                        placeholder="--" required="" min="25.0" max="45.0" step="0.1" type="number">
+                      <span class="font-body-sm text-body-sm text-on-surface-variant pb-1">°C</span>
+                    </div>
                   </div>
                 </div>
-                <div id="patient-card-ews-container" class="bg-surface-container text-on-surface px-sm py-xs rounded text-center min-w-[70px]">
-                  <div class="font-label-sm text-label-sm uppercase font-semibold">Current EWS</div>
-                  <div id="patient-card-ews" class="font-headline-lg text-headline-lg font-bold">--</div>
-                </div>
-              </div>
-              <div class="space-y-sm mt-md">
-                <div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
-                  <span class="font-body-sm text-body-sm text-on-surface-variant">Age / Gender</span>
-                  <span id="patient-card-age-gender" class="font-label-md text-label-md text-on-surface">-- / --</span>
-                </div>
-                <div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
-                  <span class="font-body-sm text-body-sm text-on-surface-variant">Admitted</span>
-                  <span id="patient-card-admitted" class="font-label-md text-label-md text-on-surface">--</span>
-                </div>
-                <div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
-                  <span class="font-body-sm text-body-sm text-on-surface-variant">Primary Diagnosis</span>
-                  <span id="patient-card-diagnosis" class="font-label-md text-label-md text-on-surface">--</span>
-                </div>
-                <div class="flex justify-between items-center py-xs border-b border-outline-variant/30 last:border-0">
-                  <span class="font-body-sm text-body-sm text-on-surface-variant">Last Vitals Recorded</span>
-                  <span id="patient-card-last-recorded" class="font-label-md text-label-md text-on-surface text-right">
-                    --<br>
-                    <span id="patient-card-recorder" class="text-on-surface-variant font-normal">--</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <!-- Decorative background pattern -->
-            <div class="absolute -bottom-8 -right-8 opacity-5 pointer-events-none transition-transform group-hover:scale-110 duration-500">
-              <span class="material-symbols-outlined text-[120px]">monitor_heart</span>
-            </div>
-          </div>
 
-          <!-- Mini Trend Chart -->
-          <div class="bg-surface rounded-xl p-lg shadow-sm border border-outline-variant/20">
-            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-sm">EWS Trend (Recent History)</h3>
-            <div id="patient-sparkline-container" class="h-32 w-full bg-surface-container rounded flex items-end justify-between p-sm relative overflow-hidden group">
-              <!-- Simulated sparkline -->
-              <div class="absolute inset-0 w-full h-full p-sm pointer-events-none">
-                <svg id="trend-svg" class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 40">
-                  <path id="trend-svg-path" class="text-primary" d="M0,30 L20,28 L40,35 L60,15 L80,5 L100,2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                  <path id="trend-svg-fill" class="text-primary/10" d="M0,30 L20,28 L40,35 L60,15 L80,5 L100,2 L100,40 L0,40 Z" fill="currentColor" stroke="none"></path>
-                </svg>
-              </div>
-              <div id="trend-points-container" class="w-full h-full relative flex items-end justify-between z-10">
-                <!-- Dynamic points -->
-              </div>
-            </div>
-            <div class="flex justify-between mt-xs font-body-sm text-label-sm text-on-surface-variant">
-              <span id="trend-label-old">Earlier</span>
-              <span id="trend-label-now">Latest</span>
+                <!-- Notes Area -->
+                <div class="mb-lg flex-1">
+                  <label class="font-label-md text-label-md text-on-surface-variant block mb-sm">Doctor Clinical Notes /
+                    Observations (Optional)</label>
+                  <textarea id="input-nursing-notes"
+                    class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md font-body-md text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none h-24"
+                    placeholder="Enter clinical assessment, physician orders, or plan..."></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-between items-center pt-md border-t border-outline-variant/30 mt-auto">
+                  <button id="clear-btn"
+                    class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-surface-variant border border-outline-variant/50 hover:bg-surface-variant/20 transition-colors"
+                    type="button">
+                    Clear All
+                  </button>
+                  <div class="flex gap-md">
+                    <button id="draft-btn"
+                      class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-surface border border-outline-variant hover:bg-surface-variant/20 transition-colors"
+                      type="button">
+                      Save as Draft
+                    </button>
+                    <button
+                      class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-primary bg-primary hover:bg-primary/90 transition-colors flex items-center gap-sm shadow-sm hover:shadow-md"
+                      id="save-vitals-btn" type="button">
+                      <span class="material-symbols-outlined text-[20px]">save</span>
+                      Save Vitals &amp; Calculate EWS
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
 
         </div>
 
-        <!-- Right Side: Data Entry Form (8 columns) -->
-        <div class="col-span-12 lg:col-span-8">
-          <div class="bg-surface rounded-xl shadow-sm border border-outline-variant/30 flex flex-col h-full">
-            <div class="p-lg border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low rounded-t-xl">
-              <div>
-                <h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
-                  <span class="material-symbols-outlined text-primary">add_circle</span>
-                  New Vitals Entry
-                </h2>
-                <p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Fields marked with <span class="text-error">*</span> are required for EWS calculation.</p>
-              </div>
-              <div class="flex items-center gap-sm bg-surface rounded-lg px-md py-sm border border-outline-variant/50">
-                <label class="font-label-sm text-label-sm text-on-surface-variant uppercase">Time of Recording</label>
-                <input id="input-record-time" class="bg-transparent border-none font-headline-sm text-headline-sm text-on-surface focus:ring-0 p-0 outline-none w-24 text-center cursor-pointer" type="time">
-              </div>
+        <!-- EWS Result Display Panel (Hidden until submission) -->
+        <div id="ews-result-panel" class="hidden bg-surface rounded-xl shadow-lg border-2 border-primary/30 p-lg mt-lg">
+          <div class="flex items-center justify-between mb-md">
+            <div class="flex items-center gap-sm">
+              <span class="material-symbols-outlined text-primary text-[28px]">clinical_notes</span>
+              <h2 class="font-headline-md text-headline-md text-on-surface">EWS Calculation Result</h2>
             </div>
+            <div class="flex items-center gap-sm">
+              <a id="link-transfer-recs" href="../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html"
+                class="px-md py-sm bg-primary/10 text-primary hover:bg-primary/20 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">transfer_within_a_station</span>
+                Transfer Decision Support
+              </a>
+              <a id="link-ews-trends" href="../Doctor_ews_trends/Doctor_ews_trends.html"
+                class="px-md py-sm bg-surface-container text-on-surface hover:bg-surface-variant rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">timeline</span>
+                View Full Trends
+              </a>
+            </div>
+          </div>
 
-            <form class="p-lg flex-1 flex flex-col" id="vitals-form">
-              <!-- Bento Grid for 4 Core Parameters -->
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-md mb-lg">
-                <!-- Heart Rate -->
-                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
-                  <label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
-                    HR <span class="text-error">*</span>
-                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">favorite</span>
-                  </label>
-                  <div class="flex items-end gap-sm mt-sm">
-                    <input id="input-heart-rate" class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50" placeholder="--" required="" min="20" max="300" type="number">
-                    <span class="font-body-sm text-body-sm text-on-surface-variant pb-1">bpm</span>
-                  </div>
-                </div>
-                <!-- Respiratory Rate -->
-                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
-                  <label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
-                    RR <span class="text-error">*</span>
-                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">air</span>
-                  </label>
-                  <div class="flex items-end gap-sm mt-sm">
-                    <input id="input-respiratory-rate" class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50" placeholder="--" required="" min="4" max="80" type="number">
-                    <span class="font-body-sm text-body-sm text-on-surface-variant pb-1">rpm</span>
-                  </div>
-                </div>
-                <!-- Systolic BP -->
-                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
-                  <label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
-                    SBP <span class="text-error">*</span>
-                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">blood_pressure</span>
-                  </label>
-                  <div class="flex items-end gap-sm mt-sm">
-                    <input id="input-systolic-bp" class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50" placeholder="--" required="" min="40" max="300" type="number">
-                    <span class="font-body-sm text-body-sm text-on-surface-variant pb-1 leading-tight">mmHg</span>
-                  </div>
-                </div>
-                <!-- Temperature -->
-                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md hover:border-primary/50 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 relative group">
-                  <label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between w-full">
-                    Temp <span class="text-error">*</span>
-                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant/50 group-focus-within:text-primary">device_thermostat</span>
-                  </label>
-                  <div class="flex items-end gap-sm mt-sm">
-                    <input id="input-temperature" class="w-full bg-transparent text-headline-lg font-headline-lg text-on-surface outline-none placeholder:text-outline-variant/50" placeholder="--" required="" min="25.0" max="45.0" step="0.1" type="number">
-                    <span class="font-body-sm text-body-sm text-on-surface-variant pb-1">°C</span>
-                  </div>
-                </div>
-              </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-md mb-lg">
+            <div class="bg-surface-container rounded-lg p-md text-center">
+              <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">RR Score</div>
+              <div id="result-rr-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
+            </div>
+            <div class="bg-surface-container rounded-lg p-md text-center">
+              <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">HR Score</div>
+              <div id="result-hr-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
+            </div>
+            <div class="bg-surface-container rounded-lg p-md text-center">
+              <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">SBP Score</div>
+              <div id="result-sbp-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
+            </div>
+            <div class="bg-surface-container rounded-lg p-md text-center">
+              <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Temp Score</div>
+              <div id="result-temp-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
+            </div>
+          </div>
 
-              <!-- Notes Area -->
-              <div class="mb-lg flex-1">
-                <label class="font-label-md text-label-md text-on-surface-variant block mb-sm">Doctor Clinical Notes / Observations (Optional)</label>
-                <textarea id="input-nursing-notes" class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-md font-body-md text-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none h-24" placeholder="Enter clinical assessment, physician orders, or plan..."></textarea>
-              </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+            <div id="result-total-container" class="rounded-xl p-lg text-center bg-surface-container">
+              <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total EWS Score</div>
+              <div id="result-total-score" class="text-[48px] font-bold leading-tight">-</div>
+            </div>
+            <div class="rounded-xl p-lg text-center bg-surface-container">
+              <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Condition</div>
+              <div id="result-condition" class="font-headline-md text-headline-md font-bold mt-sm">-</div>
+            </div>
+            <div class="rounded-xl p-lg text-center bg-surface-container">
+              <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Recommendation</div>
+              <div id="result-recommendation" class="font-headline-sm text-headline-sm font-bold mt-sm">-</div>
+            </div>
+          </div>
 
-              <!-- Action Buttons -->
-              <div class="flex justify-between items-center pt-md border-t border-outline-variant/30 mt-auto">
-                <button id="clear-btn" class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-surface-variant border border-outline-variant/50 hover:bg-surface-variant/20 transition-colors" type="button">
-                  Clear All
-                </button>
-                <div class="flex gap-md">
-                  <button id="draft-btn" class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-surface border border-outline-variant hover:bg-surface-variant/20 transition-colors" type="button">
-                    Save as Draft
-                  </button>
-                  <button class="px-lg py-sm rounded-lg font-label-md text-label-md text-on-primary bg-primary hover:bg-primary/90 transition-colors flex items-center gap-sm shadow-sm hover:shadow-md" id="save-vitals-btn" type="button">
-                    <span class="material-symbols-outlined text-[20px]">save</span>
-                    Save Vitals &amp; Calculate EWS
-                  </button>
-                </div>
-              </div>
-            </form>
+          <div id="result-abnormal" class="mt-md hidden">
+            <h3 class="font-label-md text-label-md text-error mb-sm">⚠️ Abnormal Parameters</h3>
+            <ul id="result-abnormal-list" class="list-disc list-inside text-body-sm text-on-surface-variant"></ul>
           </div>
         </div>
 
       </div>
+    </main>
+  </div>
 
-      <!-- EWS Result Display Panel (Hidden until submission) -->
-      <div id="ews-result-panel" class="hidden bg-surface rounded-xl shadow-lg border-2 border-primary/30 p-lg mt-lg">
-        <div class="flex items-center justify-between mb-md">
-          <div class="flex items-center gap-sm">
-            <span class="material-symbols-outlined text-primary text-[28px]">clinical_notes</span>
-            <h2 class="font-headline-md text-headline-md text-on-surface">EWS Calculation Result</h2>
-          </div>
-          <div class="flex items-center gap-sm">
-            <a id="link-transfer-recs" href="../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html" class="px-md py-sm bg-primary/10 text-primary hover:bg-primary/20 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors">
-              <span class="material-symbols-outlined text-[16px]">transfer_within_a_station</span>
-              Transfer Decision Support
-            </a>
-            <a id="link-ews-trends" href="../Doctor_ews_trends/Doctor_ews_trends.html" class="px-md py-sm bg-surface-container text-on-surface hover:bg-surface-variant rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors">
-              <span class="material-symbols-outlined text-[16px]">timeline</span>
-              View Full Trends
-            </a>
-          </div>
-        </div>
+  <script>
+    // ─── Jeevan Setu: Authoritative Doctor EWS Calculator & Clinical Sync ───
+    let currentPatientId = null;
+    let authorizedPatients = [];
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-md mb-lg">
-          <div class="bg-surface-container rounded-lg p-md text-center">
-            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">RR Score</div>
-            <div id="result-rr-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
-          </div>
-          <div class="bg-surface-container rounded-lg p-md text-center">
-            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">HR Score</div>
-            <div id="result-hr-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
-          </div>
-          <div class="bg-surface-container rounded-lg p-md text-center">
-            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">SBP Score</div>
-            <div id="result-sbp-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
-          </div>
-          <div class="bg-surface-container rounded-lg p-md text-center">
-            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Temp Score</div>
-            <div id="result-temp-score" class="font-headline-lg text-headline-lg text-on-surface font-bold">-</div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
-          <div id="result-total-container" class="rounded-xl p-lg text-center bg-surface-container">
-            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total EWS Score</div>
-            <div id="result-total-score" class="text-[48px] font-bold leading-tight">-</div>
-          </div>
-          <div class="rounded-xl p-lg text-center bg-surface-container">
-            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Condition</div>
-            <div id="result-condition" class="font-headline-md text-headline-md font-bold mt-sm">-</div>
-          </div>
-          <div class="rounded-xl p-lg text-center bg-surface-container">
-            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Recommendation</div>
-            <div id="result-recommendation" class="font-headline-sm text-headline-sm font-bold mt-sm">-</div>
-          </div>
-        </div>
-
-        <div id="result-abnormal" class="mt-md hidden">
-          <h3 class="font-label-md text-label-md text-error mb-sm">⚠️ Abnormal Parameters</h3>
-          <ul id="result-abnormal-list" class="list-disc list-inside text-body-sm text-on-surface-variant"></ul>
-        </div>
-      </div>
-
-    </div>
-  </main>
-</div>
-
-<script>
-  // ─── Jeevan Setu: Authoritative Doctor EWS Calculator & Clinical Sync ───
-  let currentPatientId = 1;
-  const API_BASE = '/api/v1/vitals';
-  const PATIENT_API = '/api/v1/patients';
-
-  function getAuthToken() {
-    return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
-  }
-
-  // Extract doctor user_id from JWT token for filtering
-  function getDoctorIdFromToken() {
-    const token = getAuthToken();
-    if (!token) return null;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.sub || null;
-    } catch (e) { return null; }
-  }
-
-  function getAuthHeaders() {
-    const token = getAuthToken();
-    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
-    if (token) headers['Authorization'] = 'Bearer ' + token;
-    return headers;
-  }
-
-  // Populate doctor info in header if available
-  const userStr = localStorage.getItem('jeevan_setu_user');
-  if (userStr) {
-    try {
-      const u = JSON.parse(userStr);
-      const nameEl = document.getElementById('header-doctor-name');
-      if (nameEl && u.full_name) nameEl.textContent = u.full_name;
-      const deptEl = document.getElementById('header-doctor-dept');
-      if (deptEl && (u.department || u.role)) deptEl.textContent = u.department || 'Consultant Intensivist';
-    } catch (e) {}
-  }
-
-  // Set default current time
-  const now = new Date();
-  const timeString = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-  const timeInput = document.getElementById('input-record-time');
-  if (timeInput) timeInput.value = timeString;
-
-  // Parse patient_id from URL query params (e.g. ?patient_id=2 or ?id=2)
-  const urlParams = new URLSearchParams(window.location.search);
-  const paramId = urlParams.get('patient_id') || urlParams.get('id');
-  if (paramId && !isNaN(parseInt(paramId))) {
-    currentPatientId = parseInt(paramId);
-  }
-
-  function applyScoreColor(el, score) {
-    el.classList.remove('text-green-600', 'text-yellow-600', 'text-orange-600', 'text-red-600');
-    if (score === 0) el.classList.add('text-green-600');
-    else if (score === 1) el.classList.add('text-yellow-600');
-    else if (score === 2) el.classList.add('text-orange-600');
-    else el.classList.add('text-red-600');
-  }
-
-  function applyConditionStyle(condition) {
-    const totalContainer = document.getElementById('result-total-container');
-    if (!totalContainer) return;
-    totalContainer.classList.remove('bg-green-100', 'bg-yellow-100', 'bg-red-100');
-    const condEl = document.getElementById('result-condition');
-    condEl.classList.remove('text-green-700', 'text-yellow-700', 'text-red-700');
-    const recEl = document.getElementById('result-recommendation');
-    recEl.classList.remove('text-green-700', 'text-yellow-700', 'text-red-700');
-    if (condition === 'Stable') {
-      totalContainer.classList.add('bg-green-100');
-      condEl.classList.add('text-green-700');
-      recEl.classList.add('text-green-700');
-    } else if (condition === 'Moderate Risk') {
-      totalContainer.classList.add('bg-yellow-100');
-      condEl.classList.add('text-yellow-700');
-      recEl.classList.add('text-yellow-700');
-    } else {
-      totalContainer.classList.add('bg-red-100');
-      condEl.classList.add('text-red-700');
-      recEl.classList.add('text-red-700');
+    // Parse initial patient_id from URL query params (e.g. ?patient_id=2 or ?id=2)
+    const initialUrlParams = new URLSearchParams(window.location.search);
+    const initialParamId = initialUrlParams.get('patient_id') || initialUrlParams.get('id');
+    if (initialParamId && !isNaN(parseInt(initialParamId)) && parseInt(initialParamId) > 0) {
+      currentPatientId = parseInt(initialParamId);
     }
-  }
 
-  // Load patient profile & authoritative latest monitoring state
-  async function loadPatientProfile(patientId) {
-    try {
-      // 1. Fetch patient demographic & latest state
-      const res = await fetch(`${PATIENT_API}/${patientId}`, { headers: getAuthHeaders() });
-      if (!res.ok) {
-        console.warn(`Failed to fetch patient ${patientId}`);
+    const API_BASE = '/api/v1/vitals';
+    const PATIENT_API = '/api/v1/patients';
+
+    function getAuthToken() {
+      return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
+    }
+
+    // Extract doctor user_id from JWT token for filtering
+    function getDoctorIdFromToken() {
+      const token = getAuthToken();
+      if (!token) return null;
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.sub || null;
+      } catch (e) { return null; }
+    }
+
+    function getAuthHeaders() {
+      const token = getAuthToken();
+      const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      return headers;
+    }
+
+    // Populate doctor info in header if available
+    const userStr = localStorage.getItem('jeevan_setu_user');
+    if (userStr) {
+      try {
+        const u = JSON.parse(userStr);
+        const nameEl = document.getElementById('header-doctor-name');
+        if (nameEl && u.full_name) nameEl.textContent = u.full_name;
+        const deptEl = document.getElementById('header-doctor-dept');
+        if (deptEl && (u.department || u.role)) deptEl.textContent = u.department || 'Consultant Intensivist';
+      } catch (e) { }
+    }
+
+    // Set default current time
+    const now = new Date();
+    const timeString = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    const timeInput = document.getElementById('input-record-time');
+    if (timeInput) timeInput.value = timeString;
+
+    function applyScoreColor(el, score) {
+      if (!el) return;
+      el.classList.remove('text-green-600', 'text-yellow-600', 'text-orange-600', 'text-red-600');
+      if (score === 0) el.classList.add('text-green-600');
+      else if (score === 1) el.classList.add('text-yellow-600');
+      else if (score === 2) el.classList.add('text-orange-600');
+      else el.classList.add('text-red-600');
+    }
+
+    function applyConditionStyle(condition) {
+      const totalContainer = document.getElementById('result-total-container');
+      if (!totalContainer) return;
+      totalContainer.classList.remove('bg-green-100', 'bg-yellow-100', 'bg-red-100');
+      const condEl = document.getElementById('result-condition');
+      if (condEl) condEl.classList.remove('text-green-700', 'text-yellow-700', 'text-red-700');
+      const recEl = document.getElementById('result-recommendation');
+      if (recEl) recEl.classList.remove('text-green-700', 'text-yellow-700', 'text-red-700');
+      if (condition === 'Stable') {
+        totalContainer.classList.add('bg-green-100');
+        if (condEl) condEl.classList.add('text-green-700');
+        if (recEl) recEl.classList.add('text-green-700');
+      } else if (condition === 'Moderate Risk') {
+        totalContainer.classList.add('bg-yellow-100');
+        if (condEl) condEl.classList.add('text-yellow-700');
+        if (recEl) recEl.classList.add('text-yellow-700');
+      } else {
+        totalContainer.classList.add('bg-red-100');
+        if (condEl) condEl.classList.add('text-red-700');
+        if (recEl) recEl.classList.add('text-red-700');
+      }
+    }
+
+    // Reset Context Card to neutral empty values
+    function resetPatientContextCard() {
+      const nameEl = document.getElementById('patient-card-name');
+      if (nameEl) nameEl.textContent = '--';
+      const codeEl = document.getElementById('patient-card-code');
+      if (codeEl) codeEl.textContent = '--';
+      const bedEl = document.getElementById('patient-card-bed');
+      if (bedEl) bedEl.textContent = '--';
+      const ageGenderEl = document.getElementById('patient-card-age-gender');
+      if (ageGenderEl) ageGenderEl.textContent = '-- / --';
+      const admittedEl = document.getElementById('patient-card-admitted');
+      if (admittedEl) admittedEl.textContent = '--';
+      const diagEl = document.getElementById('patient-card-diagnosis');
+      if (diagEl) diagEl.textContent = '--';
+      const ewsBadge = document.getElementById('patient-card-ews');
+      if (ewsBadge) ewsBadge.textContent = '--';
+      const ewsContainer = document.getElementById('patient-card-ews-container');
+      if (ewsContainer) ewsContainer.className = 'bg-surface-container text-on-surface px-sm py-xs rounded text-center min-w-[70px]';
+      const timeEl = document.getElementById('patient-card-last-recorded-time');
+      if (timeEl) timeEl.textContent = '--';
+      const recorderEl = document.getElementById('patient-card-recorder');
+      if (recorderEl) recorderEl.textContent = '--';
+      const sparklineContainer = document.getElementById('trend-points-container');
+      if (sparklineContainer) sparklineContainer.innerHTML = '';
+      const svgPath = document.getElementById('trend-svg-path');
+      if (svgPath) svgPath.setAttribute('d', '');
+      const svgFill = document.getElementById('trend-svg-fill');
+      if (svgFill) svgFill.setAttribute('d', '');
+    }
+
+    // Clear vitals form inputs
+    function resetVitalsInputForm() {
+      const hr = document.getElementById('input-heart-rate');
+      if (hr) hr.value = '';
+      const rr = document.getElementById('input-respiratory-rate');
+      if (rr) rr.value = '';
+      const sbp = document.getElementById('input-systolic-bp');
+      if (sbp) sbp.value = '';
+      const temp = document.getElementById('input-temperature');
+      if (temp) temp.value = '';
+      const notes = document.getElementById('input-nursing-notes');
+      if (notes) notes.value = '';
+      const resultPanel = document.getElementById('ews-result-panel');
+      if (resultPanel) resultPanel.classList.add('hidden');
+    }
+
+    // Load patient profile & authoritative latest monitoring state
+    async function loadPatientProfile(patientId) {
+      if (!patientId) {
+        resetPatientContextCard();
         return;
       }
-      const json = await res.json();
-      if (!json.success || !json.data) return;
-      const p = json.data;
-
-      // Update Patient Selector
-      const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
-      const bedStr = p.bed_number || 'ICU-01';
-      document.getElementById('patient-selector-input').value = `${pCode} - ${p.name} (${bedStr})`;
-
-      // Update Left Context Card
-      document.getElementById('patient-card-name').textContent = p.name;
-      document.getElementById('patient-card-code').textContent = pCode;
-      document.getElementById('patient-card-bed').textContent = bedStr;
-      document.getElementById('patient-card-age-gender').textContent = `${p.age || '--'} / ${p.gender === 'Female' ? 'F' : 'M'}`;
-      document.getElementById('patient-card-diagnosis').textContent = p.diagnosis || 'Clinical Monitoring';
-
-      if (p.admission_date) {
-        const d = new Date(p.admission_date);
-        document.getElementById('patient-card-admitted').textContent = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-      }
-
-      // EWS Score badge styling
-      const ewsVal = p.ews_score !== undefined ? p.ews_score : (p.latest_vitals ? p.latest_vitals.ews_score : 0);
-      const ewsBadge = document.getElementById('patient-card-ews');
-      const ewsContainer = document.getElementById('patient-card-ews-container');
-      ewsBadge.textContent = ewsVal;
-
-      ewsContainer.className = 'px-sm py-xs rounded text-center min-w-[70px] ' + 
-        (ewsVal >= 5 ? 'bg-red-100 text-red-700' : ewsVal >= 3 ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700');
-
-      // Last vitals recorded
-      const lastRecordedEl = document.getElementById('patient-card-last-recorded');
-      const recorderEl = document.getElementById('patient-card-recorder');
-      if (p.latest_vitals && p.latest_vitals.recorded_at) {
-        const rDate = new Date(p.latest_vitals.recorded_at);
-        const timePart = rDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        lastRecordedEl.childNodes[0].nodeValue = `${timePart} Today\n`;
-        recorderEl.textContent = 'by Clinical Staff';
-      } else {
-        lastRecordedEl.childNodes[0].nodeValue = 'No vitals recorded\n';
-        recorderEl.textContent = 'Awaiting entry';
-      }
-
-      // Update clinical action links
-      const linkTransfer = document.getElementById('link-transfer-recs');
-      if (linkTransfer) linkTransfer.href = `../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}`;
-      const linkTrends = document.getElementById('link-ews-trends');
-      if (linkTrends) linkTrends.href = `../Doctor_ews_trends/Doctor_ews_trends.html?patient_id=${patientId}`;
-
-      // 2. Fetch history for trend sparkline
-      const histRes = await fetch(`${API_BASE}/patient/${patientId}/history?limit=10`, { headers: getAuthHeaders() });
-      if (histRes.ok) {
-        const histJson = await histRes.json();
-        if (histJson.success && histJson.data && histJson.data.length > 0) {
-          renderSparkline(histJson.data);
-        }
-      }
-    } catch (e) {
-      console.error('Error loading patient profile:', e);
-    }
-  }
-
-  function renderSparkline(records) {
-    const sorted = [...records].reverse();
-    if (sorted.length === 0) return;
-
-    const pointsContainer = document.getElementById('trend-points-container');
-    pointsContainer.innerHTML = '';
-
-    const maxScore = Math.max(12, ...sorted.map(r => r.total_score || 0));
-    const width = 100;
-    const height = 40;
-
-    let pathD = '';
-    sorted.forEach((r, idx) => {
-      const score = r.total_score || 0;
-      const x = sorted.length === 1 ? 50 : (idx / (sorted.length - 1)) * width;
-      const y = height - (score / maxScore) * (height - 8) - 4;
-
-      if (idx === 0) pathD += `M${x.toFixed(1)},${y.toFixed(1)}`;
-      else pathD += ` L${x.toFixed(1)},${y.toFixed(1)}`;
-
-      const dot = document.createElement('div');
-      const dotColor = score >= 5 ? 'bg-red-500 ring-4 ring-red-500/20' : score >= 3 ? 'bg-yellow-500' : 'bg-green-500';
-      const isLatest = idx === sorted.length - 1;
-      dot.className = `${isLatest ? 'w-2.5 h-2.5' : 'w-1.5 h-1.5'} rounded-full relative z-10 ${dotColor}`;
-      const pctBottom = ((score / maxScore) * 80 + 10).toFixed(0);
-      dot.style.marginBottom = `${pctBottom}%`;
-      dot.title = `Score: ${score} (${r.condition || ''})`;
-      pointsContainer.appendChild(dot);
-    });
-
-    const svgPath = document.getElementById('trend-svg-path');
-    const svgFill = document.getElementById('trend-svg-fill');
-    if (svgPath && svgFill && pathD) {
-      svgPath.setAttribute('d', pathD);
-      svgFill.setAttribute('d', `${pathD} L${width},${height} L0,${height} Z`);
-    }
-  }
-
-  // Populate patient switcher dropdown
-  async function setupPatientDropdown() {
-    const dropdown = document.getElementById('patient-select-dropdown');
-    const changeBtn = document.getElementById('patient-change-btn');
-    const inputEl = document.getElementById('patient-selector-input');
-    const listEl = document.getElementById('patient-options-list');
-
-    changeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdown.classList.toggle('hidden');
-    });
-    inputEl.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdown.classList.toggle('hidden');
-    });
-
-    document.addEventListener('click', () => {
-      dropdown.classList.add('hidden');
-    });
-
-    try {
-      let url = `${PATIENT_API}?status=admitted&limit=50`;
-      if (DOCTOR_ID) url += `&doctor_id=${DOCTOR_ID}`;
-
-      let res = await fetch(url, { headers: getAuthHeaders() });
-      if (res.ok) {
-        let json = await res.json();
-        // Fallback if no patients assigned to this doctor
-        if (!json.data || json.data.length === 0) {
-          res = await fetch(`${PATIENT_API}?status=admitted&limit=50`, { headers: getAuthHeaders() });
-          json = await res.json();
+      try {
+        // Fetch patient demographic & latest state
+        const res = await fetch(`${PATIENT_API}/${patientId}`, { headers: getAuthHeaders() });
+        if (!res.ok) {
+          console.warn(`Failed to fetch patient ${patientId} (Status: ${res.status})`);
+          resetPatientContextCard();
+          const inputEl = document.getElementById('patient-selector-input');
+          if (res.status === 403) {
+            if (inputEl) inputEl.value = 'Access denied: Not authorized for this patient';
+          } else if (res.status === 404) {
+            if (inputEl) inputEl.value = 'Patient not found';
+          } else {
+            if (inputEl) inputEl.value = 'Failed to load patient profile';
+          }
+          return;
         }
 
-        if (json.success && json.data) {
-          listEl.innerHTML = '';
-          json.data.forEach(p => {
-            const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
-            const bedStr = p.bed_number || 'ICU-01';
-            const opt = document.createElement('div');
-            opt.className = 'px-3 py-2 hover:bg-primary/10 cursor-pointer flex justify-between items-center transition-colors text-sm';
-            opt.innerHTML = `
-              <div>
-                <span class="font-bold text-on-surface">${p.name}</span>
-                <span class="text-xs text-on-surface-variant ml-1">(${pCode} • ${bedStr})</span>
-              </div>
-              <span class="text-xs px-2 py-0.5 rounded font-bold ${p.ews_score >= 5 ? 'bg-red-100 text-red-700' : p.ews_score >= 3 ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}">
-                EWS: ${p.ews_score || 0}
-              </span>
-            `;
-            opt.addEventListener('click', () => {
-              currentPatientId = p.patient_id;
-              dropdown.classList.add('hidden');
-              loadPatientProfile(currentPatientId);
-              document.getElementById('ews-result-panel').classList.add('hidden');
-            });
-            listEl.appendChild(opt);
-          });
+        const json = await res.json();
+        if (!json.success || !json.data) {
+          resetPatientContextCard();
+          return;
+        }
+        const p = json.data;
 
-          // If current patient not loaded yet, select first
-          if (json.data.length > 0 && !paramId) {
-            currentPatientId = json.data[0].patient_id;
+        // Update Patient Selector Input
+        const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
+        const bedStr = p.bed_number || (p.ward_type ? p.ward_type + '-01' : 'Bed --');
+        const inputEl = document.getElementById('patient-selector-input');
+        if (inputEl) {
+          inputEl.value = `${pCode} - ${p.name} (${bedStr})`;
+        }
+
+        // Update Left Context Card
+        const nameEl = document.getElementById('patient-card-name');
+        if (nameEl) nameEl.textContent = p.name || '--';
+        const codeEl = document.getElementById('patient-card-code');
+        if (codeEl) codeEl.textContent = pCode;
+        const bedEl = document.getElementById('patient-card-bed');
+        if (bedEl) bedEl.textContent = bedStr;
+        const ageGenderEl = document.getElementById('patient-card-age-gender');
+        if (ageGenderEl) {
+          const ageStr = (p.age !== null && p.age !== undefined) ? p.age : '--';
+          const genderStr = p.gender ? (p.gender === 'Female' ? 'F' : p.gender === 'Male' ? 'M' : p.gender) : '--';
+          ageGenderEl.textContent = `${ageStr} / ${genderStr}`;
+        }
+        const diagEl = document.getElementById('patient-card-diagnosis');
+        if (diagEl) diagEl.textContent = p.diagnosis || 'Clinical Monitoring';
+
+        const admittedEl = document.getElementById('patient-card-admitted');
+        if (admittedEl) {
+          if (p.admission_date) {
+            const d = new Date(p.admission_date);
+            admittedEl.textContent = !isNaN(d.getTime())
+              ? d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+              : String(p.admission_date);
+          } else {
+            admittedEl.textContent = '--';
           }
         }
-      }
-    } catch (e) {
-      console.error('Error fetching patient list:', e);
-    }
-  }
 
-  // Clear button handler
-  document.getElementById('clear-btn').addEventListener('click', () => {
-    document.getElementById('input-heart-rate').value = '';
-    document.getElementById('input-respiratory-rate').value = '';
-    document.getElementById('input-systolic-bp').value = '';
-    document.getElementById('input-temperature').value = '';
-    document.getElementById('input-nursing-notes').value = '';
-    document.getElementById('ews-result-panel').classList.add('hidden');
-  });
-
-  // Save vitals & calculate EWS handler
-  document.getElementById('save-vitals-btn').addEventListener('click', async function(e) {
-    const btn = e.currentTarget;
-    const originalText = btn.innerHTML;
-    const form = document.getElementById('vitals-form');
-
-    // Validate required fields
-    const hr = document.getElementById('input-heart-rate').value;
-    const rr = document.getElementById('input-respiratory-rate').value;
-    const sbp = document.getElementById('input-systolic-bp').value;
-    const temp = document.getElementById('input-temperature').value;
-
-    if (!hr || !rr || !sbp || !temp) {
-      form.reportValidity();
-      return;
-    }
-
-    // Loading state
-    btn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">autorenew</span> Saving & Computing EWS...';
-    btn.classList.add('opacity-80', 'cursor-not-allowed');
-    btn.disabled = true;
-
-    try {
-      const response = await fetch(`${API_BASE}/patient/${currentPatientId}/submit`, {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify({
-          respiratory_rate: parseFloat(rr),
-          heart_rate: parseFloat(hr),
-          systolic_bp: parseFloat(sbp),
-          temperature: parseFloat(temp)
-        })
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        const data = result.data;
-
-        // Update score displays
-        const rrScoreEl = document.getElementById('result-rr-score');
-        const hrScoreEl = document.getElementById('result-hr-score');
-        const sbpScoreEl = document.getElementById('result-sbp-score');
-        const tempScoreEl = document.getElementById('result-temp-score');
-
-        rrScoreEl.textContent = data.scores.respiratory_rate;
-        hrScoreEl.textContent = data.scores.heart_rate;
-        sbpScoreEl.textContent = data.scores.systolic_bp;
-        tempScoreEl.textContent = data.scores.temperature;
-
-        applyScoreColor(rrScoreEl, data.scores.respiratory_rate);
-        applyScoreColor(hrScoreEl, data.scores.heart_rate);
-        applyScoreColor(sbpScoreEl, data.scores.systolic_bp);
-        applyScoreColor(tempScoreEl, data.scores.temperature);
-
-        document.getElementById('result-total-score').textContent = data.total_score;
-        document.getElementById('result-condition').textContent = data.condition;
-        document.getElementById('result-recommendation').textContent = data.recommendation;
-
-        applyConditionStyle(data.condition);
-
-        // Abnormal parameters
-        const abnormalPanel = document.getElementById('result-abnormal');
-        const abnormalList = document.getElementById('result-abnormal-list');
-        if (data.abnormal_parameters && data.abnormal_parameters.length > 0) {
-          abnormalList.innerHTML = data.abnormal_parameters.map(p =>
-            `<li><strong>${p.name}</strong>: ${p.value} ${p.unit} (Score: ${p.score})</li>`
-          ).join('');
-          abnormalPanel.classList.remove('hidden');
-        } else {
-          abnormalPanel.classList.add('hidden');
+        // EWS Score badge styling - Display only when valid data is available
+        const ewsBadge = document.getElementById('patient-card-ews');
+        const ewsContainer = document.getElementById('patient-card-ews-container');
+        const hasEws = p.ews_score !== undefined && p.ews_score !== null;
+        if (hasEws && ewsBadge && ewsContainer) {
+          const ewsVal = Number(p.ews_score);
+          ewsBadge.textContent = ewsVal;
+          ewsContainer.className = 'px-sm py-xs rounded text-center min-w-[70px] ' +
+            (ewsVal >= 5 ? 'bg-red-100 text-red-700' : ewsVal >= 3 ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700');
+        } else if (ewsBadge && ewsContainer) {
+          ewsBadge.textContent = '--';
+          ewsContainer.className = 'bg-surface-container text-on-surface px-sm py-xs rounded text-center min-w-[70px]';
         }
 
-        // Show result panel and scroll to it
-        document.getElementById('ews-result-panel').classList.remove('hidden');
-        document.getElementById('ews-result-panel').scrollIntoView({ behavior: 'smooth' });
+        // Last vitals recorded
+        const timeEl = document.getElementById('patient-card-last-recorded-time');
+        const recorderEl = document.getElementById('patient-card-recorder');
+        if (p.latest_vitals && p.latest_vitals.recorded_at) {
+          const rDate = new Date(p.latest_vitals.recorded_at);
+          const timePart = !isNaN(rDate.getTime())
+            ? rDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : String(p.latest_vitals.recorded_at);
+          if (timeEl) timeEl.textContent = `${timePart} Today`;
+          if (recorderEl) recorderEl.textContent = 'by Clinical Staff';
+        } else {
+          if (timeEl) timeEl.textContent = 'No vitals recorded';
+          if (recorderEl) recorderEl.textContent = 'Awaiting entry';
+        }
 
-        // Immediately refresh the Authoritative Patient Profile on the left
-        await loadPatientProfile(currentPatientId);
+        // Update clinical action links
+        const linkTransfer = document.getElementById('link-transfer-recs');
+        if (linkTransfer) linkTransfer.href = `../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html?patient_id=${patientId}`;
+        const linkTrends = document.getElementById('link-ews-trends');
+        if (linkTrends) linkTrends.href = `../Doctor_ews_trends/Doctor_ews_trends.html?patient_id=${patientId}`;
 
-        btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check_circle</span> Saved & Synced!';
-        btn.classList.remove('bg-primary');
-        btn.classList.add('bg-green-600');
-      } else {
-        alert('Error: ' + (result.error || 'Failed to save vitals'));
-        btn.innerHTML = originalText;
+        // Fetch history for trend sparkline
+        try {
+          const histRes = await fetch(`${API_BASE}/patient/${patientId}/history?limit=10`, { headers: getAuthHeaders() });
+          if (histRes.ok) {
+            const histJson = await histRes.json();
+            if (histJson.success && histJson.data && histJson.data.length > 0) {
+              renderSparkline(histJson.data);
+            } else {
+              renderSparkline([]);
+            }
+          }
+        } catch (he) {
+          console.warn('Sparkline history fetch deferred:', he);
+        }
+      } catch (e) {
+        console.error('Error loading patient profile:', e);
+        resetPatientContextCard();
       }
-    } catch (err) {
-      console.error('API Error:', err);
-      alert('Network error. Please check your connection and try again.');
-      btn.innerHTML = originalText;
-    } finally {
-      btn.classList.remove('opacity-80', 'cursor-not-allowed');
-      btn.disabled = false;
-      // Reset button after 3.5 seconds
-      setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.classList.remove('bg-green-600');
-        btn.classList.add('bg-primary');
-      }, 3500);
     }
-  });
 
-  // Initial initialization
-  setupPatientDropdown().then(() => {
-    loadPatientProfile(currentPatientId);
-  });
-</script>
+    function renderSparkline(records) {
+      const sorted = [...records].reverse();
+      const pointsContainer = document.getElementById('trend-points-container');
+      const svgPath = document.getElementById('trend-svg-path');
+      const svgFill = document.getElementById('trend-svg-fill');
+
+      if (!pointsContainer) return;
+      pointsContainer.innerHTML = '';
+
+      if (sorted.length === 0) {
+        if (svgPath) svgPath.setAttribute('d', '');
+        if (svgFill) svgFill.setAttribute('d', '');
+        return;
+      }
+
+      const maxScore = Math.max(12, ...sorted.map(r => r.total_score || 0));
+      const width = 100;
+      const height = 40;
+
+      let pathD = '';
+      sorted.forEach((r, idx) => {
+        const score = r.total_score || 0;
+        const x = sorted.length === 1 ? 50 : (idx / (sorted.length - 1)) * width;
+        const y = height - (score / maxScore) * (height - 8) - 4;
+
+        if (idx === 0) pathD += `M${x.toFixed(1)},${y.toFixed(1)}`;
+        else pathD += ` L${x.toFixed(1)},${y.toFixed(1)}`;
+
+        const dot = document.createElement('div');
+        const dotColor = score >= 5 ? 'bg-red-500 ring-4 ring-red-500/20' : score >= 3 ? 'bg-yellow-500' : 'bg-green-500';
+        const isLatest = idx === sorted.length - 1;
+        dot.className = `${isLatest ? 'w-2.5 h-2.5' : 'w-1.5 h-1.5'} rounded-full relative z-10 ${dotColor}`;
+        const pctBottom = ((score / maxScore) * 80 + 10).toFixed(0);
+        dot.style.marginBottom = `${pctBottom}%`;
+        dot.title = `Score: ${score} (${r.condition || ''})`;
+        pointsContainer.appendChild(dot);
+      });
+
+      if (svgPath && svgFill && pathD) {
+        svgPath.setAttribute('d', pathD);
+        svgFill.setAttribute('d', `${pathD} L${width},${height} L0,${height} Z`);
+      }
+    }
+
+    // Populate patient switcher dropdown
+    async function setupPatientDropdown() {
+      const dropdown = document.getElementById('patient-select-dropdown');
+      const changeBtn = document.getElementById('patient-change-btn');
+      const inputEl = document.getElementById('patient-selector-input');
+      const listEl = document.getElementById('patient-options-list');
+
+      if (!dropdown || !inputEl || !listEl) return;
+
+      // Event listeners for toggle (ensure added only once)
+      if (!dropdown.dataset.listenersAttached) {
+        dropdown.dataset.listenersAttached = 'true';
+        if (changeBtn) {
+          changeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('hidden');
+          });
+        }
+        inputEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          dropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', () => {
+          dropdown.classList.add('hidden');
+        });
+      }
+
+      // Show intermediate loading in input if not already loaded
+      inputEl.value = 'Loading authorized patients...';
+
+      try {
+        const doctorId = getDoctorIdFromToken();
+        let url = `${PATIENT_API}?status=admitted&limit=50`;
+        if (doctorId) {
+          url += `&doctor_id=${doctorId}`;
+        }
+
+        const res = await fetch(url, { headers: getAuthHeaders() });
+
+        if (!res.ok) {
+          console.error(`Patient API failed with status: ${res.status}`);
+          inputEl.value = 'Failed to load patients (Click to retry)';
+          listEl.innerHTML = `
+            <div class="p-4 text-center text-xs text-error font-medium">
+              Failed to load authorized patients (HTTP ${res.status}).
+              <button id="retry-patients-btn" class="text-primary underline ml-1 font-semibold hover:text-primary-focus">Retry</button>
+            </div>
+          `;
+          const retryBtn = document.getElementById('retry-patients-btn');
+          if (retryBtn) {
+            retryBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              setupPatientDropdown();
+            });
+          }
+          resetPatientContextCard();
+          return;
+        }
+
+        const json = await res.json();
+        if (!json.success || !Array.isArray(json.data)) {
+          inputEl.value = 'Failed to load patients';
+          listEl.innerHTML = `
+            <div class="p-4 text-center text-xs text-error font-medium">
+              Unexpected response format.
+              <button id="retry-patients-btn" class="text-primary underline ml-1 font-semibold hover:text-primary-focus">Retry</button>
+            </div>
+          `;
+          const retryBtn = document.getElementById('retry-patients-btn');
+          if (retryBtn) {
+            retryBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              setupPatientDropdown();
+            });
+          }
+          resetPatientContextCard();
+          return;
+        }
+
+        authorizedPatients = json.data;
+
+        // If no authorized patients returned
+        if (authorizedPatients.length === 0) {
+          inputEl.value = 'No patients are currently available for your account.';
+          listEl.innerHTML = `
+            <div class="p-4 text-center text-xs text-on-surface-variant font-medium">
+              No patients are currently available for your account.
+            </div>
+          `;
+          currentPatientId = null;
+          resetPatientContextCard();
+          return;
+        }
+
+        // Render authorized patients in dropdown
+        listEl.innerHTML = '';
+        authorizedPatients.forEach(p => {
+          const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
+          const bedStr = p.bed_number || (p.ward_type ? p.ward_type + '-01' : 'Bed --');
+          const ewsScore = p.ews_score !== undefined && p.ews_score !== null ? p.ews_score : (p.latest_vitals ? p.latest_vitals.ews_score : 0);
+
+          const opt = document.createElement('div');
+          opt.className = 'px-3 py-2 hover:bg-primary/10 cursor-pointer flex justify-between items-center transition-colors text-sm';
+          opt.dataset.patientId = p.patient_id;
+          opt.innerHTML = `
+            <div>
+              <span class="font-bold text-on-surface">${p.name}</span>
+              <span class="text-xs text-on-surface-variant ml-1">(${pCode} • ${bedStr})</span>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded font-bold ${ewsScore >= 5 ? 'bg-red-100 text-red-700' : ewsScore >= 3 ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}">
+              EWS: ${ewsScore}
+            </span>
+          `;
+
+          opt.addEventListener('click', () => {
+            selectPatient(p.patient_id);
+            dropdown.classList.add('hidden');
+          });
+
+          listEl.appendChild(opt);
+        });
+
+        // Determine which patient to select:
+        // If currentPatientId is set and matches an authorized patient, keep it.
+        // Otherwise, default to the first authorized patient.
+        const matchingPatient = currentPatientId ? authorizedPatients.find(p => p.patient_id === currentPatientId) : null;
+        if (matchingPatient) {
+          selectPatient(matchingPatient.patient_id, false);
+        } else {
+          selectPatient(authorizedPatients[0].patient_id, false);
+        }
+
+      } catch (err) {
+        console.error('Error fetching patient list:', err);
+        inputEl.value = 'Failed to load patients (Click to retry)';
+        listEl.innerHTML = `
+          <div class="p-4 text-center text-xs text-error font-medium">
+            Network error. Unable to load authorized patients.
+            <button id="retry-patients-btn" class="text-primary underline ml-1 font-semibold hover:text-primary-focus">Retry</button>
+          </div>
+        `;
+        const retryBtn = document.getElementById('retry-patients-btn');
+        if (retryBtn) {
+          retryBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setupPatientDropdown();
+          });
+        }
+        resetPatientContextCard();
+      }
+    }
+
+    // Central patient selection handler
+    function selectPatient(patientId, resetInputs = true) {
+      currentPatientId = patientId;
+
+      // Update URL without reloading page
+      try {
+        const u = new URL(window.location.href);
+        u.searchParams.set('patient_id', String(currentPatientId));
+        window.history.replaceState({ patient_id: currentPatientId }, '', u.toString());
+      } catch (e) { }
+
+      // Clear vitals inputs to prevent cross-patient data carryover
+      if (resetInputs) {
+        resetVitalsInputForm();
+      }
+
+      // Load patient profile
+      loadPatientProfile(currentPatientId);
+    }
+
+    // Clear button handler
+    document.getElementById('clear-btn').addEventListener('click', () => {
+      resetVitalsInputForm();
+    });
+
+    // Save vitals & calculate EWS handler
+    document.getElementById('save-vitals-btn').addEventListener('click', async function (e) {
+      const btn = e.currentTarget;
+      const originalText = btn.innerHTML;
+      const form = document.getElementById('vitals-form');
+
+      // Validate patient selection
+      if (!currentPatientId) {
+        alert('Please select an authorized patient first.');
+        return;
+      }
+
+      // Validate required fields
+      const hr = document.getElementById('input-heart-rate').value;
+      const rr = document.getElementById('input-respiratory-rate').value;
+      const sbp = document.getElementById('input-systolic-bp').value;
+      const temp = document.getElementById('input-temperature').value;
+
+      if (!hr || !rr || !sbp || !temp) {
+        form.reportValidity();
+        return;
+      }
+
+      // Loading state
+      btn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">autorenew</span> Saving & Computing EWS...';
+      btn.classList.add('opacity-80', 'cursor-not-allowed');
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(`${API_BASE}/patient/${currentPatientId}/submit`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            respiratory_rate: parseFloat(rr),
+            heart_rate: parseFloat(hr),
+            systolic_bp: parseFloat(sbp),
+            temperature: parseFloat(temp)
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          const data = result.data;
+
+          // Update score displays
+          const rrScoreEl = document.getElementById('result-rr-score');
+          const hrScoreEl = document.getElementById('result-hr-score');
+          const sbpScoreEl = document.getElementById('result-sbp-score');
+          const tempScoreEl = document.getElementById('result-temp-score');
+
+          if (rrScoreEl) rrScoreEl.textContent = data.scores.respiratory_rate;
+          if (hrScoreEl) hrScoreEl.textContent = data.scores.heart_rate;
+          if (sbpScoreEl) sbpScoreEl.textContent = data.scores.systolic_bp;
+          if (tempScoreEl) tempScoreEl.textContent = data.scores.temperature;
+
+          applyScoreColor(rrScoreEl, data.scores.respiratory_rate);
+          applyScoreColor(hrScoreEl, data.scores.heart_rate);
+          applyScoreColor(sbpScoreEl, data.scores.systolic_bp);
+          applyScoreColor(tempScoreEl, data.scores.temperature);
+
+          const totalScoreEl = document.getElementById('result-total-score');
+          if (totalScoreEl) totalScoreEl.textContent = data.total_score;
+          const condEl = document.getElementById('result-condition');
+          if (condEl) condEl.textContent = data.condition;
+          const recEl = document.getElementById('result-recommendation');
+          if (recEl) recEl.textContent = data.recommendation;
+
+          applyConditionStyle(data.condition);
+
+          // Abnormal parameters
+          const abnormalPanel = document.getElementById('result-abnormal');
+          const abnormalList = document.getElementById('result-abnormal-list');
+          if (abnormalPanel && abnormalList) {
+            if (data.abnormal_parameters && data.abnormal_parameters.length > 0) {
+              abnormalList.innerHTML = data.abnormal_parameters.map(p =>
+                `<li><strong>${p.name}</strong>: ${p.value} ${p.unit} (Score: ${p.score})</li>`
+              ).join('');
+              abnormalPanel.classList.remove('hidden');
+            } else {
+              abnormalPanel.classList.add('hidden');
+            }
+          }
+
+          // Show result panel and scroll to it
+          const resPanel = document.getElementById('ews-result-panel');
+          if (resPanel) {
+            resPanel.classList.remove('hidden');
+            resPanel.scrollIntoView({ behavior: 'smooth' });
+          }
+
+          // Immediately refresh the Authoritative Patient Profile on the left
+          await loadPatientProfile(currentPatientId);
+
+          btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check_circle</span> Saved & Synced!';
+          btn.classList.remove('bg-primary');
+          btn.classList.add('bg-green-600');
+        } else {
+          alert('Error: ' + (result.error || 'Failed to save vitals'));
+          btn.innerHTML = originalText;
+        }
+      } catch (err) {
+        console.error('API Error:', err);
+        alert('Network error. Please check your connection and try again.');
+        btn.innerHTML = originalText;
+      } finally {
+        btn.classList.remove('opacity-80', 'cursor-not-allowed');
+        btn.disabled = false;
+        // Reset button after 3.5 seconds
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('bg-green-600');
+          btn.classList.add('bg-primary');
+        }, 3500);
+      }
+    });
+
+    // Initial initialization
+    setupPatientDropdown();
+  </script>
+  <script src="/static/js/patient_context.js"></script>
   <script src="../global_alert_manager.js"></script>
   <script src="../doctor_sidebar.js"></script>
 </body>
+
 </html>

@@ -5,7 +5,16 @@ config.py — Application configuration and database settings.
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+# Canonical project root .env resolution (Jeevan-Setu-Final/.env)
+_backend_dir = os.path.dirname(os.path.abspath(__file__))
+_root_dir = os.path.dirname(_backend_dir)
+_root_env = os.path.join(_root_dir, '.env')
+_backend_env = os.path.join(_backend_dir, '.env')
+
+if os.path.isfile(_root_env):
+    load_dotenv(_root_env, override=True)
+elif os.path.isfile(_backend_env):
+    load_dotenv(_backend_env, override=True)
 
 
 def get_lan_ip():

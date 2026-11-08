@@ -56,7 +56,7 @@
         },
         {
           id: 'patient_summary_ai',
-          label: 'Patient Summary (AI)',
+          label: 'Clinical Assistant',
           href: '../Nurse_patient_summary_ai/Nurse_patient_summary_ai.html',
           match: ['nurse_patient_summary_ai', 'patient_summary_ai'],
           icon: `<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>`
@@ -351,7 +351,7 @@
       `;
     });
 
-        // 3. Bottom Utility Menu (Direct Settings & Logout buttons)
+    // 3. Bottom Utility Menu (Direct Settings & Logout buttons)
     const isSettingsActive = currentActiveId === 'settings';
     const settingsLinkClass = isSettingsActive
       ? 'bg-blue-600 text-white font-semibold shadow-md'
@@ -677,8 +677,8 @@
       const profileContainer = document.getElementById('nurse-profile-container');
 
       if (!searchContainer?.contains(e.target) &&
-          !notifContainer?.contains(e.target) &&
-          !profileContainer?.contains(e.target)) {
+        !notifContainer?.contains(e.target) &&
+        !profileContainer?.contains(e.target)) {
         closeAllNurseHeaderDropdowns();
       }
     });
@@ -792,8 +792,8 @@
         const riskClass = p.risk_level === 'high' || p.ews_score >= 5
           ? 'bg-red-50 text-red-700 border-red-200'
           : p.risk_level === 'medium' || p.ews_score >= 3
-          ? 'bg-amber-50 text-amber-700 border-amber-200'
-          : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+            ? 'bg-amber-50 text-amber-700 border-amber-200'
+            : 'bg-emerald-50 text-emerald-700 border-emerald-200';
 
         html += `
           <a href="../nurse_patient_monitoring/nurse_patient_monitoring.html?patient_id=${encodeURIComponent(p.patient_id)}&patient=${encodeURIComponent(p.name)}" class="nurse-search-item block p-2.5 rounded-lg hover:bg-blue-50/70 border border-transparent hover:border-blue-100 transition-colors">
@@ -923,7 +923,7 @@
 
   function standardizePageLayout() {
     document.body.classList.add('bg-slate-50', 'text-slate-900');
-    
+
     // Standardize Content Container Offset (pl-0 md:pl-64)
     const contentWrappers = document.querySelectorAll('.pl-72, .ml-72, .pl-64, .ml-64');
     contentWrappers.forEach(el => {
@@ -971,7 +971,7 @@
 
     // 1. Task Checkboxes interactivity
     document.querySelectorAll('input[type="checkbox"]').forEach(chk => {
-      chk.addEventListener('change', function() {
+      chk.addEventListener('change', function () {
         const textSpan = this.closest('div')?.querySelector('.font-headline-sm');
         if (textSpan) {
           if (this.checked) {
@@ -989,7 +989,7 @@
       if (text.includes('acknowledge') || text.includes('respond now') || text.includes('mark administered') || text.includes('snooze') || text.includes('assign porter') || text.includes('review request')) {
         if (!btn.hasAttribute('data-audit-bound')) {
           btn.setAttribute('data-audit-bound', 'true');
-          btn.addEventListener('click', function(e) {
+          btn.addEventListener('click', function (e) {
             if (this.closest('form')) return;
             const parentCard = this.closest('.bg-surface-container-low') || this.closest('.bg-surface') || this.closest('.rounded-xl');
             if (parentCard) {
@@ -1011,7 +1011,7 @@
     const noteTextarea = document.querySelector('textarea');
     if (saveNoteBtn && noteTextarea && !saveNoteBtn.hasAttribute('data-audit-bound')) {
       saveNoteBtn.setAttribute('data-audit-bound', 'true');
-      saveNoteBtn.addEventListener('click', function() {
+      saveNoteBtn.addEventListener('click', function () {
         const val = noteTextarea.value.trim();
         if (!val) {
           alert('Please enter clinical note details before saving.');
@@ -1034,7 +1034,7 @@
       const text = btn.textContent.trim().toLowerCase();
       if ((text.includes('pdf') || text.includes('print')) && !btn.hasAttribute('data-audit-bound')) {
         btn.setAttribute('data-audit-bound', 'true');
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
           window.print();
         });
       }

@@ -1,12 +1,59 @@
-<!DOCTYPE html><html lang="en" style=""><head>
-  <link rel="icon" type="image/png" href="/assets/jeevan_setu_logo.png"><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={theme:{extend:{"colors":{"surface-container":"#e7eeff","surface-container-high":"#dee8ff","on-tertiary-fixed-variant":"#38485d","on-tertiary":"#ffffff","on-primary-container":"#eeefff","secondary-fixed-dim":"#89ceff","surface-variant":"#d8e3fb","on-error":"#ffffff","surface-bright":"#f9f9ff","tertiary-fixed-dim":"#b7c8e1","primary-fixed-dim":"#b4c5ff","on-surface":"#111c2d","primary-fixed":"#dbe1ff","primary-container":"#2563eb","outline":"#737686","inverse-surface":"#263143","secondary-fixed":"#c9e6ff","tertiary":"#46566c","primary":"#004ac6","on-surface-variant":"#434655","surface-dim":"#cfdaf2","error":"#ba1a1a","secondary":"#006591","tertiary-fixed":"#d3e4fe","surface-tint":"#0053db","on-secondary-container":"#004666","on-tertiary-fixed":"#0b1c30","background":"#f9f9ff","secondary-container":"#39b8fd","on-primary":"#ffffff","on-tertiary-container":"#e9f0ff","inverse-primary":"#b4c5ff","outline-variant":"#c3c6d7","on-secondary-fixed-variant":"#004c6e","on-error-container":"#93000a","surface-container-low":"#f0f3ff","on-secondary-fixed":"#001e2f","tertiary-container":"#5e6e85","surface":"#f9f9ff","on-primary-fixed":"#00174b","on-secondary":"#ffffff","on-primary-fixed-variant":"#003ea8","inverse-on-surface":"#ecf1ff","on-background":"#111c2d","surface-container-lowest":"#ffffff","surface-container-highest":"#d8e3fb","error-container":"#ffdad6"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"16px","margin-desktop":"32px","xl":"32px","margin-mobile":"16px","md":"16px","base":"4px","sm":"8px","xs":"4px","lg":"24px"},"fontFamily":{"label-md":["Inter"],"headline-md":["Poppins"],"display":["Poppins"],"headline-lg":["Poppins"],"label-sm":["Inter"],"headline-sm":["Poppins"],"body-md":["Inter"],"headline-lg-mobile":["Poppins"],"body-lg":["Inter"],"body-sm":["Inter"]},"fontSize":{"label-md":["14px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"600"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"500"}],"display":["48px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"headline-lg":["32px",{"lineHeight":"40px","fontWeight":"600"}],"label-sm":["12px",{"lineHeight":"16px","fontWeight":"600"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-lg-mobile":["28px",{"lineHeight":"36px","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-background">  <!-- STANDARDIZED DOCTOR SIDEBAR -->
-  <aside id="doctor-sidebar" class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col fixed left-0 top-0 h-full z-50 shadow-xl overflow-y-auto select-none border-r border-slate-800">
+<!DOCTYPE html>
+<html lang="en" style="">
+
+<head>
+  <link rel="icon" type="image/png" href="/assets/jeevan_setu_logo.png">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <style>
+    @layer base {
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overscroll-behavior: none;
+      }
+
+      main>:first-child {
+        margin-top: 0 !important;
+      }
+
+      main>:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script
+    id="tailwind-config">tailwind.config = { theme: { extend: { "colors": { "surface-container": "#e7eeff", "surface-container-high": "#dee8ff", "on-tertiary-fixed-variant": "#38485d", "on-tertiary": "#ffffff", "on-primary-container": "#eeefff", "secondary-fixed-dim": "#89ceff", "surface-variant": "#d8e3fb", "on-error": "#ffffff", "surface-bright": "#f9f9ff", "tertiary-fixed-dim": "#b7c8e1", "primary-fixed-dim": "#b4c5ff", "on-surface": "#111c2d", "primary-fixed": "#dbe1ff", "primary-container": "#2563eb", "outline": "#737686", "inverse-surface": "#263143", "secondary-fixed": "#c9e6ff", "tertiary": "#46566c", "primary": "#004ac6", "on-surface-variant": "#434655", "surface-dim": "#cfdaf2", "error": "#ba1a1a", "secondary": "#006591", "tertiary-fixed": "#d3e4fe", "surface-tint": "#0053db", "on-secondary-container": "#004666", "on-tertiary-fixed": "#0b1c30", "background": "#f9f9ff", "secondary-container": "#39b8fd", "on-primary": "#ffffff", "on-tertiary-container": "#e9f0ff", "inverse-primary": "#b4c5ff", "outline-variant": "#c3c6d7", "on-secondary-fixed-variant": "#004c6e", "on-error-container": "#93000a", "surface-container-low": "#f0f3ff", "on-secondary-fixed": "#001e2f", "tertiary-container": "#5e6e85", "surface": "#f9f9ff", "on-primary-fixed": "#00174b", "on-secondary": "#ffffff", "on-primary-fixed-variant": "#003ea8", "inverse-on-surface": "#ecf1ff", "on-background": "#111c2d", "surface-container-lowest": "#ffffff", "surface-container-highest": "#d8e3fb", "error-container": "#ffdad6" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter": "16px", "margin-desktop": "32px", "xl": "32px", "margin-mobile": "16px", "md": "16px", "base": "4px", "sm": "8px", "xs": "4px", "lg": "24px" }, "fontFamily": { "label-md": ["Inter"], "headline-md": ["Poppins"], "display": ["Poppins"], "headline-lg": ["Poppins"], "label-sm": ["Inter"], "headline-sm": ["Poppins"], "body-md": ["Inter"], "headline-lg-mobile": ["Poppins"], "body-lg": ["Inter"], "body-sm": ["Inter"] }, "fontSize": { "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "500" }], "display": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }], "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }], "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }] } } } }</script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="bg-background font-body-md text-on-background"> <!-- STANDARDIZED DOCTOR SIDEBAR -->
+  <aside id="doctor-sidebar"
+    class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col fixed left-0 top-0 h-full z-50 shadow-xl overflow-y-auto select-none border-r border-slate-800">
     <!-- Branding -->
     <div class="p-5 border-b border-white/10 flex items-center gap-3">
       <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-        <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
+        <img src="/assets/jeevan_setu_logo.png"
+          onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo"
+          class="w-full h-full object-contain">
       </div>
       <div>
         <h1 class="font-bold text-base tracking-tight leading-tight text-white font-['Poppins']">JEEVAN SETU</h1>
@@ -20,8 +67,10 @@
       <div>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_dashboard_/Doctor_dashboard_.html" data-page="dashboard" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">dashboard</span>
+            <a href="../Doctor_dashboard_/Doctor_dashboard_.html" data-page="dashboard"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">dashboard</span>
               <span>Dashboard</span>
             </a>
           </li>
@@ -33,19 +82,24 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">PATIENT MANAGEMENT</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_my_patients/Doctor_my_patients.html" data-page="my_patients" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">groups</span>
+            <a href="../Doctor_my_patients/Doctor_my_patients.html" data-page="my_patients"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">groups</span>
               <span>My Patients</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_all_patients/Doctor_all_patients.html" data-page="all_patients" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">domain</span>
+            <a href="../Doctor_all_patients/Doctor_all_patients.html" data-page="all_patients"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">domain</span>
               <span>All Patients</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_patient_search/Doctor_patient_search.html" data-page="patient_search" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg bg-white/10 text-cyan-400 font-semibold border-l-4 border-cyan-400 transition-all group text-sm">
+            <a href="../Doctor_patient_search/Doctor_patient_search.html" data-page="patient_search"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg bg-white/10 text-cyan-400 font-semibold border-l-4 border-cyan-400 transition-all group text-sm">
               <span class="material-symbols-outlined mr-3 text-[20px] text-cyan-400">search</span>
               <span>Patient Search</span>
             </a>
@@ -58,27 +112,36 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">CLINICAL TOOLS</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_ews_calculator/Doctor_ews_calculator.html" data-page="ews_calculator" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">calculate</span>
+            <a href="../Doctor_ews_calculator/Doctor_ews_calculator.html" data-page="ews_calculator"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">calculate</span>
               <span>EWS Calculator</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html" data-page="transfer_recommendations" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">swap_horiz</span>
+            <a href="../Doctor_transfer_recommendations/Doctor_transfer_recommendations.html"
+              data-page="transfer_recommendations"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">swap_horiz</span>
               <span>Transfer Recommendations</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_ews_trends/Doctor_ews_trends.html" data-page="ews_trends" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">trending_up</span>
+            <a href="../Doctor_ews_trends/Doctor_ews_trends.html" data-page="ews_trends"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">trending_up</span>
               <span>EWS Trends</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html" data-page="patient_summary_ai" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">psychology</span>
-              <span>Patient Summary (AI)</span>
+            <a href="../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html" data-page="patient_summary_ai"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">psychology</span>
+              <span>Clinical Assistant</span>
             </a>
           </li>
         </ul>
@@ -89,21 +152,27 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">TASKS & ALERTS</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_pending_approvals/Doctor_pending_approvals.html" data-page="pending_approvals" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <a href="../Doctor_pending_approvals/Doctor_pending_approvals.html" data-page="pending_approvals"
+              class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
               <div class="flex items-center">
-                <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">check_circle</span>
+                <span
+                  class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">check_circle</span>
                 <span>Pending Approvals</span>
               </div>
-              <span id="sidebar-pending-count" class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">5</span>
+              <span id="sidebar-pending-count"
+                class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">5</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_alerts_notifications/Doctor_alerts_notifications.html" data-page="alerts_notifications" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <a href="../Doctor_alerts_notifications/Doctor_alerts_notifications.html" data-page="alerts_notifications"
+              class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
               <div class="flex items-center">
-                <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">notifications</span>
+                <span
+                  class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">notifications</span>
                 <span>Alerts & Notifications</span>
               </div>
-              <span id="sidebar-alerts-count" class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
+              <span id="sidebar-alerts-count"
+                class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
             </a>
           </li>
         </ul>
@@ -114,20 +183,26 @@
         <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">REPORTS</p>
         <ul class="space-y-1">
           <li>
-            <a href="../Doctor_patient_reports/Doctor_patient_reports.html" data-page="patient_reports" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">description</span>
+            <a href="../Doctor_patient_reports/Doctor_patient_reports.html" data-page="patient_reports"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">description</span>
               <span>Patient Reports</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_transfer_reports/Doctor_transfer_reports.html" data-page="transfer_reports" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">summarize</span>
+            <a href="../Doctor_transfer_reports/Doctor_transfer_reports.html" data-page="transfer_reports"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">summarize</span>
               <span>Transfer Reports</span>
             </a>
           </li>
           <li>
-            <a href="../Doctor_audit_logs/Doctor_audit_logs.html" data-page="audit_logs" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-              <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">verified_user</span>
+            <a href="../Doctor_audit_logs/Doctor_audit_logs.html" data-page="audit_logs"
+              class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+              <span
+                class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">verified_user</span>
               <span>Audit Logs</span>
             </a>
           </li>
@@ -137,220 +212,274 @@
 
     <!-- Bottom Actions -->
     <div class="p-3 border-t border-white/10 space-y-1 mt-auto bg-[#081426]/50">
-      <a href="../Doctor_settings_jeevan/Doctor_settings_jeevan.html" data-page="settings" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
-        <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">settings</span>
+      <a href="../Doctor_settings_jeevan/Doctor_settings_jeevan.html" data-page="settings"
+        class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+        <span
+          class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors">settings</span>
         <span>Settings</span>
       </a>
-      <a href="../../Login/Login.html" onclick="if(typeof handleDoctorLogout==='function'){handleDoctorLogout(event);}" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all group text-sm font-medium">
-        <span class="material-symbols-outlined mr-3 text-[20px] text-red-400 group-hover:text-red-300 transition-colors">logout</span>
+      <a href="../../Login/Login.html" onclick="if(typeof handleDoctorLogout==='function'){handleDoctorLogout(event);}"
+        class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all group text-sm font-medium">
+        <span
+          class="material-symbols-outlined mr-3 text-[20px] text-red-400 group-hover:text-red-300 transition-colors">logout</span>
         <span>Logout</span>
       </a>
     </div>
-  </aside><div class="pl-64 w-full"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-margin-desktop"><div class="flex-1 max-w-xl"><div class="relative flex items-center bg-surface-container-low rounded-full px-md py-xs border border-outline-variant/30 hover:border-outline/50 transition-colors"><span class="material-symbols-outlined text-outline">search</span><input class="bg-transparent border-none focus:ring-0 w-full ml-sm text-body-sm text-on-surface outline-none" placeholder="Search patient ID, bed number or records..." type="text"></div></div><div class="flex items-center gap-lg"><button class="relative p-sm rounded-full text-on-surface-variant hover:bg-surface-variant/20 transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span></button><div class="flex items-center gap-md pl-lg border-l border-outline-variant/30"><div class="text-right hidden sm:block"><p class="font-label-md text-label-md text-on-surface"><span id="header-doctor-name" class="doctor-profile-name">Dr. Doctor</span></p><p class="font-label-sm text-label-sm text-on-surface-variant"><span id="header-doctor-dept" class="doctor-profile-dept">Consultant Intensivist</span></p></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary">person</span></div></div></div></header><main class="relative pt-16 bg-background min-h-screen"><div class="flex flex-col w-full h-full p-margin-desktop gap-lg bg-background">
-<!-- Header/Search Section -->
-<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md">
-<div class="flex flex-col gap-xs w-full max-w-3xl">
-<h1 class="font-display text-display text-on-background">Patient Search</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Locate patient records by ID, Name, Ward, or Clinical Status.</p>
-<div class="relative mt-md">
-<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-primary text-2xl">search</span>
-<input id="patient-search-input" class="w-full bg-surface-container-lowest rounded-xl py-lg pl-xl pr-28 font-body-lg text-body-lg text-on-surface shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-shadow" placeholder="Search by Name, Patient ID (e.g., P001), or Diagnosis..." type="text">
-<button id="patient-search-btn" class="absolute right-xs top-1/2 -translate-y-1/2 bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-primary/90 transition-colors shadow-sm">Search</button>
-</div>
-</div>
-<div class="flex flex-col items-end gap-xs hidden xl:flex">
-<div class="text-right">
-<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider block mb-xs">Active Ward Status</span>
-<div class="flex items-center gap-sm bg-surface-container-low px-md py-xs rounded-full">
-<span class="w-2 h-2 rounded-full bg-error"></span>
-<span class="font-label-md text-label-md text-on-surface" id="stat-critical-count">-- Critical</span>
-<span class="w-1 h-4 bg-outline-variant/30 mx-xs"></span>
-<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
-<span class="font-label-md text-label-md text-on-surface" id="stat-stable-count">-- Stable</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Filters Section (Bento style) -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-sm bg-surface-container p-sm rounded-xl shadow-sm">
-<div class="flex flex-col gap-xs bg-surface-container-lowest p-md rounded-lg">
-<label class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider flex items-center gap-xs"><span class="material-symbols-outlined text-sm">location_on</span> Ward / Unit</label>
-<select id="filter-ward" class="bg-transparent font-body-md text-body-md text-on-surface outline-none cursor-pointer">
-<option value="">All Wards</option>
-<option value="ICU">ICU</option>
-<option value="HDU">HDU</option>
-<option value="General">General</option>
-</select>
-</div>
-<div class="flex flex-col gap-xs bg-surface-container-lowest p-md rounded-lg">
-<label class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider flex items-center gap-xs"><span class="material-symbols-outlined text-sm">monitor_heart</span> Acuity (EWS)</label>
-<select id="filter-acuity" class="bg-transparent font-body-md text-body-md text-on-surface outline-none cursor-pointer">
-<option value="">Any Score</option>
-<option value="critical">Critical (5+)</option>
-<option value="moderate">Moderate Risk (3-4)</option>
-<option value="stable">Stable (0-2)</option>
-</select>
-</div>
-<div class="flex flex-col gap-xs bg-surface-container-lowest p-md rounded-lg">
-<label class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider flex items-center gap-xs"><span class="material-symbols-outlined text-sm">bed</span> Status</label>
-<select id="filter-status" class="bg-transparent font-body-md text-body-md text-on-surface outline-none cursor-pointer">
-<option value="admitted">Admitted (Active)</option>
-<option value="all">All Records</option>
-<option value="discharged">Discharged</option>
-</select>
-</div>
-<div class="flex flex-col gap-xs bg-surface-container-lowest p-md rounded-lg">
-<label class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider flex items-center gap-xs"><span class="material-symbols-outlined text-sm">sort</span> Sort By</label>
-<select id="filter-sort" class="bg-transparent font-body-md text-body-md text-on-surface outline-none cursor-pointer">
-<option value="ews">Highest EWS Score</option>
-<option value="id">Patient ID</option>
-<option value="name">Name (A-Z)</option>
-</select>
-</div>
-</div>
-<!-- Content Area: Results -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg flex-1 min-h-0">
-<div class="lg:col-span-12 flex flex-col gap-md">
-<div class="flex justify-between items-end mb-sm">
-<div>
-<h2 class="font-headline-md text-headline-md text-on-background" id="results-heading">Search Results</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant" id="results-subtitle">Loading patient directory...</p>
-</div>
-</div>
-<!-- Results Grid -->
-<div id="patient-search-results" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-md">
-<!-- Dynamically populated -->
-</div>
-</div>
-</div>
-</div></main></div>
+  </aside>
+  <div class="pl-64 w-full">
+    <header
+      class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-margin-desktop">
+      <div class="flex-1 max-w-xl">
+        <div
+          class="relative flex items-center bg-surface-container-low rounded-full px-md py-xs border border-outline-variant/30 hover:border-outline/50 transition-colors">
+          <span class="material-symbols-outlined text-outline">search</span><input
+            class="bg-transparent border-none focus:ring-0 w-full ml-sm text-body-sm text-on-surface outline-none"
+            placeholder="Search patient ID, bed number or records..." type="text"></div>
+      </div>
+      <div class="flex items-center gap-lg"><button
+          class="relative p-sm rounded-full text-on-surface-variant hover:bg-surface-variant/20 transition-colors"><span
+            class="material-symbols-outlined">notifications</span><span
+            class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span></button>
+        <div class="flex items-center gap-md pl-lg border-l border-outline-variant/30">
+          <div class="text-right hidden sm:block">
+            <p class="font-label-md text-label-md text-on-surface"><span id="header-doctor-name"
+                class="doctor-profile-name">Dr. Doctor</span></p>
+            <p class="font-label-sm text-label-sm text-on-surface-variant"><span id="header-doctor-dept"
+                class="doctor-profile-dept">Consultant Intensivist</span></p>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center"><span
+              class="material-symbols-outlined text-on-primary">person</span></div>
+        </div>
+      </div>
+    </header>
+    <main class="relative pt-16 bg-background min-h-screen">
+      <div class="flex flex-col w-full h-full p-margin-desktop gap-lg bg-background">
+        <!-- Header/Search Section -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md">
+          <div class="flex flex-col gap-xs w-full max-w-3xl">
+            <h1 class="font-display text-display text-on-background">Patient Search</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant">Locate patient records by ID, Name, Ward, or
+              Clinical Status.</p>
+            <div class="relative mt-md">
+              <span
+                class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-primary text-2xl">search</span>
+              <input id="patient-search-input"
+                class="w-full bg-surface-container-lowest rounded-xl py-lg pl-xl pr-28 font-body-lg text-body-lg text-on-surface shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-shadow"
+                placeholder="Search by Name, Patient ID (e.g., UHID-2026-00001), or Diagnosis..." type="text">
+              <button id="patient-search-btn"
+                class="absolute right-xs top-1/2 -translate-y-1/2 bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-primary/90 transition-colors shadow-sm">Search</button>
+            </div>
+          </div>
+          <div class="flex flex-col items-end gap-xs hidden xl:flex">
+            <div class="text-right">
+              <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider block mb-xs">Active Ward
+                Status</span>
+              <div class="flex items-center gap-sm bg-surface-container-low px-md py-xs rounded-full">
+                <span class="w-2 h-2 rounded-full bg-error"></span>
+                <span class="font-label-md text-label-md text-on-surface" id="stat-critical-count">-- Critical</span>
+                <span class="w-1 h-4 bg-outline-variant/30 mx-xs"></span>
+                <span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+                <span class="font-label-md text-label-md text-on-surface" id="stat-stable-count">-- Stable</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Filters Section (Bento style) -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-sm bg-surface-container p-sm rounded-xl shadow-sm">
+          <div class="flex flex-col gap-xs bg-surface-container-lowest p-md rounded-lg">
+            <label
+              class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider flex items-center gap-xs"><span
+                class="material-symbols-outlined text-sm">location_on</span> Ward / Unit</label>
+            <select id="filter-ward"
+              class="bg-transparent font-body-md text-body-md text-on-surface outline-none cursor-pointer">
+              <option value="">All Wards</option>
+              <option value="ICU">ICU</option>
+              <option value="HDU">HDU</option>
+              <option value="General">General</option>
+            </select>
+          </div>
+          <div class="flex flex-col gap-xs bg-surface-container-lowest p-md rounded-lg">
+            <label
+              class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider flex items-center gap-xs"><span
+                class="material-symbols-outlined text-sm">monitor_heart</span> Acuity (EWS)</label>
+            <select id="filter-acuity"
+              class="bg-transparent font-body-md text-body-md text-on-surface outline-none cursor-pointer">
+              <option value="">Any Score</option>
+              <option value="critical">Critical (5+)</option>
+              <option value="moderate">Moderate Risk (3-4)</option>
+              <option value="stable">Stable (0-2)</option>
+            </select>
+          </div>
+          <div class="flex flex-col gap-xs bg-surface-container-lowest p-md rounded-lg">
+            <label
+              class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider flex items-center gap-xs"><span
+                class="material-symbols-outlined text-sm">bed</span> Status</label>
+            <select id="filter-status"
+              class="bg-transparent font-body-md text-body-md text-on-surface outline-none cursor-pointer">
+              <option value="admitted">Admitted (Active)</option>
+              <option value="all">All Records</option>
+              <option value="discharged">Discharged</option>
+            </select>
+          </div>
+          <div class="flex flex-col gap-xs bg-surface-container-lowest p-md rounded-lg">
+            <label
+              class="font-label-sm text-label-sm text-outline-variant uppercase tracking-wider flex items-center gap-xs"><span
+                class="material-symbols-outlined text-sm">sort</span> Sort By</label>
+            <select id="filter-sort"
+              class="bg-transparent font-body-md text-body-md text-on-surface outline-none cursor-pointer">
+              <option value="ews">Highest EWS Score</option>
+              <option value="id">Patient ID</option>
+              <option value="name">Name (A-Z)</option>
+            </select>
+          </div>
+        </div>
+        <!-- Content Area: Results -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg flex-1 min-h-0">
+          <div class="lg:col-span-12 flex flex-col gap-md">
+            <div class="flex justify-between items-end mb-sm">
+              <div>
+                <h2 class="font-headline-md text-headline-md text-on-background" id="results-heading">Search Results
+                </h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant" id="results-subtitle">Loading patient
+                  directory...</p>
+              </div>
+            </div>
+            <!-- Results Grid -->
+            <div id="patient-search-results" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-md">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
-<script>
-  const PATIENT_API = '/api/v1/patients';
-  let debounceTimer = null;
+  <script>
+    const PATIENT_API = '/api/v1/patients';
+    let debounceTimer = null;
 
-  function getAuthToken() {
-    return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
-  }
+    function getAuthToken() {
+      return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
+    }
 
-  function getAuthHeaders() {
-    const token = getAuthToken();
-    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
-    if (token) headers['Authorization'] = 'Bearer ' + token;
-    return headers;
-  }
+    function getAuthHeaders() {
+      const token = getAuthToken();
+      const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      return headers;
+    }
 
-  async function performPatientSearch() {
-    const searchInput = document.getElementById('patient-search-input');
-    const wardFilter = document.getElementById('filter-ward');
-    const statusFilter = document.getElementById('filter-status');
-    const acuityFilter = document.getElementById('filter-acuity');
-    const sortFilter = document.getElementById('filter-sort');
+    async function performPatientSearch() {
+      const searchInput = document.getElementById('patient-search-input');
+      const wardFilter = document.getElementById('filter-ward');
+      const statusFilter = document.getElementById('filter-status');
+      const acuityFilter = document.getElementById('filter-acuity');
+      const sortFilter = document.getElementById('filter-sort');
 
-    const query = searchInput ? searchInput.value.trim() : '';
-    const ward = wardFilter ? wardFilter.value : '';
-    const status = statusFilter ? statusFilter.value : 'admitted';
+      const query = searchInput ? searchInput.value.trim() : '';
+      const ward = wardFilter ? wardFilter.value : '';
+      const status = statusFilter ? statusFilter.value : 'admitted';
 
-    let url = `${PATIENT_API}?status=${status}&limit=50`;
-    if (query) url += `&search=${encodeURIComponent(query)}`;
-    if (ward) url += `&ward_type=${encodeURIComponent(ward)}`;
+      let url = `${PATIENT_API}?status=${status}&limit=50`;
+      if (query) url += `&search=${encodeURIComponent(query)}`;
+      if (ward) url += `&ward_type=${encodeURIComponent(ward)}`;
 
-    const resultsContainer = document.getElementById('patient-search-results');
-    const subtitle = document.getElementById('results-subtitle');
+      const resultsContainer = document.getElementById('patient-search-results');
+      const subtitle = document.getElementById('results-subtitle');
 
-    try {
-      const res = await fetch(url, { headers: getAuthHeaders() });
-      if (!res.ok) throw new Error('Search failed');
-      const json = await res.json();
-      if (!json.success || !json.data) throw new Error('Invalid response');
+      try {
+        const res = await fetch(url, { headers: getAuthHeaders() });
+        if (!res.ok) throw new Error('Search failed');
+        const json = await res.json();
+        if (!json.success || !json.data) throw new Error('Invalid response');
 
-      let patients = json.data;
+        let patients = json.data;
 
-      // Filter by Acuity if selected
-      const acuity = acuityFilter ? acuityFilter.value : '';
-      if (acuity === 'critical') {
-        patients = patients.filter(p => (p.ews_score || 0) >= 5);
-      } else if (acuity === 'moderate') {
-        patients = patients.filter(p => (p.ews_score || 0) >= 3 && (p.ews_score || 0) <= 4);
-      } else if (acuity === 'stable') {
-        patients = patients.filter(p => (p.ews_score || 0) <= 2);
-      }
+        // Filter by Acuity if selected
+        const acuity = acuityFilter ? acuityFilter.value : '';
+        if (acuity === 'critical') {
+          patients = patients.filter(p => (p.ews_score || 0) >= 5);
+        } else if (acuity === 'moderate') {
+          patients = patients.filter(p => (p.ews_score || 0) >= 3 && (p.ews_score || 0) <= 4);
+        } else if (acuity === 'stable') {
+          patients = patients.filter(p => (p.ews_score || 0) <= 2);
+        }
 
-      // Sort
-      const sort = sortFilter ? sortFilter.value : 'ews';
-      if (sort === 'ews') {
-        patients.sort((a, b) => (b.ews_score || 0) - (a.ews_score || 0));
-      } else if (sort === 'id') {
-        patients.sort((a, b) => a.patient_id - b.patient_id);
-      } else if (sort === 'name') {
-        patients.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-      }
+        // Sort
+        const sort = sortFilter ? sortFilter.value : 'ews';
+        if (sort === 'ews') {
+          patients.sort((a, b) => (b.ews_score || 0) - (a.ews_score || 0));
+        } else if (sort === 'id') {
+          patients.sort((a, b) => a.patient_id - b.patient_id);
+        } else if (sort === 'name') {
+          patients.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        }
 
-      // Update ward stats
-      let critCount = 0, stableCount = 0;
-      json.data.forEach(p => {
-        if ((p.ews_score || 0) >= 5) critCount++;
-        else stableCount++;
-      });
-      const cStat = document.getElementById('stat-critical-count');
-      const sStat = document.getElementById('stat-stable-count');
-      if (cStat) cStat.textContent = `${critCount} Critical`;
-      if (sStat) sStat.textContent = `${stableCount} Stable`;
+        // Update ward stats
+        let critCount = 0, stableCount = 0;
+        json.data.forEach(p => {
+          if ((p.ews_score || 0) >= 5) critCount++;
+          else stableCount++;
+        });
+        const cStat = document.getElementById('stat-critical-count');
+        const sStat = document.getElementById('stat-stable-count');
+        if (cStat) cStat.textContent = `${critCount} Critical`;
+        if (sStat) sStat.textContent = `${stableCount} Stable`;
 
-      if (subtitle) {
-        subtitle.textContent = query 
-          ? `Found ${patients.length} matching result(s) for "${query}"`
-          : `Showing all ${patients.length} active inpatient(s)`;
-      }
+        if (subtitle) {
+          subtitle.textContent = query
+            ? `Found ${patients.length} matching result(s) for "${query}"`
+            : `Showing all ${patients.length} active inpatient(s)`;
+        }
 
-      if (!resultsContainer) return;
-      resultsContainer.innerHTML = '';
+        if (!resultsContainer) return;
+        resultsContainer.innerHTML = '';
 
-      if (patients.length === 0) {
-        resultsContainer.innerHTML = `
+        if (patients.length === 0) {
+          resultsContainer.innerHTML = `
           <div class="col-span-full py-12 text-center bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-8">
             <span class="material-symbols-outlined text-outline text-5xl mb-2">person_search</span>
             <p class="text-headline-sm font-bold text-on-surface">No patients found</p>
             <p class="text-body-sm text-on-surface-variant mt-1">Try adjusting your search query, ward, or acuity filter.</p>
           </div>
         `;
-        return;
-      }
-
-      patients.forEach(p => {
-        const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
-        const bedStr = (p.ward_type || 'ICU') + ' • ' + (p.bed_number || 'Bed 01');
-        const ewsScore = p.ews_score !== undefined ? p.ews_score : (p.latest_vitals ? p.latest_vitals.ews_score : 0);
-        const condition = p.condition || (ewsScore >= 5 ? 'Critical' : ewsScore >= 3 ? 'Moderate Risk' : 'Stable');
-        
-        let ewsBadgeBg = 'bg-[#DCFCE7] text-[#166534]';
-        let trendIcon = 'trending_down';
-        if (ewsScore >= 5) {
-          ewsBadgeBg = 'bg-error text-on-error';
-          trendIcon = 'trending_up';
-        } else if (ewsScore >= 3) {
-          ewsBadgeBg = 'bg-[#FEF3C7] text-[#B45309]';
-          trendIcon = 'trending_flat';
+          return;
         }
 
-        const initials = p.name ? p.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'PT';
+        patients.forEach(p => {
+          const pCode = p.patient_code || ('P' + String(p.patient_id).padStart(3, '0'));
+          const bedStr = (p.ward_type || 'ICU') + ' • ' + (p.bed_number || 'Bed 01');
+          const ewsScore = p.ews_score !== undefined ? p.ews_score : (p.latest_vitals ? p.latest_vitals.ews_score : 0);
+          const condition = p.condition || (ewsScore >= 5 ? 'Critical' : ewsScore >= 3 ? 'Moderate Risk' : 'Stable');
 
-        let hr = '--', rr = '--', sbp = '--', temp = '--', timeStr = 'Just now';
-        if (p.latest_vitals) {
-          const lv = p.latest_vitals;
-          hr = lv.heart_rate !== null ? lv.heart_rate : '--';
-          rr = lv.respiratory_rate !== null ? lv.respiratory_rate : '--';
-          sbp = lv.systolic_bp !== null ? lv.systolic_bp : '--';
-          temp = lv.temperature !== null ? lv.temperature : '--';
-          if (lv.recorded_at) {
-            const d = new Date(lv.recorded_at);
-            timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          let ewsBadgeBg = 'bg-[#DCFCE7] text-[#166534]';
+          let trendIcon = 'trending_down';
+          if (ewsScore >= 5) {
+            ewsBadgeBg = 'bg-error text-on-error';
+            trendIcon = 'trending_up';
+          } else if (ewsScore >= 3) {
+            ewsBadgeBg = 'bg-[#FEF3C7] text-[#B45309]';
+            trendIcon = 'trending_flat';
           }
-        }
 
-        const card = document.createElement('div');
-        card.className = 'bg-surface-container-lowest rounded-xl p-md shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group cursor-pointer border border-outline-variant/20';
-        card.innerHTML = `
+          const initials = p.name ? p.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'PT';
+
+          let hr = '--', rr = '--', sbp = '--', temp = '--', timeStr = 'Just now';
+          if (p.latest_vitals) {
+            const lv = p.latest_vitals;
+            hr = lv.heart_rate !== null ? lv.heart_rate : '--';
+            rr = lv.respiratory_rate !== null ? lv.respiratory_rate : '--';
+            sbp = lv.systolic_bp !== null ? lv.systolic_bp : '--';
+            temp = lv.temperature !== null ? lv.temperature : '--';
+            if (lv.recorded_at) {
+              const d = new Date(lv.recorded_at);
+              timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+          }
+
+          const card = document.createElement('div');
+          card.className = 'bg-surface-container-lowest rounded-xl p-md shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group cursor-pointer border border-outline-variant/20';
+          card.innerHTML = `
           <div class="flex justify-between items-start mb-md">
             <div class="flex items-center gap-sm">
               <div class="w-12 h-12 rounded-full ${ewsBadgeBg} flex items-center justify-center font-headline-sm font-bold text-sm shrink-0">${initials}</div>
@@ -382,54 +511,56 @@
             <a href="../Doctor_patient_summary_ai/Doctor_patient_summary_ai.html?patient_id=${p.patient_id}" class="font-label-md text-primary hover:bg-primary/10 px-sm py-xs rounded transition-colors font-bold inline-block">View Summary →</a>
           </div>
         `;
-        resultsContainer.appendChild(card);
-      });
-    } catch (e) {
-      console.error('[Jeevan Setu] Patient search error:', e);
-      if (resultsContainer) {
-        resultsContainer.innerHTML = `<div class="col-span-full py-6 text-center text-error">Failed to load search results. Please try again.</div>`;
+          resultsContainer.appendChild(card);
+        });
+      } catch (e) {
+        console.error('[Jeevan Setu] Patient search error:', e);
+        if (resultsContainer) {
+          resultsContainer.innerHTML = `<div class="col-span-full py-6 text-center text-error">Failed to load search results. Please try again.</div>`;
+        }
       }
     }
-  }
 
-  // Event Listeners
-  const pSearchInput = document.getElementById('patient-search-input');
-  const pSearchBtn = document.getElementById('patient-search-btn');
+    // Event Listeners
+    const pSearchInput = document.getElementById('patient-search-input');
+    const pSearchBtn = document.getElementById('patient-search-btn');
 
-  if (pSearchInput) {
-    pSearchInput.addEventListener('input', () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(performPatientSearch, 300);
-    });
-    pSearchInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
+    if (pSearchInput) {
+      pSearchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(performPatientSearch, 300);
+      });
+      pSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          clearTimeout(debounceTimer);
+          performPatientSearch();
+        }
+      });
+    }
+
+    if (pSearchBtn) {
+      pSearchBtn.addEventListener('click', () => {
         clearTimeout(debounceTimer);
         performPatientSearch();
-      }
+      });
+    }
+
+    ['filter-ward', 'filter-acuity', 'filter-status', 'filter-sort'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', performPatientSearch);
     });
-  }
 
-  if (pSearchBtn) {
-    pSearchBtn.addEventListener('click', () => {
-      clearTimeout(debounceTimer);
-      performPatientSearch();
-    });
-  }
+    // Check URL params for query if passed
+    const urlParams = new URLSearchParams(window.location.search);
+    const qParam = urlParams.get('q') || urlParams.get('search');
+    if (qParam && pSearchInput) {
+      pSearchInput.value = qParam;
+    }
 
-  ['filter-ward', 'filter-acuity', 'filter-status', 'filter-sort'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('change', performPatientSearch);
-  });
-
-  // Check URL params for query if passed
-  const urlParams = new URLSearchParams(window.location.search);
-  const qParam = urlParams.get('q') || urlParams.get('search');
-  if (qParam && pSearchInput) {
-    pSearchInput.value = qParam;
-  }
-
-  performPatientSearch();
-</script>
+    performPatientSearch();
+  </script>
   <script src="../global_alert_manager.js"></script>
   <script src="../doctor_sidebar.js"></script>
-</body></html>
+</body>
+
+</html>

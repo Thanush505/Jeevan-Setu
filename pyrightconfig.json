@@ -1,0 +1,9 @@
+{
+  "venvPath": "Jeevan-Setu-Final",
+  "venv": ".venv-rag",
+  "extraPaths": [
+    "Jeevan-Setu-Final/JEEVAN_SETU",
+    "Jeevan-Setu-Final/.venv-rag/Lib/site-packages"
+  ]
+}
+

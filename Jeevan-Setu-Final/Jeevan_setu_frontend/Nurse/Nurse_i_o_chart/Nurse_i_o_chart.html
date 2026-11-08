@@ -152,24 +152,21 @@
 <span class="material-symbols-outlined text-[120px] text-primary">water_drop</span>
 </div>
 <div class="flex items-center gap-4 z-10 relative">
-<div class="w-16 h-16 rounded-full bg-primary-fixed-dim text-on-primary-fixed-variant flex items-center justify-center font-headline-md font-bold">
-                RK
+<div id="io-patient-avatar" class="w-16 h-16 rounded-full bg-primary-fixed-dim text-on-primary-fixed-variant flex items-center justify-center font-headline-md font-bold">
+                --
             </div>
 <div>
 <div class="flex items-center gap-3">
-<h1 class="font-headline-lg text-on-surface leading-none m-0">Ravi Kumar</h1>
-<span class="bg-error-container text-on-error-container px-2 py-1 rounded-full font-label-sm uppercase tracking-wide">High Risk</span>
+<h1 id="io-patient-name" class="font-headline-lg text-on-surface leading-none m-0">Loading Patient...</h1>
+<span id="io-risk-badge" class="bg-error-container text-on-error-container px-2 py-1 rounded-full font-label-sm uppercase tracking-wide">Active</span>
 </div>
 <div class="flex items-center gap-4 mt-2">
-<p class="font-body-md text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">local_hospital</span> ICU-01 (Bed 4)
-                    </p>
-<p class="font-body-md text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">calendar_month</span> 65M | Admit: Oct 12, 2023
-                    </p>
-<p class="font-body-md text-on-surface-variant flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">monitor_weight</span> 78.5 kg
-                    </p>
+<p id="io-patient-bed" class="font-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">local_hospital</span> Bed --
+</p>
+<p id="io-patient-meta" class="font-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">calendar_month</span> -- | Admit: --
+</p>
 </div>
 </div>
 </div>
@@ -427,6 +424,28 @@
 <script>
     if (window.lucide) lucide.createIcons();
   </script>
+<script src="/static/js/patient_context.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const pid = JeevanSetuPatientContext.getPatientIdFromUrl();
+    if (!pid) {
+      document.getElementById('io-patient-name').textContent = 'Select Patient from Dashboard';
+      document.getElementById('io-patient-bed').textContent = 'No patient specified in URL';
+      return;
+    }
+    const res = await JeevanSetuPatientContext.fetchPatient(pid);
+    if (res.success && res.data) {
+      const p = res.data;
+      const initials = (p.name || 'PT').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('io-patient-avatar').textContent = initials;
+      document.getElementById('io-patient-name').textContent = p.name;
+      document.getElementById('io-patient-bed').innerHTML = `<span class="material-symbols-outlined text-[16px]">local_hospital</span> ${p.ward_type || 'ICU'} Bed ${p.bed_number || '--'}`;
+      document.getElementById('io-patient-meta').innerHTML = `<span class="material-symbols-outlined text-[16px]">calendar_month</span> ${p.age || '--'} yrs • ${p.gender || 'Unknown'} | UHID: ${p.patient_code || ('UHID-2026-' + p.patient_id)}`;
+    } else {
+      document.getElementById('io-patient-name').textContent = 'Patient Not Found or Access Forbidden';
+    }
+  });
+</script>
 <script src="../nurse_navigation.js"></script>
   <script src="../global_alert_manager.js"></script>
 </body></html>

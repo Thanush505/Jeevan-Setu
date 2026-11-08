@@ -138,6 +138,18 @@ def create_app():
             return send_from_directory(os.path.dirname(logo_path), 'jeevan_setu_logo.png')
         return {'error': 'Logo not found'}, 404
 
+    @app.route('/static/<path:filename>')
+    def serve_static_files(filename):
+        for candidate in [
+            os.path.join(os.path.dirname(__file__), 'static', filename),
+            os.path.join(frontend_dir, 'static', filename),
+            os.path.join(frontend_dir, filename)
+        ]:
+            if os.path.exists(candidate):
+                mimetype = 'application/javascript' if filename.endswith('.js') else ('text/css' if filename.endswith('.css') else None)
+                return send_from_directory(os.path.dirname(candidate), os.path.basename(candidate), mimetype=mimetype)
+        return {'error': 'Static file not found'}, 404
+
     @app.route('/auto_refresh_manager.js')
     def serve_auto_refresh_manager():
         cand = os.path.join(frontend_dir, 'Attendant', 'auto_refresh_manager.js')
