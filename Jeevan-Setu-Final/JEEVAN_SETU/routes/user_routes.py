@@ -182,6 +182,9 @@ def create_user():
         experience_years = 0
     ward_assignment = (data.get('ward_assignment') or '').strip() or None
     shift = (data.get('shift') or 'Rotating').strip()
+    contact_number = (data.get('contact_number') or data.get('phone_number') or data.get('phone') or '').strip() or None
+    if contact_number and not re.match(r'^\+?[0-9\s\-()]{7,20}$', contact_number):
+        errors.append('Invalid contact number format. Please enter 7-20 digits with optional + country code.')
 
     # Input validations
     errors = []
@@ -227,7 +230,8 @@ def create_user():
         qualification=qualification,
         experience_years=experience_years,
         ward_assignment=ward_assignment,
-        shift=shift
+        shift=shift,
+        contact_number=contact_number
     )
 
     # Log to audit trail
@@ -303,8 +307,12 @@ def update_user(user_id):
     if 'department' in data:
         updates['department'] = data['department'].strip() if data['department'] else None
 
-    if 'contact_number' in data:
-        updates['contact_number'] = data['contact_number'].strip() if data['contact_number'] else None
+    if 'contact_number' in data or 'phone_number' in data or 'phone' in data:
+        raw_contact = data.get('contact_number') if 'contact_number' in data else (data.get('phone_number') if 'phone_number' in data else data.get('phone'))
+        contact_val = str(raw_contact).strip() if raw_contact else None
+        if contact_val and not re.match(r'^\+?[0-9\s\-()]{7,20}$', contact_val):
+            return jsonify({'success': False, 'error': 'Invalid contact number format. Please enter 7-20 digits with optional + country code.'}), 422
+        updates['contact_number'] = contact_val
 
     if not updates:
         return jsonify({'success': False, 'error': 'No valid fields provided for update'}), 400
@@ -312,6 +320,9 @@ def update_user(user_id):
     current_admin = get_current_authenticated_user()
     old_data = user.to_dict()
     User.update(user_id, **updates)
+
+    if 'contact_number' in updates and user.role == 'nurse':
+        db.execute_query("UPDATE nurses SET phone_number = %s WHERE user_id = %s", (updates['contact_number'], user_id))
 
     AuditLog.log(
         action='admin_update_user',

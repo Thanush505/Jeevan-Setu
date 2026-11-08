@@ -24,6 +24,11 @@ venv/
 .idea/
 .vscode/
 
+# Quarantine & temporary test caches
+_quarantine*/
+.pytest_cache/
+**/.pytest_cache/
+
 # OS generated files
 .DS_Store
 Thumbs.db

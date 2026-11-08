@@ -66,22 +66,17 @@ def attendant_create_assistance_request():
             'error': f"Patient '{patient.get('name')}' is no longer admitted. Assistance requests can only be placed for admitted patients."
         }), 403
 
-    # Step 1: Resolve assigned nurse automatically from authoritative patient record
+    # Step 1: Resolve assigned nurse from authoritative patient record
     assigned_nurse_id = patient.get('assigned_nurse')
-    if not assigned_nurse_id:
-        return jsonify({
-            'success': False,
-            'error': 'No nurse assignment was found for this patient. Please contact hospital staff directly.',
-            'nurse_assigned': False
-        }), 400
+    nurse_name = "Care Team"
+    if assigned_nurse_id:
+        from models.user_model import User
+        assigned_nurse_user = User.get_by_id(assigned_nurse_id)
+        nurse_name = assigned_nurse_user.full_name if assigned_nurse_user else f"Nurse #{assigned_nurse_id}"
 
-    from models.user_model import User
-    assigned_nurse_user = User.get_by_id(assigned_nurse_id)
-    nurse_name = assigned_nurse_user.full_name if assigned_nurse_user else f"Nurse #{assigned_nurse_id}"
-
-    # Step 2: Handle default category and description server-side (no manual popup required)
+    # Step 2: Handle category and optional description
     data = request.get_json(silent=True) or request.form.to_dict() or {}
-    category = data.get('category') or 'Request nursing assistance'
+    category = data.get('category') or 'Nurse Assistance'
 
     raw_description = data.get('description')
     clean_description = None
@@ -94,8 +89,6 @@ def attendant_create_assistance_request():
             }), 400
         if raw_stripped:
             clean_description = sanitize_input(raw_stripped)
-    if not clean_description:
-        clean_description = 'Attendant requested bedside assistance.'
 
     try:
         new_request = AssistanceRequest.create(
@@ -117,7 +110,7 @@ def attendant_create_assistance_request():
     bed = new_request.get('bed_number', patient.get('bed_number', ''))
 
     # Step 3: Dispatch notification strictly to the assigned nurse (prevent duplicate alerts)
-    if not new_request.get('is_duplicate'):
+    if not new_request.get('is_duplicate') and assigned_nurse_id:
         try:
             nurse_title = f"[Assistance Request] Patient {p_name} ({p_code})"
             nurse_message = f"Attendant requested assistance for Patient {p_name} ({p_code}) in {ward} Bed {bed}. Requested by {attendant_name}."

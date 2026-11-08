@@ -294,6 +294,17 @@
                     placeholder="e.g. Critical Care Nursing, HDU Support"/>
                 </div>
 
+                <!-- Registered Phone / Contact Number (Editable for Attendant Direct Calling) -->
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <label for="input-phone" class="block text-xs font-bold text-slate-700">Registered Phone Number</label>
+                    <span class="text-[10px] text-blue-600 font-semibold flex items-center gap-1"><i class="w-3 h-3" data-lucide="phone"></i> Attendant Calling</span>
+                  </div>
+                  <input type="tel" id="input-phone" disabled
+                    class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 disabled:opacity-75 disabled:cursor-not-allowed focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    placeholder="e.g. +91 98765 43210"/>
+                </div>
+
                 <!-- Qualification / Degree (Editable) -->
                 <div class="sm:col-span-2">
                   <label for="input-qualification" class="block text-xs font-bold text-slate-700 mb-1.5">Academic / Professional Qualification</label>
@@ -553,6 +564,11 @@
                 </div>
 
                 <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1 sm:col-span-2">
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Registered Attendant Contact</p>
+                  <p class="text-sm font-bold text-slate-900" id="sys-account-phone">Not registered</p>
+                </div>
+
+                <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200/80 space-y-1 sm:col-span-2">
                   <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Jeevan Setu Platform</p>
                   <p class="text-sm font-bold text-slate-900">v2.4.0 (EWS Decision Engine & Real-time Vitals Enabled)</p>
                 </div>
@@ -693,6 +709,7 @@
     const emailInput = document.getElementById('input-email');
     const specInput = document.getElementById('input-specialization');
     const qualInput = document.getElementById('input-qualification');
+    const phoneInput = document.getElementById('input-phone');
     const actionsBar = document.getElementById('profile-actions-bar');
     const toggleBtnText = document.getElementById('profile-edit-toggle-text');
 
@@ -700,6 +717,7 @@
     if (emailInput) emailInput.disabled = !editing;
     if (specInput) specInput.disabled = !editing;
     if (qualInput) qualInput.disabled = !editing;
+    if (phoneInput) phoneInput.disabled = !editing;
 
     if (actionsBar) {
       actionsBar.classList.toggle('hidden', !editing);
@@ -841,6 +859,13 @@
       elQual.placeholder = qual ? 'Academic / Professional Qualification' : 'Not provided';
     }
 
+    const elPhone = document.getElementById('input-phone');
+    const registeredPhone = user.phone_number || (user.nurse_details && user.nurse_details.phone_number) || user.contact_number || '';
+    if (elPhone) {
+      elPhone.value = registeredPhone;
+      elPhone.placeholder = registeredPhone ? 'Registered Phone Number' : 'e.g. +91 98765 43210 (Not registered)';
+    }
+
     // Update display labels
     const dispName = document.getElementById('profile-display-name');
     if (dispName) dispName.textContent = fullName || username || 'Nurse Profile';
@@ -873,6 +898,8 @@
     if (sysLicense) sysLicense.textContent = license;
     const sysShift = document.getElementById('sys-account-shift');
     if (sysShift) sysShift.textContent = `${shift} Shift (${exp})`;
+    const sysPhone = document.getElementById('sys-account-phone');
+    if (sysPhone) sysPhone.textContent = registeredPhone || 'Not registered (Direct attendant call disabled)';
 
     // Preferences
     if (user.preferences) {
@@ -966,9 +993,18 @@
     saveBtn.disabled = true;
     saveBtn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></span> Saving...`;
 
+    const phoneVal = (document.getElementById('input-phone') ? document.getElementById('input-phone').value.trim() : '');
+    if (phoneVal && !/^\+?[0-9\s\-()]{7,20}$/.test(phoneVal)) {
+      showToast('Please enter a valid phone number (7-20 digits with optional + country code).', 'error');
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = originalHtml;
+      return;
+    }
+
     const payload = {
       full_name: document.getElementById('input-full-name').value.trim(),
       email: document.getElementById('input-email').value.trim(),
+      phone_number: phoneVal,
       specialization: document.getElementById('input-specialization').value.trim(),
       qualification: document.getElementById('input-qualification').value.trim()
     };

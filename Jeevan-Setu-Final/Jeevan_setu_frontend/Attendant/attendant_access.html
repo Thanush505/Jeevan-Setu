@@ -11,6 +11,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
   
+  <script src="/static/js/i18n/translations.js"></script>
+  <script src="/static/js/i18n/language_manager.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Maintained Local QR Scanner Engine for Mobile Camera Streaming -->
   <script src="/Attendant/html5-qrcode.min.js"></script>
@@ -146,20 +148,38 @@
           <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
         </div>
         <div>
-          <span class="font-bold text-xs tracking-wider uppercase">Jeevan Setu</span>
-          <span class="text-[9px] text-blue-300 block -mt-0.5 font-medium tracking-tight">Family Companion</span>
+          <span class="font-bold text-xs tracking-wider uppercase" data-i18n="common.app_title">Jeevan Setu</span>
+          <span class="text-[9px] text-blue-300 block -mt-0.5 font-medium tracking-tight" data-i18n="common.companion">Family Companion</span>
         </div>
       </div>
 
-      <!-- Quick Hospital Call Button -->
-      <button 
-        type="button" 
-        onclick="openHelplineModal()" 
-        class="flex items-center gap-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 border border-blue-400/30 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all active:scale-95"
-      >
-        <span class="material-symbols-outlined text-xs text-blue-300">call</span>
-        <span>ICU Desk</span>
-      </button>
+      <div class="flex items-center gap-2">
+        <!-- Language Selector Dropdown -->
+        <div class="relative inline-flex items-center">
+          <div class="flex items-center gap-1 px-2 py-1 rounded-full border border-blue-400/30 bg-blue-900/60 text-blue-100 text-[11px] shadow-xs focus-within:ring-2 focus-within:ring-cyan-400/40">
+            <span class="material-symbols-outlined text-[13px] text-cyan-300 shrink-0 select-none pointer-events-none">language</span>
+            <select id="attendant-access-lang-select" aria-label="Select Language" data-i18n-aria-label="common.select_language" class="attendant-language-select bg-transparent text-[10px] font-bold text-inherit border-none outline-none focus:ring-0 p-0 pr-0.5 cursor-pointer appearance-none">
+              <option value="en" class="bg-slate-900 text-white">English</option>
+              <option value="kn" class="bg-slate-900 text-white">ಕನ್ನಡ (Kannada)</option>
+              <option value="hi" class="bg-slate-900 text-white">हिन्दी (Hindi)</option>
+              <option value="ta" class="bg-slate-900 text-white">தமிழ் (Tamil)</option>
+              <option value="te" class="bg-slate-900 text-white">తెలుగు (Telugu)</option>
+              <option value="ml" class="bg-slate-900 text-white">മലയാളം (Malayalam)</option>
+            </select>
+            <span class="material-symbols-outlined text-[12px] text-cyan-300 shrink-0 select-none pointer-events-none -ml-0.5">expand_more</span>
+          </div>
+        </div>
+
+        <!-- Quick Hospital Call Button -->
+        <button 
+          type="button" 
+          onclick="openHelplineModal()" 
+          class="flex items-center gap-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 border border-blue-400/30 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all active:scale-95"
+        >
+          <span class="material-symbols-outlined text-xs text-blue-300">call</span>
+          <span data-i18n="common.icu_desk">ICU Desk</span>
+        </button>
+      </div>
     </div>
 
     <!-- Main Scrollable Mobile Content -->
@@ -174,10 +194,10 @@
           <div>
             <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-500/30 border border-blue-300/20 text-[10px] text-blue-100 font-semibold mb-1.5">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>Live Patient Telemetry</span>
+              <span data-i18n="access.live_telemetry">Live Patient Telemetry</span>
             </div>
-            <h1 class="text-lg font-bold tracking-tight text-white">Attendant Sign-In</h1>
-            <p class="text-[11px] text-blue-100/80 mt-0.5 max-w-[240px]">
+            <h1 class="text-lg font-bold tracking-tight text-white" data-i18n="access.sign_in_title">Attendant Sign-In</h1>
+            <p class="text-[11px] text-blue-100/80 mt-0.5 max-w-[240px]" data-i18n="access.sign_in_subtitle">
               Access real-time vital signs, doctor notes, and recovery metrics.
             </p>
           </div>
@@ -197,7 +217,7 @@
           class="flex-1 py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 active-tab"
         >
           <span class="material-symbols-outlined text-[17px]">person_search</span>
-          <span>Manual Search</span>
+          <span data-i18n="access.tab_manual">Manual Search</span>
         </button>
         <button 
           id="tab-btn-qr" 
@@ -206,7 +226,7 @@
           class="flex-1 py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 inactive-tab"
         >
           <span class="material-symbols-outlined text-[17px]">qr_code_scanner</span>
-          <span>Scan Patient QR</span>
+          <span data-i18n="access.tab_qr">Scan Patient QR</span>
         </button>
       </div>
 
@@ -219,8 +239,8 @@
           <!-- 1. Patient Name / Search -->
           <div class="relative">
             <label for="input-patient-name" class="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
-              <span>Patient Name / UHID <span class="text-red-500">*</span></span>
-              <span class="text-[10px] text-slate-400 font-normal">e.g. Rajesh Kumar</span>
+              <span><span data-i18n="access.patient_label">Patient Name / UHID</span> <span class="text-red-500">*</span></span>
+              <span class="text-[10px] text-slate-400 font-normal" data-i18n="access.patient_hint">e.g. Rajesh Kumar</span>
             </label>
             <div class="relative flex items-center mobile-input bg-slate-50 border border-slate-200 rounded-xl transition-all">
               <span class="material-symbols-outlined text-slate-400 text-lg pl-3 pointer-events-none">search</span>
@@ -232,6 +252,7 @@
                 minlength="2" 
                 maxlength="100"
                 placeholder="Search patient name or UHID..."
+                data-i18n-placeholder="access.patient_placeholder"
                 autocomplete="off"
                 oninput="handlePatientSearchInput(event)"
                 class="w-full pl-2 pr-8 py-2.5 bg-transparent text-xs sm:text-sm text-textMain placeholder:text-slate-400 focus:outline-none font-medium"
@@ -265,8 +286,8 @@
           <!-- 2. Attendant Name -->
           <div>
             <label for="input-manual-attendant-name" class="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
-              <span>Your Name (Attendant) <span class="text-red-500">*</span></span>
-              <span class="text-[10px] text-slate-400 font-normal">Person logging in</span>
+              <span><span data-i18n="access.attendant_label">Your Name (Attendant)</span> <span class="text-red-500">*</span></span>
+              <span class="text-[10px] text-slate-400 font-normal" data-i18n="access.attendant_hint">Person logging in</span>
             </label>
             <div class="relative flex items-center mobile-input bg-slate-50 border border-slate-200 rounded-xl transition-all">
               <span class="material-symbols-outlined text-slate-400 text-lg pl-3 pointer-events-none">badge</span>
@@ -278,6 +299,7 @@
                 minlength="2" 
                 maxlength="80"
                 placeholder="e.g. Suman Kumar"
+                data-i18n-placeholder="access.attendant_placeholder"
                 class="w-full pl-2 pr-3 py-2.5 bg-transparent text-xs sm:text-sm text-textMain placeholder:text-slate-400 focus:outline-none font-medium"
                 autocomplete="name"
               >
@@ -286,7 +308,7 @@
 
           <!-- 3. Relationship Dropdown -->
           <div>
-            <label for="select-relationship" class="block text-xs font-bold text-slate-700 mb-1">
+            <label for="select-relationship" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="access.relationship_label">
               Relationship to Patient
             </label>
             <div class="relative flex items-center mobile-input bg-slate-50 border border-slate-200 rounded-xl transition-all">
@@ -296,13 +318,13 @@
                 name="relationship"
                 class="w-full pl-2 pr-8 py-2.5 bg-transparent text-xs sm:text-sm text-textMain focus:outline-none font-medium appearance-none"
               >
-                <option value="Family Member">Family Member</option>
-                <option value="Spouse">Spouse / Partner</option>
-                <option value="Son / Daughter">Son / Daughter</option>
-                <option value="Parent">Parent / Guardian</option>
-                <option value="Sibling">Brother / Sister</option>
-                <option value="Relative / Friend">Relative / Friend</option>
-                <option value="Other">Other Attendant</option>
+                <option value="Family Member" data-i18n="access.rel_family">Family Member</option>
+                <option value="Spouse" data-i18n="access.rel_spouse">Spouse / Partner</option>
+                <option value="Son / Daughter" data-i18n="access.rel_child">Son / Daughter</option>
+                <option value="Parent" data-i18n="access.rel_parent">Parent / Guardian</option>
+                <option value="Sibling" data-i18n="access.rel_sibling">Brother / Sister</option>
+                <option value="Relative / Friend" data-i18n="access.rel_other">Relative / Friend</option>
+                <option value="Other" data-i18n="access.rel_other">Other Attendant</option>
               </select>
               <span class="material-symbols-outlined absolute right-3 text-slate-400 text-base pointer-events-none">expand_more</span>
             </div>
@@ -329,7 +351,7 @@
             id="btn-manual-submit"
             class="w-full py-3.5 px-4 bg-primary hover:bg-primaryHover active:scale-[0.98] text-white font-bold text-xs sm:text-sm rounded-xl shadow-float transition-all flex items-center justify-center gap-2"
           >
-            <span id="btn-manual-submit-text">Enter Patient Dashboard</span>
+            <span id="btn-manual-submit-text" data-i18n="access.sign_in_btn">Enter Patient Dashboard</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </button>
         </form>
@@ -428,14 +450,14 @@
             <!-- Idle Viewfinder Overlay (prior to camera start) -->
             <div id="scanner-idle-overlay" class="absolute inset-0 flex flex-col items-center justify-center p-4 bg-slate-950/90 z-5 text-center">
               <span class="material-symbols-outlined text-4xl text-blue-400/70 mb-1.5">qr_code_scanner</span>
-              <p class="text-xs font-bold text-white mb-0.5">Mobile QR Scanner</p>
-              <p class="text-[10px] text-blue-200/70 max-w-[210px] leading-tight">Tap "Start Camera" to scan patient bed badge, or capture a photo</p>
+              <p class="text-xs font-bold text-white mb-0.5" data-i18n="access.qr_box_title">Mobile QR Scanner</p>
+              <p class="text-[10px] text-blue-200/70 max-w-[210px] leading-tight" data-i18n="access.qr_box_desc">Tap "Start Camera" to scan patient bed badge, or capture a photo</p>
             </div>
 
             <!-- Loading Overlay (while camera hardware initializes) -->
             <div id="scanner-loading-overlay" class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 bg-slate-950/95 z-20 text-center">
               <span class="material-symbols-outlined text-3xl text-cyan-400 animate-spin-custom mb-2">progress_activity</span>
-              <p class="text-xs font-bold text-cyan-300">Starting Camera...</p>
+              <p class="text-xs font-bold text-cyan-300" data-i18n="access.qr_scanning">Starting Camera...</p>
               <p class="text-[10px] text-blue-200/70 mt-0.5">Requesting rear camera access</p>
             </div>
           </div>
@@ -450,7 +472,7 @@
                 class="flex-1 py-2.5 px-3 bg-gradient-to-r from-blue-600 to-primary hover:from-blue-500 hover:to-primaryHover active:scale-95 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
               >
                 <span class="material-symbols-outlined text-base">videocam</span>
-                <span>Start Camera</span>
+                <span data-i18n="access.start_camera">Start Camera</span>
               </button>
               
               <button 
@@ -460,7 +482,7 @@
                 class="hidden flex-1 py-2.5 px-3 bg-red-600/90 hover:bg-red-600 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
               >
                 <span class="material-symbols-outlined text-base">videocam_off</span>
-                <span>Stop Camera</span>
+                <span data-i18n="access.stop_camera">Stop Camera</span>
               </button>
               
               <!-- Native Mobile Photo Capture Fallback (works over HTTP & HTTPS) -->
@@ -470,7 +492,7 @@
                 title="Capture photo with mobile camera app"
               >
                 <span class="material-symbols-outlined text-base text-cyan-400">photo_camera</span>
-                <span>Photo Scan</span>
+                <span data-i18n="access.upload_qr">Photo Scan</span>
                 <input 
                   type="file" 
                   id="input-camera-photo" 
@@ -515,7 +537,7 @@
         <!-- Loading State for QR verification -->
         <div id="section-qr-loading" class="hidden py-6 text-center bg-white rounded-2xl border border-slate-200">
           <span class="material-symbols-outlined text-3xl text-primary animate-spin-custom">progress_activity</span>
-          <p class="mt-2 font-bold text-xs text-textMain">Verifying Patient QR Token...</p>
+          <p class="mt-2 font-bold text-xs text-textMain" data-i18n="access.verifying">Verifying Patient QR Token...</p>
           <p class="text-[10px] text-slate-400 mt-0.5">Contacting hospital clinical gateway</p>
         </div>
 
@@ -529,7 +551,7 @@
             This QR code is not recognized or has expired.
           </p>
           <button type="button" onclick="switchTab('manual')" class="mt-2.5 px-3 py-1.5 bg-white text-primary font-bold text-[11px] rounded-lg border border-blue-200 shadow-2xs">
-            Use Manual Search
+            <span data-i18n="access.tab_manual">Use Manual Search</span>
           </button>
         </div>
 
@@ -556,7 +578,7 @@
               </div>
             </div>
             <div class="text-right">
-              <span class="text-[9px] text-slate-500 font-semibold block uppercase">Bed</span>
+              <span class="text-[9px] text-slate-500 font-semibold block uppercase" data-i18n="common.bed">Bed</span>
               <span id="badge-bed-number" class="inline-flex items-center gap-1 font-bold text-[11px] text-slate-800 bg-white px-2 py-0.5 rounded border border-slate-200">
                 <span class="material-symbols-outlined text-xs text-primary">bed</span>
                 <span id="badge-bed-val">Bed --</span>
@@ -568,7 +590,7 @@
           <form id="qr-access-form" class="space-y-3" onsubmit="handleQRAccessSubmit(event)">
             <div>
               <label for="input-qr-attendant-name" class="block text-xs font-bold text-slate-700 mb-1">
-                Your Full Name <span class="text-red-500">*</span>
+                <span><span data-i18n="access.attendant_label">Your Full Name</span> <span class="text-red-500">*</span></span>
               </label>
               <div class="relative flex items-center mobile-input bg-slate-50 border border-slate-200 rounded-xl transition-all">
                 <span class="material-symbols-outlined text-slate-400 text-lg pl-3 pointer-events-none">badge</span>
@@ -580,6 +602,7 @@
                   minlength="2" 
                   maxlength="80"
                   placeholder="e.g. Rahul Sharma"
+                  data-i18n-placeholder="access.attendant_placeholder"
                   class="w-full pl-2 pr-3 py-2.5 bg-transparent text-xs sm:text-sm text-textMain placeholder:text-slate-400 focus:outline-none font-medium"
                   autocomplete="name"
                 >
@@ -592,7 +615,7 @@
               id="btn-qr-submit"
               class="w-full py-3.5 px-4 bg-primary hover:bg-primaryHover active:scale-[0.98] text-white font-bold text-xs sm:text-sm rounded-xl shadow-float transition-all flex items-center justify-center gap-2"
             >
-              <span id="btn-qr-submit-text">Enter Live Patient Monitor</span>
+              <span id="btn-qr-submit-text" data-i18n="access.sign_in_btn">Enter Live Patient Monitor</span>
               <span class="material-symbols-outlined text-base">arrow_forward</span>
             </button>
           </form>
@@ -644,7 +667,7 @@
     <div class="bg-white border-t border-slate-200 px-4 py-2.5 text-center shrink-0">
       <a href="../Login/Login.html" class="inline-flex items-center justify-center gap-1.5 text-xs text-primary font-bold hover:underline active:scale-95 transition-all">
         <span class="material-symbols-outlined text-sm">local_hospital</span>
-        <span>Doctor, Nurse & Admin Login →</span>
+        <span data-i18n="login.staff_login">Doctor, Nurse & Admin Login →</span>
       </a>
       <p class="text-[9px] text-slate-400 mt-0.5">© 2026 Jeevan Setu Multispecialty Hospital</p>
     </div>
@@ -660,8 +683,8 @@
             <span class="material-symbols-outlined text-lg">support_agent</span>
           </div>
           <div>
-            <h3 class="font-bold text-sm text-textMain">ICU Attendant Helpline</h3>
-            <p class="text-[10px] text-slate-400">Available 24/7 for patient families</p>
+            <h3 class="font-bold text-sm text-textMain" data-i18n="access.helpline_title">ICU Attendant Helpline</h3>
+            <p class="text-[10px] text-slate-400" data-i18n="access.helpline_desc">Available 24/7 for patient families</p>
           </div>
         </div>
         <button type="button" onclick="closeHelplineModal()" class="text-slate-400 hover:text-slate-600 p-1">
@@ -693,7 +716,7 @@
       </div>
 
       <button type="button" onclick="closeHelplineModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all">
-        Close Window
+        <span data-i18n="common.close">Close Window</span>
       </button>
     </div>
   </div>

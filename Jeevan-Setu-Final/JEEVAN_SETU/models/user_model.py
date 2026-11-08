@@ -79,7 +79,7 @@ def verify_pw(password: str, password_hash: str) -> bool:
 class User(UserMixin):
     """User model representing doctors, nurses, admins, and attendants."""
 
-    def __init__(self, user_id, username, full_name, email, role, department, is_active=True, role_id=None):
+    def __init__(self, user_id, username, full_name, email, role, department, is_active=True, role_id=None, contact_number=None):
         self.id = user_id
         self.username = username
         self.full_name = full_name
@@ -88,6 +88,7 @@ class User(UserMixin):
         self.department = department
         self._is_active = bool(is_active)
         self.role_id = role_id
+        self.contact_number = contact_number
 
     @property
     def is_active(self):
@@ -102,6 +103,7 @@ class User(UserMixin):
             'username': self.username,
             'full_name': self.full_name,
             'email': self.email,
+            'contact_number': self.contact_number,
             'role': self.role,
             'department': self.department,
             'is_active': self._is_active,
@@ -120,7 +122,8 @@ class User(UserMixin):
             return User(
                 row['user_id'], row['username'], row['full_name'],
                 row['email'], row['role'], row.get('department'),
-                row.get('is_active', True), row.get('role_id')
+                row.get('is_active', True), row.get('role_id'),
+                row.get('contact_number')
             )
         return None
 
@@ -159,21 +162,22 @@ class User(UserMixin):
             return User(
                 user_data['user_id'], user_data['username'], user_data['full_name'],
                 user_data['email'], user_data['role'], user_data.get('department'),
-                user_data.get('is_active', True), user_data.get('role_id')
+                user_data.get('is_active', True), user_data.get('role_id'),
+                user_data.get('contact_number')
             )
         return None
 
     @staticmethod
     def create(username, password, full_name, email, role='nurse', department=None, role_id=None,
                is_active=1, specialization=None, license_number=None, qualification=None,
-               experience_years=0, ward_assignment=None, shift='Rotating'):
+               experience_years=0, ward_assignment=None, shift='Rotating', contact_number=None):
         """Create a new user and sync with role-specific tables (doctors, nurses)."""
         password_hash = hash_pw(password)
         with db.transaction() as cursor:
             cursor.execute(
-                """INSERT INTO users (username, password_hash, full_name, email, role, department, role_id, is_active)
-                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
-                (username, password_hash, full_name, email, role, department, role_id, int(bool(is_active)))
+                """INSERT INTO users (username, password_hash, full_name, email, role, department, role_id, is_active, contact_number)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                (username, password_hash, full_name, email, role, department, role_id, int(bool(is_active)), contact_number)
             )
             user_id = cursor.lastrowid
 
@@ -197,14 +201,15 @@ class User(UserMixin):
                 )
             elif role == 'nurse':
                 cursor.execute(
-                    """INSERT INTO nurses (user_id, username, password_hash, full_name, email,
+                    """INSERT INTO nurses (user_id, username, password_hash, full_name, email, phone_number,
                                            specialization, license_number, qualification, ward_assignment, shift, experience_years, is_active)
-                       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                        ON DUPLICATE KEY UPDATE
                            user_id = VALUES(user_id),
                            password_hash = VALUES(password_hash),
                            full_name = VALUES(full_name),
                            email = VALUES(email),
+                           phone_number = VALUES(phone_number),
                            specialization = VALUES(specialization),
                            license_number = VALUES(license_number),
                            qualification = VALUES(qualification),
@@ -212,7 +217,7 @@ class User(UserMixin):
                            shift = VALUES(shift),
                            experience_years = VALUES(experience_years),
                            is_active = VALUES(is_active)""",
-                    (user_id, username, password_hash, full_name, email,
+                    (user_id, username, password_hash, full_name, email, contact_number,
                      specialization or 'Critical Care', license_number, qualification, ward_assignment, shift or 'Rotating', experience_years or 0, int(bool(is_active)))
                 )
 
@@ -223,11 +228,11 @@ class User(UserMixin):
         """Fetch users."""
         if include_inactive:
             return db.execute_query(
-                "SELECT user_id, username, full_name, email, role, department, is_active, created_at, updated_at FROM users ORDER BY full_name",
+                "SELECT user_id, username, full_name, email, role, department, contact_number, is_active, created_at, updated_at FROM users ORDER BY full_name",
                 fetch=True
             )
         return db.execute_query(
-            "SELECT user_id, username, full_name, email, role, department, is_active, created_at, updated_at FROM users WHERE is_active = TRUE ORDER BY full_name",
+            "SELECT user_id, username, full_name, email, role, department, contact_number, is_active, created_at, updated_at FROM users WHERE is_active = TRUE ORDER BY full_name",
             fetch=True
         )
 
@@ -271,7 +276,7 @@ class User(UserMixin):
 
         # Fetch records
         query_sql = f"""
-            SELECT user_id, username, full_name, email, role, department, is_active, role_id, created_at, updated_at
+            SELECT user_id, username, full_name, email, role, department, contact_number, is_active, role_id, created_at, updated_at
             FROM users
             {where_sql}
             ORDER BY user_id ASC
@@ -329,7 +334,7 @@ class User(UserMixin):
         """Search users by username, full name, email, or department."""
         search_term = f"%{query.strip()}%"
         users = db.execute_query(
-            """SELECT user_id, username, full_name, email, role, department, is_active, role_id, created_at, updated_at
+            """SELECT user_id, username, full_name, email, role, department, contact_number, is_active, role_id, created_at, updated_at
                FROM users
                WHERE (username LIKE %s OR full_name LIKE %s OR email LIKE %s OR department LIKE %s)
                ORDER BY is_active DESC, full_name ASC""",

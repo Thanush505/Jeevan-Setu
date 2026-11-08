@@ -5,6 +5,9 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Jeevan Setu - Patient Update</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<script src="/static/js/i18n/translations.js"></script>
+<script src="/static/js/i18n/language_manager.js"></script>
 <script src="/auto_refresh_manager.js"></script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script>tailwind.config = {theme: {extend: {colors: {primary: "#004ac6", primaryLight: "#eff6ff", secondary: "#006591", warning: "#f59e0b", danger: "#ef4444", surface: "#f9f9ff", textMain: "#0f172a", textMuted: "#64748b", "on-primary-fixed-variant": "#003ea8", "surface-tint": "#0053db", tertiary: "#46566c", "on-secondary-fixed": "#001e2f", "on-primary-container": "#eeefff", "primary-fixed": "#dbe1ff", "inverse-primary": "#b4c5ff", outline: "#737686", "tertiary-fixed-dim": "#b7c8e1", "outline-variant": "#c3c6d7", "on-error": "#ffffff", "on-error-container": "#93000a", "on-tertiary-fixed": "#0b1c30", "on-primary": "#ffffff", "on-background": "#111c2d", background: "#f9f9ff", "on-tertiary-fixed-variant": "#38485d", "tertiary-container": "#5e6e85", "secondary-container": "#39b8fd", "primary-container": "#2563eb", "on-secondary-fixed-variant": "#004c6e", "on-tertiary-container": "#e9f0ff", "surface-variant": "#d8e3fb", "surface-container-highest": "#d8e3fb", "on-primary-fixed": "#00174b", "on-secondary": "#ffffff", "on-secondary-container": "#004666", "surface-container-lowest": "#ffffff", "surface-bright": "#f9f9ff", error: "#ba1a1a", "inverse-on-surface": "#ecf1ff", "surface-container-low": "#f0f3ff", "surface-container": "#e7eeff", "on-surface-variant": "#434655", "surface-container-high": "#dee8ff", "secondary-fixed-dim": "#89ceff", "error-container": "#ffdad6", "primary-fixed-dim": "#b4c5ff", "on-tertiary": "#ffffff", "surface-dim": "#cfdaf2", "secondary-fixed": "#c9e6ff", "inverse-surface": "#263143", "on-surface": "#111c2d", "tertiary-fixed": "#d3e4fe"}, fontFamily: {sans: ["Inter", "sans-serif"], "body-sm": ["Inter"], "body-md": ["Inter"], "headline-md": ["Poppins"], "headline-lg-mobile": ["Poppins"], "label-md": ["Inter"], "label-sm": ["Inter"], "body-lg": ["Inter"], "headline-lg": ["Poppins"], display: ["Poppins"], "headline-sm": ["Poppins"]}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, fontSize: {"body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "500"}], "headline-lg-mobile": ["28px", {lineHeight: "36px", fontWeight: "600"}], "label-md": ["14px", {lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "600"}], "label-sm": ["12px", {lineHeight: "16px", fontWeight: "600"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", fontWeight: "600"}], display: ["48px", {lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600"}], "headline-sm": ["20px", {lineHeight: "28px", fontWeight: "500"}]}, spacing: {"margin-mobile": "16px", "margin-desktop": "32px", sm: "8px", lg: "24px", xs: "4px", md: "16px", gutter: "16px", xl: "32px", base: "4px"}}}};</script>
@@ -45,31 +48,49 @@
   </head>
 <body class="text-textMain relative pb-20">
 <!-- BEGIN: Top Bar & Header -->
-<header class="pt-12 pb-4 px-5 bg-white sticky top-0 z-10">
-<div class="flex items-center justify-between mb-4">
-<!-- Hamburger Menu -->
-<button class="p-2 -ml-2 text-primary">
+<header class="pt-12 pb-4 px-5 bg-white sticky top-0 z-10 border-b border-slate-100">
+<div class="flex items-center justify-between gap-2">
+<!-- Hamburger Menu / Back Button -->
+<button class="p-2 -ml-2 text-primary hover:bg-slate-50 rounded-lg transition-colors" aria-label="Menu" data-i18n-title="common.return_to_login">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </button>
 <!-- Logo & Title -->
-<div class="flex items-center gap-2">
-<div class="w-9 h-9 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+<div class="flex items-center gap-2 flex-1 min-w-0">
+<div class="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
 <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
 </div>
-<div>
-<h1 class="text-primary font-bold text-lg leading-tight uppercase">Jeevan Setu</h1>
-<p class="text-[10px] text-textMuted uppercase tracking-wide">ICU to HDU Transfer Support</p>
+<div class="min-w-0">
+<h1 class="text-primary font-bold text-base leading-tight uppercase truncate" data-i18n="common.app_title">Jeevan Setu</h1>
+<p class="text-[9px] text-textMuted uppercase tracking-wide truncate" data-i18n="common.icu_support">ICU to HDU Transfer Support</p>
 </div>
 </div>
-<!-- Notifications -->
-<button class="p-2 -mr-2 text-primary relative">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-<span class="absolute top-1.5 right-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white border-2 border-white">3</span>
-</button>
+<!-- Right Controls: Language Selector + Notifications -->
+<div class="flex items-center gap-1.5 shrink-0 -mr-1">
+  <!-- Language Selector Dropdown -->
+  <div class="relative inline-flex items-center">
+    <div class="flex items-center gap-1 px-2 py-1 rounded-full border border-blue-200 bg-blue-50/90 text-blue-900 shadow-xs focus-within:ring-2 focus-within:ring-primary/40">
+      <span class="material-symbols-outlined text-[14px] text-primary shrink-0 select-none pointer-events-none">language</span>
+      <select id="attendant-language-select" aria-label="Select Language" data-i18n-aria-label="common.select_language" class="attendant-language-select bg-transparent text-[10px] font-bold text-inherit border-none outline-none focus:ring-0 p-0 pr-0.5 cursor-pointer appearance-none">
+        <option value="en" class="bg-white text-slate-900">English</option>
+        <option value="kn" class="bg-white text-slate-900">ಕನ್ನಡ (Kannada)</option>
+        <option value="hi" class="bg-white text-slate-900">हिन्दी (Hindi)</option>
+        <option value="ta" class="bg-white text-slate-900">தமிழ் (Tamil)</option>
+        <option value="te" class="bg-white text-slate-900">తెలుగు (Telugu)</option>
+        <option value="ml" class="bg-white text-slate-900">മലയാളം (Malayalam)</option>
+      </select>
+      <span class="material-symbols-outlined text-[13px] text-primary shrink-0 select-none pointer-events-none -ml-0.5">expand_more</span>
+    </div>
+  </div>
+  <!-- Notifications -->
+  <button class="p-1.5 text-primary relative hover:bg-slate-50 rounded-lg transition-colors" aria-label="Notifications" data-i18n-title="updates.title">
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" stroke-linecap="round" stroke-linejoin="round"></path>
+  </svg>
+  <span class="absolute top-1 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[7px] font-bold text-white border-2 border-white">3</span>
+  </button>
+</div>
 </div>
 </header>
 <!-- END: Top Bar & Header -->
@@ -77,9 +98,9 @@
 <!-- BEGIN: Greeting Banner -->
 <section class="bg-primaryLight rounded-card p-4 relative overflow-hidden flex items-center justify-between">
 <div class="z-10 w-2/3">
-<h2 id="attendant-greeting-name" class="text-xl font-bold text-primary mb-1">Hello, Attendant 👋</h2>
-<p class="text-sm text-textMain mb-3">Here's your patient's<br/>current update.</p>
-<p class="text-xs font-medium text-textMain">Patient ID: <span id="attendant-patient-uhid" class="text-blue-600 font-semibold font-mono">--</span></p>
+<h2 id="attendant-greeting-name" class="text-xl font-bold text-primary mb-1" data-i18n="dashboard.greeting_default">Hello, Attendant 👋</h2>
+<p class="text-sm text-textMain mb-3" data-i18n="dashboard.subtitle">Here's your patient's<br/>current update.</p>
+<p class="text-xs font-medium text-textMain"><span data-i18n="dashboard.patient_uhid_label">Patient ID:</span> <span id="attendant-patient-uhid" class="text-blue-600 font-semibold font-mono">--</span></p>
 </div>
 <!-- Illustration Placeholder - using shapes as instructed not to invent URLs -->
 <div class="w-1/3 h-24 relative opacity-80">
@@ -103,31 +124,31 @@
 </div>
 <div class="flex-1">
 <div class="flex justify-between items-start mb-1">
-<h3 id="attendant-patient-name" class="text-lg font-bold text-primary">Loading...</h3>
+<h3 id="attendant-patient-name" class="text-lg font-bold text-primary" data-i18n="common.loading">Loading...</h3>
 <span id="attendant-condition-badge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 border border-green-200 text-xs font-semibold text-secondary">
 <svg class="h-1.5 w-1.5 fill-current" viewbox="0 0 2 2"><circle cx="1" cy="1" r="1"></circle></svg>
-            <span id="attendant-condition-text">Stable</span>
+            <span id="attendant-condition-text" data-i18n="condition.stable">Stable</span>
           </span>
 </div>
 <p id="attendant-patient-age-gender" class="text-sm text-textMuted mb-0.5">Age: 45 Y <span class="mx-1">|</span> Male</p>
 <p id="attendant-patient-admitted" class="text-xs text-textMuted mb-1">Admitted on: 20 May 2025</p>
 <div class="flex justify-between items-center mt-2 pt-2 border-t border-gray-100/80">
   <div>
-    <p class="text-[10px] text-textMuted uppercase font-semibold tracking-wider">Current Unit</p>
+    <p class="text-[10px] text-textMuted uppercase font-semibold tracking-wider" data-i18n="dashboard.current_unit">Current Unit</p>
     <p class="text-xs font-bold text-primary"><span id="attendant-patient-unit">ICU-01</span></p>
   </div>
   <!-- EWS Score in place of View Details -->
   <div id="attendant-ews-badge" class="px-3.5 py-2.5 rounded-xl bg-blue-50 border border-blue-100 flex items-center gap-3 min-h-[48px]">
     <div class="flex flex-col items-end text-right justify-center">
-      <span class="text-[10px] font-bold text-blue-800 tracking-wider uppercase">EWS Score</span>
+      <span class="text-[10px] font-bold text-blue-800 tracking-wider uppercase" data-i18n="dashboard.ews_score">EWS Score</span>
       <span id="attendant-ews-condition" class="text-[11px] font-semibold text-secondary leading-tight">( Stable )</span>
     </div>
     <span id="attendant-ews-score" class="text-3xl font-black text-primary leading-none">--</span>
   </div>
 </div>
-<button onclick="requestAssistanceDirect(this)" id="patient-card-request-btn" class="mt-2.5 w-full py-2 px-3 bg-blue-50 hover:bg-blue-100 active:scale-98 text-blue-700 font-bold text-xs rounded-xl border border-blue-200 flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
+<button onclick="focusAssistanceForm()" id="patient-card-request-btn" class="mt-2.5 w-full py-2 px-3 bg-blue-50 hover:bg-blue-100 active:scale-98 text-blue-700 font-bold text-xs rounded-xl border border-blue-200 flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
   <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
-  <span>Request Assistance</span>
+  <span data-i18n="dashboard.request_assistance">Request Assistance</span>
 </button>
 </div>
 </section>
@@ -135,21 +156,21 @@
 <!-- BEGIN: Current Status Grid -->
 <section>
 <div class="flex justify-between items-center mb-3">
-<h3 class="text-base font-bold text-primary">Current Status</h3>
+<h3 class="text-base font-bold text-primary" data-i18n="vitals.current_status">Current Status</h3>
 <div class="flex items-center gap-1 text-xs font-medium text-secondary">
 <svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path clip-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm14.25 6a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 4.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" fill-rule="evenodd"></path>
 </svg>
-          Live
+          <span data-i18n="common.live">Live</span>
         </div>
 </div>
 <div class="grid grid-cols-2 gap-3 mb-3">
 <!-- 1. Heart Rate -->
 <div class="bg-green-50/50 border border-green-100 rounded-xl p-3 flex flex-col items-center text-center">
-<h4 class="text-xs font-semibold text-green-700 mb-1">Heart Rate</h4>
+<h4 class="text-xs font-semibold text-green-700 mb-1" data-i18n="vitals.heart_rate">Heart Rate</h4>
 <div class="flex items-baseline gap-1 mb-2">
 <span id="attendant-hr-val" class="text-3xl font-bold text-gray-800 leading-none">--</span>
-<span class="text-[10px] text-gray-500 font-medium">bpm</span>
+<span class="text-[10px] text-gray-500 font-medium" data-i18n="vitals.bpm">bpm</span>
 </div>
 <svg class="w-6 h-6 text-green-600 mt-auto" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"></path>
@@ -157,10 +178,10 @@
 </div>
 <!-- 2. Blood Pressure -->
 <div class="bg-orange-50/50 border border-orange-100 rounded-xl p-3 flex flex-col items-center text-center">
-<h4 class="text-xs font-semibold text-gray-700 mb-1">Blood Pressure</h4>
+<h4 class="text-xs font-semibold text-gray-700 mb-1" data-i18n="vitals.blood_pressure">Blood Pressure</h4>
 <div class="flex items-baseline gap-1 mb-2">
 <span id="attendant-bp-val" class="text-3xl font-bold text-gray-800 leading-none">--</span>
-<span class="text-[10px] text-gray-500 font-medium">mmHg</span>
+<span class="text-[10px] text-gray-500 font-medium" data-i18n="vitals.mmhg">mmHg</span>
 </div>
 <div class="mt-auto relative w-5 h-6 flex items-center justify-center">
 <svg class="w-6 h-6 text-orange-500" fill="currentColor" viewbox="0 0 24 24">
@@ -171,10 +192,10 @@
 </div>
 <!-- 3. Temperature -->
 <div class="bg-purple-50/50 border border-purple-100 rounded-xl p-3 flex flex-col items-center text-center">
-<h4 class="text-xs font-semibold text-purple-700 mb-1">Temperature</h4>
+<h4 class="text-xs font-semibold text-purple-700 mb-1" data-i18n="vitals.temperature">Temperature</h4>
 <div class="flex items-baseline gap-1 mb-2">
 <span id="attendant-temp-val" class="text-3xl font-bold text-gray-800 leading-none">--</span>
-<span class="text-[10px] text-gray-500 font-medium">°C</span>
+<span class="text-[10px] text-gray-500 font-medium" data-i18n="vitals.deg_c">°C</span>
 </div>
 <svg class="w-6 h-6 text-purple-500 mt-auto" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M15.006 14.5c.34-.637.534-1.37.534-2.146V5a3.5 3.5 0 10-7 0v7.354c0 .776.195 1.51.534 2.146.438.824.966 1.705 1.488 2.502.138.21.272.417.402.618a3.5 3.5 0 003.11 1.62c.983 0 1.94-.403 2.62-1.118a3.504 3.504 0 00.91-2.482c0-.528-.152-1.04-.42-1.487l-.004-.006-.403-.618c-.522-.797-1.05-1.678-1.488-2.502zM12 3a2 2 0 012 2v7.354a5.023 5.023 0 01-1.05 3.197L12.5 16.25a.75.75 0 01-1 0l-.45-.699a5.023 5.023 0 01-1.05-3.197V5a2 2 0 012-2z"></path>
@@ -184,10 +205,10 @@
 </div>
 <!-- 4. Respiratory Rate -->
 <div class="bg-cyan-50/50 border border-cyan-100 rounded-xl p-3 flex flex-col items-center text-center">
-<h4 class="text-xs font-semibold text-cyan-800 mb-1">Respiratory Rate</h4>
+<h4 class="text-xs font-semibold text-cyan-800 mb-1" data-i18n="vitals.respiratory_rate">Respiratory Rate</h4>
 <div class="flex items-baseline gap-1 mb-2">
 <span id="attendant-rr-val" class="text-3xl font-bold text-gray-800 leading-none">--</span>
-<span class="text-[10px] text-gray-500 font-medium">/min</span>
+<span class="text-[10px] text-gray-500 font-medium" data-i18n="vitals.breaths_min">/min</span>
 </div>
 <svg class="w-6 h-6 text-cyan-600 mt-auto" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M12 3v13m0 0l-3-3m3 3l3-3M5 10a7 7 0 0114 0c0 4.97-3.134 9-7 9s-7-4.03-7-9z" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -204,8 +225,8 @@
 </svg>
 </div>
 <div>
-<h4 id="attendant-status-heading" class="text-sm font-bold text-green-800">Patient is Stable</h4>
-<p id="attendant-status-desc" class="text-xs text-textMuted leading-relaxed">All recorded vital parameters are within normal recovery range.<br/>Attendant updates will refresh in real time.</p>
+<h4 id="attendant-status-heading" class="text-sm font-bold text-green-800" data-i18n="condition.patient_stable">Patient is Stable</h4>
+<p id="attendant-status-desc" class="text-xs text-textMuted leading-relaxed" data-i18n="condition.stable_desc">All recorded vital parameters are within normal recovery range.<br/>Attendant updates will refresh in real time.</p>
 </div>
 </div>
 </div>
@@ -213,7 +234,7 @@
 <!-- END: Current Status Grid -->
 <!-- BEGIN: Transfer Status -->
 <section>
-<h3 class="text-base font-bold text-primary mb-3">Transfer Status</h3>
+<h3 class="text-base font-bold text-primary mb-3" data-i18n="transfer.title">Transfer Status</h3>
 <div class="border border-gray-100 rounded-xl p-4 shadow-sm bg-white">
 <!-- Timeline Visual -->
 <div class="flex items-center justify-between mb-2 relative">
@@ -229,7 +250,7 @@
 <path clip-rule="evenodd" d="M3 4.5A1.5 1.5 0 014.5 3h1.5a.75.75 0 010 1.5H4.5v12h15V4.5h-1.5a.75.75 0 010-1.5h1.5A1.5 1.5 0 0121 4.5v15a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 19.5v-15zm4.5 6a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-1.5 1.5a3 3 0 013-3h6a3 3 0 013 3v4.5a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V12z" fill-rule="evenodd"></path>
 </svg>
 </div>
-<span class="text-[10px] font-bold text-secondary">ICU</span>
+<span class="text-[10px] font-bold text-secondary" data-i18n="transfer.icu">ICU</span>
 </div>
 <!-- Checkmark Node -->
 <div class="z-10 bg-white px-1 -ml-4">
@@ -255,12 +276,12 @@
 <path clip-rule="evenodd" d="M3 4.5A1.5 1.5 0 014.5 3h1.5a.75.75 0 010 1.5H4.5v12h15V4.5h-1.5a.75.75 0 010-1.5h1.5A1.5 1.5 0 0121 4.5v15a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 19.5v-15zm4.5 6a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-1.5 1.5a3 3 0 013-3h6a3 3 0 013 3v4.5a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V12z" fill-rule="evenodd"></path>
 </svg>
 </div>
-<span class="text-[10px] font-medium text-gray-500">HDU</span>
+<span class="text-[10px] font-medium text-gray-500" data-i18n="transfer.hdu">HDU</span>
 </div>
 </div>
 <div class="text-center mt-2">
-<h4 class="text-xs font-bold text-textMain mb-0.5">Under Evaluation</h4>
-<p class="text-[11px] text-secondary font-medium">No transfer recommended at this time.</p>
+<h4 class="text-xs font-bold text-textMain mb-0.5" data-i18n="transfer.under_eval">Under Evaluation</h4>
+<p id="attendant-transfer-desc" class="text-[11px] text-secondary font-medium" data-i18n="transfer.no_rec">No transfer recommended at this time.</p>
 </div>
 </div>
 </section>
@@ -268,8 +289,8 @@
 <!-- BEGIN: Recent Updates -->
 <section>
 <div class="flex justify-between items-center mb-4">
-<h3 class="text-base font-bold text-primary">Recent Updates</h3>
-<a class="text-xs font-semibold text-blue-600 hover:underline" href="#">View All</a>
+<h3 class="text-base font-bold text-primary" data-i18n="updates.title">Recent Updates</h3>
+<a class="text-xs font-semibold text-blue-600 hover:underline" href="#" data-i18n="updates.view_all">View All</a>
 </div>
 <div class="space-y-4 pl-2 relative before:absolute before:inset-y-0 before:left-5 before:w-0.5 before:bg-gray-100">
 <!-- Update Item 1 -->
@@ -281,10 +302,10 @@
 </div>
 <div class="flex-1 pb-1">
 <div class="flex justify-between items-start mb-0.5">
-<h4 class="text-sm font-semibold text-textMain">Vitals recorded</h4>
+<h4 class="text-sm font-semibold text-textMain" data-i18n="updates.vitals_recorded">Vitals recorded</h4>
 <span class="text-[10px] text-textMuted">10:30 AM</span>
 </div>
-<p class="text-xs text-textMuted">Heart Rate, BP, SpO₂, Temp updated</p>
+<p class="text-xs text-textMuted" data-i18n="updates.vitals_desc">Heart Rate, BP, SpO₂, Temp updated</p>
 </div>
 </div>
 <!-- Update Item 2 -->
@@ -296,7 +317,7 @@
 </div>
 <div class="flex-1 pb-1">
 <div class="flex justify-between items-start mb-0.5">
-<h4 class="text-sm font-semibold text-textMain">EWS Score calculated</h4>
+<h4 class="text-sm font-semibold text-textMain" data-i18n="updates.ews_calculated">EWS Score calculated</h4>
 <span class="text-[10px] text-textMuted">10:30 AM</span>
 </div>
 <p class="text-xs text-textMuted">Score: 3 (Low Risk)</p>
@@ -311,76 +332,148 @@
 </div>
 <div class="flex-1">
 <div class="flex justify-between items-start mb-0.5">
-<h4 class="text-sm font-semibold text-textMain">Patient stable in ICU</h4>
+<h4 class="text-sm font-semibold text-textMain" data-i18n="updates.patient_stable_icu">Patient stable in ICU</h4>
 <span class="text-[10px] text-textMuted">10:28 AM</span>
 </div>
-<p class="text-xs text-textMuted">Monitoring will continue</p>
+<p class="text-xs text-textMuted" data-i18n="updates.monitoring_continue">Monitoring will continue</p>
 </div>
 </div>
 </div>
 </section>
 <!-- END: Recent Updates -->
-<!-- BEGIN: Support Action -->
-<section class="bg-blue-50 border border-blue-100 rounded-card p-4 shadow-xs mt-2 space-y-3">
-  <div class="flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
-        </svg>
+<!-- BEGIN: Assigned Nurse & Calling Card -->
+<section id="assigned-nurse-section" class="bg-white border border-gray-100 rounded-card p-4 shadow-sm space-y-3">
+  <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"></path></svg>
       </div>
       <div>
-        <h4 class="text-sm font-bold text-blue-900">Need Assistance?</h4>
-        <p class="text-xs text-blue-600">Notify assigned bedside nurse directly</p>
+        <h3 class="text-sm font-bold text-primary" data-i18n="nurse_call.card_title">Assigned Care Nurse</h3>
+        <p class="text-[11px] text-textMuted" data-i18n="nurse_call.duty_nurse">Bedside Duty Nurse</p>
       </div>
     </div>
-    <button id="direct-assistance-btn" onclick="requestAssistanceDirect(this)" class="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 shadow-sm transition-all cursor-pointer">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-      </svg>
-      <span>Request Assistance</span>
-    </button>
+    <span id="assigned-nurse-ward-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">ICU</span>
   </div>
+
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+    <div class="space-y-0.5">
+      <h4 id="assigned-nurse-name" class="text-sm font-bold text-slate-900">Loading Nurse Info...</h4>
+      <p id="assigned-nurse-ward" class="text-xs text-slate-500">Retrieving assigned bedside station...</p>
+      <div id="assigned-nurse-phone-row" class="hidden text-xs text-slate-600 font-medium items-center gap-1.5 pt-0.5">
+        <span class="text-slate-400" data-i18n="nurse_call.phone_label">Contact Number:</span>
+        <span id="assigned-nurse-phone-val" class="font-bold text-emerald-700 font-mono">--</span>
+      </div>
+    </div>
+
+    <!-- Active Native Dialer Button (When Phone Registered) -->
+    <a id="assigned-nurse-call-btn" href="#" class="hidden inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs shadow-sm transition-all cursor-pointer">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"></path></svg>
+      <span data-i18n="nurse_call.call_btn">Call Assigned Nurse</span>
+    </a>
+  </div>
+
+  <!-- Status Message: No Nurse Assigned -->
+  <div id="assigned-nurse-none-msg" class="hidden p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 flex items-center gap-2">
+    <svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"></path></svg>
+    <span data-i18n="nurse_call.no_nurse">No nurse is currently assigned to this patient.</span>
+  </div>
+
+  <!-- Status Message: Nurse Assigned But No Phone Registered -->
+  <div id="assigned-nurse-no-phone-msg" class="hidden p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-center gap-2">
+    <svg class="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"></path></svg>
+    <span data-i18n="nurse_call.no_phone">The assigned nurse has not registered a contact number yet.</span>
+  </div>
+</section>
+<!-- END: Assigned Nurse & Calling Card -->
+
+<!-- BEGIN: Request Assistance Form Section -->
+<section id="request-assistance-section" class="bg-white border border-gray-100 rounded-card p-4 shadow-sm space-y-4">
+  <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
+      </div>
+      <div>
+        <h3 class="text-sm font-bold text-primary" data-i18n="assistance.form_title">Request Patient Assistance</h3>
+        <p class="text-[11px] text-textMuted" data-i18n="dashboard.notify_nurse_desc">Notify assigned bedside nurse directly</p>
+      </div>
+    </div>
+  </div>
+
+  <form id="assistance-request-form" onsubmit="submitAssistanceRequestForm(event)" class="space-y-3.5">
+    <!-- Category Selector (6 Categories) -->
+    <div>
+      <label for="assistance-category-select" class="block text-xs font-bold text-slate-700 mb-1.5" data-i18n="assistance.category_label">Assistance Category <span class="text-red-500">*</span></label>
+      <div class="relative">
+        <select id="assistance-category-select" required class="w-full pl-3 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer">
+          <option value="Nurse Assistance" data-i18n="assistance.cat_nurse">Nurse Assistance</option>
+          <option value="Medical Assistance" data-i18n="assistance.cat_medical">Medical Assistance</option>
+          <option value="Patient Comfort" data-i18n="assistance.cat_comfort">Patient Comfort</option>
+          <option value="Food and Water" data-i18n="assistance.cat_food_water">Food and Water</option>
+          <option value="Mobility Assistance" data-i18n="assistance.cat_mobility">Mobility Assistance</option>
+          <option value="Other" data-i18n="assistance.cat_other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Optional Description Field (max 500 chars) -->
+    <div>
+      <div class="flex items-center justify-between mb-1.5">
+        <label for="assistance-description-input" class="block text-xs font-bold text-slate-700" data-i18n="assistance.desc_label">Additional Notes (Optional)</label>
+        <span id="assistance-char-counter" class="text-[10px] text-slate-400 font-medium">0 / 500</span>
+      </div>
+      <textarea id="assistance-description-input" maxlength="500" rows="3" oninput="updateAssistanceCharCount()"
+        class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none"
+        placeholder="Describe what the patient needs (max 500 characters)..."
+        data-i18n-placeholder="assistance.desc_placeholder"></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" id="submit-assistance-btn" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"></path></svg>
+      <span data-i18n="assistance.submit_btn">Submit Request</span>
+    </button>
+  </form>
 
   <!-- Direct Feedback Toast/Alert Box -->
   <div id="direct-assistance-feedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
 
   <!-- Mandatory Non-Emergency Notice (Prominently Retained in UI) -->
   <div class="bg-amber-50/90 border border-amber-200/80 rounded-xl p-3 flex items-start gap-2.5 text-amber-900">
-    <svg class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+    <svg class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"></path>
     </svg>
     <div class="text-[11px] leading-relaxed">
-      <strong class="font-bold text-amber-800 uppercase tracking-wider block text-[10px] mb-0.5">Non-Emergency Procedure</strong>
-      For emergencies or immediate danger, contact hospital staff directly or follow the hospital's emergency procedure. This request may not receive an immediate response.
+      <strong class="font-bold text-amber-800 uppercase tracking-wider block text-[10px] mb-0.5" data-i18n="assistance.non_emergency_title">Non-Emergency Procedure</strong>
+      <span data-i18n="assistance.non_emergency_desc">For emergencies or immediate danger, contact hospital staff directly or follow the hospital's emergency procedure. This request may not receive an immediate response.</span>
     </div>
   </div>
 </section>
-<!-- END: Support Action -->
+<!-- END: Request Assistance Form Section -->
 
 <!-- BEGIN: My Assistance Requests Section -->
 <section id="my-assistance-requests-section" class="mt-3 bg-white border border-gray-100 rounded-card p-4 shadow-sm">
   <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-2.5">
     <div class="flex items-center gap-2">
       <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-      <h3 class="text-sm font-bold text-primary">My Assistance Requests</h3>
+      <h3 class="text-sm font-bold text-primary" data-i18n="assistance.my_requests">My Assistance Requests</h3>
       <span id="requests-count-badge" class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold">0</span>
     </div>
     <button type="button" onclick="loadMyAssistanceRequests()" id="refresh-requests-btn" class="text-slate-500 hover:text-blue-600 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer">
       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"></path>
       </svg>
-      Refresh
+      <span data-i18n="common.refresh">Refresh</span>
     </button>
   </div>
   <div id="assistance-requests-list" class="space-y-2.5">
-    <div class="text-center py-4 text-xs text-textMuted">
+    <div class="text-center py-4 text-xs text-textMuted" data-i18n="assistance.loading">
       Loading your assistance requests...
     </div>
   </div>
 </section>
 <!-- END: My Assistance Requests Section -->
-
 
 </main>
 
@@ -392,9 +485,10 @@
     var svg = btns[i].querySelector('svg path');
     if (svg) {
       var d = svg.getAttribute('d') || '';
-      if (d.indexOf('M4 6h16') !== -1 || d.indexOf('M3 12') !== -1) {
+      if (d.indexOf('M4 6h16') !== -1 || d.indexOf('M3.75 6.75') !== -1 || d.indexOf('M3 12') !== -1) {
         btns[i].addEventListener('click', function(){
-          if (confirm('Return to login?')) {
+          var promptMsg = window.t ? window.t('common.return_to_login') : 'Return to login?';
+          if (confirm(promptMsg)) {
             window.location.href = '../attendant_access.html';
           }
         });
@@ -426,7 +520,9 @@
   var attendantName = sessionStorage.getItem('jeevan_setu_attendant_name') || '';
   if (attendantName) {
     var greetingEl = document.getElementById('attendant-greeting-name');
-    if (greetingEl) greetingEl.textContent = 'Hello, ' + attendantName + ' 👋';
+    if (greetingEl) {
+      greetingEl.textContent = window.t ? window.t('dashboard.greeting_user', { name: attendantName }) : ('Hello, ' + attendantName + ' 👋');
+    }
   }
 
   var AUTH_TOKEN = urlToken || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('jeevan_setu_token') || '';
@@ -441,6 +537,9 @@
 
   function showUnauthorizedState(errorMsg) {
     var mainEl = document.querySelector('main');
+    var accessTitle = window.t ? window.t('auth.access_required_title') : 'Attendant Access Required';
+    var accessDesc = errorMsg || (window.t ? window.t('auth.access_required_desc') : "Attendant access required. Please scan the patient's QR code.");
+    var scanBtn = window.t ? window.t('auth.scan_qr_btn') : 'Scan Patient QR Code';
     if (mainEl) {
       mainEl.innerHTML = `
         <div class="max-w-md mx-auto my-12 p-6 bg-white rounded-2xl border border-red-100 shadow-xl text-center space-y-4">
@@ -448,14 +547,14 @@
             🔒
           </div>
           <div>
-            <h2 class="text-lg font-bold text-slate-900">Attendant Access Required</h2>
+            <h2 class="text-lg font-bold text-slate-900">${accessTitle}</h2>
             <p class="text-xs text-slate-500 mt-1.5 leading-relaxed font-medium">
-              ${errorMsg || "Attendant access required. Please scan the patient's QR code."}
+              ${accessDesc}
             </p>
           </div>
           <div class="pt-2">
             <a href="/Attendant/attendant_access.html" class="inline-flex items-center justify-center w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all">
-              Scan Patient QR Code
+              ${scanBtn}
             </a>
           </div>
         </div>
@@ -477,7 +576,7 @@
       if (res.status === 401 || res.status === 403) {
         if (!hasInitialDataLoaded) {
           var errData = await res.json().catch(function(){ return {}; });
-          showUnauthorizedState(errData.error || "Attendant access required. Please scan the patient's QR code.");
+          showUnauthorizedState(errData.error || (window.t ? window.t('auth.access_required_desc') : "Attendant access required. Please scan the patient's QR code."));
         }
         return;
       }
@@ -488,7 +587,7 @@
           res = staffRes;
         } else {
           if (!hasInitialDataLoaded) {
-            showUnauthorizedState("Attendant access required. Please scan the patient's QR code.");
+            showUnauthorizedState(window.t ? window.t('auth.access_required_desc') : "Attendant access required. Please scan the patient's QR code.");
           }
           return;
         }
@@ -497,7 +596,7 @@
       var json = await res.json();
       if (!json.success || !json.data) {
         if (!hasInitialDataLoaded) {
-          showUnauthorizedState(json.error || "Attendant access required. Please scan the patient's QR code.");
+          showUnauthorizedState(json.error || (window.t ? window.t('auth.access_required_desc') : "Attendant access required. Please scan the patient's QR code."));
         }
         return;
       }
@@ -505,29 +604,46 @@
       var p = json.data;
       hasInitialDataLoaded = true;
 
+      // Update assigned nurse and calling card
+      if (p.assigned_nurse) {
+        updateAssignedNurseUI(p.assigned_nurse);
+      } else {
+        fetchAssignedNurseDetails();
+      }
+
       // Update name & greeting
       if (p.attendant_name) {
         sessionStorage.setItem('jeevan_setu_attendant_name', p.attendant_name);
         var gEl = document.getElementById('attendant-greeting-name');
-        if (gEl) gEl.textContent = 'Hello, ' + p.attendant_name + ' 👋';
+        if (gEl) {
+          gEl.textContent = window.t ? window.t('dashboard.greeting_user', { name: p.attendant_name }) : ('Hello, ' + p.attendant_name + ' 👋');
+        }
       }
 
       var uhidEl = document.getElementById('attendant-patient-uhid');
       if (uhidEl) uhidEl.textContent = p.patient_code || ('UHID-' + String(p.patient_id).padStart(5, '0'));
 
       var nameEl = document.getElementById('attendant-patient-name');
-      if (nameEl) nameEl.textContent = p.name || p.patient_name || 'Patient';
+      if (nameEl) nameEl.textContent = p.name || p.patient_name || (window.t ? window.t('common.companion') : 'Patient');
 
       var ageGenEl = document.getElementById('attendant-patient-age-gender');
-      if (ageGenEl) ageGenEl.textContent = 'Age: ' + (p.age || '--') + ' Y | ' + (p.gender === 'Female' ? 'Female' : 'Male');
+      var genderText = p.gender === 'Female' ? (window.t ? window.t('common.female') : 'Female') : (window.t ? window.t('common.male') : 'Male');
+      var ageLabel = window.t ? window.t('common.age') : 'Age';
+      var yearsUnit = window.t ? window.t('common.years') : 'Y';
+      if (ageGenEl) ageGenEl.textContent = ageLabel + ': ' + (p.age || '--') + ' ' + yearsUnit + ' | ' + genderText;
 
       var unitEl = document.getElementById('attendant-patient-unit');
-      if (unitEl) unitEl.textContent = p.bed_number ? (p.ward_type + ' · Bed ' + p.bed_number) : (p.ward_type || 'Inpatient');
+      var bedLabel = window.t ? window.t('common.bed') : 'Bed';
+      var inpatLabel = window.t ? window.t('dashboard.inpatient') : 'Inpatient';
+      if (unitEl) unitEl.textContent = p.bed_number ? (p.ward_type + ' · ' + bedLabel + ' ' + p.bed_number) : (p.ward_type || inpatLabel);
 
       if (p.admission_date) {
         var admEl = document.getElementById('attendant-patient-admitted');
         var d = new Date(p.admission_date);
-        if (admEl) admEl.textContent = 'Admitted: ' + d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        var dateFormatted = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        if (admEl) {
+          admEl.textContent = window.t ? window.t('dashboard.admitted_on', { date: dateFormatted }) : ('Admitted on: ' + dateFormatted);
+        }
       }
 
       // Persisted condition & EWS from backend
@@ -537,14 +653,20 @@
 
       var condBadge = document.getElementById('attendant-condition-badge');
       var condText = document.getElementById('attendant-condition-text');
+      var translatedCondition = condition;
+      if (window.t) {
+        if (condition === 'Stable') translatedCondition = window.t('condition.stable');
+        else if (condition === 'Moderate Risk') translatedCondition = window.t('condition.moderate_risk');
+        else if (condition === 'Critical') translatedCondition = window.t('condition.critical');
+      }
       if (condBadge) condBadge.className = 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ' + colors.badgeBg + ' ' + colors.badgeBorder + ' ' + colors.badgeText;
-      if (condText) condText.textContent = condition;
+      if (condText) condText.textContent = translatedCondition;
 
       var ewsScoreEl = document.getElementById('attendant-ews-score');
       var ewsCondEl = document.getElementById('attendant-ews-condition');
       var ewsBadgeEl = document.getElementById('attendant-ews-badge');
       if (ewsScoreEl) ewsScoreEl.textContent = p.total_score !== undefined ? p.total_score : (p.latest_vitals?.ews_score ?? 0);
-      if (ewsCondEl) ewsCondEl.textContent = '( ' + condition + ' )';
+      if (ewsCondEl) ewsCondEl.textContent = '( ' + translatedCondition + ' )';
       if (ewsBadgeEl) ewsBadgeEl.className = 'px-3.5 py-2.5 rounded-xl border flex items-center gap-3 min-h-[48px] ' + colors.badgeBg + ' ' + colors.badgeBorder;
 
       // Vitals metrics (4 physiological parameters)
@@ -566,18 +688,23 @@
       var bannerBox = document.getElementById('attendant-banner-box');
       if (bannerBox) bannerBox.className = 'border rounded-xl p-3 flex items-center gap-3 ' + colors.bg + ' ' + colors.border;
       if (headingEl) {
-        headingEl.textContent = 'Patient is ' + condition;
+        var statusHeading = window.t ? (
+          condition === 'Stable' ? window.t('condition.patient_stable') :
+          condition === 'Moderate Risk' ? window.t('condition.patient_moderate') :
+          window.t('condition.patient_critical')
+        ) : ('Patient is ' + condition);
+        headingEl.textContent = statusHeading;
         headingEl.className = 'text-sm font-bold ' + colors.text;
       }
       if (descEl) {
         if (p.recommendation && p.recommendation.trim()) {
           descEl.textContent = p.recommendation;
         } else if (condition === 'Stable') {
-          descEl.textContent = 'All recorded vital parameters are within normal recovery range. Attendant updates refresh in real time.';
+          descEl.textContent = window.t ? window.t('condition.stable_desc') : 'All recorded vital parameters are within normal recovery range. Attendant updates refresh in real time.';
         } else if (condition === 'Moderate Risk') {
-          descEl.textContent = 'Some vital parameters require close medical observation. Clinical team is monitoring.';
+          descEl.textContent = window.t ? window.t('condition.moderate_desc') : 'Some vital parameters require close medical observation. Clinical team is monitoring.';
         } else {
-          descEl.textContent = 'Patient requires intensive clinical care and continuous monitoring.';
+          descEl.textContent = window.t ? window.t('condition.critical_desc') : 'Patient requires intensive clinical care and continuous monitoring.';
         }
       }
 
@@ -599,106 +726,206 @@
       .replace(/'/g, '&#039;');
   }
 
-    // Direct Assistance Request (Single Tap - No Popup/Modal)
+  // -------------------------------------------------------------
+  // ASSIGNED NURSE & DIRECT CALLING INTEGRATION
+  // -------------------------------------------------------------
+  window.updateAssignedNurseUI = function(nurseInfo) {
+    if (!nurseInfo) return;
+    var nameEl = document.getElementById('assigned-nurse-name');
+    var wardEl = document.getElementById('assigned-nurse-ward');
+    var wardBadge = document.getElementById('assigned-nurse-ward-badge');
+    var phoneRow = document.getElementById('assigned-nurse-phone-row');
+    var phoneVal = document.getElementById('assigned-nurse-phone-val');
+    var callBtn = document.getElementById('assigned-nurse-call-btn');
+    var noneMsg = document.getElementById('assigned-nurse-none-msg');
+    var noPhoneMsg = document.getElementById('assigned-nurse-no-phone-msg');
+
+    if (wardBadge && nurseInfo.ward) {
+      wardBadge.textContent = nurseInfo.ward;
+    }
+
+    if (!nurseInfo.nurse_assigned) {
+      if (nameEl) nameEl.textContent = window.t ? window.t('common.companion') : 'Care Team';
+      if (wardEl) wardEl.textContent = nurseInfo.ward || 'Hospital Unit';
+      if (phoneRow) phoneRow.classList.add('hidden');
+      if (callBtn) callBtn.classList.add('hidden');
+      if (noPhoneMsg) noPhoneMsg.classList.add('hidden');
+      if (noneMsg) noneMsg.classList.remove('hidden');
+      return;
+    }
+
+    // Nurse is assigned
+    if (nameEl) nameEl.textContent = nurseInfo.nurse_name || 'Assigned Nurse';
+    var shiftText = nurseInfo.shift ? (' • ' + nurseInfo.shift + ' Shift') : '';
+    if (wardEl) wardEl.textContent = (nurseInfo.ward || 'ICU') + shiftText;
+
+    if (nurseInfo.has_phone && nurseInfo.phone_number) {
+      if (phoneVal) phoneVal.textContent = nurseInfo.phone_number;
+      if (phoneRow) phoneRow.classList.remove('hidden');
+      if (callBtn) {
+        var cleanTel = nurseInfo.tel_uri || ('tel:' + String(nurseInfo.phone_number).replace(/[^\+0-9]/g, ''));
+        callBtn.setAttribute('href', cleanTel);
+        callBtn.classList.remove('hidden');
+      }
+      if (noPhoneMsg) noPhoneMsg.classList.add('hidden');
+      if (noneMsg) noneMsg.classList.add('hidden');
+    } else {
+      if (phoneRow) phoneRow.classList.add('hidden');
+      if (callBtn) callBtn.classList.add('hidden');
+      if (noPhoneMsg) noPhoneMsg.classList.remove('hidden');
+      if (noneMsg) noneMsg.classList.add('hidden');
+    }
+  };
+
+  window.fetchAssignedNurseDetails = async function() {
+    try {
+      var queryUrl = '/api/v1/attendant/assigned-nurse' + (PATIENT_ID ? ('?patient_id=' + PATIENT_ID) : '');
+      var res = await fetch(queryUrl, { headers: getHeaders() });
+      if (!res.ok) return;
+      var data = await res.json();
+      if (data.success) {
+        updateAssignedNurseUI(data);
+      }
+    } catch(err) {
+      console.warn('[Jeevan Setu] Failed to load assigned nurse details:', err);
+    }
+  };
+
+  // -------------------------------------------------------------
+  // ASSISTANCE REQUESTS WORKFLOW (ATTENDANT PORTAL)
+  // -------------------------------------------------------------
   var isAssistanceRequestInFlight = false;
 
-  window.requestAssistanceDirect = async function(btnElement) {
-    if (isAssistanceRequestInFlight) return;
-    
-    var feedbackBox = document.getElementById('direct-assistance-feedback');
-    var allReqBtns = [
-      document.getElementById('patient-card-request-btn'),
-      document.getElementById('direct-assistance-btn')
-    ];
+  window.focusAssistanceForm = function() {
+    var target = document.getElementById('request-assistance-section');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      var select = document.getElementById('assistance-category-select');
+      if (select) select.focus();
+    }
+  };
 
-    function setButtonsState(loading) {
-      allReqBtns.forEach(function(b) {
-        if (!b) return;
-        b.disabled = loading;
-        var span = b.querySelector('span');
-        if (loading) {
-          b.classList.add('opacity-75', 'cursor-not-allowed');
-          if (span) span.textContent = 'Notifying Nurse...';
-        } else {
-          b.classList.remove('opacity-75', 'cursor-not-allowed');
-          if (span) span.textContent = 'Request Assistance';
-        }
-      });
+  window.updateAssistanceCharCount = function() {
+    var descInput = document.getElementById('assistance-description-input');
+    var counter = document.getElementById('assistance-char-counter');
+    if (descInput && counter) {
+      var count = descInput.value.length;
+      counter.textContent = count + ' / 500';
+    }
+  };
+
+  window.submitAssistanceRequestForm = async function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (isAssistanceRequestInFlight) return;
+
+    var catSelect = document.getElementById('assistance-category-select');
+    var descInput = document.getElementById('assistance-description-input');
+    var submitBtn = document.getElementById('submit-assistance-btn');
+    var feedbackBox = document.getElementById('direct-assistance-feedback');
+
+    var category = catSelect ? catSelect.value : 'Nurse Assistance';
+    var description = descInput ? descInput.value.trim() : '';
+
+    if (!category) {
+      var promptMsg = window.t ? window.t('assistance.select_cat_prompt') : 'Please select an assistance category.';
+      alert(promptMsg);
+      return;
     }
 
     function showFeedback(msg, type) {
       if (!feedbackBox) return;
-      feedbackBox.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-red-50', 'text-red-700', 'border-red-200', 'bg-amber-50', 'text-amber-800', 'border-amber-200');
-      if (type === 'success') {
-        feedbackBox.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 block';
-      } else if (type === 'warning') {
-        feedbackBox.className = 'p-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 block';
-      } else {
-        feedbackBox.className = 'p-3 rounded-xl text-xs font-semibold bg-red-50 text-red-700 border border-red-200 block';
-      }
+      feedbackBox.className = 'p-3 rounded-xl text-xs font-semibold block ' + (
+        type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' :
+        type === 'warning' ? 'bg-amber-50 text-amber-800 border border-amber-200' :
+        'bg-red-50 text-red-700 border border-red-200'
+      );
       feedbackBox.innerHTML = msg;
       feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     isAssistanceRequestInFlight = true;
-    setButtonsState(true);
-    if (feedbackBox) feedbackBox.classList.add('hidden');
+    var origBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      var subText = window.t ? window.t('assistance.submitting') : 'Submitting Request...';
+      submitBtn.innerHTML = '<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-2"></span> ' + escapeHtml(subText);
+    }
 
     try {
       var res = await fetch('/api/v1/attendant/assistance-requests', {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify({
-          category: 'Request nursing assistance',
-          description: null
+          category: category,
+          description: description || null
         })
       });
 
       var data = await res.json();
-
       if (res.ok && data.success) {
-        var nurseName = data.assigned_nurse_name ? escapeHtml(data.assigned_nurse_name) : 'your assigned nurse';
+        var nurseName = data.assigned_nurse_name ? escapeHtml(data.assigned_nurse_name) : 'your care team';
         var refId = data.request ? data.request.request_id : (data.request_id || '');
-        var refText = refId ? ` (Ref #${refId})` : '';
-        var successMsg = `Assistance request sent to ${nurseName}.${refText}`;
+        var refPrefix = window.t ? window.t('assistance.ref_prefix') : 'Ref #';
+        var refText = refId ? ` (${refPrefix}${refId})` : '';
+        var successMsg = window.t ? window.t('feedback.sent_to_nurse', { nurse: nurseName, ref: refText }) : `Assistance request sent to ${nurseName}.${refText}`;
         if (data.is_duplicate) {
-          successMsg = `Assistance request already sent to ${nurseName}. Staff notified.`;
+          successMsg = window.t ? window.t('feedback.already_sent', { nurse: nurseName }) : `Assistance request already sent to ${nurseName}. Staff notified.`;
         }
         showFeedback(successMsg, 'success');
+        if (descInput) {
+          descInput.value = '';
+          updateAssistanceCharCount();
+        }
         if (window.loadMyAssistanceRequests) {
           window.loadMyAssistanceRequests();
         }
-      } else if (res.status === 400 && data.error && (data.error.toLowerCase().includes('no nurse') || data.error.toLowerCase().includes('assignment'))) {
-        showFeedback("No nurse assignment was found for this patient. Please contact hospital staff directly.", 'warning');
       } else {
-        var errMsg = data.error || "Unable to send your request. Please try again or contact hospital staff directly.";
+        var defaultErr = window.t ? window.t('feedback.send_failed') : "Unable to send your request. Please try again or contact hospital staff directly.";
+        var errMsg = data.error || defaultErr;
         showFeedback(escapeHtml(errMsg), 'error');
       }
     } catch (err) {
-      showFeedback("Unable to send your request. Please try again or contact hospital staff directly.", 'error');
+      var netErr = window.t ? window.t('feedback.send_failed') : "Unable to send your request. Please try again or contact hospital staff directly.";
+      showFeedback(netErr, 'error');
     } finally {
       isAssistanceRequestInFlight = false;
-      setButtonsState(false);
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = origBtnHtml;
+      }
     }
   };
 
+  // Alias for backward compatibility
+  window.requestAssistanceDirect = window.focusAssistanceForm;
+
   function getStatusBadge(status) {
-    switch ((status || '').toLowerCase()) {
+    var rawStatus = (status || '').toLowerCase();
+    var label = status;
+    if (window.t) {
+      if (rawStatus === 'submitted' || rawStatus === 'pending') label = window.t('assistance.status_pending');
+      else if (rawStatus === 'acknowledged') label = window.t('assistance.status_acknowledged');
+      else if (rawStatus === 'in_progress') label = window.t('assistance.status_in_progress');
+      else if (rawStatus === 'resolved') label = window.t('assistance.status_resolved');
+      else if (rawStatus === 'cancelled') label = window.t('assistance.status_cancelled');
+      else if (rawStatus === 'rejected') label = window.t('assistance.status_rejected');
+    }
+    switch (rawStatus) {
       case 'submitted':
       case 'pending':
-        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Pending</span>';
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">' + escapeHtml(label) + '</span>';
       case 'acknowledged':
-        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">Acknowledged</span>';
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">' + escapeHtml(label) + '</span>';
       case 'in_progress':
-        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">In Progress</span>';
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">' + escapeHtml(label) + '</span>';
       case 'resolved':
-        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Resolved</span>';
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">' + escapeHtml(label) + '</span>';
       case 'cancelled':
-        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">Cancelled</span>';
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">' + escapeHtml(label) + '</span>';
       case 'rejected':
-        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Rejected</span>';
+        return '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">' + escapeHtml(label) + '</span>';
       default:
-        return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">${escapeHtml(status)}</span>`;
+        return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">${escapeHtml(label || status)}</span>`;
     }
   }
 
@@ -716,22 +943,30 @@
       if (badge) badge.textContent = list.length;
 
       if (list.length === 0) {
+        var emptyTitle = window.t ? window.t('assistance.empty_title') : 'No Assistance Requests Yet';
+        var emptyDesc = window.t ? window.t('assistance.empty_desc') : "Need help from the nursing team? Tap 'Request Assistance'.";
         container.innerHTML = `
           <div class="text-center py-6 px-4 bg-slate-50/60 rounded-xl border border-dashed border-slate-200">
             <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center mx-auto mb-2 text-base">💬</div>
-            <p class="text-xs font-semibold text-slate-700">No Assistance Requests Yet</p>
-            <p class="text-[11px] text-slate-400 mt-0.5">Need help from the nursing team? Tap 'Request Assistance'.</p>
+            <p class="text-xs font-semibold text-slate-700">${escapeHtml(emptyTitle)}</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">${escapeHtml(emptyDesc)}</p>
           </div>
         `;
         return;
       }
 
       var html = '';
+      var cancelText = window.t ? window.t('assistance.cancel_request') : 'Cancel Request';
+      var resTitle = window.t ? window.t('assistance.care_team_resolution') : 'Care Team Resolution:';
+      var reasonTitle = window.t ? window.t('assistance.reason') : 'Reason:';
+      var refPrefix = window.t ? window.t('assistance.ref_prefix') : 'Ref #';
+      var justNowText = window.t ? window.t('common.just_now') : 'Just now';
+
       list.forEach(function(r) {
         var isCancellable = ['submitted', 'pending', 'acknowledged'].indexOf((r.status || '').toLowerCase()) !== -1;
         var cancelBtnHtml = isCancellable ? `
           <button onclick="cancelAssistanceRequest(${r.request_id})" class="text-[11px] font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-lg border border-rose-200 transition-colors cursor-pointer">
-            Cancel Request
+            ${escapeHtml(cancelText)}
           </button>
         ` : '';
 
@@ -739,25 +974,27 @@
         if (r.resolution_note) {
           staffNoteHtml = `
             <div class="mt-2 p-2 bg-emerald-50/70 border border-emerald-100 rounded-lg text-[11px] text-emerald-900">
-              <span class="font-bold block text-[10px] uppercase text-emerald-800">Care Team Resolution:</span>
+              <span class="font-bold block text-[10px] uppercase text-emerald-800">${escapeHtml(resTitle)}</span>
               ${escapeHtml(r.resolution_note)}
             </div>
           `;
         } else if (r.rejection_reason) {
           staffNoteHtml = `
             <div class="mt-2 p-2 bg-rose-50/70 border border-rose-100 rounded-lg text-[11px] text-rose-900">
-              <span class="font-bold block text-[10px] uppercase text-rose-800">Reason:</span>
+              <span class="font-bold block text-[10px] uppercase text-rose-800">${escapeHtml(reasonTitle)}</span>
               ${escapeHtml(r.rejection_reason)}
             </div>
           `;
         }
 
+        var timeText = r.time_since_submission || justNowText;
+
         html += `
           <div class="p-3 bg-slate-50/80 hover:bg-slate-50 border border-slate-200/80 rounded-xl transition-all space-y-1.5">
             <div class="flex items-center justify-between gap-2">
               <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold text-slate-900">Ref #${r.request_id}</span>
-                <span class="text-[10px] text-slate-400 font-medium">• ${r.time_since_submission || 'Just now'}</span>
+                <span class="text-xs font-bold text-slate-900">${refPrefix}${r.request_id}</span>
+                <span class="text-[10px] text-slate-400 font-medium">• ${escapeHtml(timeText)}</span>
               </div>
               <div>${getStatusBadge(r.status)}</div>
             </div>
@@ -777,7 +1014,8 @@
   };
 
   window.cancelAssistanceRequest = async function(requestId) {
-    if (!confirm('Are you sure you want to cancel assistance request #' + requestId + '?')) {
+    var confirmMsg = window.t ? window.t('assistance.cancel_confirm', { id: requestId }) : ('Are you sure you want to cancel assistance request #' + requestId + '?');
+    if (!confirm(confirmMsg)) {
       return;
     }
 
@@ -790,16 +1028,34 @@
       if (res.ok && data.success) {
         loadMyAssistanceRequests();
       } else {
-        alert(data.error || 'Unable to cancel this request.');
+        var failMsg = data.error || (window.t ? window.t('feedback.cancel_failed') : 'Unable to cancel this request.');
+        alert(failMsg);
       }
     } catch(err) {
-      alert('Network error while cancelling request.');
+      var netErr = window.t ? window.t('feedback.network_error') : 'Network error while cancelling request.';
+      alert(netErr);
     }
   };
 
+  // Re-render dynamic text when language is changed
+  window.addEventListener('languageChanged', function() {
+    refreshAttendantView();
+    if (window.fetchAssignedNurseDetails) {
+      window.fetchAssignedNurseDetails();
+    }
+    if (window.loadMyAssistanceRequests) {
+      window.loadMyAssistanceRequests();
+    }
+  });
+
   function pollEverything() {
     refreshAttendantView();
-    loadMyAssistanceRequests();
+    if (window.fetchAssignedNurseDetails) {
+      window.fetchAssignedNurseDetails();
+    }
+    if (window.loadMyAssistanceRequests) {
+      window.loadMyAssistanceRequests();
+    }
   }
 
   // Centralized 10-second background polling

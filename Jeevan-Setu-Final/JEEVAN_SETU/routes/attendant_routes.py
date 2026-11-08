@@ -988,6 +988,42 @@ def api_get_attendant_patient_data():
     elif total_score >= 4 or risk_level in ('HIGH', 'MEDIUM'):
         condition = "Moderate Risk"
 
+    # Assigned Nurse Contact Resolution
+    assigned_nurse_obj = {
+        'nurse_assigned': False,
+        'has_phone': False,
+        'nurse_name': None,
+        'phone_number': None,
+        'tel_uri': None,
+        'ward': patient.get('ward_type'),
+        'message': 'No nurse is currently assigned to this patient.'
+    }
+    assigned_nurse_user_id = patient.get('assigned_nurse')
+    if assigned_nurse_user_id:
+        n_rows = db.execute_query(
+            """SELECT u.user_id, u.full_name as user_full_name, u.contact_number,
+                      n.nurse_id, n.full_name as nurse_full_name, n.phone_number, n.ward_assignment, n.shift
+               FROM users u
+               LEFT JOIN nurses n ON n.user_id = u.user_id
+               WHERE u.user_id = %s LIMIT 1""",
+            (assigned_nurse_user_id,), fetch=True
+        )
+        if n_rows:
+            nr = n_rows[0]
+            n_name = nr.get('nurse_full_name') or nr.get('user_full_name') or f"Nurse #{assigned_nurse_user_id}"
+            n_phone = (nr.get('phone_number') or nr.get('contact_number') or '').strip() or None
+            clean_tel = re.sub(r'[^\+0-9]', '', n_phone) if n_phone else None
+            assigned_nurse_obj = {
+                'nurse_assigned': True,
+                'has_phone': bool(n_phone),
+                'nurse_name': n_name,
+                'phone_number': n_phone,
+                'tel_uri': f"tel:{clean_tel}" if clean_tel else None,
+                'ward': nr.get('ward_assignment') or patient.get('ward_type'),
+                'shift': nr.get('shift'),
+                'message': 'Assigned nurse details available.' if n_phone else 'The assigned nurse has not registered a contact number yet.'
+            }
+
     return jsonify({
         'success': True,
         'data': {
@@ -1006,8 +1042,174 @@ def api_get_attendant_patient_data():
             'risk_level': risk_level,
             'condition': condition,
             'attendant_name': attendant_name,
+            'assigned_nurse': assigned_nurse_obj,
             'latest_vitals': vitals_summary,
             'latest_vitals_summary': vitals_summary,
             'vitals_history': vitals_history
         }
     }), 200
+
+
+# =============================================================
+# 4. ATTENDANT PREFERENCES API (Language & Display Settings)
+# =============================================================
+
+_ATTENDANT_PREFERENCES = {}
+
+@attendant_bp.route('/preferences', methods=['GET', 'POST', 'PUT'])
+def api_attendant_preferences():
+    """
+    Get or update attendant preferences (language, display) for active session.
+    Persists across attendant sessions without altering the database schema.
+    """
+    session = get_current_attendant_session()
+    patient_id = session.get('patient_id') if session else request.args.get('patient_id')
+    pref_key = f"attendant_{patient_id}" if patient_id else "attendant_default"
+
+    if request.method in ('POST', 'PUT'):
+        data = request.get_json(silent=True) or request.form.to_dict() or {}
+        lang = data.get('language') or data.get('lang') or 'en'
+        if lang in ('en', 'kn', 'hi', 'ta', 'te', 'ml'):
+            _ATTENDANT_PREFERENCES[pref_key] = {
+                'language': lang,
+                'updated_at': datetime.now(timezone.utc).isoformat()
+            }
+        saved_prefs = _ATTENDANT_PREFERENCES.get(pref_key, {'language': 'en'})
+        return jsonify({
+            'success': True,
+            'message': 'Preferences saved successfully.',
+            'language': saved_prefs.get('language', 'en'),
+            'preferences': saved_prefs
+        }), 200
+
+    # GET
+    prefs = _ATTENDANT_PREFERENCES.get(pref_key, {'language': 'en'})
+    return jsonify({
+        'success': True,
+        'language': prefs.get('language', 'en'),
+        'preferences': prefs
+    }), 200
+
+
+# =============================================================
+# 5. ASSIGNED NURSE CONTACT & CALLING API (STRICTLY SESSION-ISOLATED)
+# =============================================================
+
+@attendant_bp.route('/assigned-nurse', methods=['GET'])
+@attendant_bp.route('/api/v1/attendant/assigned-nurse', methods=['GET'])
+def api_get_assigned_nurse():
+    """
+    Attendant: Dynamically determine the nurse assigned to the session's patient
+    and retrieve their registered phone number for direct calling.
+    Strictly isolated: An attendant cannot query or call nurses for other patients.
+    Returns:
+    - nurse_assigned: false (if no nurse is assigned)
+    - has_phone: false (if nurse assigned but contact number not registered)
+    - has_phone: true, phone_number, tel_uri (if nurse registered their contact number)
+    """
+    session = get_current_attendant_session()
+    auth_header = request.headers.get('Authorization', '')
+    user = None
+    if auth_header.startswith('Bearer ') and not session:
+        user = get_current_authenticated_user()
+
+    patient_id = None
+    if session:
+        patient_id = session.get('patient_id')
+    elif request.args.get('token') or request.args.get('qr_token'):
+        raw_qr = (request.args.get('token') or request.args.get('qr_token') or '').strip()
+        val = PatientQRToken.validate_token(raw_qr)
+        if val.get('valid') and val.get('patient_id'):
+            patient_id = val['patient_id']
+    elif request.args.get('code') or request.args.get('access_code'):
+        code_str = (request.args.get('code') or request.args.get('access_code') or '').strip()
+        val = PatientQRToken.validate_access_code(code_str)
+        if val.get('valid') and val.get('patient_id'):
+            patient_id = val['patient_id']
+    elif user and getattr(user, 'role', '').lower() in ('doctor', 'nurse', 'admin'):
+        req_pid = request.args.get('patient_id') or request.args.get('id')
+        if req_pid:
+            try:
+                patient_id = int(req_pid)
+            except (ValueError, TypeError):
+                pass
+
+    if not patient_id:
+        return jsonify({
+            'success': False,
+            'error': "Attendant access required. Please scan the patient's QR code."
+        }), 401
+
+    patient = Patient.get_by_id(patient_id)
+    if not patient:
+        return jsonify({'success': False, 'error': f"Patient #{patient_id} not found."}), 404
+
+    assigned_nurse_user_id = patient.get('assigned_nurse')
+    if not assigned_nurse_user_id:
+        return jsonify({
+            'success': True,
+            'nurse_assigned': False,
+            'has_phone': False,
+            'nurse_name': None,
+            'phone_number': None,
+            'tel_uri': None,
+            'ward': patient.get('ward_type'),
+            'message': 'No nurse is currently assigned to this patient.'
+        }), 200
+
+    # Query nurse information from database
+    rows = db.execute_query(
+        """SELECT u.user_id, u.full_name as user_full_name, u.contact_number,
+                  n.nurse_id, n.full_name as nurse_full_name, n.phone_number, n.ward_assignment, n.shift, n.specialization
+           FROM users u
+           LEFT JOIN nurses n ON n.user_id = u.user_id
+           WHERE u.user_id = %s LIMIT 1""",
+        (assigned_nurse_user_id,), fetch=True
+    )
+
+    if not rows:
+        return jsonify({
+            'success': True,
+            'nurse_assigned': False,
+            'has_phone': False,
+            'nurse_name': None,
+            'phone_number': None,
+            'tel_uri': None,
+            'ward': patient.get('ward_type'),
+            'message': 'No nurse is currently assigned to this patient.'
+        }), 200
+
+    r = rows[0]
+    nurse_name = r.get('nurse_full_name') or r.get('user_full_name') or f"Nurse #{assigned_nurse_user_id}"
+    phone = (r.get('phone_number') or r.get('contact_number') or '').strip() or None
+    ward = r.get('ward_assignment') or patient.get('ward_type')
+    shift = r.get('shift')
+
+    if not phone:
+        return jsonify({
+            'success': True,
+            'nurse_assigned': True,
+            'has_phone': False,
+            'nurse_name': nurse_name,
+            'phone_number': None,
+            'tel_uri': None,
+            'ward': ward,
+            'shift': shift,
+            'message': 'The assigned nurse has not registered a contact number yet.'
+        }), 200
+
+    # Clean telephone string for native tel: URI
+    clean_tel = re.sub(r'[^\+0-9]', '', phone)
+    return jsonify({
+        'success': True,
+        'nurse_assigned': True,
+        'has_phone': True,
+        'nurse_name': nurse_name,
+        'phone_number': phone,
+        'tel_uri': f"tel:{clean_tel}",
+        'ward': ward,
+        'shift': shift,
+        'message': 'Assigned nurse contact information retrieved successfully.'
+    }), 200
+
+

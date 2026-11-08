@@ -14,29 +14,56 @@ class AssistanceRequest:
     """Model for managing patient attendant assistance requests."""
 
     CATEGORY_MAP = {
-        'nursing': 'Request nursing assistance',
-        'nursing_assistance': 'Request nursing assistance',
-        'request nursing assistance': 'Request nursing assistance',
-        'status': 'Request patient status update',
-        'status_update': 'Request patient status update',
-        'patient_status': 'Request patient status update',
-        'request patient status update': 'Request patient status update',
-        'speak_care_team': 'Request to speak with the care team',
-        'care_team': 'Request to speak with the care team',
-        'request to speak with the care team': 'Request to speak with the care team',
-        'bedside': 'Request bedside assistance',
-        'bedside_assistance': 'Request bedside assistance',
-        'request bedside assistance': 'Request bedside assistance',
-        'other': 'Other non-emergency assistance',
-        'other_non_emergency': 'Other non-emergency assistance',
-        'other non-emergency assistance': 'Other non-emergency assistance',
-        'general': 'Request nursing assistance',
-        'general assistance': 'Request nursing assistance',
-        'general_assistance': 'Request nursing assistance',
-        'assistance': 'Request nursing assistance'
+        # 6 Requested Attendant Assistance Categories & Variations
+        'medical assistance': 'Medical Assistance',
+        'medical': 'Medical Assistance',
+        'doctor': 'Medical Assistance',
+        'doctor assistance': 'Medical Assistance',
+        'nurse assistance': 'Nurse Assistance',
+        'nurse': 'Nurse Assistance',
+        'nursing': 'Nurse Assistance',
+        'nursing assistance': 'Nurse Assistance',
+        'nursing_assistance': 'Nurse Assistance',
+        'request nursing assistance': 'Nurse Assistance',
+        'patient comfort': 'Patient Comfort',
+        'comfort': 'Patient Comfort',
+        'bedside': 'Patient Comfort',
+        'bedside assistance': 'Patient Comfort',
+        'bedside_assistance': 'Patient Comfort',
+        'request bedside assistance': 'Patient Comfort',
+        'food and water': 'Food and Water',
+        'food & water': 'Food and Water',
+        'food': 'Food and Water',
+        'water': 'Food and Water',
+        'mobility assistance': 'Mobility Assistance',
+        'mobility': 'Mobility Assistance',
+        'other': 'Other',
+        'other assistance': 'Other',
+        'other non-emergency assistance': 'Other',
+        'other_non_emergency': 'Other',
+
+        # Retain backward-compatible mappings for legacy queries & tests
+        'status': 'Nurse Assistance',
+        'status_update': 'Nurse Assistance',
+        'patient_status': 'Nurse Assistance',
+        'request patient status update': 'Nurse Assistance',
+        'speak_care_team': 'Medical Assistance',
+        'care_team': 'Medical Assistance',
+        'request to speak with the care team': 'Medical Assistance',
+        'general': 'Nurse Assistance',
+        'general assistance': 'Nurse Assistance',
+        'general_assistance': 'Nurse Assistance',
+        'assistance': 'Nurse Assistance'
     }
 
     VALID_CATEGORIES = [
+        'Medical Assistance',
+        'Nurse Assistance',
+        'Patient Comfort',
+        'Food and Water',
+        'Mobility Assistance',
+        'Other',
+        # Retain legacy categories for backward compatibility with existing rows/tests
         'Request nursing assistance',
         'Request patient status update',
         'Request to speak with the care team',
@@ -71,7 +98,7 @@ class AssistanceRequest:
         return None
 
     @classmethod
-    def create(cls, patient_id, attendant_name='Attendant', category='Request nursing assistance', description=None, attendant_id=None):
+    def create(cls, patient_id, attendant_name='Attendant', category='Nurse Assistance', description=None, attendant_id=None):
         """
         Create a new assistance request for an authorized patient.
         """
@@ -82,7 +109,7 @@ class AssistanceRequest:
 
         # Normalize & validate category with robust server-side fallback
         if not category:
-            category = 'Request nursing assistance'
+            category = 'Nurse Assistance'
         norm_category = cls.normalize_category(category)
         if not norm_category:
             raise ValueError(f"Invalid request category: '{category}'. Please choose a valid category from the list.")

@@ -8,6 +8,7 @@ Endpoints:
     GET  /api/v1/auth/me
 """
 
+import re
 from flask import Blueprint, request, jsonify, g
 from flask_login import logout_user
 from services.auth_service import AuthService
@@ -250,7 +251,7 @@ def api_get_current_user():
 
     if user.role == 'nurse':
         n_res = db.execute_query(
-            "SELECT nurse_id, specialization, license_number, qualification, ward_assignment, shift, experience_years FROM nurses WHERE user_id = %s OR username = %s LIMIT 1",
+            "SELECT nurse_id, specialization, license_number, qualification, ward_assignment, shift, experience_years, phone_number FROM nurses WHERE user_id = %s OR username = %s LIMIT 1",
             (user.id, user.username), fetch=True
         )
         if n_res:
@@ -299,6 +300,8 @@ def api_get_current_user():
         specialization = nurse_details.get('specialization')
         qualification = nurse_details.get('qualification')
 
+    phone_number = (nurse_details.get('phone_number') if nurse_details else None) or getattr(user, 'contact_number', None)
+
     return jsonify({
         'success': True,
         'data': {
@@ -307,6 +310,8 @@ def api_get_current_user():
             'username': user.username,
             'full_name': user.full_name,
             'email': user.email,
+            'phone_number': phone_number,
+            'contact_number': getattr(user, 'contact_number', None) or phone_number,
             'role': user.role,
             'department': user.department,
             'ward': ward,
@@ -346,6 +351,22 @@ def api_update_profile():
     qualification = (data.get('qualification') or '').strip()
     specialization = (data.get('specialization') or '').strip()
 
+    # Phone number extraction & validation
+    has_phone_update = ('phone_number' in data) or ('phone' in data) or ('contact_number' in data)
+    phone_number = None
+    if has_phone_update:
+        raw_val = data.get('phone_number') if 'phone_number' in data else (data.get('phone') if 'phone' in data else data.get('contact_number'))
+        phone_stripped = str(raw_val).strip() if raw_val is not None else ''
+        if phone_stripped:
+            if not re.match(r'^\+?[0-9\s\-()]{7,20}$', phone_stripped):
+                return jsonify({
+                    'success': False,
+                    'error': 'Invalid phone number format. Please enter 7-20 digits with optional + country code.'
+                }), 422
+            phone_number = phone_stripped
+        else:
+            phone_number = None
+
     if not full_name:
         return jsonify({'success': False, 'error': 'Full name cannot be empty'}), 422
 
@@ -366,6 +387,10 @@ def api_update_profile():
         update_fields.append("email = %s")
         update_params.append(email)
 
+    if has_phone_update:
+        update_fields.append("contact_number = %s")
+        update_params.append(phone_number)
+
     update_params.append(user.id)
     db.execute_query(f"UPDATE users SET {', '.join(update_fields)} WHERE user_id = %s", tuple(update_params))
 
@@ -382,6 +407,9 @@ def api_update_profile():
         if specialization:
             nurse_updates.append("specialization = %s")
             nurse_params.append(specialization)
+        if has_phone_update:
+            nurse_updates.append("phone_number = %s")
+            nurse_params.append(phone_number)
         nurse_params.append(user.id)
         db.execute_query(f"UPDATE nurses SET {', '.join(nurse_updates)} WHERE user_id = %s", tuple(nurse_params))
 
@@ -419,6 +447,8 @@ def api_update_profile():
             'username': user.username,
             'full_name': full_name,
             'email': email or user.email,
+            'phone_number': phone_number if has_phone_update else getattr(user, 'contact_number', None),
+            'contact_number': phone_number if has_phone_update else getattr(user, 'contact_number', None),
             'role': user.role,
             'department': user.department
         }
