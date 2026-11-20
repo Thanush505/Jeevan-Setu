@@ -3,6 +3,7 @@ routes/alert_routes.py - Alert management and Clinical Action routes.
 Protected by RBAC: Alert viewing, acknowledgment, persistent dismissal, and clinical tasks for Clinical staff (Doctors, Nurses, Admins).
 """
 
+import time
 from flask import Blueprint, request, render_template, jsonify
 from models.alert_model import Alert
 from models.patient_model import Patient
@@ -221,11 +222,14 @@ def get_global_alert_feed():
             'server_time': datetime.now().isoformat()
         }), 200
 
-    # 1. Trigger detection of prolonged ready-to-transfer states
-    try:
-        check_and_generate_prolonged_transfer_alerts()
-    except Exception as e:
-        print(f"[GLOBAL FEED] Warning checking prolonged transfer: {e}")
+    # 1. Trigger detection of prolonged ready-to-transfer states (throttled to avoid redundant queries during rapid 5s polling)
+    now_ts = time.time()
+    if not hasattr(get_global_alert_feed, '_last_check') or (now_ts - getattr(get_global_alert_feed, '_last_check', 0) > 30):
+        try:
+            check_and_generate_prolonged_transfer_alerts()
+            get_global_alert_feed._last_check = now_ts
+        except Exception as e:
+            print(f"[GLOBAL FEED] Warning checking prolonged transfer: {e}")
 
     # 2. Get active CRITICAL emergency alerts scoped to user/patients (strictly undismissed)
     emergency_alerts = Alert.get_active_emergency_for_user(user, limit=20)

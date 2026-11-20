@@ -55,6 +55,23 @@ def list_users():
         limit=limit
     )
 
+    # Log staff directory access in audit logs
+    current_admin = get_current_authenticated_user()
+    if current_admin:
+        filter_desc = []
+        if search: filter_desc.append(f"search='{search}'")
+        if role: filter_desc.append(f"role='{role}'")
+        if is_active is not None: filter_desc.append(f"is_active={is_active}")
+        desc_suffix = f" with filters ({', '.join(filter_desc)})" if filter_desc else ""
+        AuditLog.log(
+            action='view_staff_directory',
+            user_id=current_admin.id,
+            entity_type='user_management',
+            entity_id=None,
+            ip_address=request.remote_addr,
+            description=f"Administrator {current_admin.username} accessed staff directory{desc_suffix}"
+        )
+
     return jsonify({
         'success': True,
         'data': result['users'],
@@ -386,6 +403,8 @@ def update_user_status(user_id):
     """
     Toggle or explicitly set user active status.
     Payload:
+        { "status": "active" } or { "status": "inactive" }
+        or
         { "is_active": true } or { "is_active": false }
     """
     current_admin = get_current_authenticated_user()
@@ -394,24 +413,56 @@ def update_user_status(user_id):
         return jsonify({'success': False, 'error': f'User with ID {user_id} not found'}), 404
 
     data = request.get_json(silent=True) or request.form.to_dict() or {}
-    if 'is_active' in data:
-        new_status = bool(data['is_active'])
+    new_status = None
+
+    if 'status' in data:
+        raw_status = str(data['status']).strip().lower()
+        if raw_status in ('active', '1', 'true'):
+            new_status = True
+        elif raw_status in ('inactive', '0', 'false'):
+            new_status = False
+        else:
+            return jsonify({
+                'success': False,
+                'error': f"Invalid status '{data['status']}'. Supported statuses are 'active' or 'inactive'."
+            }), 422
+    elif 'is_active' in data:
+        val = data['is_active']
+        if isinstance(val, bool):
+            new_status = val
+        elif isinstance(val, (int, float)):
+            if val in (1, 0):
+                new_status = bool(val)
+            else:
+                return jsonify({'success': False, 'error': "Invalid is_active value. Expected boolean or 1/0."}), 422
+        elif isinstance(val, str):
+            val_lower = val.strip().lower()
+            if val_lower in ('true', '1', 'active'):
+                new_status = True
+            elif val_lower in ('false', '0', 'inactive'):
+                new_status = False
+            else:
+                return jsonify({'success': False, 'error': f"Invalid is_active value '{val}'. Expected boolean true or false."}), 422
+        else:
+            return jsonify({'success': False, 'error': "Invalid is_active value."}), 422
     else:
         # Toggle if not explicitly specified
         new_status = not user.is_active
 
-    if not new_status and current_admin and current_admin.id == user_id:
+    if not new_status and current_admin and getattr(current_admin, 'id', None) == user_id:
         return jsonify({'success': False, 'error': 'Cannot deactivate your own administrator account'}), 400
 
     User.set_status(user_id, new_status)
 
     action_label = 'activated' if new_status else 'deactivated'
+    status_str = 'active' if new_status else 'inactive'
+
     AuditLog.log(
         action=f"admin_{action_label}_user",
         user_id=current_admin.id if current_admin else None,
         entity_type='user',
         entity_id=user_id,
-        new_value={'is_active': new_status},
+        new_value={'is_active': new_status, 'status': status_str},
         ip_address=request.remote_addr,
         description=f"Admin {action_label} user {user.username} (ID: {user_id})"
     )
@@ -419,8 +470,11 @@ def update_user_status(user_id):
     updated_user = User.get_by_id(user_id)
     return jsonify({
         'success': True,
-        'message': f"User '{user.username}' is now {action_label}",
-        'data': updated_user.to_dict()
+        'user_id': user_id,
+        'status': status_str,
+        'is_active': new_status,
+        'message': f"User status updated successfully.",
+        'data': updated_user.to_dict() if updated_user else {'user_id': user_id, 'is_active': new_status}
     }), 200
 
 

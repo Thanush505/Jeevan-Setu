@@ -51,23 +51,24 @@ class TestOpenRouterAIIntegration(unittest.TestCase):
     # A. API KEY SECURITY & CONFIGURATION
     # ─────────────────────────────────────────────────────────────
     def test_01_api_key_loaded_from_environment(self):
-        """Verify API key is loaded strictly from environment and not hardcoded."""
-        key = get_openrouter_api_key()
-        self.assertIsNotNone(key, "OPENROUTER_API_KEY should be present in environment")
-        self.assertTrue(len(key) > 10, "API key should be a valid non-empty string")
+        """Verify primary/secondary API keys are loaded strictly from environment and not hardcoded."""
+        with patch.dict(os.environ, {"OPENROUTER_PRIMARY_API_KEY": "sk-or-test-primary-12345"}, clear=False):
+            key = get_openrouter_api_key()
+            self.assertEqual(key, "sk-or-test-primary-12345")
 
     def test_02_model_configured_centralized(self):
-        """Verify centralized model configuration defaults to google/gemini-2.0-flash-exp:free."""
+        """Verify centralized model configuration defaults to google/gemma-4-31b-it:free."""
         model = get_openrouter_model()
         self.assertTrue(any(k in model.lower() for k in ("gemini", "gemma", "google")))
         self.assertEqual(OPENROUTER_ENDPOINT, "https://openrouter.ai/api/v1/chat/completions")
 
     def test_03_env_example_has_placeholder_only(self):
-        """Verify .env.example contains placeholder only and not real secrets."""
+        """Verify .env.example contains empty two-key placeholders only and not real secrets."""
         example_path = Path(__file__).resolve().parent.parent.parent / ".env.example"
         self.assertTrue(example_path.exists(), ".env.example must exist")
         content = example_path.read_text(encoding="utf-8")
-        self.assertIn("OPENROUTER_API_KEY=your_openrouter_api_key_here", content)
+        self.assertIn("OPENROUTER_PRIMARY_API_KEY=", content)
+        self.assertIn("OPENROUTER_SECONDARY_API_KEY=", content)
         self.assertNotIn("sk-or-v1-", content, ".env.example must never contain real API keys")
 
     def test_04_gitignore_protects_env(self):

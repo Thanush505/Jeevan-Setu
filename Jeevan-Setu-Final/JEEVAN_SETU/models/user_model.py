@@ -79,7 +79,7 @@ def verify_pw(password: str, password_hash: str) -> bool:
 class User(UserMixin):
     """User model representing doctors, nurses, admins, and attendants."""
 
-    def __init__(self, user_id, username, full_name, email, role, department, is_active=True, role_id=None, contact_number=None):
+    def __init__(self, user_id, username, full_name, email, role, department, is_active=True, role_id=None, contact_number=None, availability='active'):
         self.id = user_id
         self.username = username
         self.full_name = full_name
@@ -89,6 +89,7 @@ class User(UserMixin):
         self._is_active = bool(is_active)
         self.role_id = role_id
         self.contact_number = contact_number
+        self.availability = availability or 'active'
 
     @property
     def is_active(self):
@@ -107,44 +108,73 @@ class User(UserMixin):
             'role': self.role,
             'department': self.department,
             'is_active': self._is_active,
+            'availability': getattr(self, 'availability', 'active'),
             'role_id': self.role_id,
             'permissions': ROLES.get(self.role, [])
         }
 
     @staticmethod
     def get_by_id(user_id):
-        """Fetch a user by ID."""
+        """Fetch a user by ID with normalized role resolution and working availability."""
         result = db.execute_query(
-            "SELECT * FROM users WHERE user_id = %s", (user_id,), fetch=True
+            """SELECT u.*, r.name as role_name,
+                      CASE 
+                          WHEN u.role = 'doctor' THEN COALESCE(d.availability, 'active')
+                          WHEN u.role = 'nurse' THEN COALESCE(n.availability, 'active')
+                          ELSE 'active'
+                      END AS availability
+               FROM users u 
+               LEFT JOIN roles r ON u.role_id = r.role_id 
+               LEFT JOIN doctors d ON u.user_id = d.user_id
+               LEFT JOIN nurses n ON u.user_id = n.user_id
+               WHERE u.user_id = %s""", (user_id,), fetch=True
         )
         if result:
             row = result[0]
+            role_val = (row.get('role') or row.get('role_name') or '').strip().lower()
+            if row.get('role_id') == 1 or role_val in ('admin', 'administrator', 'system_admin', 'superadmin'):
+                role_val = 'admin'
             return User(
                 row['user_id'], row['username'], row['full_name'],
-                row['email'], row['role'], row.get('department'),
+                row['email'], role_val, row.get('department'),
                 row.get('is_active', True), row.get('role_id'),
-                row.get('contact_number')
+                row.get('contact_number'),
+                row.get('availability', 'active')
             )
         return None
 
     @staticmethod
     def get_by_username(username):
-        """Fetch a user by username."""
+        """Fetch a user by username with normalized role."""
         result = db.execute_query(
-            "SELECT * FROM users WHERE username = %s", (username,), fetch=True
+            """SELECT u.*, r.name as role_name 
+               FROM users u 
+               LEFT JOIN roles r ON u.role_id = r.role_id 
+               WHERE u.username = %s""", (username,), fetch=True
         )
         if result:
-            return result[0]
+            row = result[0]
+            role_val = (row.get('role') or row.get('role_name') or '').strip().lower()
+            if row.get('role_id') == 1 or role_val in ('admin', 'administrator', 'system_admin', 'superadmin'):
+                row['role'] = 'admin'
+            return row
         return None
 
     @staticmethod
     def get_by_email(email):
         """Fetch a user by email."""
         result = db.execute_query(
-            "SELECT * FROM users WHERE email = %s", (email,), fetch=True
+            """SELECT u.*, r.name as role_name 
+               FROM users u 
+               LEFT JOIN roles r ON u.role_id = r.role_id 
+               WHERE u.email = %s""", (email,), fetch=True
         )
         if result:
-            return result[0]
+            row = result[0]
+            role_val = (row.get('role') or row.get('role_name') or '').strip().lower()
+            if row.get('role_id') == 1 or role_val in ('admin', 'administrator', 'system_admin', 'superadmin'):
+                row['role'] = 'admin'
+            return row
         return None
 
     @staticmethod
@@ -159,9 +189,12 @@ class User(UserMixin):
             user_data = User.get_by_username('admin_js')
             
         if user_data and user_data.get('is_active') and verify_pw(password, user_data.get('password_hash', '')):
+            role_val = (user_data.get('role') or '').strip().lower()
+            if user_data.get('role_id') == 1 or role_val in ('admin', 'administrator', 'system_admin', 'superadmin'):
+                role_val = 'admin'
             return User(
                 user_data['user_id'], user_data['username'], user_data['full_name'],
-                user_data['email'], user_data['role'], user_data.get('department'),
+                user_data['email'], role_val, user_data.get('department'),
                 user_data.get('is_active', True), user_data.get('role_id'),
                 user_data.get('contact_number')
             )
@@ -239,32 +272,32 @@ class User(UserMixin):
     @staticmethod
     def get_filtered(search=None, role=None, is_active=None, department=None, page=1, limit=20):
         """
-        Search, filter, and paginate users with total count.
+        Search, filter, and paginate users with total count and authoritative doctor/nurse duty availability.
         """
         where_clauses = []
         params = []
 
         if search:
             s_term = f"%{search.strip()}%"
-            where_clauses.append("(username LIKE %s OR full_name LIKE %s OR email LIKE %s OR department LIKE %s)")
+            where_clauses.append("(u.username LIKE %s OR u.full_name LIKE %s OR u.email LIKE %s OR u.department LIKE %s)")
             params.extend([s_term, s_term, s_term, s_term])
 
         if role:
-            where_clauses.append("role = %s")
+            where_clauses.append("u.role = %s")
             params.append(role.lower().strip())
 
         if is_active is not None:
-            where_clauses.append("is_active = %s")
+            where_clauses.append("u.is_active = %s")
             params.append(1 if is_active in (True, 'true', '1', 1) else 0)
 
         if department:
-            where_clauses.append("department = %s")
+            where_clauses.append("u.department = %s")
             params.append(department.strip())
 
         where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
 
         # Count total
-        count_sql = f"SELECT COUNT(*) as total FROM users {where_sql}"
+        count_sql = f"SELECT COUNT(*) as total FROM users u {where_sql}"
         count_res = db.execute_query(count_sql, tuple(params), fetch=True)
         total = count_res[0]['total'] if count_res else 0
 
@@ -274,21 +307,30 @@ class User(UserMixin):
         offset = (page - 1) * limit
         pages = math.ceil(total / limit) if total > 0 else 1
 
-        # Fetch records
+        # Fetch records joining authoritative doctor/nurse availability
         query_sql = f"""
-            SELECT user_id, username, full_name, email, role, department, contact_number, is_active, role_id, created_at, updated_at
-            FROM users
+            SELECT u.user_id, u.username, u.full_name, u.email, u.role, u.department, u.contact_number, 
+                   u.is_active, u.role_id, u.created_at, u.updated_at,
+                   CASE 
+                       WHEN u.role = 'doctor' THEN COALESCE(d.availability, 'active')
+                       WHEN u.role = 'nurse' THEN COALESCE(n.availability, 'active')
+                       ELSE 'active'
+                   END AS availability
+            FROM users u
+            LEFT JOIN doctors d ON u.user_id = d.user_id
+            LEFT JOIN nurses n ON u.user_id = n.user_id
             {where_sql}
-            ORDER BY user_id ASC
+            ORDER BY u.user_id ASC
             LIMIT %s OFFSET %s
         """
         query_params = tuple(params) + (limit, offset)
         users = db.execute_query(query_sql, query_params, fetch=True) or []
 
-        # Enrich with permissions
+        # Enrich with permissions & availability
         for u in users:
             u['id'] = u['user_id']
             u['is_active'] = bool(u['is_active'])
+            u['availability'] = u.get('availability') or 'active'
             u['permissions'] = ROLES.get(u['role'], [])
 
         return {

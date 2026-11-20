@@ -66,8 +66,15 @@
 <p class="text-[9px] text-textMuted uppercase tracking-wide truncate" data-i18n="common.icu_support">ICU to HDU Transfer Support</p>
 </div>
 </div>
-<!-- Right Controls: Language Selector + Notifications -->
+<!-- Right Controls: Sync Indicator + Language Selector + Notifications -->
 <div class="flex items-center gap-1.5 shrink-0 -mr-1">
+  <!-- Live Data Freshness & Sync Indicator -->
+  <div id="attendant-sync-indicator-wrap" class="flex items-center">
+    <div id="attendant-sync-indicator" class="js-sync-indicator inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 cursor-pointer select-none transition-all shadow-xs hover:bg-emerald-500/20" title="Data automatically refreshing every 5s • Click to sync now">
+      <span data-sync-dot class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span data-sync-text id="attendant-sync-text">Live</span>
+    </div>
+  </div>
   <!-- Language Selector Dropdown -->
   <div class="relative inline-flex items-center">
     <div class="flex items-center gap-1 px-2 py-1 rounded-full border border-blue-200 bg-blue-50/90 text-blue-900 shadow-xs focus-within:ring-2 focus-within:ring-primary/40">
@@ -124,24 +131,24 @@
 </div>
 <div class="flex-1">
 <div class="flex justify-between items-start mb-1">
-<h3 id="attendant-patient-name" class="text-lg font-bold text-primary" data-i18n="common.loading">Loading...</h3>
-<span id="attendant-condition-badge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 border border-green-200 text-xs font-semibold text-secondary">
-<svg class="h-1.5 w-1.5 fill-current" viewbox="0 0 2 2"><circle cx="1" cy="1" r="1"></circle></svg>
-            <span id="attendant-condition-text" data-i18n="condition.stable">Stable</span>
+<h3 id="attendant-patient-name" class="text-lg font-bold text-primary">Loading...</h3>
+<span id="attendant-condition-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 border border-slate-200 text-slate-500">
+<svg id="attendant-condition-dot" class="h-2 w-2 fill-current" viewbox="0 0 2 2"><circle cx="1" cy="1" r="1"></circle></svg>
+            <span id="attendant-condition-text">Loading...</span>
           </span>
 </div>
-<p id="attendant-patient-age-gender" class="text-sm text-textMuted mb-0.5">Age: 45 Y <span class="mx-1">|</span> Male</p>
-<p id="attendant-patient-admitted" class="text-xs text-textMuted mb-1">Admitted on: 20 May 2025</p>
+<p id="attendant-patient-age-gender" class="text-sm text-textMuted mb-0.5">Age: -- <span class="mx-1">|</span> --</p>
+<p id="attendant-patient-admitted" class="text-xs text-textMuted mb-1">Admitted on: --</p>
 <div class="flex justify-between items-center mt-2 pt-2 border-t border-gray-100/80">
   <div>
     <p class="text-[10px] text-textMuted uppercase font-semibold tracking-wider" data-i18n="dashboard.current_unit">Current Unit</p>
-    <p class="text-xs font-bold text-primary"><span id="attendant-patient-unit">ICU-01</span></p>
+    <p class="text-xs font-bold text-primary"><span id="attendant-patient-unit">--</span></p>
   </div>
   <!-- EWS Score in place of View Details -->
-  <div id="attendant-ews-badge" class="px-3.5 py-2.5 rounded-xl bg-blue-50 border border-blue-100 flex items-center gap-3 min-h-[48px]">
+  <div id="attendant-ews-badge" class="px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3 min-h-[48px] transition-colors">
     <div class="flex flex-col items-end text-right justify-center">
       <span class="text-[10px] font-bold text-blue-800 tracking-wider uppercase" data-i18n="dashboard.ews_score">EWS Score</span>
-      <span id="attendant-ews-condition" class="text-[11px] font-semibold text-secondary leading-tight">( Stable )</span>
+      <span id="attendant-ews-condition" class="text-[11px] font-bold text-secondary leading-tight">--</span>
     </div>
     <span id="attendant-ews-score" class="text-3xl font-black text-primary leading-none">--</span>
   </div>
@@ -157,12 +164,10 @@
 <section>
 <div class="flex justify-between items-center mb-3">
 <h3 class="text-base font-bold text-primary" data-i18n="vitals.current_status">Current Status</h3>
-<div class="flex items-center gap-1 text-xs font-medium text-secondary">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path clip-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm14.25 6a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM8.25 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm4.5 4.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" fill-rule="evenodd"></path>
-</svg>
-          <span data-i18n="common.live">Live</span>
-        </div>
+<div class="flex items-center gap-1.5 text-xs font-semibold text-secondary">
+  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+  <span id="attendant-vitals-timestamp" class="text-[11px] font-semibold text-slate-600">Live</span>
+</div>
 </div>
 <div class="grid grid-cols-2 gap-3 mb-3">
 <!-- 1. Heart Rate -->
@@ -217,16 +222,16 @@
 </div>
 </div>
 </div>
-<!-- Stable Banner -->
-<div id="attendant-banner-box" class="bg-green-50 border border-green-100 rounded-xl p-3 flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0 text-white">
+<!-- Status Banner -->
+<div id="attendant-banner-box" class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-3 transition-colors">
+<div id="attendant-banner-icon-wrap" class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0 text-white transition-colors">
 <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path clip-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" fill-rule="evenodd"></path>
 </svg>
 </div>
 <div>
-<h4 id="attendant-status-heading" class="text-sm font-bold text-green-800" data-i18n="condition.patient_stable">Patient is Stable</h4>
-<p id="attendant-status-desc" class="text-xs text-textMuted leading-relaxed" data-i18n="condition.stable_desc">All recorded vital parameters are within normal recovery range.<br/>Attendant updates will refresh in real time.</p>
+<h4 id="attendant-status-heading" class="text-sm font-bold text-slate-800">Loading Patient Status...</h4>
+<p id="attendant-status-desc" class="text-xs text-textMuted leading-relaxed">Retrieving latest vital parameters from clinical monitoring system...</p>
 </div>
 </div>
 </div>
@@ -280,8 +285,8 @@
 </div>
 </div>
 <div class="text-center mt-2">
-<h4 class="text-xs font-bold text-textMain mb-0.5" data-i18n="transfer.under_eval">Under Evaluation</h4>
-<p id="attendant-transfer-desc" class="text-[11px] text-secondary font-medium" data-i18n="transfer.no_rec">No transfer recommended at this time.</p>
+<h4 id="attendant-transfer-heading" class="text-xs font-bold text-textMain mb-0.5">Under Evaluation</h4>
+<p id="attendant-transfer-desc" class="text-[11px] text-secondary font-medium">Monitoring clinical stability...</p>
 </div>
 </div>
 </section>
@@ -303,7 +308,7 @@
 <div class="flex-1 pb-1">
 <div class="flex justify-between items-start mb-0.5">
 <h4 class="text-sm font-semibold text-textMain" data-i18n="updates.vitals_recorded">Vitals recorded</h4>
-<span class="text-[10px] text-textMuted">10:30 AM</span>
+<span class="text-[10px] text-textMuted" id="attendant-updates-vitals-time">Just now</span>
 </div>
 <p class="text-xs text-textMuted" data-i18n="updates.vitals_desc">Heart Rate, BP, SpO₂, Temp updated</p>
 </div>
@@ -318,24 +323,24 @@
 <div class="flex-1 pb-1">
 <div class="flex justify-between items-start mb-0.5">
 <h4 class="text-sm font-semibold text-textMain" data-i18n="updates.ews_calculated">EWS Score calculated</h4>
-<span class="text-[10px] text-textMuted">10:30 AM</span>
+<span class="text-[10px] text-textMuted" id="attendant-updates-ews-time">Just now</span>
 </div>
-<p class="text-xs text-textMuted">Score: 3 (Low Risk)</p>
+<p class="text-xs text-textMuted font-medium" id="attendant-updates-ews-desc">Score: --</p>
 </div>
 </div>
 <!-- Update Item 3 -->
 <div class="relative flex gap-4">
-<div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white ring-4 ring-white z-10 flex-shrink-0">
+<div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white ring-4 ring-white z-10 flex-shrink-0" id="attendant-updates-status-icon">
 <svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 <path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" fill-rule="evenodd"></path>
 </svg>
 </div>
 <div class="flex-1">
 <div class="flex justify-between items-start mb-0.5">
-<h4 class="text-sm font-semibold text-textMain" data-i18n="updates.patient_stable_icu">Patient stable in ICU</h4>
-<span class="text-[10px] text-textMuted">10:28 AM</span>
+<h4 class="text-sm font-semibold text-textMain" id="attendant-updates-status-heading">Current Status</h4>
+<span class="text-[10px] text-textMuted" id="attendant-updates-status-time">Live</span>
 </div>
-<p class="text-xs text-textMuted" data-i18n="updates.monitoring_continue">Monitoring will continue</p>
+<p class="text-xs text-textMuted" id="attendant-updates-status-desc">Continuous monitoring active</p>
 </div>
 </div>
 </div>
@@ -562,16 +567,248 @@
     }
   }
 
-  function getConditionColor(condition) {
-    if (condition === 'Stable') return { bg: 'bg-green-50', border: 'border-green-100', text: 'text-green-800', badgeBg: 'bg-green-50', badgeBorder: 'border-green-200', badgeText: 'text-secondary' };
-    if (condition === 'Moderate Risk') return { bg: 'bg-yellow-50', border: 'border-yellow-100', text: 'text-yellow-800', badgeBg: 'bg-yellow-50', badgeBorder: 'border-yellow-200', badgeText: 'text-yellow-700' };
-    return { bg: 'bg-red-50', border: 'border-red-100', text: 'text-red-800', badgeBg: 'bg-red-50', badgeBorder: 'border-red-200', badgeText: 'text-red-700' };
+  function showPatientNotFoundError(pid) {
+    var main = document.querySelector('main');
+    if (main) {
+      main.innerHTML = `
+        <div class="p-6 text-center space-y-4">
+          <div class="w-16 h-16 mx-auto bg-amber-50 text-amber-500 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"></path></svg>
+          </div>
+          <h2 class="text-lg font-bold text-gray-900">Patient Not Found</h2>
+          <p class="text-sm text-gray-600">Could not locate records for Patient #${pid || ''}. Please verify the QR code or patient assignment.</p>
+          <div class="pt-2">
+            <a href="/Attendant/attendant_access.html" class="inline-flex items-center justify-center py-2.5 px-5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all">
+              Scan Patient QR Code
+            </a>
+          </div>
+        </div>
+      `;
+    }
   }
 
+  function getConditionColor(condition) {
+    if (condition === 'Stable') {
+      return {
+        bg: 'bg-emerald-50',
+        border: 'border-emerald-200',
+        text: 'text-emerald-800',
+        badgeBg: 'bg-emerald-500/10',
+        badgeBorder: 'border-emerald-500/20',
+        badgeText: 'text-emerald-400',
+        dotClass: 'bg-emerald-400'
+      };
+    }
+    if (condition === 'Moderate Risk') {
+      return {
+        bg: 'bg-amber-50',
+        border: 'border-amber-200',
+        text: 'text-amber-800',
+        badgeBg: 'bg-amber-500/10',
+        badgeBorder: 'border-amber-500/20',
+        badgeText: 'text-amber-400',
+        dotClass: 'bg-amber-400'
+      };
+    }
+    return {
+      bg: 'bg-red-50',
+      border: 'border-red-200',
+      text: 'text-red-800',
+      badgeBg: 'bg-red-500/15',
+      badgeBorder: 'border-red-500/30',
+      badgeText: 'text-red-400',
+      dotClass: 'bg-red-500'
+    };
+  }
+
+  var lastLoadedPatientData = null;
+  var lastLoadedAssistanceRequests = null;
+
+  function renderPatientData(p) {
+    if (!p) return;
+
+    // Direct nurse card update without secondary network request
+    if (p.assigned_nurse) {
+      updateAssignedNurseUI(p.assigned_nurse);
+    }
+
+    // Update greeting
+    if (p.attendant_name) {
+      sessionStorage.setItem('jeevan_setu_attendant_name', p.attendant_name);
+      var gEl = document.getElementById('attendant-greeting-name');
+      if (gEl) {
+        gEl.textContent = window.t ? window.t('dashboard.greeting_user', { name: p.attendant_name }) : ('Hello, ' + p.attendant_name + ' 👋');
+      }
+    }
+
+    var uhidEl = document.getElementById('attendant-patient-uhid');
+    if (uhidEl) uhidEl.textContent = p.patient_code || ('UHID-' + String(p.patient_id).padStart(5, '0'));
+
+    // Strip static data-i18n attribute to prevent i18n MutationObserver from wiping loaded patient name back to "Loading..."
+    var nameEl = document.getElementById('attendant-patient-name');
+    if (nameEl) {
+      nameEl.removeAttribute('data-i18n');
+      nameEl.textContent = p.name || p.patient_name || (window.t ? window.t('common.companion') : 'Patient');
+    }
+
+    var ageGenEl = document.getElementById('attendant-patient-age-gender');
+    var genderText = p.gender === 'Female' ? (window.t ? window.t('common.female') : 'Female') : (window.t ? window.t('common.male') : 'Male');
+    var ageLabel = window.t ? window.t('common.age') : 'Age';
+    var yearsUnit = window.t ? window.t('common.years') : 'Y';
+    if (ageGenEl) ageGenEl.textContent = ageLabel + ': ' + (p.age || '--') + ' ' + yearsUnit + ' | ' + genderText;
+
+    var unitEl = document.getElementById('attendant-patient-unit');
+    var bedLabel = window.t ? window.t('common.bed') : 'Bed';
+    var inpatLabel = window.t ? window.t('dashboard.inpatient') : 'Inpatient';
+    if (unitEl) unitEl.textContent = p.bed_number ? (p.ward_type + ' · ' + bedLabel + ' ' + p.bed_number) : (p.ward_type || inpatLabel);
+
+    if (p.admission_date) {
+      var admEl = document.getElementById('attendant-patient-admitted');
+      var d = new Date(p.admission_date);
+      var dateFormatted = !isNaN(d.getTime()) ? d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : p.admission_date;
+      if (admEl) {
+        admEl.textContent = window.t ? window.t('dashboard.admitted_on', { date: dateFormatted }) : ('Admitted on: ' + dateFormatted);
+      }
+    }
+
+    // Authoritative EWS score & condition synchronization (Clinical Decision Engine: Score >= 5 is Critical, 3-4 is Moderate Risk, 0-2 is Stable)
+    var score = (p.total_score !== undefined && p.total_score !== null) ? Number(p.total_score) : (p.latest_vitals?.ews_score ?? 0);
+    var condition = p.condition;
+    if (score >= 5 || condition === 'Critical') {
+      condition = 'Critical';
+    } else if (score >= 3 || condition === 'Moderate Risk') {
+      condition = 'Moderate Risk';
+    } else {
+      condition = 'Stable';
+    }
+
+    var colors = getConditionColor(condition);
+    var condKey = condition === 'Critical' ? 'condition.critical' : (condition === 'Moderate Risk' ? 'condition.moderate_risk' : 'condition.stable');
+    var translatedCondition = window.t ? window.t(condKey) : condition;
+
+    var condBadge = document.getElementById('attendant-condition-badge');
+    var condDot = document.getElementById('attendant-condition-dot');
+    var condText = document.getElementById('attendant-condition-text');
+    if (condBadge) condBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ' + colors.badgeBg + ' ' + colors.badgeBorder + ' ' + colors.badgeText;
+    if (condDot) condDot.className = 'w-1.5 h-1.5 rounded-full ' + colors.dotClass + (condition === 'Critical' ? ' animate-ping' : ' animate-pulse');
+    if (condText) {
+      condText.setAttribute('data-i18n', condKey);
+      condText.textContent = translatedCondition;
+    }
+
+    var ewsScoreEl = document.getElementById('attendant-ews-score');
+    var ewsCondEl = document.getElementById('attendant-ews-condition');
+    var ewsBadgeEl = document.getElementById('attendant-ews-badge');
+    if (ewsScoreEl) ewsScoreEl.textContent = score;
+    if (ewsCondEl) {
+      ewsCondEl.setAttribute('data-i18n', condKey);
+      ewsCondEl.textContent = '( ' + translatedCondition + ' )';
+    }
+    if (ewsBadgeEl) ewsBadgeEl.className = 'px-3.5 py-2.5 rounded-xl border flex items-center gap-3 min-h-[48px] ' + colors.badgeBg + ' ' + colors.badgeBorder;
+
+    // Vitals metrics (4 physiological parameters)
+    var vitals = p.latest_vitals;
+    if (vitals) {
+      var hrEl = document.getElementById('attendant-hr-val');
+      var bpEl = document.getElementById('attendant-bp-val');
+      var tempEl = document.getElementById('attendant-temp-val');
+      var rrEl = document.getElementById('attendant-rr-val');
+      if (hrEl) hrEl.textContent = vitals.heart_rate !== null && vitals.heart_rate !== undefined ? vitals.heart_rate : '--';
+      if (bpEl) bpEl.textContent = vitals.blood_pressure || (vitals.systolic_bp ? String(vitals.systolic_bp) : '--');
+      if (tempEl) tempEl.textContent = vitals.temperature !== null && vitals.temperature !== undefined ? vitals.temperature : '--';
+      if (rrEl) rrEl.textContent = vitals.respiratory_rate !== null && vitals.respiratory_rate !== undefined ? vitals.respiratory_rate : '--';
+    }
+
+    // Vitals timestamp
+    var vitalsTsEl = document.getElementById('attendant-vitals-timestamp');
+    if (vitalsTsEl && vitals && vitals.recorded_at) {
+      var vt = new Date(vitals.recorded_at);
+      var timeStr = !isNaN(vt.getTime()) ? vt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : vitals.recorded_at;
+      vitalsTsEl.textContent = 'Recorded ' + timeStr;
+    } else if (vitalsTsEl) {
+      vitalsTsEl.textContent = 'Live Feed';
+    }
+
+    // Status banner & Clinical Recommendations
+    var headingEl = document.getElementById('attendant-status-heading');
+    var descEl = document.getElementById('attendant-status-desc');
+    var bannerBox = document.getElementById('attendant-banner-box');
+    var bannerIcon = document.getElementById('attendant-banner-icon');
+    if (bannerBox) bannerBox.className = 'border rounded-xl p-3 flex items-center gap-3 ' + colors.bg + ' ' + colors.border;
+    if (bannerIcon) {
+      bannerIcon.className = 'w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 ' + (condition === 'Critical' ? 'bg-red-100 text-red-600' : (condition === 'Moderate Risk' ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600'));
+    }
+    if (headingEl) {
+      headingEl.removeAttribute('data-i18n');
+      var statusHeading = window.t ? (
+        condition === 'Stable' ? window.t('condition.patient_stable') :
+        condition === 'Moderate Risk' ? window.t('condition.patient_moderate') :
+        window.t('condition.patient_critical')
+      ) : ('Patient is ' + condition);
+      headingEl.textContent = statusHeading;
+      headingEl.className = 'text-sm font-bold ' + colors.text;
+    }
+    if (descEl) {
+      descEl.removeAttribute('data-i18n');
+      if (p.recommendation && p.recommendation.trim()) {
+        descEl.textContent = p.recommendation;
+      } else if (condition === 'Stable') {
+        descEl.textContent = window.t ? window.t('condition.stable_desc') : 'All recorded vital parameters are within normal recovery range. Attendant updates refresh in real time.';
+      } else if (condition === 'Moderate Risk') {
+        descEl.textContent = window.t ? window.t('condition.moderate_desc') : 'Some vital parameters require close medical observation. Clinical team is monitoring.';
+      } else {
+        descEl.textContent = window.t ? window.t('condition.critical_desc') : 'Patient requires intensive clinical care and continuous monitoring.';
+      }
+    }
+
+    // Step-Down / ICU Decision Protocol
+    var trHeading = document.getElementById('attendant-transfer-heading');
+    var trDesc = document.getElementById('attendant-transfer-desc');
+    if (trHeading) {
+      trHeading.textContent = condition === 'Critical' ? 'Intensive Care Protocol' : (condition === 'Moderate Risk' ? 'Clinical Observation' : 'Step-down Protocol');
+    }
+    if (trDesc) {
+      trDesc.textContent = condition === 'Critical' ? 'Dedicated ICU team assigned. Immediate clinical response active.' : (condition === 'Moderate Risk' ? 'Close vitals re-evaluation active.' : 'Preparing patient for standard HDU step-down transition.');
+    }
+
+    // Recent Updates Feed Synchronization
+    var upVitalsTime = document.getElementById('attendant-updates-vitals-time');
+    var upEwsTime = document.getElementById('attendant-updates-ews-time');
+    var upEwsDesc = document.getElementById('attendant-updates-ews-desc');
+    var upStatusHeading = document.getElementById('attendant-updates-status-heading');
+    var upStatusDesc = document.getElementById('attendant-updates-status-desc');
+    var curTimeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    if (upVitalsTime) upVitalsTime.textContent = (vitals && vitals.recorded_at) ? new Date(vitals.recorded_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : curTimeStr;
+    if (upEwsTime) upEwsTime.textContent = curTimeStr;
+    if (upEwsDesc) upEwsDesc.textContent = 'Score: ' + score + ' (' + translatedCondition + ')';
+    if (upStatusHeading) upStatusHeading.textContent = condition === 'Critical' ? 'Intensive Care Active' : (condition === 'Moderate Risk' ? 'Observation Active' : 'Patient Stable');
+    if (upStatusDesc) upStatusDesc.textContent = p.recommendation || (condition === 'Critical' ? 'Keep in ICU' : 'Regular vitals review');
+  }
+
+  var isAttendantRefreshInFlight = false;
+  var latestCompletedFetchTime = 0;
+
   async function refreshAttendantView() {
+    if (isAttendantRefreshInFlight) {
+      return;
+    }
+    isAttendantRefreshInFlight = true;
+    var fetchStartTime = Date.now();
+
     try {
       var queryUrl = '/api/v1/attendant/patient' + (PATIENT_ID ? ('?patient_id=' + PATIENT_ID) : '');
-      var res = await fetch(queryUrl, { headers: getHeaders() });
+      var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var timeoutId = controller ? setTimeout(function() { controller.abort(); }, 8000) : null;
+      var fetchOpts = { headers: getHeaders() };
+      if (controller) fetchOpts.signal = controller.signal;
+
+      var res = await fetch(queryUrl, fetchOpts);
+      if (timeoutId) clearTimeout(timeoutId);
+
+      if (fetchStartTime < latestCompletedFetchTime) {
+        return;
+      }
 
       if (res.status === 401 || res.status === 403) {
         if (!hasInitialDataLoaded) {
@@ -581,16 +818,18 @@
         return;
       }
 
-      if (!res.ok) {
-        var staffRes = PATIENT_ID ? await fetch('/api/v1/patients/' + PATIENT_ID, { headers: getHeaders() }) : { ok: false };
-        if (staffRes.ok) {
-          res = staffRes;
-        } else {
-          if (!hasInitialDataLoaded) {
-            showUnauthorizedState(window.t ? window.t('auth.access_required_desc') : "Attendant access required. Please scan the patient's QR code.");
-          }
-          return;
+      if (res.status === 404) {
+        if (!hasInitialDataLoaded) {
+          showPatientNotFoundError(PATIENT_ID);
         }
+        return;
+      }
+
+      if (!res.ok) {
+        if (!hasInitialDataLoaded) {
+          showUnauthorizedState(window.t ? window.t('auth.access_required_desc') : "Attendant access required. Please scan the patient's QR code.");
+        }
+        return;
       }
 
       var json = await res.json();
@@ -601,115 +840,18 @@
         return;
       }
 
+      latestCompletedFetchTime = fetchStartTime;
       var p = json.data;
+      lastLoadedPatientData = p;
       hasInitialDataLoaded = true;
-
-      // Update assigned nurse and calling card
-      if (p.assigned_nurse) {
-        updateAssignedNurseUI(p.assigned_nurse);
-      } else {
-        fetchAssignedNurseDetails();
-      }
-
-      // Update name & greeting
-      if (p.attendant_name) {
-        sessionStorage.setItem('jeevan_setu_attendant_name', p.attendant_name);
-        var gEl = document.getElementById('attendant-greeting-name');
-        if (gEl) {
-          gEl.textContent = window.t ? window.t('dashboard.greeting_user', { name: p.attendant_name }) : ('Hello, ' + p.attendant_name + ' 👋');
-        }
-      }
-
-      var uhidEl = document.getElementById('attendant-patient-uhid');
-      if (uhidEl) uhidEl.textContent = p.patient_code || ('UHID-' + String(p.patient_id).padStart(5, '0'));
-
-      var nameEl = document.getElementById('attendant-patient-name');
-      if (nameEl) nameEl.textContent = p.name || p.patient_name || (window.t ? window.t('common.companion') : 'Patient');
-
-      var ageGenEl = document.getElementById('attendant-patient-age-gender');
-      var genderText = p.gender === 'Female' ? (window.t ? window.t('common.female') : 'Female') : (window.t ? window.t('common.male') : 'Male');
-      var ageLabel = window.t ? window.t('common.age') : 'Age';
-      var yearsUnit = window.t ? window.t('common.years') : 'Y';
-      if (ageGenEl) ageGenEl.textContent = ageLabel + ': ' + (p.age || '--') + ' ' + yearsUnit + ' | ' + genderText;
-
-      var unitEl = document.getElementById('attendant-patient-unit');
-      var bedLabel = window.t ? window.t('common.bed') : 'Bed';
-      var inpatLabel = window.t ? window.t('dashboard.inpatient') : 'Inpatient';
-      if (unitEl) unitEl.textContent = p.bed_number ? (p.ward_type + ' · ' + bedLabel + ' ' + p.bed_number) : (p.ward_type || inpatLabel);
-
-      if (p.admission_date) {
-        var admEl = document.getElementById('attendant-patient-admitted');
-        var d = new Date(p.admission_date);
-        var dateFormatted = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-        if (admEl) {
-          admEl.textContent = window.t ? window.t('dashboard.admitted_on', { date: dateFormatted }) : ('Admitted on: ' + dateFormatted);
-        }
-      }
-
-      // Persisted condition & EWS from backend
-      var rawCondition = p.condition || (p.total_score >= 7 ? 'Critical' : (p.total_score >= 4 ? 'Moderate Risk' : 'Stable'));
-      var condition = (rawCondition || '').replace(/\bCare\b/gi, '').trim() || rawCondition;
-      var colors = getConditionColor(condition);
-
-      var condBadge = document.getElementById('attendant-condition-badge');
-      var condText = document.getElementById('attendant-condition-text');
-      var translatedCondition = condition;
-      if (window.t) {
-        if (condition === 'Stable') translatedCondition = window.t('condition.stable');
-        else if (condition === 'Moderate Risk') translatedCondition = window.t('condition.moderate_risk');
-        else if (condition === 'Critical') translatedCondition = window.t('condition.critical');
-      }
-      if (condBadge) condBadge.className = 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ' + colors.badgeBg + ' ' + colors.badgeBorder + ' ' + colors.badgeText;
-      if (condText) condText.textContent = translatedCondition;
-
-      var ewsScoreEl = document.getElementById('attendant-ews-score');
-      var ewsCondEl = document.getElementById('attendant-ews-condition');
-      var ewsBadgeEl = document.getElementById('attendant-ews-badge');
-      if (ewsScoreEl) ewsScoreEl.textContent = p.total_score !== undefined ? p.total_score : (p.latest_vitals?.ews_score ?? 0);
-      if (ewsCondEl) ewsCondEl.textContent = '( ' + translatedCondition + ' )';
-      if (ewsBadgeEl) ewsBadgeEl.className = 'px-3.5 py-2.5 rounded-xl border flex items-center gap-3 min-h-[48px] ' + colors.badgeBg + ' ' + colors.badgeBorder;
-
-      // Vitals metrics (4 physiological parameters)
-      var vitals = p.latest_vitals;
-      if (vitals) {
-        var hrEl = document.getElementById('attendant-hr-val');
-        var bpEl = document.getElementById('attendant-bp-val');
-        var tempEl = document.getElementById('attendant-temp-val');
-        var rrEl = document.getElementById('attendant-rr-val');
-        if (hrEl) hrEl.textContent = vitals.heart_rate !== null && vitals.heart_rate !== undefined ? vitals.heart_rate : '--';
-        if (bpEl) bpEl.textContent = vitals.blood_pressure || (vitals.systolic_bp ? String(vitals.systolic_bp) : '--');
-        if (tempEl) tempEl.textContent = vitals.temperature !== null && vitals.temperature !== undefined ? vitals.temperature : '--';
-        if (rrEl) rrEl.textContent = vitals.respiratory_rate !== null && vitals.respiratory_rate !== undefined ? vitals.respiratory_rate : '--';
-      }
-
-      // Status banner & Recommendations
-      var headingEl = document.getElementById('attendant-status-heading');
-      var descEl = document.getElementById('attendant-status-desc');
-      var bannerBox = document.getElementById('attendant-banner-box');
-      if (bannerBox) bannerBox.className = 'border rounded-xl p-3 flex items-center gap-3 ' + colors.bg + ' ' + colors.border;
-      if (headingEl) {
-        var statusHeading = window.t ? (
-          condition === 'Stable' ? window.t('condition.patient_stable') :
-          condition === 'Moderate Risk' ? window.t('condition.patient_moderate') :
-          window.t('condition.patient_critical')
-        ) : ('Patient is ' + condition);
-        headingEl.textContent = statusHeading;
-        headingEl.className = 'text-sm font-bold ' + colors.text;
-      }
-      if (descEl) {
-        if (p.recommendation && p.recommendation.trim()) {
-          descEl.textContent = p.recommendation;
-        } else if (condition === 'Stable') {
-          descEl.textContent = window.t ? window.t('condition.stable_desc') : 'All recorded vital parameters are within normal recovery range. Attendant updates refresh in real time.';
-        } else if (condition === 'Moderate Risk') {
-          descEl.textContent = window.t ? window.t('condition.moderate_desc') : 'Some vital parameters require close medical observation. Clinical team is monitoring.';
-        } else {
-          descEl.textContent = window.t ? window.t('condition.critical_desc') : 'Patient requires intensive clinical care and continuous monitoring.';
-        }
-      }
+      renderPatientData(p);
 
     } catch (e) {
-      console.warn('[Jeevan Setu] Attendant background refresh error (will retry automatically):', e);
+      if (e.name !== 'AbortError') {
+        console.warn('[Jeevan Setu] Attendant background refresh error (will retry automatically):', e);
+      }
+    } finally {
+      isAttendantRefreshInFlight = false;
     }
   }
 
@@ -929,87 +1071,101 @@
     }
   }
 
-  window.loadMyAssistanceRequests = async function() {
+  function renderAssistanceRequestsList(list) {
     var container = document.getElementById('assistance-requests-list');
     var badge = document.getElementById('requests-count-badge');
     if (!container) return;
+    if (badge) badge.textContent = list.length;
+
+    if (list.length === 0) {
+      var emptyTitle = window.t ? window.t('assistance.empty_title') : 'No Assistance Requests Yet';
+      var emptyDesc = window.t ? window.t('assistance.empty_desc') : "Need help from the nursing team? Tap 'Request Assistance'.";
+      container.innerHTML = `
+        <div class="text-center py-6 px-4 bg-slate-50/60 rounded-xl border border-dashed border-slate-200">
+          <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center mx-auto mb-2 text-base">💬</div>
+          <p class="text-xs font-semibold text-slate-700">${escapeHtml(emptyTitle)}</p>
+          <p class="text-[11px] text-slate-400 mt-0.5">${escapeHtml(emptyDesc)}</p>
+        </div>
+      `;
+      return;
+    }
+
+    var html = '';
+    var cancelText = window.t ? window.t('assistance.cancel_request') : 'Cancel Request';
+    var resTitle = window.t ? window.t('assistance.care_team_resolution') : 'Care Team Resolution:';
+    var reasonTitle = window.t ? window.t('assistance.reason') : 'Reason:';
+    var refPrefix = window.t ? window.t('assistance.ref_prefix') : 'Ref #';
+    var justNowText = window.t ? window.t('common.just_now') : 'Just now';
+
+    list.forEach(function(r) {
+      var isCancellable = ['submitted', 'pending', 'acknowledged'].indexOf((r.status || '').toLowerCase()) !== -1;
+      var cancelBtnHtml = isCancellable ? `
+        <button onclick="cancelAssistanceRequest(${r.request_id})" class="text-[11px] font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-lg border border-rose-200 transition-colors cursor-pointer">
+          ${escapeHtml(cancelText)}
+        </button>
+      ` : '';
+
+      var staffNoteHtml = '';
+      if (r.resolution_note) {
+        staffNoteHtml = `
+          <div class="mt-2 p-2 bg-emerald-50/70 border border-emerald-100 rounded-lg text-[11px] text-emerald-900">
+            <span class="font-bold block text-[10px] uppercase text-emerald-800">${escapeHtml(resTitle)}</span>
+            ${escapeHtml(r.resolution_note)}
+          </div>
+        `;
+      } else if (r.rejection_reason) {
+        staffNoteHtml = `
+          <div class="mt-2 p-2 bg-rose-50/70 border border-rose-100 rounded-lg text-[11px] text-rose-900">
+            <span class="font-bold block text-[10px] uppercase text-rose-800">${escapeHtml(reasonTitle)}</span>
+            ${escapeHtml(r.rejection_reason)}
+          </div>
+        `;
+      }
+
+      var timeText = r.time_since_submission || justNowText;
+
+      html += `
+        <div class="p-3 bg-slate-50/80 hover:bg-slate-50 border border-slate-200/80 rounded-xl transition-all space-y-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-bold text-slate-900">${refPrefix}${r.request_id}</span>
+              <span class="text-[10px] text-slate-400 font-medium">• ${escapeHtml(timeText)}</span>
+            </div>
+            <div>${getStatusBadge(r.status)}</div>
+          </div>
+          <div class="text-xs font-semibold text-blue-900">
+            ${escapeHtml(r.category)}
+          </div>
+          ${r.description ? `<p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(r.description)}</p>` : ''}
+          ${staffNoteHtml}
+          ${isCancellable ? `<div class="pt-1.5 flex justify-end">${cancelBtnHtml}</div>` : ''}
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
+
+  window.loadMyAssistanceRequests = async function() {
+    var container = document.getElementById('assistance-requests-list');
+    if (!container) return;
 
     try {
-      var res = await fetch('/api/v1/attendant/assistance-requests', { headers: getHeaders() });
+      var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var timeoutId = controller ? setTimeout(function() { controller.abort(); }, 8000) : null;
+      var fetchOpts = { headers: getHeaders() };
+      if (controller) fetchOpts.signal = controller.signal;
+
+      var res = await fetch('/api/v1/attendant/assistance-requests', fetchOpts);
+      if (timeoutId) clearTimeout(timeoutId);
       if (!res.ok) return;
 
       var data = await res.json();
-      var list = data.requests || [];
-      if (badge) badge.textContent = list.length;
-
-      if (list.length === 0) {
-        var emptyTitle = window.t ? window.t('assistance.empty_title') : 'No Assistance Requests Yet';
-        var emptyDesc = window.t ? window.t('assistance.empty_desc') : "Need help from the nursing team? Tap 'Request Assistance'.";
-        container.innerHTML = `
-          <div class="text-center py-6 px-4 bg-slate-50/60 rounded-xl border border-dashed border-slate-200">
-            <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center mx-auto mb-2 text-base">💬</div>
-            <p class="text-xs font-semibold text-slate-700">${escapeHtml(emptyTitle)}</p>
-            <p class="text-[11px] text-slate-400 mt-0.5">${escapeHtml(emptyDesc)}</p>
-          </div>
-        `;
-        return;
-      }
-
-      var html = '';
-      var cancelText = window.t ? window.t('assistance.cancel_request') : 'Cancel Request';
-      var resTitle = window.t ? window.t('assistance.care_team_resolution') : 'Care Team Resolution:';
-      var reasonTitle = window.t ? window.t('assistance.reason') : 'Reason:';
-      var refPrefix = window.t ? window.t('assistance.ref_prefix') : 'Ref #';
-      var justNowText = window.t ? window.t('common.just_now') : 'Just now';
-
-      list.forEach(function(r) {
-        var isCancellable = ['submitted', 'pending', 'acknowledged'].indexOf((r.status || '').toLowerCase()) !== -1;
-        var cancelBtnHtml = isCancellable ? `
-          <button onclick="cancelAssistanceRequest(${r.request_id})" class="text-[11px] font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-lg border border-rose-200 transition-colors cursor-pointer">
-            ${escapeHtml(cancelText)}
-          </button>
-        ` : '';
-
-        var staffNoteHtml = '';
-        if (r.resolution_note) {
-          staffNoteHtml = `
-            <div class="mt-2 p-2 bg-emerald-50/70 border border-emerald-100 rounded-lg text-[11px] text-emerald-900">
-              <span class="font-bold block text-[10px] uppercase text-emerald-800">${escapeHtml(resTitle)}</span>
-              ${escapeHtml(r.resolution_note)}
-            </div>
-          `;
-        } else if (r.rejection_reason) {
-          staffNoteHtml = `
-            <div class="mt-2 p-2 bg-rose-50/70 border border-rose-100 rounded-lg text-[11px] text-rose-900">
-              <span class="font-bold block text-[10px] uppercase text-rose-800">${escapeHtml(reasonTitle)}</span>
-              ${escapeHtml(r.rejection_reason)}
-            </div>
-          `;
-        }
-
-        var timeText = r.time_since_submission || justNowText;
-
-        html += `
-          <div class="p-3 bg-slate-50/80 hover:bg-slate-50 border border-slate-200/80 rounded-xl transition-all space-y-1.5">
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold text-slate-900">${refPrefix}${r.request_id}</span>
-                <span class="text-[10px] text-slate-400 font-medium">• ${escapeHtml(timeText)}</span>
-              </div>
-              <div>${getStatusBadge(r.status)}</div>
-            </div>
-            <div class="text-xs font-semibold text-blue-900">
-              ${escapeHtml(r.category)}
-            </div>
-            ${r.description ? `<p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(r.description)}</p>` : ''}
-            ${staffNoteHtml}
-            ${isCancellable ? `<div class="pt-1.5 flex justify-end">${cancelBtnHtml}</div>` : ''}
-          </div>
-        `;
-      });
-      container.innerHTML = html;
+      lastLoadedAssistanceRequests = data.requests || [];
+      renderAssistanceRequestsList(lastLoadedAssistanceRequests);
     } catch(err) {
-      console.warn('[Jeevan Setu] Failed to load attendant requests:', err);
+      if (err.name !== 'AbortError') {
+        console.warn('[Jeevan Setu] Failed to load attendant requests:', err);
+      }
     }
   };
 
@@ -1037,36 +1193,30 @@
     }
   };
 
-  // Re-render dynamic text when language is changed
+  // Instant in-memory re-render dynamic text when language is changed
   window.addEventListener('languageChanged', function() {
-    refreshAttendantView();
-    if (window.fetchAssignedNurseDetails) {
-      window.fetchAssignedNurseDetails();
+    if (lastLoadedPatientData) {
+      renderPatientData(lastLoadedPatientData);
     }
-    if (window.loadMyAssistanceRequests) {
-      window.loadMyAssistanceRequests();
+    if (lastLoadedAssistanceRequests) {
+      renderAssistanceRequestsList(lastLoadedAssistanceRequests);
     }
   });
 
-  function pollEverything() {
-    refreshAttendantView();
-    if (window.fetchAssignedNurseDetails) {
-      window.fetchAssignedNurseDetails();
-    }
-    if (window.loadMyAssistanceRequests) {
-      window.loadMyAssistanceRequests();
-    }
+  async function pollEverything() {
+    var p1 = refreshAttendantView();
+    var p2 = (window.loadMyAssistanceRequests) ? window.loadMyAssistanceRequests() : Promise.resolve();
+    await Promise.allSettled([p1, p2]);
   }
 
-  // Centralized 10-second background polling
+  // Centralized 5-second background polling & Live Sync Indicator
   if (window.AutoRefreshManager) {
-    window.AutoRefreshManager.start('attendant_live_view', pollEverything, 10000);
+    window.AutoRefreshManager.attachIndicator('#attendant-sync-indicator-wrap');
+    window.AutoRefreshManager.start('attendant_live_view', pollEverything, 5000);
   } else {
     pollEverything();
-    setInterval(pollEverything, 10000);
+    setInterval(pollEverything, 5000);
   }
 })();
-
 </script>
-<script src="/auto_refresh_manager.js"></script>
 </body></html>

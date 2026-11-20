@@ -154,6 +154,7 @@ def test_05_unconfigured_api_key_diagnostic_traceability():
 
 def test_06_openrouter_rate_limit_not_overwritten_by_fallback_404():
     """Verify call_openrouter_with_tools preserves 'rate_limited' when 429 is encountered."""
+    import os
     import urllib.error
 
     class FakeHTTP429(urllib.error.HTTPError):
@@ -166,7 +167,7 @@ def test_06_openrouter_rate_limit_not_overwritten_by_fallback_404():
                 fp=io.BytesIO(b'{"error":{"message":"Rate limit exceeded: free-models-per-day","code":429}}'),
             )
 
-    with patch("chatbot.services.openrouter_service.get_openrouter_api_key", return_value="sk-or-v1-fake-key-for-test"):
+    with patch.dict(os.environ, {"OPENROUTER_ENABLED": "true", "OPENROUTER_PRIMARY_API_KEY": "sk-or-v1-fake-key-for-test"}):
         with patch("urllib.request.urlopen", side_effect=FakeHTTP429()):
             resp = call_openrouter_with_tools(
                 messages=[{"role": "user", "content": "ping"}],

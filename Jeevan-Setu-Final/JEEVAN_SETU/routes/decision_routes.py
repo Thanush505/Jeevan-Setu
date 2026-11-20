@@ -138,8 +138,11 @@ def approve_decision(recommendation_id):
     Rejects stale approvals if patient condition is no longer Ready-to-Transfer.
     """
     user = get_current_authenticated_user()
-    if not user or not getattr(user, 'is_authenticated', True):
+    if not user:
         return jsonify({'success': False, 'error': 'Authentication required. Please provide a valid Bearer token.'}), 401
+
+    if not getattr(user, 'is_active', True):
+        return jsonify({'success': False, 'error': 'Account has been deactivated'}), 403
 
     user_role = getattr(user, 'role', '').lower()
     user_id = getattr(user, 'id', getattr(user, 'user_id', None))
@@ -276,8 +279,11 @@ def reject_decision(recommendation_id):
     Enforces Doctor-patient assignment (prevents cross-doctor IDOR).
     """
     user = get_current_authenticated_user()
-    if not user or not getattr(user, 'is_authenticated', True):
+    if not user:
         return jsonify({'success': False, 'error': 'Authentication required. Please provide a valid Bearer token.'}), 401
+
+    if not getattr(user, 'is_active', True):
+        return jsonify({'success': False, 'error': 'Account has been deactivated'}), 403
 
     user_role = getattr(user, 'role', '').lower()
     user_id = getattr(user, 'id', getattr(user, 'user_id', None))
@@ -383,8 +389,11 @@ def request_info_decision(recommendation_id):
     Creates audit trail and broadcasts nurse notification.
     """
     user = get_current_authenticated_user()
-    if not user or not getattr(user, 'is_authenticated', True):
+    if not user:
         return jsonify({'success': False, 'error': 'Authentication required. Please provide a valid Bearer token.'}), 401
+
+    if not getattr(user, 'is_active', True):
+        return jsonify({'success': False, 'error': 'Account has been deactivated'}), 403
 
     user_role = getattr(user, 'role', '').lower()
     user_id = getattr(user, 'id', getattr(user, 'user_id', None))
@@ -458,8 +467,11 @@ def get_pending_decisions():
     Returns full clinical metadata, latest vitals, EWS trend, and readiness criteria.
     """
     user = get_current_authenticated_user()
-    if not user or not getattr(user, 'is_authenticated', True):
+    if not user:
         return jsonify({'success': False, 'error': 'Authentication required. Please provide a valid Bearer token.'}), 401
+
+    if not getattr(user, 'is_active', True):
+        return jsonify({'success': False, 'error': 'Account has been deactivated'}), 403
 
     user_role = getattr(user, 'role', '').lower()
     user_id = getattr(user, 'id', getattr(user, 'user_id', None))

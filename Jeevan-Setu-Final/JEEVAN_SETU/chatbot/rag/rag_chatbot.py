@@ -541,7 +541,7 @@ def query_rag_chatbot(
                 final_text = med_resp
                 intent_type = "general_medical_concept"
             else:
-                final_text = "The OpenRouter AI service is not configured. Please set OPENROUTER_API_KEY in the backend environment."
+                final_text = "The OpenRouter AI service is not configured. Please set OPENROUTER_PRIMARY_API_KEY and enable OPENROUTER_ENABLED in the backend environment."
                 success_status = False
 
         response = {

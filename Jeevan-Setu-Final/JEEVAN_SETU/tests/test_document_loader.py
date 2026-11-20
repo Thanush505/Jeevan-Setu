@@ -328,7 +328,7 @@ def test_09_corrupt_pdf_docx_and_image_handling(tmp_path: Path):
 
 def test_10_unsupported_and_hidden_files_ignored(tmp_path: Path):
     """10. Verify hidden files, temp files, secrets, and unsupported extensions are ignored."""
-    (tmp_path / ".env").write_text("OPENROUTER_API_KEY=secret", encoding="utf-8")
+    (tmp_path / ".env").write_text("OPENROUTER_PRIMARY_API_KEY=secret", encoding="utf-8")
     (tmp_path / ".hidden_note.md").write_text("Hidden markdown", encoding="utf-8")
     (tmp_path / "~$temp_lock.docx").write_bytes(b"lockfile")
     (tmp_path / "credentials.json").write_text('{"key": "secret"}', encoding="utf-8")

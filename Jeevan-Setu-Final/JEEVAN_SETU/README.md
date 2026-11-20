@@ -224,8 +224,12 @@ DB_PASSWORD=your_mysql_password
 DB_NAME=jeevan_setu
 SECRET_KEY=your_secret_key
 JWT_SECRET_KEY=your_jwt_secret_key
-OPENROUTER_API_KEY=your_openrouter_api_key
 OPENROUTER_MODEL=google/gemma-4-31b-it:free
+ALLOW_EXTERNAL_PATIENT_VISION=true
+OPENROUTER_ENABLED=false
+OPENROUTER_PRIMARY_API_KEY=
+OPENROUTER_SECONDARY_API_KEY=
+OPENROUTER_FAILOVER_ENABLED=true
 ```
 
 Initialize database tables and seed clinician logins:

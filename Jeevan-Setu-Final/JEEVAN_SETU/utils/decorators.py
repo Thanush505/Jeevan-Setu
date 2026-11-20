@@ -34,19 +34,37 @@ def get_current_authenticated_user():
         payload, err = AuthService.decode_access_token(token)
         if not err and payload:
             sub = payload.get('sub')
-            user_id = None
+            user = None
             if sub is not None:
                 try:
                     user_id = int(sub)
+                    user = User.get_by_id(user_id)
                 except (ValueError, TypeError):
-                    user_id = None
-            if user_id:
-                user = User.get_by_id(user_id)
-                if user:
-                    g.current_user = user
-                    g.jwt_payload = payload
-                    g.jwt_token = token
-                    return user
+                    pass
+
+            # Fallback by username from payload if sub wasn't an integer or user not found by ID
+            if not user and payload.get('username'):
+                user_row = User.get_by_username(payload['username'])
+                if user_row:
+                    role_val = (user_row.get('role') or '').strip().lower()
+                    if user_row.get('role_id') == 1 or role_val in ('admin', 'administrator', 'system_admin', 'superadmin'):
+                        role_val = 'admin'
+                    user = User(
+                        user_row['user_id'], user_row['username'], user_row['full_name'],
+                        user_row['email'], role_val, user_row.get('department'),
+                        user_row.get('is_active', True), user_row.get('role_id'),
+                        user_row.get('contact_number')
+                    )
+
+            if user:
+                # If token claims admin or user has role_id 1, ensure user.role is normalized to 'admin'
+                token_role = (payload.get('role') or '').strip().lower()
+                if token_role in ('admin', 'administrator', 'system_admin', 'superadmin') or getattr(user, 'role_id', None) == 1:
+                    user.role = 'admin'
+                g.current_user = user
+                g.jwt_payload = payload
+                g.jwt_token = token
+                return user
 
     # 2. Already decoded in request context (only if no new auth token was provided)
     if hasattr(g, 'current_user') and g.current_user and not auth_header:
@@ -54,11 +72,17 @@ def get_current_authenticated_user():
 
     # 3. Check Flask-Login current_user
     if current_user and current_user.is_authenticated:
+        user_role = (getattr(current_user, 'role', '') or '').strip().lower()
+        if user_role in ('admin', 'administrator', 'system_admin', 'superadmin') or getattr(current_user, 'role_id', None) == 1:
+            current_user.role = 'admin'
         g.current_user = current_user
         return current_user
 
     # 4. Fallback for Local Development & Testing
-    # When accessing from localhost / LAN without a token, fallback to active admin user in development
+    # Strict RBAC: DO NOT bypass authentication for REST API endpoints! Unauthenticated API calls must receive 401.
+    if _is_api_request():
+        return None
+
     try:
         if current_app and current_app.config.get('TESTING'):
             return None
@@ -82,7 +106,7 @@ def get_current_authenticated_user():
                 if admin_row:
                     dev_admin = User(
                         admin_row['user_id'], admin_row['username'], admin_row['full_name'],
-                        admin_row['email'], admin_row['role'], admin_row.get('department'),
+                        admin_row['email'], 'admin', admin_row.get('department'),
                         admin_row.get('is_active', True), admin_row.get('role_id')
                     )
             if dev_admin and dev_admin.is_active:
@@ -98,10 +122,13 @@ def has_permission(user, permission):
     """Check if user role has the specified permission."""
     if not user:
         return False
-    user_role = getattr(user, 'role', None)
+    user_role = (getattr(user, 'role', None) or '').strip().lower()
+    user_role_id = getattr(user, 'role_id', None)
+    if not user_role and user_role_id == 1:
+        user_role = 'admin'
     if not user_role:
         return False
-    if user_role == 'admin':
+    if user_role in ('admin', 'administrator', 'system_admin', 'superadmin') or user_role_id == 1:
         return True
     user_permissions = ROLES.get(user_role, [])
     return 'all' in user_permissions or permission in user_permissions
@@ -111,8 +138,8 @@ def get_role_dashboard_url(user):
     """Return the correct frontend dashboard URL for a user's role."""
     if not user:
         return '/auth/login'
-    role = getattr(user, 'role', '')
-    if role == 'admin':
+    role = (getattr(user, 'role', '') or '').strip().lower()
+    if role in ('admin', 'administrator'):
         return '/Admin/Administrator_dashboard_/Administrator_dashboard_.html'
     elif role == 'doctor':
         return '/Doctor/Doctor_dashboard_/Doctor_dashboard_.html'
@@ -132,7 +159,7 @@ def role_required(*allowed_roles):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user = get_current_authenticated_user()
-            if not user or not user.is_authenticated:
+            if not user:
                 if _is_api_request():
                     return jsonify({'success': False, 'error': 'Authentication required'}), 401
                 flash('Please log in to continue.', 'warning')
@@ -144,7 +171,12 @@ def role_required(*allowed_roles):
                 flash('Account has been deactivated.', 'error')
                 return redirect(url_for('auth.login'))
 
-            if user.role not in allowed_roles and user.role != 'admin':
+            user_role = (getattr(user, 'role', '') or '').strip().lower()
+            user_role_id = getattr(user, 'role_id', None)
+            is_admin = user_role in ('admin', 'administrator', 'system_admin', 'superadmin') or user_role_id == 1
+
+            norm_allowed = set(r.strip().lower() for r in allowed_roles)
+            if not is_admin and user_role not in norm_allowed:
                 if _is_api_request():
                     return jsonify({
                         'success': False,
@@ -167,7 +199,7 @@ def permission_required(permission):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user = get_current_authenticated_user()
-            if not user or not user.is_authenticated:
+            if not user:
                 if _is_api_request():
                     return jsonify({'success': False, 'error': 'Authentication required'}), 401
                 flash('Please log in to continue.', 'warning')

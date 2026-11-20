@@ -1,275 +1,884 @@
-<!DOCTYPE html><html lang="en"><head>
-  <link rel="icon" type="image/png" href="/assets/jeevan_setu_logo.png"><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={theme:{extend:{"colors":{"surface-container":"#e7eeff","surface-container-high":"#dee8ff","on-tertiary-fixed-variant":"#38485d","on-tertiary":"#ffffff","on-primary-container":"#eeefff","secondary-fixed-dim":"#89ceff","surface-variant":"#d8e3fb","on-error":"#ffffff","surface-bright":"#f9f9ff","tertiary-fixed-dim":"#b7c8e1","primary-fixed-dim":"#b4c5ff","on-surface":"#111c2d","primary-fixed":"#dbe1ff","primary-container":"#2563eb","outline":"#737686","inverse-surface":"#263143","secondary-fixed":"#c9e6ff","tertiary":"#46566c","primary":"#004ac6","on-surface-variant":"#434655","surface-dim":"#cfdaf2","error":"#ba1a1a","secondary":"#006591","tertiary-fixed":"#d3e4fe","surface-tint":"#0053db","on-secondary-container":"#004666","on-tertiary-fixed":"#0b1c30","background":"#f9f9ff","secondary-container":"#39b8fd","on-primary":"#ffffff","on-tertiary-container":"#e9f0ff","inverse-primary":"#b4c5ff","outline-variant":"#c3c6d7","on-secondary-fixed-variant":"#004c6e","on-error-container":"#93000a","surface-container-low":"#f0f3ff","on-secondary-fixed":"#001e2f","tertiary-container":"#5e6e85","surface":"#f9f9ff","on-primary-fixed":"#00174b","on-secondary":"#ffffff","on-primary-fixed-variant":"#003ea8","inverse-on-surface":"#ecf1ff","on-background":"#111c2d","surface-container-lowest":"#ffffff","surface-container-highest":"#d8e3fb","error-container":"#ffdad6"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"16px","margin-desktop":"32px","xl":"32px","margin-mobile":"16px","md":"16px","base":"4px","sm":"8px","xs":"4px","lg":"24px"},"fontFamily":{"label-md":["Inter"],"headline-md":["Poppins"],"display":["Poppins"],"headline-lg":["Poppins"],"label-sm":["Inter"],"headline-sm":["Poppins"],"body-md":["Inter"],"headline-lg-mobile":["Poppins"],"body-lg":["Inter"],"body-sm":["Inter"]},"fontSize":{"label-md":["14px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"600"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"500"}],"display":["48px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"headline-lg":["32px",{"lineHeight":"40px","fontWeight":"600"}],"label-sm":["12px",{"lineHeight":"16px","fontWeight":"600"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-lg-mobile":["28px",{"lineHeight":"36px","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Poppins:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-background"><aside class="w-64 bg-[#0a1e4d] text-white flex flex-col flex-shrink-0 h-full overflow-y-auto fixed left-0 top-0 z-50" data-purpose="sidebar">
-<div class="p-6 flex items-center space-x-3">
-<div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
-  <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
-</div>
-<div>
-<h1 class="text-lg font-bold leading-none">JEEVAN SETU</h1>
-<p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider">Intelligent Transfer System</p>
-</div>
-</div>
-<nav class="flex-1 px-4 py-4 space-y-8">
-<div>
-<a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Administrator_dashboard_/Administrator_dashboard_.html">
-<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-<span>Dashboard</span>
-</a>
-</div>
-<div>
-<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Management</p>
-<ul class="space-y-2">
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_patient_management/Admin_patient_management.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Patients</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_beds_wards/Admin_beds_wards.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Beds &amp; Wards</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_users_roles/Admin_users_roles.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Users &amp; Roles</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_attendant_access/Admin_attendant_access.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Attendants (QR Access)</span></a></li>
-</ul>
-</div>
-<div>
-<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Monitoring &amp; Analytics</p>
-<ul class="space-y-2">
-<li><a class="flex items-center space-x-3 bg-blue-600 px-4 py-2.5 rounded-lg text-white font-medium" href="../Admin_ews_analytics/Admin_ews_analytics.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>EWS Analytics</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_resource_utilization/Admin_resource_utilization.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Resource Utilization</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_clinical_reports/Admin_clinical_reports.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Reports</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_audit_logs/Admin_audit_logs.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Audit Logs</span></a></li>
-</ul>
-</div>
-<div>
-<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">System Settings</p>
-<ul class="space-y-2">
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_system_settings/Admin_system_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>System Settings</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_notification_settings/Admin_notification_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Notifications</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_backup_restore/Admin_backup_restore.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Backup &amp; Restore</span></a></li>
-</ul>
-</div>
-</nav>
-<div class="p-4 border-t border-white/10">
-<div class="bg-white/5 rounded-xl p-3 flex items-center justify-between">
-<div class="flex items-center space-x-3">
-<div class="w-10 h-10 rounded-full bg-slate-300 overflow-hidden ring-2 ring-blue-500/50">
-<img alt="Admin Avatar" class="w-full h-full object-cover" src="../admin_avatar.jpg">
-</div>
-<div>
-<p class="text-xs font-bold">System Administrator</p>
-<p class="text-[10px] text-slate-400">Administrator</p>
-</div>
-</div>
-<div class="flex flex-col items-center">
-<span class="w-2 h-2 bg-green-500 rounded-full mb-1"></span>
-<span class="text-[8px] text-slate-400 uppercase">Online</span>
-</div>
-</div>
-</div>
+<!DOCTYPE html>
+<html lang="en" class="dark">
 
-<!-- Admin Logout Button -->
-<div class="px-4 pb-4">
-  <a href="../../Login/Login.html" class="flex items-center space-x-3 px-4 py-2 hover:bg-red-500/20 rounded-lg text-red-300 hover:text-red-200 transition-colors border border-red-500/30">
-    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-    <span class="font-medium text-sm">Logout</span>
-  </a>
-</div>
+<head>
+  <link rel="icon" type="image/png" href="/assets/jeevan_setu_logo.png">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>EWS Analytics &amp; Clinical Risk Monitoring — Jeevan Setu Admin</title>
+  <style>
+    @layer base {
 
-</aside><div class="w-full pl-64"><header class="fixed top-0 right-0 h-16 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-margin-desktop left-64"><div class="flex-1 max-w-xl"><div class="relative flex items-center bg-surface-container-low rounded-full px-md py-xs border border-outline-variant/30 hover:border-outline/50 transition-colors"><span class="material-symbols-outlined text-outline">search</span><input class="bg-transparent border-none focus:ring-0 w-full ml-sm text-body-sm text-on-surface outline-none" placeholder="Search patient ID, bed number or records..." type="text"></div></div><div class="flex items-center gap-lg"><button class="relative p-sm rounded-full text-on-surface-variant hover:bg-surface-variant/20 transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span></button><div class="flex items-center gap-md pl-lg border-l border-outline-variant/30"><div class="text-right hidden sm:block"><p class="font-label-md text-label-md text-on-surface">System Administrator</p><p class="font-label-sm text-label-sm text-on-surface-variant">Administrator</p></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary">person</span></div></div></div></header><main class="relative pt-16 bg-background min-h-screen"><div class="flex flex-col w-full px-margin-desktop py-lg space-y-xl">
-<div class="flex items-center justify-between">
-<div>
-<h1 class="font-headline-lg text-headline-lg text-on-background m-0">EWS Analytics</h1>
-<p class="font-body-md text-body-md text-on-surface-variant m-0 mt-sm">Real-time Early Warning Score distribution and clinical response metrics.</p>
-</div>
-<div class="flex items-center space-x-md">
-<div class="flex bg-surface-container-low rounded-lg p-base shadow-sm">
-<button class="px-md py-sm rounded-md bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors shadow-sm">Last 24h</button>
-<button class="px-md py-sm rounded-md text-on-surface hover:bg-surface-variant/50 font-label-md text-label-md transition-colors">7 Days</button>
-<button class="px-md py-sm rounded-md text-on-surface hover:bg-surface-variant/50 font-label-md text-label-md transition-colors">30 Days</button>
-</div>
-<div class="relative">
-<select class="appearance-none bg-surface-container-low text-on-surface font-label-md text-label-md py-sm pl-md pr-xl rounded-lg shadow-sm outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
-<option>All Wards</option>
-<option>ICU - North</option>
-<option>HDU - East</option>
-<option>General - South</option>
-</select>
-<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">arrow_drop_down</span>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
-<div class="bg-surface-container rounded-xl p-lg shadow-md flex flex-col justify-between relative overflow-hidden group">
-<div class="absolute -right-8 -top-8 w-32 h-32 bg-error-container/40 rounded-full blur-2xl group-hover:bg-error-container/60 transition-colors duration-500"></div>
-<div class="relative z-10 flex items-start justify-between">
-<div>
-<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Critical Risk (EWS ≥ 7)</h3>
-<div class="font-display text-display text-on-surface">24</div>
-</div>
-<div class="bg-error-container text-on-error-container px-sm py-xs rounded-md flex items-center space-x-xs">
-<span class="material-symbols-outlined text-sm">trending_up</span>
-<span class="font-label-sm text-label-sm">+12%</span>
-</div>
-</div>
-<div class="relative z-10 mt-md">
-<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-error w-3/4 rounded-full"></div>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-sm">18 patients require immediate review</p>
-</div>
-</div>
-<div class="bg-surface-container rounded-xl p-lg shadow-md flex flex-col justify-between relative overflow-hidden group">
-<div class="absolute -right-8 -top-8 w-32 h-32 bg-secondary-container/40 rounded-full blur-2xl group-hover:bg-secondary-container/60 transition-colors duration-500"></div>
-<div class="relative z-10 flex items-start justify-between">
-<div>
-<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Avg. Time to Intervention</h3>
-<div class="font-display text-display text-on-surface">14<span class="font-headline-md text-headline-md text-on-surface-variant ml-xs">min</span></div>
-</div>
-<div class="bg-tertiary-container text-on-tertiary-container px-sm py-xs rounded-md flex items-center space-x-xs">
-<span class="material-symbols-outlined text-sm">trending_down</span>
-<span class="font-label-sm text-label-sm">-2.5m</span>
-</div>
-</div>
-<div class="relative z-10 mt-md flex items-center space-x-sm text-on-surface-variant font-body-sm text-body-sm">
-<span class="material-symbols-outlined text-outline">timer</span>
-<span>Target: &lt; 15 min</span>
-</div>
-</div>
-<div class="bg-surface-container rounded-xl p-lg shadow-md flex flex-col justify-between relative overflow-hidden group">
-<div class="absolute -right-8 -top-8 w-32 h-32 bg-primary-container/20 rounded-full blur-2xl group-hover:bg-primary-container/40 transition-colors duration-500"></div>
-<div class="relative z-10 flex items-start justify-between">
-<div>
-<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Clinical Escalations</h3>
-<div class="font-display text-display text-on-surface">89</div>
-</div>
-</div>
-<div class="relative z-10 mt-md">
-<div class="flex justify-between items-center mb-xs">
-<span class="font-body-sm text-body-sm text-on-surface-variant">ICU Transfers</span>
-<span class="font-label-sm text-label-sm text-on-surface">12</span>
-</div>
-<div class="flex justify-between items-center mb-xs">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Physician Consults</span>
-<span class="font-label-sm text-label-sm text-on-surface">45</span>
-</div>
-<div class="flex justify-between items-center">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Rapid Response</span>
-<span class="font-label-sm text-label-sm text-on-surface">32</span>
-</div>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
-<div class="lg:col-span-2 bg-surface rounded-xl shadow-md p-lg">
-<div class="flex items-center justify-between mb-lg border-b border-surface-variant/50 pb-md">
-<div>
-<h2 class="font-headline-sm text-headline-sm text-on-surface">EWS Trends by Ward</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Hourly average score fluctuation</p>
-</div>
-<div class="flex space-x-md">
-<div class="flex items-center space-x-xs"><div class="w-3 h-3 rounded-full bg-error"></div><span class="font-label-sm text-label-sm text-on-surface-variant">ICU</span></div>
-<div class="flex items-center space-x-xs"><div class="w-3 h-3 rounded-full bg-secondary"></div><span class="font-label-sm text-label-sm text-on-surface-variant">HDU</span></div>
-<div class="flex items-center space-x-xs"><div class="w-3 h-3 rounded-full bg-tertiary"></div><span class="font-label-sm text-label-sm text-on-surface-variant">General</span></div>
-</div>
-</div>
-<div class="relative h-72 w-full">
-<svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 800 300">
-<defs>
-<linearGradient id="gradError" x1="0" x2="0" y1="0" y2="1">
-<stop offset="0%" stop-color="#ba1a1a" stop-opacity="0.2"></stop>
-<stop offset="100%" stop-color="#ba1a1a" stop-opacity="0"></stop>
-</linearGradient>
-</defs>
-<!-- Grid Lines -->
-<g class="text-surface-variant" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1">
-<line x1="40" x2="780" y1="20" y2="20"></line>
-<line x1="40" x2="780" y1="80" y2="80"></line>
-<line x1="40" x2="780" y1="140" y2="140"></line>
-<line x1="40" x2="780" y1="200" y2="200"></line>
-<line x1="40" x2="780" y1="260" y2="260"></line>
-</g>
-<!-- Y-Axis Labels -->
-<g class="text-on-surface-variant font-label-sm text-[10px]" fill="currentColor" text-anchor="end">
-<text x="30" y="24">10</text>
-<text x="30" y="84">8</text>
-<text x="30" y="144">6</text>
-<text x="30" y="204">4</text>
-<text x="30" y="264">2</text>
-</g>
-<!-- X-Axis Labels -->
-<g class="text-on-surface-variant font-label-sm text-[10px]" fill="currentColor" text-anchor="middle">
-<text x="40" y="280">00:00</text>
-<text x="160" y="280">04:00</text>
-<text x="280" y="280">08:00</text>
-<text x="400" y="280">12:00</text>
-<text x="520" y="280">16:00</text>
-<text x="640" y="280">20:00</text>
-<text x="780" y="280">Now</text>
-</g>
-<!-- Area -->
-<path d="M40,100 Q160,80 280,120 T520,60 T780,90 L780,260 L40,260 Z" fill="url(#gradError)"></path>
-<!-- Lines -->
-<path class="drop-shadow-md" d="M40,100 Q160,80 280,120 T520,60 T780,90" fill="none" stroke="#ba1a1a" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
-<path class="drop-shadow-sm" d="M40,180 Q160,190 280,160 T520,180 T780,150" fill="none" stroke="#006591" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-<path d="M40,220 Q160,240 280,210 T520,230 T780,200" fill="none" opacity="0.6" stroke="#46566c" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-<!-- Data Points (ICU) -->
-<circle cx="280" cy="120" fill="#ba1a1a" r="4" stroke="#fff" stroke-width="2"></circle>
-<circle cx="520" cy="60" fill="#ba1a1a" r="4" stroke="#fff" stroke-width="2"></circle>
-<circle cx="780" cy="90" fill="#ba1a1a" r="4" stroke="#fff" stroke-width="2"></circle>
-</svg>
-</div>
-</div>
-<div class="bg-surface-container rounded-xl shadow-md p-lg flex flex-col">
-<div class="flex items-center justify-between mb-lg border-b border-surface-variant/50 pb-md">
-<div>
-<h2 class="font-headline-sm text-headline-sm text-on-surface">Risk Heatmap</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Current patient acuity distribution</p>
-</div>
-</div>
-<div class="flex-1 flex flex-col justify-center">
-<div class="grid grid-cols-5 gap-xs mb-md">
-<!-- Low Risk -->
-<div class="col-span-5 flex items-center mb-sm">
-<div class="w-16 font-label-sm text-label-sm text-on-surface-variant">Low (0-4)</div>
-<div class="flex-1 flex gap-xs ml-sm">
-<div class="h-8 flex-1 bg-surface-variant rounded-sm hover:scale-[1.02] transition-transform cursor-pointer relative group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-sm py-xs rounded font-label-sm text-[10px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20">Gen-S: 42 pts</div>
-</div>
-<div class="h-8 flex-1 bg-surface-variant/80 rounded-sm hover:scale-[1.02] transition-transform cursor-pointer"></div>
-<div class="h-8 flex-1 bg-surface-variant/60 rounded-sm hover:scale-[1.02] transition-transform cursor-pointer"></div>
-<div class="h-8 flex-1 bg-surface-variant/40 rounded-sm hover:scale-[1.02] transition-transform cursor-pointer"></div>
-</div>
-<div class="w-8 text-right font-label-md text-label-md text-on-surface ml-sm">68%</div>
-</div>
-<!-- Medium Risk -->
-<div class="col-span-5 flex items-center mb-sm">
-<div class="w-16 font-label-sm text-label-sm text-on-surface-variant">Med (5-6)</div>
-<div class="flex-1 flex gap-xs ml-sm">
-<div class="h-8 flex-[0.8] bg-secondary/30 rounded-sm hover:scale-[1.02] transition-transform cursor-pointer relative group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-sm py-xs rounded font-label-sm text-[10px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20">HDU-E: 18 pts</div>
-</div>
-<div class="h-8 flex-[0.6] bg-secondary/50 rounded-sm hover:scale-[1.02] transition-transform cursor-pointer"></div>
-<div class="h-8 flex-[0.2] bg-secondary/70 rounded-sm hover:scale-[1.02] transition-transform cursor-pointer"></div>
-</div>
-<div class="w-8 text-right font-label-md text-label-md text-on-surface ml-sm">24%</div>
-</div>
-<!-- High Risk -->
-<div class="col-span-5 flex items-center">
-<div class="w-16 font-label-sm text-label-sm text-error">High (7+)</div>
-<div class="flex-1 flex gap-xs ml-sm">
-<div class="h-8 flex-[0.3] bg-error/40 rounded-sm hover:scale-[1.02] transition-transform cursor-pointer"></div>
-<div class="h-8 flex-[0.4] bg-error/70 rounded-sm hover:scale-[1.02] transition-transform cursor-pointer relative group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-sm py-xs rounded font-label-sm text-[10px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20">ICU-N: 12 pts</div>
-</div>
-<div class="h-8 flex-[0.1] bg-error rounded-sm hover:scale-[1.02] transition-transform cursor-pointer shadow-[0_0_8px_rgba(186,26,26,0.6)]"></div>
-</div>
-<div class="w-8 text-right font-label-md text-label-md text-error ml-sm">8%</div>
-</div>
-</div>
-<div class="mt-auto pt-md border-t border-surface-variant/50">
-<button class="w-full py-sm rounded-lg border border-outline-variant text-on-surface font-label-md text-label-md hover:bg-surface-variant/20 transition-colors flex justify-center items-center gap-xs">
-<span class="material-symbols-outlined text-sm">visibility</span> View Detail Matrix
-            </button>
-</div>
-</div>
-</div>
-</div>
-</div></main></div>
-<script src="../admin_navigation.js"></script>
-</body></html>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #0b1120;
+        color: #f1f5f9;
+      }
+
+      body {
+        overscroll-behavior: auto;
+      }
+
+      main> :first-child {
+        margin-top: 0 !important;
+      }
+
+      main> :last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+
+    .sidebar-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="/auto_refresh_manager.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            display: ["Poppins", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-[#0b1120] font-sans text-slate-100 antialiased">
+
+  <!-- Sidebar (Standardized by admin_navigation.js) -->
+  <aside
+    class="fixed left-0 top-0 w-64 bg-[#0a1931] text-white flex flex-col flex-shrink-0 h-screen overflow-y-auto z-50 sidebar-transition"
+    data-purpose="sidebar">
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="pl-64 flex flex-col min-h-screen min-w-0">
+    <header class="sticky top-0 z-40 h-16 bg-[#111827] border-b border-slate-800"></header>
+
+    <main class="flex-1 bg-[#0b1120]">
+      <div class="px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6 max-w-[1600px] mx-auto w-full">
+
+        <!-- Page Header & Filters -->
+        <section class="bg-[#111827] border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-lg flex flex-col gap-4">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <span
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/25">
+                  <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                  CLINICAL RISK TELEMETRY
+                </span>
+                <span id="ews-last-updated" class="text-xs text-slate-400 font-mono">Last updated: --:--:--</span>
+              </div>
+              <h1 class="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                EWS Analytics &amp; Clinical Risk Monitoring
+              </h1>
+              <p class="text-xs sm:text-sm text-slate-400">
+                Real-time Early Warning Score distribution, ward risk trends, escalation activity, and clinical response
+                performance.
+              </p>
+            </div>
+
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <button id="btn-refresh-ews" type="button" onclick="fetchEwsAnalytics(true)"
+                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50">
+                <span id="icon-refresh-ews" class="material-symbols-outlined text-[18px] text-cyan-400">refresh</span>
+                <span>Refresh</span>
+              </button>
+              <button id="btn-export-ews" type="button" onclick="exportEwsCsv()"
+                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition-colors cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">download</span>
+                <span>Export CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800">
+            <div class="flex items-center gap-1.5 flex-wrap" role="group" aria-label="Time Range">
+              <button type="button" data-range="24h" onclick="setTimeRange('24h')"
+                class="range-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#0b1120] text-slate-300 border border-slate-700 hover:border-slate-500 cursor-pointer">Last
+                24h</button>
+              <button type="button" data-range="7d" onclick="setTimeRange('7d')"
+                class="range-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500 text-slate-950 cursor-pointer">Last
+                7 Days</button>
+              <button type="button" data-range="30d" onclick="setTimeRange('30d')"
+                class="range-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#0b1120] text-slate-300 border border-slate-700 hover:border-slate-500 cursor-pointer">Last
+                30 Days</button>
+              <button type="button" data-range="custom" onclick="setTimeRange('custom')"
+                class="range-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#0b1120] text-slate-300 border border-slate-700 hover:border-slate-500 cursor-pointer">Custom</button>
+            </div>
+
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <div id="custom-date-inputs" class="hidden flex items-center gap-2 flex-wrap">
+                <input id="ews-start-date" type="date" aria-label="Start date"
+                  class="bg-[#0b1120] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 outline-none focus:border-cyan-400">
+                <span class="text-xs text-slate-400">to</span>
+                <input id="ews-end-date" type="date" aria-label="End date"
+                  class="bg-[#0b1120] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 outline-none focus:border-cyan-400">
+                <button type="button" onclick="applyCustomDateRange()"
+                  class="px-3 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 text-xs font-semibold cursor-pointer">Apply</button>
+              </div>
+
+              <select id="ews-ward-filter" onchange="onWardFilterChange()" aria-label="Filter by ward"
+                class="bg-[#0b1120] border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-100 outline-none focus:border-cyan-400">
+                <option value="all">All Wards</option>
+                <option value="ICU">ICU (All)</option>
+                <option value="HDU">HDU (All)</option>
+                <option value="General">General (All)</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- Error Banner -->
+        <div id="ews-error-banner"
+          class="hidden bg-rose-950/50 border border-rose-500/40 text-rose-200 rounded-xl px-4 py-3 flex items-center justify-between gap-4"
+          role="alert">
+          <div class="flex items-center gap-2 text-xs sm:text-sm">
+            <span class="material-symbols-outlined text-rose-400">error</span>
+            <span id="ews-error-text">Unable to retrieve EWS analytics.</span>
+          </div>
+          <button type="button" onclick="fetchEwsAnalytics(true)"
+            class="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 text-xs font-semibold border border-rose-500/30 cursor-pointer">
+            Retry
+          </button>
+        </div>
+
+        <!-- 5 KPI Cards -->
+        <section aria-label="EWS Key Metrics" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <!-- 1. High-Risk Patients -->
+          <div class="bg-[#111827] border border-slate-800 rounded-2xl p-4 flex flex-col justify-between gap-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">High-Risk (EWS &ge; 5)</span>
+              <span class="w-8 h-8 rounded-lg bg-rose-500/15 text-rose-400 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[18px]">warning</span>
+              </span>
+            </div>
+            <div>
+              <span id="kpi-high-risk" class="font-display text-3xl font-bold text-rose-400">--</span>
+              <p id="kpi-high-risk-sub" class="text-[11px] text-slate-400 mt-0.5">-- critical (&ge;7) · -- high (5-6)
+              </p>
+            </div>
+          </div>
+
+          <!-- 2. Average EWS Score -->
+          <div class="bg-[#111827] border border-slate-800 rounded-2xl p-4 flex flex-col justify-between gap-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Average EWS Score</span>
+              <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[18px]">analytics</span>
+              </span>
+            </div>
+            <div>
+              <span id="kpi-avg-ews" class="font-display text-3xl font-bold text-white">--</span>
+              <p id="kpi-avg-ews-sub" class="text-[11px] text-slate-400 mt-0.5">ICU -- · HDU -- · Gen --</p>
+            </div>
+          </div>
+
+          <!-- 3. Clinical Escalations -->
+          <div class="bg-[#111827] border border-slate-800 rounded-2xl p-4 flex flex-col justify-between gap-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Clinical Escalations</span>
+              <span class="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-400 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[18px]">notifications_active</span>
+              </span>
+            </div>
+            <div>
+              <span id="kpi-escalations" class="font-display text-3xl font-bold text-white">--</span>
+              <p id="kpi-escalations-sub" class="text-[11px] text-slate-400 mt-0.5">-- alerts · -- decisions</p>
+            </div>
+          </div>
+
+          <!-- 4. Avg. Alert Response Time -->
+          <div class="bg-[#111827] border border-slate-800 rounded-2xl p-4 flex flex-col justify-between gap-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Avg. Alert Ack Time</span>
+              <span class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[18px]">timer</span>
+              </span>
+            </div>
+            <div>
+              <span id="kpi-response-time" class="font-display text-3xl font-bold text-white">--</span>
+              <p id="kpi-response-sub" class="text-[11px] text-slate-400 mt-0.5">Alert creation to acknowledgement</p>
+            </div>
+          </div>
+
+          <!-- 5. Patients Requiring Review -->
+          <div class="bg-[#111827] border border-slate-800 rounded-2xl p-4 flex flex-col justify-between gap-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Requiring Review</span>
+              <span class="w-8 h-8 rounded-lg bg-indigo-500/15 text-indigo-400 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[18px]">clinical_notes</span>
+              </span>
+            </div>
+            <div>
+              <span id="kpi-review-count" class="font-display text-3xl font-bold text-white">--</span>
+              <p class="text-[11px] text-slate-400 mt-0.5">EWS &ge; 5 or unacked alerts</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Trends & Risk Distribution Row -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <!-- EWS Trends by Ward -->
+          <div class="lg:col-span-8 bg-[#111827] border border-slate-800 rounded-2xl p-5 sm:p-6 flex flex-col gap-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 class="font-display text-base sm:text-lg font-bold text-white">EWS Trends by Ward</h2>
+                <p class="text-xs text-slate-400">Average recorded Early Warning Score over the selected period.</p>
+              </div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <button type="button" onclick="toggleSeries('ICU')" id="toggle-ICU"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30 cursor-pointer">
+                  <span class="w-2 h-2 rounded-full bg-rose-400"></span>ICU
+                </button>
+                <button type="button" onclick="toggleSeries('HDU')" id="toggle-HDU"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-sky-500/15 text-sky-300 border border-sky-500/30 cursor-pointer">
+                  <span class="w-2 h-2 rounded-full bg-sky-400"></span>HDU
+                </button>
+                <button type="button" onclick="toggleSeries('General')" id="toggle-General"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 cursor-pointer">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>General
+                </button>
+              </div>
+            </div>
+
+            <div id="ews-trend-chart-wrap"
+              class="relative w-full h-64 bg-[#0b1120] border border-slate-800 rounded-xl p-3">
+              <div id="ews-trend-tooltip"
+                class="hidden pointer-events-none absolute z-20 bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-[11px] text-slate-100 shadow-xl">
+              </div>
+              <div id="ews-trend-svg-container"
+                class="w-full h-full flex items-center justify-center text-xs text-slate-500">
+                Loading trend data...
+              </div>
+            </div>
+          </div>
+
+          <!-- Risk Distribution Visualization -->
+          <div class="lg:col-span-4 bg-[#111827] border border-slate-800 rounded-2xl p-5 sm:p-6 flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="font-display text-base sm:text-lg font-bold text-white">Risk Distribution</h2>
+                <p class="text-xs text-slate-400">Existing EWS threshold tiers</p>
+              </div>
+              <span id="risk-total-patients" class="text-xs font-mono text-cyan-400">-- patients</span>
+            </div>
+            <div id="risk-distribution-bars" class="flex flex-col gap-3 flex-1 justify-center">
+              <p class="text-xs text-slate-500 text-center py-8">Loading risk distribution...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Acuity by Ward, Escalations & Response Analytics -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- Patient Acuity Distribution by Ward -->
+          <div class="bg-[#111827] border border-slate-800 rounded-2xl p-5 flex flex-col gap-4">
+            <div>
+              <h2 class="font-display text-base font-bold text-white">Acuity by Ward</h2>
+              <p class="text-xs text-slate-400">Low (0-2) · Moderate (3-4) · High/Crit (&ge;5)</p>
+            </div>
+            <div id="acuity-by-ward-container" class="flex flex-col gap-3">
+              <p class="text-xs text-slate-500 py-6 text-center">Loading ward acuity...</p>
+            </div>
+          </div>
+
+          <!-- Clinical Escalation Analytics -->
+          <div class="bg-[#111827] border border-slate-800 rounded-2xl p-5 flex flex-col gap-4">
+            <div>
+              <h2 class="font-display text-base font-bold text-white">Clinical Escalation Breakdown</h2>
+              <p class="text-xs text-slate-400">Alerts &amp; transfer/review decisions in selected period.</p>
+            </div>
+            <div id="escalation-analytics-container" class="flex flex-col gap-2.5 text-xs">
+              <p class="text-xs text-slate-500 py-6 text-center">Loading escalations...</p>
+            </div>
+          </div>
+
+          <!-- Response & Intervention Analytics -->
+          <div class="bg-[#111827] border border-slate-800 rounded-2xl p-5 flex flex-col gap-4">
+            <div>
+              <h2 class="font-display text-base font-bold text-white">Response &amp; Intervention Times</h2>
+              <p class="text-xs text-slate-400">Alert-to-acknowledgement vs decision completion.</p>
+            </div>
+            <div id="response-analytics-container" class="flex flex-col gap-3 text-xs">
+              <p class="text-xs text-slate-500 py-6 text-center">Loading response times...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- High-Risk Patient Analytics Table -->
+        <section class="bg-[#111827] border border-slate-800 rounded-2xl p-5 sm:p-6 flex flex-col gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+            <div>
+              <h2 class="font-display text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-rose-400 text-[20px]">monitor_heart</span>
+                High-Risk &amp; Review Patient Analytics
+              </h2>
+              <p class="text-xs text-slate-400">Admitted patients with EWS &ge; 5 or unacknowledged clinical alerts.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2.5">
+              <div class="relative w-full sm:w-56">
+                <span
+                  class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[16px]">search</span>
+                <input id="hr-search-input" type="text" placeholder="Search patient, UHID, ward..."
+                  oninput="renderHighRiskTable()"
+                  class="w-full bg-[#0b1120] border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-slate-500 outline-none focus:border-cyan-400">
+              </div>
+              <select id="hr-risk-filter" onchange="renderHighRiskTable()" aria-label="Filter by risk category"
+                class="bg-[#0b1120] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-cyan-400">
+                <option value="all">All Risk Tiers</option>
+                <option value="CRITICAL">Critical (&ge;7)</option>
+                <option value="HIGH">High (5-6)</option>
+                <option value="MEDIUM">Moderate (3-4)</option>
+                <option value="LOW">Low / Normal (&le;2)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="w-full overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400 uppercase text-[11px]">
+                  <th class="py-2.5 px-3">Patient</th>
+                  <th class="py-2.5 px-3">
+                    <button type="button" onclick="sortHighRisk('ward')"
+                      class="inline-flex items-center gap-1 hover:text-cyan-400 cursor-pointer font-semibold">
+                      Ward / Bed <span class="material-symbols-outlined text-[14px]">unfold_more</span>
+                    </button>
+                  </th>
+                  <th class="py-2.5 px-3">
+                    <button type="button" onclick="sortHighRisk('ews')"
+                      class="inline-flex items-center gap-1 hover:text-cyan-400 cursor-pointer font-semibold">
+                      Current EWS <span class="material-symbols-outlined text-[14px]">unfold_more</span>
+                    </button>
+                  </th>
+                  <th class="py-2.5 px-3">Risk Category</th>
+                  <th class="py-2.5 px-3">Unacked Alerts</th>
+                  <th class="py-2.5 px-3 text-right">
+                    <button type="button" onclick="sortHighRisk('time')"
+                      class="inline-flex items-center gap-1 hover:text-cyan-400 cursor-pointer font-semibold">
+                      Last EWS Time <span class="material-symbols-outlined text-[14px]">unfold_more</span>
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="high-risk-tbody" class="divide-y divide-slate-800/70">
+                <tr>
+                  <td colspan="6" class="py-8 text-center text-slate-500">Loading high-risk patient analytics...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- JAVASCRIPT: EWS ANALYTICS CONTROLLER                                -->
+  <!-- =================================================================== -->
+  <script>
+    const EWS_API = '/api/v1/analytics/ews-statistics';
+    let currentRange = '7d';
+    let currentWard = 'all';
+    let wardsPopulated = false;
+    let isFetchingEws = false;
+    let latestPayload = null;
+    let visibleSeries = { ICU: true, HDU: true, General: true };
+    let hrSortField = 'ews';
+    let hrSortDir = 'desc';
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getAuthToken() {
+      if (typeof window.getAdminAuthToken === 'function') {
+        const t = window.getAdminAuthToken();
+        if (t) return t;
+      }
+      return localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || '';
+    }
+
+    function getAuthHeaders(extra = {}) {
+      if (typeof window.getAdminAuthHeaders === 'function') {
+        return window.getAdminAuthHeaders(extra);
+      }
+      const token = getAuthToken();
+      const headers = { 'Content-Type': 'application/json', ...extra };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      return headers;
+    }
+
+    function buildQueryParams() {
+      const p = new URLSearchParams();
+      p.set('range', currentRange);
+      p.set('ward', currentWard);
+      if (currentRange === 'custom') {
+        const s = document.getElementById('ews-start-date')?.value;
+        const e = document.getElementById('ews-end-date')?.value;
+        if (s) p.set('start_date', s);
+        if (e) p.set('end_date', e);
+      }
+      return p.toString();
+    }
+
+    function setTimeRange(rangeKey) {
+      currentRange = rangeKey;
+      document.querySelectorAll('.range-btn').forEach(btn => {
+        const active = btn.getAttribute('data-range') === rangeKey;
+        btn.className = active
+          ? 'range-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500 text-slate-950 cursor-pointer'
+          : 'range-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#0b1120] text-slate-300 border border-slate-700 hover:border-slate-500 cursor-pointer';
+      });
+      const customWrap = document.getElementById('custom-date-inputs');
+      if (rangeKey === 'custom') {
+        customWrap.classList.remove('hidden');
+        return;
+      }
+      customWrap.classList.add('hidden');
+      fetchEwsAnalytics(true);
+    }
+
+    function applyCustomDateRange() {
+      const s = document.getElementById('ews-start-date').value;
+      const e = document.getElementById('ews-end-date').value;
+      if (!s || !e) return;
+      fetchEwsAnalytics(true);
+    }
+
+    function onWardFilterChange() {
+      currentWard = document.getElementById('ews-ward-filter').value;
+      fetchEwsAnalytics(true);
+    }
+
+    function toggleSeries(seriesKey) {
+      visibleSeries[seriesKey] = !visibleSeries[seriesKey];
+      const btn = document.getElementById(`toggle-${seriesKey}`);
+      if (btn) {
+        btn.classList.toggle('opacity-40', !visibleSeries[seriesKey]);
+      }
+      if (latestPayload) renderTrendChart(latestPayload.ews_trends);
+    }
+
+    async function fetchEwsAnalytics(manual = false) {
+      if (isFetchingEws) return;
+      isFetchingEws = true;
+      const icon = document.getElementById('icon-refresh-ews');
+      const btn = document.getElementById('btn-refresh-ews');
+      if (icon) icon.classList.add('animate-spin');
+      if (manual && btn) btn.disabled = true;
+
+      const errBanner = document.getElementById('ews-error-banner');
+      try {
+        const res = await fetch(`${EWS_API}?${buildQueryParams()}`, { headers: getAuthHeaders() });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        if (!json.success || !json.data) throw new Error('Invalid analytics response');
+
+        latestPayload = json.data;
+        if (errBanner) errBanner.classList.add('hidden');
+
+        populateWardDropdown(latestPayload.wards || []);
+        renderKpis(latestPayload);
+        renderTrendChart(latestPayload.ews_trends);
+        renderRiskDistribution(latestPayload);
+        renderAcuityByWard(latestPayload.acuity_by_ward || []);
+        renderEscalationAnalytics(latestPayload.escalation_analytics || {});
+        renderResponseAnalytics(latestPayload.response_analytics || {});
+        renderHighRiskTable();
+
+        const ts = document.getElementById('ews-last-updated');
+        if (ts) ts.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+      } catch (err) {
+        console.error('[EWS Analytics] Fetch failed:', err);
+        if (errBanner) {
+          document.getElementById('ews-error-text').textContent = `Unable to retrieve EWS analytics (${err.message}).`;
+          errBanner.classList.remove('hidden');
+        }
+      } finally {
+        isFetchingEws = false;
+        if (btn) btn.disabled = false;
+        setTimeout(() => { if (icon) icon.classList.remove('animate-spin'); }, 350);
+      }
+    }
+
+    function populateWardDropdown(wards) {
+      if (wardsPopulated || !wards.length) return;
+      const sel = document.getElementById('ews-ward-filter');
+      if (!sel) return;
+      const base = [
+        '<option value="all">All Wards</option>',
+        '<option value="ICU">ICU (All)</option>',
+        '<option value="HDU">HDU (All)</option>',
+        '<option value="General">General (All)</option>'
+      ];
+      wards.forEach(w => {
+        base.push(`<option value="${w.ward_id}">${escapeHtml(w.name)} (${escapeHtml(w.ward_type)})</option>`);
+      });
+      sel.innerHTML = base.join('');
+      sel.value = currentWard;
+      wardsPopulated = true;
+    }
+
+    function renderKpis(data) {
+      const k = data.kpis || {};
+      const wAvg = data.ward_average_ews || {};
+
+      document.getElementById('kpi-high-risk').textContent = k.high_risk_patients ?? 0;
+      document.getElementById('kpi-high-risk-sub').textContent =
+        `${k.critical_only_count ?? 0} critical (>=7) · ${k.high_only_count ?? 0} high (5-6)`;
+
+      document.getElementById('kpi-avg-ews').textContent = Number(k.average_ews ?? data.hospital_average_ews ?? 0).toFixed(1);
+      document.getElementById('kpi-avg-ews-sub').textContent =
+        `ICU ${Number(wAvg.ICU ?? 0).toFixed(1)} · HDU ${Number(wAvg.HDU ?? 0).toFixed(1)} · Gen ${Number(wAvg.General ?? 0).toFixed(1)}`;
+
+      document.getElementById('kpi-escalations').textContent = k.clinical_escalations ?? 0;
+      document.getElementById('kpi-escalations-sub').textContent =
+        `${k.alerts_count ?? 0} alerts · ${k.decisions_count ?? 0} decisions`;
+
+      const respMin = k.avg_response_time_minutes;
+      document.getElementById('kpi-response-time').textContent = respMin !== null && respMin !== undefined ? `${respMin}m` : 'N/A';
+      document.getElementById('kpi-response-sub').textContent =
+        respMin !== null && respMin !== undefined
+          ? 'Alert created to acknowledged'
+          : 'No acknowledged alerts in range';
+
+      document.getElementById('kpi-review-count').textContent = k.patients_requiring_review ?? 0;
+    }
+
+    function renderTrendChart(trends) {
+      const wrap = document.getElementById('ews-trend-svg-container');
+      const tooltip = document.getElementById('ews-trend-tooltip');
+      if (!wrap) return;
+
+      const labels = trends?.labels || [];
+      const series = trends?.series || {};
+      if (labels.length === 0) {
+        wrap.innerHTML = '<div class="text-center text-slate-500"><span class="material-symbols-outlined text-3xl block mb-1">show_chart</span><p class="text-xs">No historical EWS records found for this date range and ward filter.</p></div>';
+        return;
+      }
+
+      const W = 720, H = 210, padL = 36, padR = 16, padT = 14, padB = 28;
+      const plotW = W - padL - padR;
+      const plotH = H - padT - padB;
+      const maxY = 12;
+
+      const xFor = (i) => labels.length === 1 ? padL + plotW / 2 : padL + (i / (labels.length - 1)) * plotW;
+      const yFor = (v) => padT + plotH - (Math.min(Math.max(v, 0), maxY) / maxY) * plotH;
+
+      let gridLines = '';
+      [0, 3, 6, 9, 12].forEach(yv => {
+        const y = yFor(yv);
+        gridLines += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#1e293b" stroke-dasharray="3 3"/>`;
+        gridLines += `<text x="${padL - 8}" y="${y + 3}" fill="#64748b" font-size="10" text-anchor="end">${yv}</text>`;
+      });
+
+      const colors = { ICU: '#fb7185', HDU: '#38bdf8', General: '#34d399' };
+      let pathsHtml = '';
+      let dotsHtml = '';
+
+      ['ICU', 'HDU', 'General'].forEach(key => {
+        if (!visibleSeries[key]) return;
+        const vals = series[key] || [];
+        const pts = [];
+        vals.forEach((v, idx) => {
+          if (v !== null && v !== undefined) {
+            pts.push({ x: xFor(idx), y: yFor(v), v, label: labels[idx], key });
+          }
+        });
+        if (pts.length > 1) {
+          const d = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+          pathsHtml += `<path d="${d}" fill="none" stroke="${colors[key]}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+        }
+        pts.forEach(p => {
+          dotsHtml += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="${colors[key]}" stroke="#0b1120" stroke-width="1.5" class="trend-dot cursor-pointer" data-series="${key}" data-label="${escapeHtml(p.label)}" data-val="${p.v}"/>`;
+        });
+      });
+
+      const step = Math.max(1, Math.ceil(labels.length / 6));
+      let xLabels = '';
+      labels.forEach((lbl, idx) => {
+        if (idx % step === 0 || idx === labels.length - 1) {
+          const shortLbl = lbl.length > 10 ? lbl.slice(5) : lbl.slice(5);
+          xLabels += `<text x="${xFor(idx)}" y="${H - 6}" fill="#64748b" font-size="10" text-anchor="middle">${escapeHtml(shortLbl)}</text>`;
+        }
+      });
+
+      wrap.innerHTML = `
+        <svg viewBox="0 0 ${W} ${H}" class="w-full h-full overflow-visible" role="img" aria-label="EWS Trends by Ward Line Chart">
+          ${gridLines}
+          ${pathsHtml}
+          ${dotsHtml}
+          ${xLabels}
+        </svg>
+      `;
+
+      wrap.querySelectorAll('.trend-dot').forEach(dot => {
+        dot.addEventListener('mouseenter', (e) => {
+          if (!tooltip) return;
+          tooltip.innerHTML = `<span class="font-bold">${escapeHtml(dot.dataset.series)}</span> · ${escapeHtml(dot.dataset.label)}: <span class="text-cyan-300 font-bold">${escapeHtml(dot.dataset.val)}</span>`;
+          tooltip.classList.remove('hidden');
+          tooltip.style.left = '12px';
+          tooltip.style.top = '12px';
+        });
+        dot.addEventListener('mouseleave', () => {
+          if (tooltip) tooltip.classList.add('hidden');
+        });
+      });
+    }
+
+    function renderRiskDistribution(data) {
+      const dist = data.risk_distribution || {};
+      const total = data.total_evaluated_patients || 0;
+      document.getElementById('risk-total-patients').textContent = `${total} evaluated`;
+
+      const tiers = [
+        { key: 'CRITICAL', label: 'Critical (>=7)', count: dist.CRITICAL || 0, bar: 'bg-rose-500', text: 'text-rose-400' },
+        { key: 'HIGH', label: 'High (5-6)', count: dist.HIGH || 0, bar: 'bg-orange-400', text: 'text-orange-400' },
+        { key: 'MEDIUM', label: 'Moderate (3-4)', count: dist.MEDIUM || 0, bar: 'bg-amber-400', text: 'text-amber-400' },
+        { key: 'LOW', label: 'Low (1-2)', count: dist.LOW || 0, bar: 'bg-sky-400', text: 'text-sky-400' },
+        { key: 'NORMAL', label: 'Normal (0)', count: dist.NORMAL || 0, bar: 'bg-emerald-400', text: 'text-emerald-400' },
+      ];
+
+      const container = document.getElementById('risk-distribution-bars');
+      if (total === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-500 text-center py-8">No admitted patients evaluated in selection.</p>';
+        return;
+      }
+
+      container.innerHTML = tiers.map(t => {
+        const pct = total > 0 ? Math.round((t.count / total) * 1000) / 10 : 0;
+        return `
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-300 font-medium">${t.label}</span>
+              <span class="font-mono ${t.text} font-bold">${t.count} <span class="text-slate-500 font-normal">(${pct.toFixed(1)}%)</span></span>
+            </div>
+            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div class="h-full ${t.bar} rounded-full transition-all duration-500" style="width:${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderAcuityByWard(items) {
+      const container = document.getElementById('acuity-by-ward-container');
+      if (!container) return;
+      if (!items.length) {
+        container.innerHTML = '<p class="text-xs text-slate-500 py-6 text-center">No ward acuity data available.</p>';
+        return;
+      }
+      container.innerHTML = items.map(w => {
+        const t = w.total || 0;
+        const pL = t ? (w.low / t) * 100 : 0;
+        const pM = t ? (w.moderate / t) * 100 : 0;
+        const pH = t ? (w.high / t) * 100 : 0;
+        return `
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-slate-200">${escapeHtml(w.ward_name)}</span>
+              <span class="text-[11px] text-slate-400 font-mono">L:${w.low} · M:${w.moderate} · H:${w.high}</span>
+            </div>
+            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden flex">
+              <div class="bg-emerald-400 h-full" style="width:${pL}%" title="Low: ${w.low}"></div>
+              <div class="bg-amber-400 h-full" style="width:${pM}%" title="Moderate: ${w.moderate}"></div>
+              <div class="bg-rose-500 h-full" style="width:${pH}%" title="High/Critical: ${w.high}"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderEscalationAnalytics(esc) {
+      const container = document.getElementById('escalation-analytics-container');
+      if (!container) return;
+      const byWard = esc.alerts_by_ward || {};
+      container.innerHTML = `
+        <div class="grid grid-cols-2 gap-2.5">
+          <div class="bg-[#0b1120] border border-slate-800 rounded-xl p-3">
+            <p class="text-slate-400 text-[11px]">Clinical Alerts</p>
+            <p class="text-lg font-bold text-white mt-0.5">${esc.alerts_count ?? 0}</p>
+          </div>
+          <div class="bg-[#0b1120] border border-slate-800 rounded-xl p-3">
+            <p class="text-slate-400 text-[11px]">Decisions Logged</p>
+            <p class="text-lg font-bold text-cyan-400 mt-0.5">${esc.decisions_count ?? 0}</p>
+          </div>
+          <div class="bg-[#0b1120] border border-slate-800 rounded-xl p-3">
+            <p class="text-slate-400 text-[11px]">ICU Transfer Events</p>
+            <p class="text-lg font-bold text-rose-400 mt-0.5">${esc.icu_transfer_escalations ?? 0}</p>
+          </div>
+          <div class="bg-[#0b1120] border border-slate-800 rounded-xl p-3">
+            <p class="text-slate-400 text-[11px]">Physician Reviews</p>
+            <p class="text-lg font-bold text-emerald-400 mt-0.5">${esc.physician_reviews ?? 0}</p>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+          <span>Alerts by Unit:</span>
+          <span class="font-mono text-slate-200">ICU ${byWard.ICU ?? 0} · HDU ${byWard.HDU ?? 0} · Gen ${byWard.General ?? 0}</span>
+        </div>
+      `;
+    }
+
+    function renderResponseAnalytics(resp) {
+      const container = document.getElementById('response-analytics-container');
+      if (!container) return;
+      const fmt = (v) => (v !== null && v !== undefined) ? `${v} min` : 'N/A';
+      const wAck = resp.ward_ack_avg_minutes || {};
+      container.innerHTML = `
+        <div class="bg-[#0b1120] border border-slate-800 rounded-xl p-3 space-y-1">
+          <div class="flex justify-between"><span class="text-slate-400">Alert → Acknowledgement (Avg)</span><span class="font-bold text-cyan-300">${fmt(resp.alert_to_ack_avg_minutes)}</span></div>
+          <div class="flex justify-between"><span class="text-slate-400">Alert → Acknowledgement (Median)</span><span class="font-semibold text-slate-200">${fmt(resp.alert_to_ack_median_minutes)}</span></div>
+          <p class="text-[10px] text-slate-500">Samples: ${resp.alert_ack_samples ?? 0} acknowledged alert(s)</p>
+        </div>
+        <div class="bg-[#0b1120] border border-slate-800 rounded-xl p-3 space-y-1">
+          <div class="flex justify-between"><span class="text-slate-400">Decision Created → Decided (Avg)</span><span class="font-bold text-emerald-300">${fmt(resp.decision_avg_minutes)}</span></div>
+          <div class="flex justify-between"><span class="text-slate-400">Decision Created → Decided (Median)</span><span class="font-semibold text-slate-200">${fmt(resp.decision_median_minutes)}</span></div>
+          <p class="text-[10px] text-slate-500">Samples: ${resp.decision_samples ?? 0} completed decision(s)</p>
+        </div>
+        <div class="pt-1 flex items-center justify-between text-[11px] text-slate-400">
+          <span>Ward Ack Avg:</span>
+          <span class="font-mono text-slate-200">ICU ${fmt(wAck.ICU)} · HDU ${fmt(wAck.HDU)} · Gen ${fmt(wAck.General)}</span>
+        </div>
+      `;
+    }
+
+    function sortHighRisk(field) {
+      if (hrSortField === field) {
+        hrSortDir = hrSortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        hrSortField = field;
+        hrSortDir = field === 'ward' ? 'asc' : 'desc';
+      }
+      renderHighRiskTable();
+    }
+
+    function renderHighRiskTable() {
+      const tbody = document.getElementById('high-risk-tbody');
+      if (!tbody || !latestPayload) return;
+
+      const q = (document.getElementById('hr-search-input')?.value || '').toLowerCase().trim();
+      const tier = document.getElementById('hr-risk-filter')?.value || 'all';
+
+      let rows = [...(latestPayload.high_risk_patients_table || [])];
+      if (tier !== 'all') {
+        rows = rows.filter(r => r.risk_category === tier);
+      }
+      if (q) {
+        rows = rows.filter(r =>
+          `${r.patient_name} ${r.patient_code} ${r.ward_name} ${r.bed_number}`.toLowerCase().includes(q)
+        );
+      }
+
+      const dir = hrSortDir === 'asc' ? 1 : -1;
+      rows.sort((a, b) => {
+        if (hrSortField === 'ews') return (a.ews_score - b.ews_score) * dir;
+        if (hrSortField === 'ward') return String(a.ward_name).localeCompare(String(b.ward_name)) * dir;
+        if (hrSortField === 'time') {
+          return ((a.calculated_at ? Date.parse(a.calculated_at) : 0) - (b.calculated_at ? Date.parse(b.calculated_at) : 0)) * dir;
+        }
+        return 0;
+      });
+
+      if (rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-slate-500">No high-risk or unacknowledged-alert patients match the current filters.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows.map(r => {
+        const badgeCls = r.risk_category === 'CRITICAL'
+          ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+          : r.risk_category === 'HIGH'
+            ? 'bg-orange-500/15 text-orange-300 border-orange-500/30'
+            : 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+        const timeStr = r.calculated_at ? new Date(r.calculated_at).toLocaleString() : 'N/A';
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition-colors">
+            <td class="py-3 px-3">
+              <p class="font-semibold text-white">${escapeHtml(r.patient_name)}</p>
+              <p class="text-[11px] font-mono text-slate-400">${escapeHtml(r.patient_code)}</p>
+            </td>
+            <td class="py-3 px-3 text-slate-200">${escapeHtml(r.ward_name)} · <span class="font-mono text-slate-400">${escapeHtml(r.bed_number)}</span></td>
+            <td class="py-3 px-3 font-display font-bold text-sm text-white">${r.ews_score}</td>
+            <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeCls}">${escapeHtml(r.risk_category)}</span></td>
+            <td class="py-3 px-3 font-mono ${r.unacked_alerts > 0 ? 'text-rose-400 font-bold' : 'text-slate-400'}">${r.unacked_alerts}</td>
+            <td class="py-3 px-3 text-right font-mono text-[11px] text-slate-400">${escapeHtml(timeStr)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function exportEwsCsv() {
+      try {
+        const res = await fetch(`${EWS_API}/export?${buildQueryParams()}`, { headers: getAuthHeaders() });
+        if (!res.ok) throw new Error(`Export failed (${res.status})`);
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `jeevan_setu_ews_analytics_${currentRange}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        console.error('[EWS Export]', err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      async function pollEws() {
+        if (window.AutoRefreshManager && window.AutoRefreshManager.isUserInputActive()) return;
+        await fetchEwsAnalytics(false);
+      }
+
+      if (window.AutoRefreshManager) {
+        window.AutoRefreshManager.start('admin_ews_analytics', pollEws, 5000);
+      } else {
+        pollEws();
+        setInterval(pollEws, 5000);
+      }
+    });
+  </script>
+  <script src="../admin_navigation.js"></script>
+</body>
+
+</html>

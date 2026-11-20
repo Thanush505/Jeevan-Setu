@@ -134,3 +134,20 @@ class BedManagement:
         ORDER BY bm.allocated_at DESC
         """
         return db.execute_query(query, (patient_id,), fetch=True)
+
+    @staticmethod
+    def get_bed_allocation_history(bed_id, limit=10):
+        """Get recent allocation history for a specific bed."""
+        query = """
+        SELECT bm.allocation_id, bm.patient_id, bm.bed_id, bm.ward_id, bm.status,
+               bm.allocated_at, bm.released_at, bm.notes,
+               p.name AS patient_name, p.patient_code,
+               u.full_name AS allocated_by_name
+        FROM bed_management bm
+        LEFT JOIN patients p ON bm.patient_id = p.patient_id
+        LEFT JOIN users u ON bm.allocated_by = u.user_id
+        WHERE bm.bed_id = %s
+        ORDER BY bm.allocated_at DESC
+        LIMIT %s
+        """
+        return db.execute_query(query, (bed_id, int(limit)), fetch=True) or []

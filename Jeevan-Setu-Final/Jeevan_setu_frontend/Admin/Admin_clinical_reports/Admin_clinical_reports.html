@@ -570,16 +570,21 @@
     let currentUnitFilter = 'all';
 
     // Authentication Helper & Auto-Session Sync
-    let cachedAuthToken = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || '';
-
-    function getAuthHeaders() {
-      const token = cachedAuthToken || localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || '';
-      const headers = { 'Content-Type': 'application/json' };
+    function getAuthHeaders(extra = {}) {
+      if (typeof window.getAdminAuthHeaders === 'function') {
+        return window.getAdminAuthHeaders(extra);
+      }
+      const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || '';
+      const headers = { 'Content-Type': 'application/json', ...extra };
       if (token) headers['Authorization'] = `Bearer ${token}`;
       return headers;
     }
 
     async function ensureAuthToken() {
+      if (typeof window.getAdminAuthToken === 'function') {
+        const t = window.getAdminAuthToken();
+        if (t) return t;
+      }
       let token = localStorage.getItem('jeevan_setu_token') || localStorage.getItem('token') || sessionStorage.getItem('jeevan_setu_token');
       return token || '';
     }

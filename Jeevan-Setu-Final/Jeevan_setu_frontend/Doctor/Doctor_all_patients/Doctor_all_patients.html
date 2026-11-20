@@ -297,6 +297,21 @@
             <option>HDU - Cardiac</option>
           </select>
         </div>
+        <!-- Doctor Availability Selector (Active / Inactive) -->
+        <div id="doctor-availability-wrapper" class="border-l pl-2 sm:pl-4 lg:pl-6 flex items-center flex-shrink-0">
+          <div id="doctor-availability-container" class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 shadow-2xs select-none" data-availability="active">
+            <button id="doc-btn-active" type="button" onclick="window.changeDoctorAvailability('active')"
+              class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer shadow-xs bg-emerald-600 text-white border border-emerald-600 focus:outline-none" title="Set working availability to Active">
+              <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+              <span>Active</span>
+            </button>
+            <button id="doc-btn-inactive" type="button" onclick="window.changeDoctorAvailability('inactive')"
+              class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 border border-transparent focus:outline-none" title="Set working availability to Inactive">
+              <span class="w-2 h-2 rounded-full bg-rose-500 hidden"></span>
+              <span>Inactive</span>
+            </button>
+          </div>
+        </div>
         <div class="flex items-center space-x-3 border-l pl-8">
           <div class="text-right">
             <p class="text-sm font-bold"><span id="header-doctor-name" class="doctor-profile-name">Dr. Arjun
@@ -548,30 +563,15 @@
       });
     }
 
-    // Centralized 10-second auto-refresh
+    // Centralized 5-second auto-refresh
     if (window.AutoRefreshManager) {
-      window.AutoRefreshManager.start('doctor_all_patients', refreshDoctorAllPatients, 10000);
+      window.AutoRefreshManager.start('doctor_all_patients', refreshDoctorAllPatients, 5000);
     } else {
       refreshDoctorAllPatients();
-      setInterval(refreshDoctorAllPatients, 10000);
+      setInterval(refreshDoctorAllPatients, 5000);
     }
   </script>
-  EventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          clearTimeout(debounceTimer);
-          refreshDoctorAllPatients(this.value);
-        }
-      });
-    }
-
-    // Centralized 10-second auto-refresh
-    if (window.AutoRefreshManager) {
-      window.AutoRefreshManager.start('doctor_all_patients', refreshDoctorAllPatients, 10000);
-    } else {
-      refreshDoctorAllPatients();
-      setInterval(refreshDoctorAllPatients, 10000);
-    }
-  </script>
+  <script src="/auto_refresh_manager.js"></script>
   <script src="../global_alert_manager.js"></script>
   <script src="../doctor_sidebar.js"></script>
 </body>

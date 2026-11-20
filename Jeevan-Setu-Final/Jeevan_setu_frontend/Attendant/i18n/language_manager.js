@@ -64,8 +64,9 @@
       // Auto-inject/bind any language selector placeholders
       this.bindSelectors();
 
-      // Listen for dynamic DOM additions
+      // Listen for dynamic DOM additions (debounced for optimal performance)
       var self = this;
+      var translateTimer = null;
       if (typeof MutationObserver !== 'undefined') {
         var observer = new MutationObserver(function(mutations) {
           var shouldTranslate = false;
@@ -76,7 +77,10 @@
             }
           }
           if (shouldTranslate) {
-            self.translateDOM();
+            if (translateTimer) clearTimeout(translateTimer);
+            translateTimer = setTimeout(function() {
+              self.translateDOM();
+            }, 60);
           }
         });
         if (document.body) {
@@ -188,6 +192,18 @@
       var elements = root.querySelectorAll('[data-i18n]');
       for (var i = 0; i < elements.length; i++) {
         var el = elements[i];
+
+        // Safety guard: Never reset loaded patient name to Loading...
+        if (el.id === 'attendant-patient-name') {
+          var curText = (el.textContent || '').trim();
+          if (curText && curText !== 'Loading...' && curText !== '...' &&
+              curText !== 'ಲೋಡ್ ಆಗುತ್ತಿದೆ...' && curText !== 'लोड हो रहा है...' &&
+              curText !== 'ஏற்றுகிறது...' && curText !== 'లోడ్ అవుతోంది...' &&
+              curText !== 'ലോഡ് ചെയ്യുന്നു...') {
+            continue;
+          }
+        }
+
         var key = el.getAttribute('data-i18n');
         if (key) {
           var params = {};

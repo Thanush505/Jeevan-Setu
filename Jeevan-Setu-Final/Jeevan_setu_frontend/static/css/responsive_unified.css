@@ -1,0 +1,958 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+/**
+ * responsive_unified.css — Jeevan Setu Intelligent Patient Transfer DSS
+ * Master Responsive Design System for Admin, Doctor & Nurse Portals.
+ * 
+ * Supports:
+ * - Small Mobile (320px–374px)
+ * - Standard Mobile (375px–480px)
+ * - Large Mobile (481px–767px)
+ * - Tablet (768px–1023px)
+ * - Laptop (1024px–1439px)
+ * - Desktop (1440px and above)
+ * 
+ * Guarantees:
+ * 1. Zero horizontal page overflow.
+ * 2. Slide-out navigation drawer with smooth animations and touch targets.
+ * 3. 2-column & 1-column mobile dashboard stat card layouts.
+ * 4. Responsive table containers and mobile card view.
+ * 5. Prominent, touch-friendly Doctor & Nurse Working Availability controls.
+ * 6. Mobile chart auto-scaling without clipping.
+ * 7. Mobile-adapted forms and modals with focus/zoom prevention.
+ * 8. Dark theme preservation and accessibility compliance.
+ */
+
+/* ─────────────────────────────────────────────────────────────
+   1. GLOBAL VIEWPORT & RESET
+   ───────────────────────────────────────────────────────────── */
+html {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  box-sizing: border-box !important;
+}
+
+body {
+  max-width: 100vw !important;
+  min-height: 100vh !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  overscroll-behavior: auto !important;
+  overscroll-behavior-y: auto !important;
+  box-sizing: border-box !important;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* Accessible, modern custom dark scrollbars across portals */
+::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+  display: block !important;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a !important;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155 !important;
+  border-radius: 4px !important;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569 !important;
+}
+* {
+  scrollbar-width: thin !important;
+  scrollbar-color: #334155 #0f172a !important;
+}
+
+/* Enable smooth inertia scrolling on mobile touch devices */
+.overflow-x-auto,
+.overflow-y-auto,
+[data-purpose="table-container"],
+[data-purpose="sidebar"],
+.custom-scrollbar {
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. MOBILE NAVIGATION DRAWERS (TABLET & MOBILE: <= 1024px)
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Hide permanent desktop sidebar and convert into off-canvas drawer */
+  aside[data-purpose="sidebar"],
+  aside.w-64,
+  aside.w-72,
+  #doctor-sidebar,
+  aside {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    z-index: 60 !important;
+    width: 17rem !important;
+    max-width: 85vw !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: none !important;
+  }
+
+  /* Slide-out Drawer Open State */
+  body.sidebar-mobile-open aside[data-purpose="sidebar"],
+  body.sidebar-mobile-open aside.w-64,
+  body.sidebar-mobile-open aside.w-72,
+  body.sidebar-mobile-open #doctor-sidebar,
+  body.sidebar-mobile-open aside {
+    transform: translateX(0) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Main content resets — expand to full viewport width */
+  main,
+  .pl-64, .pl-72, .ml-64, .ml-72,
+  .md\:pl-64, .lg\:pl-64 {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  /* Top headers reset */
+  header.fixed,
+  header.left-64,
+  header.left-72,
+  .left-64, .left-72,
+  header.admin-top-header,
+  header.nurse-top-header {
+    left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Navigation Drawer Links touch sizing */
+  aside a.sidebar-nav-item,
+  aside nav a {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding-top: 0.625rem !important;
+    padding-bottom: 0.625rem !important;
+    touch-action: manipulation;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   3. MULTI-ROW RESPONSIVE HEADER ENGINE (Admin, Doctor, Nurse)
+   ───────────────────────────────────────────────────────────── */
+
+/* Desktop & Laptop Layout (>= 1025px): Pure single horizontal navbar */
+@media (min-width: 1025px) {
+  header.admin-top-header,
+  header.nurse-top-header,
+  header.doctor-top-header,
+  header.portal-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 4rem !important;
+    min-height: 4rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .portal-header-row-1,
+  .doctor-header-row-1,
+  .nurse-header-row-1,
+  .admin-header-row-1 {
+    width: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+  }
+
+  .portal-header-row-2,
+  .doctor-header-row-2,
+  .nurse-header-row-2,
+  .admin-header-row-2 {
+    width: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    margin-left: auto !important;
+    flex: 0 1 auto !important;
+  }
+
+  .portal-header-row-3,
+  .doctor-header-row-3,
+  .nurse-header-row-3,
+  .admin-header-row-3 {
+    display: none !important;
+  }
+
+  .doctor-header-mobile-profile,
+  .nurse-header-mobile-profile,
+  .admin-header-mobile-profile,
+  .portal-header-mobile-profile {
+    display: none !important;
+  }
+
+  .doctor-header-desktop-profile,
+  .nurse-header-desktop-profile,
+  .admin-header-desktop-profile,
+  .portal-header-desktop-profile {
+    display: flex !important;
+  }
+
+  #admin-search-container,
+  #nurse-search-container {
+    max-width: 11rem !important;
+    min-width: 6rem !important;
+    flex: 0 1 11rem !important;
+  }
+}
+
+/* Mobile & Tablet Layout (<= 1024px): Structured Multi-Row Layout */
+@media (max-width: 1024px) {
+  header.admin-top-header,
+  header.nurse-top-header,
+  header.doctor-top-header,
+  header.portal-header,
+  header {
+    height: auto !important;
+    min-height: auto !important;
+    padding: 0.5rem 0.75rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.375rem !important;
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 40 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Row 1: [☰ Menu] [Logo / Dashboard Title] [Profile Avatar] */
+  .portal-header-row-1,
+  .doctor-header-row-1,
+  .nurse-header-row-1,
+  .admin-header-row-1 {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    min-height: 2.25rem !important;
+  }
+
+  /* Row 2: [Ward Selector / Search] [Active / Inactive Controls] [Notifications / Sync] */
+  .portal-header-row-2,
+  .doctor-header-row-2,
+  .nurse-header-row-2,
+  .admin-header-row-2 {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 0.375rem !important;
+    min-height: 2.25rem !important;
+  }
+
+  /* Row 3: Secondary info (Name • Department • Online) */
+  .portal-header-row-3,
+  .doctor-header-row-3,
+  .nurse-header-row-3,
+  .admin-header-row-3 {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 0.6875rem !important;
+    padding-top: 0.25rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  header.nurse-top-header .nurse-header-row-3 {
+    border-top: 1px solid rgba(226, 232, 240, 0.9) !important;
+    color: #64748b !important;
+  }
+
+  header.nurse-top-header #nurse-availability-container {
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  /* Hide desktop profile block on mobile */
+  .doctor-header-desktop-profile,
+  .nurse-header-desktop-profile,
+  .admin-header-desktop-profile,
+  .portal-header-desktop-profile {
+    display: none !important;
+  }
+
+  /* Show mobile profile avatar in Row 1 on mobile */
+  .doctor-header-mobile-profile,
+  .nurse-header-mobile-profile,
+  .admin-header-mobile-profile,
+  .portal-header-mobile-profile {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* Ensure Ward Selector is readable and comfortable on mobile */
+  #doctor-ward-select,
+  .doctor-header-ward-wrap select,
+  header select {
+    font-size: 0.75rem !important;
+    padding: 0.35rem 0.6rem !important;
+    max-width: 11rem !important;
+    min-width: 7.5rem !important;
+    height: 34px !important;
+    border-radius: 0.5rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Active / Inactive Availability Controls on Mobile */
+  #doctor-availability-wrapper,
+  #nurse-availability-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  #doctor-availability-container,
+  #nurse-availability-container {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 2px !important;
+    border-radius: 0.5rem !important;
+    white-space: nowrap !important;
+    background: rgba(15, 23, 42, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+
+  #doc-btn-active, #doc-btn-inactive,
+  #nurse-btn-active, #nurse-btn-inactive {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    min-height: 32px !important;
+    padding: 0.3rem 0.6rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    border-radius: 0.375rem !important;
+    cursor: pointer !important;
+    touch-action: manipulation;
+  }
+
+  /* Main content padding adjustment so sticky header sits naturally */
+  main,
+  .pl-64 > main,
+  .pl-0 > main {
+    padding-top: 0.75rem !important;
+  }
+
+  /* Dropdowns on mobile take comfortable width */
+  #admin-notifications-dropdown,
+  #admin-messages-dropdown,
+  #admin-profile-dropdown,
+  #admin-search-results-dropdown,
+  #nurse-notifications-dropdown,
+  #nurse-profile-dropdown,
+  #nurse-search-results-dropdown,
+  #doctor-notifications-dropdown {
+    position: fixed !important;
+    left: 10px !important;
+    right: 10px !important;
+    top: 86px !important;
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    border-radius: 0.875rem !important;
+  }
+}
+
+/* Very Small Mobile (< 360px): Compact text & icon adjustments */
+@media (max-width: 360px) {
+  #doctor-ward-select,
+  .doctor-header-ward-wrap select,
+  header select {
+    max-width: 8.5rem !important;
+    font-size: 0.6875rem !important;
+    padding-left: 0.35rem !important;
+    padding-right: 0.35rem !important;
+  }
+  #doc-btn-active, #doc-btn-inactive,
+  #nurse-btn-active, #nurse-btn-inactive {
+    padding: 0.25rem 0.45rem !important;
+    font-size: 0.6875rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #admin-search-container,
+  #nurse-search-container {
+    max-width: 7.5rem !important;
+  }
+
+  #admin-sync-indicator-wrap,
+  #nurse-sync-indicator-wrap,
+  #doctor-sync-indicator-wrap {
+    margin-right: 0.15rem !important;
+  }
+
+  /* In very tight viewports, collapse sync text to just the pulsing dot */
+  .js-sync-indicator span[data-sync-text],
+  .js-sync-indicator #doctor-sync-text,
+  .js-sync-indicator #nurse-sync-text,
+  .js-sync-indicator #admin-sync-text {
+    display: none !important;
+  }
+
+  .js-sync-indicator {
+    padding: 0.4rem 0.5rem !important;
+    border-radius: 9999px !important;
+  }
+
+  /* Compact button padding on <= 480px */
+  #doc-btn-active, #doc-btn-inactive,
+  #nurse-btn-active, #nurse-btn-inactive {
+    padding: 0.3rem 0.5rem !important;
+    font-size: 0.65rem !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4. DASHBOARD STAT CARDS & GRID LAYOUTS
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .grid-cols-6, .grid-cols-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Convert multi-column dashboard card rows into 2 columns on mobile */
+  section[data-purpose="dashboard-stats"],
+  .grid-cols-6:not(.sm\:grid-cols-6):not(.md\:grid-cols-6):not(.lg\:grid-cols-6),
+  .grid-cols-5:not(.sm\:grid-cols-5):not(.md\:grid-cols-5):not(.lg\:grid-cols-5),
+  .grid-cols-4:not(.sm\:grid-cols-4):not(.md\:grid-cols-4):not(.lg\:grid-cols-4) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.625rem !important;
+  }
+
+  /* 3-column layouts stack to 1 column */
+  .grid-cols-3:not(.sm\:grid-cols-3):not(.md\:grid-cols-3):not(.lg\:grid-cols-3):not(#demo-role-grid) {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+
+  /* 12-column sub-column cards stack to full width */
+  .grid-cols-12 > .col-span-8,
+  .grid-cols-12 > .col-span-7,
+  .grid-cols-12 > .col-span-6,
+  .grid-cols-12 > .col-span-5,
+  .grid-cols-12 > .col-span-4,
+  .grid-cols-12 > .col-span-3 {
+    grid-column: span 12 / span 12 !important;
+  }
+
+  /* Padding adjustments on mobile cards */
+  .p-6 {
+    padding: 1rem !important;
+  }
+  .p-5 {
+    padding: 0.875rem !important;
+  }
+  .p-4 {
+    padding: 0.75rem !important;
+  }
+
+  /* Dashboard card numbers scaling */
+  .text-3xl {
+    font-size: 1.5rem !important;
+    line-height: 1.75rem !important;
+  }
+  .text-2xl {
+    font-size: 1.25rem !important;
+    line-height: 1.5rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Very narrow phones (320px–360px): Stack stat cards to 1 column if tight */
+  section[data-purpose="dashboard-stats"] {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5. RESPONSIVE TABLES & MOBILE CARD TRANSFORMATION
+   ───────────────────────────────────────────────────────────── */
+/* Guaranteed controlled horizontal scroll on table wrapper */
+.overflow-x-auto,
+[data-purpose="table-container"],
+.table-responsive-container {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+}
+
+table {
+  max-width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  /* Admin Staff Directory & Dense Tables Mobile Card Mode */
+  table.mobile-cards thead,
+  .table-mobile-cards thead,
+  #admin-users-table thead,
+  .admin-staff-table thead {
+    display: none !important;
+  }
+
+  table.mobile-cards tbody tr,
+  .table-mobile-cards tbody tr,
+  #admin-users-table tbody tr,
+  .admin-staff-table tbody tr {
+    display: block !important;
+    background: rgba(30, 41, 59, 0.65) !important;
+    border: 1px solid rgba(51, 65, 85, 0.75) !important;
+    border-radius: 0.875rem !important;
+    margin-bottom: 0.875rem !important;
+    padding: 0.875rem 1rem !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  table.mobile-cards tbody td,
+  .table-mobile-cards tbody td,
+  #admin-users-table tbody td,
+  .admin-staff-table tbody td {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0.4rem 0 !important;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4) !important;
+    font-size: 0.8125rem !important;
+  }
+
+  table.mobile-cards tbody td:first-child,
+  .table-mobile-cards tbody td:first-child,
+  #admin-users-table tbody td:first-child,
+  .admin-staff-table tbody td:first-child {
+    border-bottom: 1px solid rgba(51, 65, 85, 0.7) !important;
+    padding-bottom: 0.625rem !important;
+    margin-bottom: 0.375rem !important;
+  }
+
+  table.mobile-cards tbody td:last-child,
+  .table-mobile-cards tbody td:last-child,
+  #admin-users-table tbody td:last-child,
+  .admin-staff-table tbody td:last-child {
+    border-bottom: none !important;
+    padding-top: 0.5rem !important;
+    justify-content: flex-end !important;
+  }
+
+  /* Table search & filter bars stack on mobile */
+  .table-controls-bar,
+  .p-4.border-b.flex.items-center.justify-between,
+  .p-4.border-b.flex.flex-col.sm\:flex-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  .table-controls-bar select,
+  .table-controls-bar input,
+  .table-controls-bar .relative {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   6. RESPONSIVE PATIENT MONITORING & CLINICAL CARDS
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Patient grids become 1 column for clear clinical visibility */
+  #my-patients-grid,
+  #all-patients-grid,
+  .patient-card-grid,
+  [data-purpose="patient-grid"] {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Patient Card internal layout */
+  .patient-vitals-row {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Prominent EWS Score Badge */
+  .ews-badge-large {
+    font-size: 1.125rem !important;
+    padding: 0.25rem 0.625rem !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   7. RESPONSIVE CLINICAL CHARTS & CANVASES
+   ───────────────────────────────────────────────────────────── */
+canvas {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.chart-container,
+[data-purpose*="chart"],
+.chartjs-size-monitor {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   8. RESPONSIVE FORMS & MODALS
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Form field grids stack cleanly */
+  form .grid-cols-2,
+  form .grid-cols-3,
+  .form-grid-2,
+  .form-grid-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+
+  /* iOS Auto-Zoom Prevention: Ensure input font size is at least 16px */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  select,
+  textarea {
+    font-size: 16px !important;
+    min-height: 42px !important;
+  }
+
+  /* Mobile Modals: Keep centered, padded, and scrollable */
+  .modal-dialog,
+  [data-purpose*="modal"],
+  .fixed.inset-0 > div[class*="rounded"] {
+    max-width: min(32rem, calc(100vw - 24px)) !important;
+    width: 100% !important;
+    margin: auto !important;
+    max-height: calc(100dvh - 32px) !important;
+    overflow-y: auto !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   9. TOUCH TARGET SIZING (WCAG 2.5.5 / 2.5.8 COMPLIANCE)
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  button,
+  a[role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 40px;
+    touch-action: manipulation;
+  }
+
+  /* Action buttons (more_vert, icons) */
+  button.p-1,
+  button.p-1\.5,
+  button.p-2,
+  .btn-user-action {
+    min-width: 42px !important;
+    min-height: 42px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Form action buttons full-width or comfortable row */
+  .form-actions-bar {
+    flex-direction: column-reverse !important;
+    gap: 0.5rem !important;
+  }
+  .form-actions-bar button {
+    width: 100% !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   10. STANDARDIZED SHARED SIDEBAR DESIGN SYSTEM (MASTER: DOCTOR)
+   ───────────────────────────────────────────────────────────── */
+
+/* Unified Dark Navy Sidebar Background across Admin, Doctor & Nurse */
+aside[data-purpose="sidebar"],
+aside.portal-standard-sidebar,
+aside.w-64,
+aside.w-72,
+#doctor-sidebar,
+#nurse-sidebar,
+#admin-sidebar {
+  background-color: #0a1931 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-right: 1px solid #1e293b !important;
+  box-sizing: border-box !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Standardized Sidebar Branding Header */
+.sidebar-brand-header,
+aside .sidebar-brand-container,
+#doctor-sidebar > div:first-child,
+#nurse-sidebar > div:first-child,
+#admin-sidebar > div:first-child {
+  padding: 1.25rem !important; /* p-5 = 20px */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important; /* gap-3 = 12px */
+  background: transparent !important;
+  flex-shrink: 0 !important;
+}
+
+.sidebar-brand-title {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 1rem !important; /* text-base = 16px */
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.025em !important;
+  text-transform: uppercase !important;
+}
+
+.sidebar-brand-subtitle {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+  color: #22d3ee !important; /* text-cyan-400 */
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.2 !important;
+  margin-top: 0.125rem !important;
+}
+
+/* Navigation Scrollable Body */
+aside nav {
+  padding: 1rem 0.75rem !important; /* px-3 py-4 */
+  background: transparent !important;
+  flex: 1 1 0% !important;
+  overflow-y: auto !important;
+}
+
+/* Standardized Section Headings */
+.sidebar-section-heading,
+aside nav p.uppercase,
+aside nav h2.uppercase {
+  font-family: 'Inter', sans-serif !important;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+  font-size: 10px !important; /* text-[10px] */
+  font-weight: 700 !important;
+  color: #94a3b8 !important; /* text-slate-400 */
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important; /* tracking-widest */
+  margin-bottom: 0.5rem !important; /* mb-2 = 8px */
+  margin-top: 0 !important;
+  line-height: 1.2 !important;
+}
+
+/* Default / Inactive Navigation Items */
+.sidebar-nav-item,
+aside nav a {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0.625rem 0.75rem !important; /* px-3 py-2.5 = 10px 12px */
+  border-radius: 0.5rem !important; /* rounded-lg = 8px */
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.875rem !important; /* text-sm = 14px */
+  font-weight: 500 !important;
+  color: #cbd5e1 !important; /* text-slate-300 */
+  text-decoration: none !important;
+  border-left: 4px solid transparent !important;
+  background-color: transparent !important;
+  transition: all 0.15s ease-in-out !important;
+  cursor: pointer !important;
+  margin-bottom: 0.25rem !important;
+  line-height: 1.3 !important;
+}
+
+.sidebar-nav-item:hover,
+aside nav a:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important; /* hover:bg-white/5 */
+  color: #ffffff !important;
+}
+
+/* Navigation Item Icons */
+.sidebar-nav-item .material-symbols-outlined,
+aside nav a .material-symbols-outlined {
+  margin-right: 0.75rem !important; /* mr-3 = 12px */
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+  color: #94a3b8 !important; /* text-slate-400 */
+  flex-shrink: 0 !important;
+  transition: color 0.15s ease-in-out !important;
+  display: inline-block !important;
+  text-align: center !important;
+}
+
+.sidebar-nav-item:hover .material-symbols-outlined,
+aside nav a:hover .material-symbols-outlined {
+  color: #22d3ee !important; /* group-hover:text-cyan-400 */
+}
+
+/* MASTER ACTIVE NAVIGATION ITEM (DOCTOR BLUEPRINT) */
+.sidebar-nav-item.active,
+.sidebar-nav-item[data-active="true"],
+aside nav a.active,
+aside nav a.sidebar-active,
+aside nav a.active-nav-item,
+aside nav a.bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.10) !important; /* bg-white/10 */
+  color: #22d3ee !important; /* text-cyan-400 */
+  font-weight: 600 !important;
+  border-left: 4px solid #22d3ee !important; /* border-l-4 border-cyan-400 */
+  box-shadow: none !important;
+}
+
+.sidebar-nav-item.active .material-symbols-outlined,
+.sidebar-nav-item[data-active="true"] .material-symbols-outlined,
+aside nav a.active .material-symbols-outlined,
+aside nav a.sidebar-active .material-symbols-outlined,
+aside nav a.active-nav-item .material-symbols-outlined,
+aside nav a.bg-white\/10 .material-symbols-outlined {
+  color: #22d3ee !important; /* text-cyan-400 */
+}
+
+/* Explicitly override and remove solid blue pill styles */
+aside nav a.bg-blue-600,
+aside nav a.bg-blue-700,
+.active-nav-item {
+  box-shadow: none !important;
+}
+
+/* Notification / Counter Badges */
+.sidebar-badge,
+.sidebar-nav-item .sidebar-badge,
+aside nav a span[id*="badge"],
+aside nav a span[id*="count"] {
+  margin-left: auto !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  padding: 0.125rem 0.5rem !important; /* px-2 py-0.5 */
+  border-radius: 9999px !important;
+  line-height: 1.2 !important;
+}
+
+/* Sidebar Footer & Bottom Actions Container */
+.sidebar-footer-container,
+.sidebar-bottom-actions,
+aside > div:last-child {
+  padding: 0.75rem !important; /* p-3 */
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(8, 20, 38, 0.5) !important; /* bg-[#081426]/50 */
+  margin-top: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.25rem !important; /* space-y-1 */
+  flex-shrink: 0 !important;
+}
+
+/* Standardized Settings Link in Footer */
+.sidebar-settings-link,
+aside .sidebar-settings-link {
+  color: #cbd5e1 !important;
+  border-left: 4px solid transparent !important;
+}
+.sidebar-settings-link:hover,
+aside .sidebar-settings-link:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+}
+.sidebar-settings-link.active,
+aside .sidebar-settings-link.active {
+  background-color: rgba(255, 255, 255, 0.10) !important;
+  color: #22d3ee !important;
+  border-left: 4px solid #22d3ee !important;
+}
+.sidebar-settings-link.active .material-symbols-outlined,
+aside .sidebar-settings-link.active .material-symbols-outlined {
+  color: #22d3ee !important;
+}
+
+/* Standardized Red Logout Link in Footer */
+.sidebar-logout-link,
+aside a.sidebar-logout-link,
+aside a[href*="Login.html"],
+aside a[onclick*="Logout"],
+aside a[onclick*="logout"] {
+  color: #f87171 !important; /* text-red-400 */
+  border-left: 4px solid transparent !important;
+}
+.sidebar-logout-link:hover,
+aside a.sidebar-logout-link:hover,
+aside a[href*="Login.html"]:hover,
+aside a[onclick*="Logout"]:hover,
+aside a[onclick*="logout"]:hover {
+  background-color: rgba(239, 68, 68, 0.1) !important; /* hover:bg-red-500/10 */
+  color: #fca5a5 !important; /* hover:text-red-300 */
+}
+.sidebar-logout-link .material-symbols-outlined,
+aside a.sidebar-logout-link .material-symbols-outlined,
+aside a[href*="Login.html"] .material-symbols-outlined,
+aside a[onclick*="Logout"] .material-symbols-outlined,
+aside a[onclick*="logout"] .material-symbols-outlined {
+  color: #f87171 !important;
+}
+.sidebar-logout-link:hover .material-symbols-outlined,
+aside a.sidebar-logout-link:hover .material-symbols-outlined,
+aside a[href*="Login.html"]:hover .material-symbols-outlined,
+aside a[onclick*="Logout"]:hover .material-symbols-outlined,
+aside a[onclick*="logout"]:hover .material-symbols-outlined {
+  color: #fca5a5 !important;
+}
+
+/* Standardized Admin Profile Card in Footer */
+.sidebar-admin-profile-card {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 0.75rem !important; /* rounded-xl */
+  padding: 0.625rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 0.375rem !important;
+}
+
+

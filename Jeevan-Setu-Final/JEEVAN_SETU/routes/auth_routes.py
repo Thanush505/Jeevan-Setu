@@ -6,6 +6,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 from models.user_model import User
 from models.audit_log_model import AuditLog
+from services.auth_service import AuthService
 from utils.decorators import role_required
 from utils.validators import validate_email, validate_username
 
@@ -38,31 +39,30 @@ def login():
             flash('Please enter both username and password.', 'error')
             return render_template('Login/Login.html')
 
-        user = User.authenticate(username, password)
-        if user:
-            if not user.is_active:
-                flash('Your account has been deactivated. Contact an admin.', 'error')
-                return render_template('Login/Login.html')
+        user, err = AuthService.authenticate_credentials(username, password)
+        if err:
+            flash(err, 'error')
+            return render_template('Login/Login.html')
 
-            login_user(user)
-            AuditLog.log(
-                action='login',
-                user_id=user.id,
-                ip_address=request.remote_addr,
-                description=f'User {username} logged in'
-            )
-            flash(f'Welcome back, {user.full_name}!', 'success')
-            next_page = request.args.get('next')
-            if next_page and not next_page.endswith('/patients/dashboard') and not next_page.endswith('/patients/'):
-                return redirect(next_page)
-            if user.role == 'admin':
-                return redirect('/Admin/Administrator_dashboard_/Administrator_dashboard_.html')
-            elif user.role == 'doctor':
-                return redirect('/Doctor/Doctor_dashboard_/Doctor_dashboard_.html')
-            elif user.role == 'nurse':
-                return redirect('/Nurse/Nurse_dashboard/Nurse_dashboard.html')
-            elif user.role == 'attendant':
-                return redirect('/Attendant/patient_update_mobile_view_replica/patient_update_mobile_view_replica.html')
+        login_user(user)
+        AuditLog.log(
+            action='login',
+            user_id=user.id,
+            ip_address=request.remote_addr,
+            description=f'User {username} logged in'
+        )
+        flash(f'Welcome back, {user.full_name}!', 'success')
+        next_page = request.args.get('next')
+        if next_page and not next_page.endswith('/patients/dashboard') and not next_page.endswith('/patients/'):
+            return redirect(next_page)
+        if user.role == 'admin':
+            return redirect('/Admin/Administrator_dashboard_/Administrator_dashboard_.html')
+        elif user.role == 'doctor':
+            return redirect('/Doctor/Doctor_dashboard_/Doctor_dashboard_.html')
+        elif user.role == 'nurse':
+            return redirect('/Nurse/Nurse_dashboard/Nurse_dashboard.html')
+        elif user.role == 'attendant':
+            return redirect('/Attendant/patient_update_mobile_view_replica/patient_update_mobile_view_replica.html')
             return redirect('/Doctor/Doctor_dashboard_/Doctor_dashboard_.html')
         else:
             flash('Invalid username or password.', 'error')

@@ -102,6 +102,13 @@ def create_ward():
     except (ValueError, TypeError):
         return jsonify({'success': False, 'error': 'floor_number and total_beds must be valid integers.'}), 422
 
+    if total_beds < 1 or total_beds > 500:
+        return jsonify({'success': False, 'error': 'total_beds must be between 1 and 500.'}), 422
+
+    existing_wards = Ward.get_all(active_only=True) or []
+    if any((w.get('name') or '').strip().lower() == name.lower() for w in existing_wards):
+        return jsonify({'success': False, 'error': f"A ward named '{name}' already exists."}), 422
+
     description = data.get('description')
 
     user = get_current_authenticated_user()
@@ -164,6 +171,19 @@ def update_ward(ward_id):
 
     if not updates:
         return jsonify({'success': False, 'error': 'No valid fields provided for update'}), 400
+
+    if 'name' in updates:
+        new_name = updates['name']
+        if len(new_name) < 2:
+            return jsonify({'success': False, 'error': 'Ward name must be at least 2 characters.'}), 422
+        existing_wards = Ward.get_all(active_only=True) or []
+        if any(w.get('ward_id') != ward_id and (w.get('name') or '').strip().lower() == new_name.lower() for w in existing_wards):
+            return jsonify({'success': False, 'error': f"A ward named '{new_name}' already exists."}), 422
+
+    if 'total_beds' in updates:
+        occ = int(ward.get('occupied_beds') or 0)
+        if updates['total_beds'] < occ or updates['total_beds'] < 1:
+            return jsonify({'success': False, 'error': f"total_beds ({updates['total_beds']}) cannot be less than currently occupied beds ({occ}) or 1."}), 422
 
     Ward.update(ward_id, **updates)
 

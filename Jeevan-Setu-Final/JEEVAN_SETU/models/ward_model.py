@@ -28,6 +28,7 @@ class Ward:
             COUNT(CASE WHEN b.is_active = TRUE THEN 1 END) AS actual_beds,
             COUNT(CASE WHEN b.status = 'occupied' AND b.is_active = TRUE THEN 1 END) AS occupied_beds,
             COUNT(CASE WHEN b.status = 'available' AND b.is_active = TRUE THEN 1 END) AS available_beds,
+            COUNT(CASE WHEN b.status = 'reserved' AND b.is_active = TRUE THEN 1 END) AS reserved_beds,
             COUNT(CASE WHEN b.status = 'maintenance' AND b.is_active = TRUE THEN 1 END) AS maintenance_beds,
             ROUND(
                 (COUNT(CASE WHEN b.status = 'occupied' AND b.is_active = TRUE THEN 1 END) / 
@@ -76,6 +77,7 @@ class Ward:
             COUNT(CASE WHEN b.is_active = TRUE THEN 1 END) AS actual_beds,
             COUNT(CASE WHEN b.status = 'occupied' AND b.is_active = TRUE THEN 1 END) AS occupied_beds,
             COUNT(CASE WHEN b.status = 'available' AND b.is_active = TRUE THEN 1 END) AS available_beds,
+            COUNT(CASE WHEN b.status = 'reserved' AND b.is_active = TRUE THEN 1 END) AS reserved_beds,
             COUNT(CASE WHEN b.status = 'maintenance' AND b.is_active = TRUE THEN 1 END) AS maintenance_beds,
             ROUND(
                 (COUNT(CASE WHEN b.status = 'occupied' AND b.is_active = TRUE THEN 1 END) / 

@@ -45,6 +45,11 @@ def create_app():
     config = get_config()
     app.config.from_object(config)
 
+    # Pre-warm database connection pool
+    from database.db import db
+    import threading
+    threading.Thread(target=db.warm_up, daemon=True, name="db-pool-warmup").start()
+
     # Setup logging
     setup_logging(app)
 
@@ -64,6 +69,7 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(auth_api_bp, url_prefix='/api/v1/auth')
     app.register_blueprint(user_mgmt_bp, url_prefix='/api/v1/users')
+    app.register_blueprint(user_mgmt_bp, url_prefix='/api/admin/users', name='admin_users_api_alias')
     app.register_blueprint(user_mgmt_bp, url_prefix='/users', name='user_mgmt_alias')
     app.register_blueprint(patient_bp, url_prefix='/api/v1/patients', name='patient_api_alias')
     app.register_blueprint(patient_bp, url_prefix='/patients')
@@ -96,6 +102,25 @@ def create_app():
     app.register_blueprint(developer_bp, url_prefix='/api/v1/developer')
     app.register_blueprint(developer_bp, url_prefix='/api/v1', name='developer_v1_alias')
     app.register_blueprint(assistance_request_bp)
+
+    # Doctor and Nurse Working Availability Direct API Endpoints
+    @app.route('/api/doctor/availability', methods=['GET', 'POST', 'PATCH', 'PUT'])
+    @app.route('/api/v1/doctor/availability', methods=['GET', 'POST', 'PATCH', 'PUT'])
+    def route_doctor_availability():
+        from routes.auth_api_routes import api_doctor_availability
+        return api_doctor_availability()
+
+    @app.route('/api/nurse/availability', methods=['GET', 'POST', 'PATCH', 'PUT'])
+    @app.route('/api/v1/nurse/availability', methods=['GET', 'POST', 'PATCH', 'PUT'])
+    def route_nurse_availability():
+        from routes.auth_api_routes import api_nurse_availability
+        return api_nurse_availability()
+
+    @app.route('/api/v1/audit-logs', methods=['GET'])
+    @app.route('/api/v1/audit/logs', methods=['GET'])
+    def route_audit_logs_alias():
+        from routes.report_routes import get_audit_logs
+        return get_audit_logs()
 
     # Security Middleware & HTTP Headers
     from utils.security import apply_security_headers

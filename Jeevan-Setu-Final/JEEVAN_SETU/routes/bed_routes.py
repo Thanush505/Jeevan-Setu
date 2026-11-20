@@ -177,6 +177,10 @@ def update_bed(bed_id):
                 stat = str(data[k]).strip().lower()
                 if stat not in Bed.VALID_STATUSES:
                     return jsonify({'success': False, 'error': f"Invalid status '{data[k]}'. Allowed: {', '.join(Bed.VALID_STATUSES)}"}), 422
+                if bed.get('status') == 'occupied' and stat != 'occupied':
+                    return jsonify({'success': False, 'error': f"Bed '{bed.get('bed_number')}' is currently occupied. Release the patient before changing bed status."}), 422
+                if stat == 'occupied' and bed.get('status') != 'occupied':
+                    return jsonify({'success': False, 'error': "Cannot set bed status to 'occupied' directly. Use the bed allocation workflow."}), 422
                 updates[k] = stat
             else:
                 updates[k] = str(data[k]).strip()
@@ -329,6 +333,8 @@ def release_bed(bed_id):
     bed = Bed.get_by_id(bed_id)
     if not bed:
         return jsonify({'success': False, 'error': f'Bed with ID {bed_id} not found'}), 404
+    if bed.get('status') != 'occupied':
+        return jsonify({'success': False, 'error': f"Bed '{bed.get('bed_number')}' is not currently occupied (status: {bed.get('status')})."}), 422
 
     user = get_current_authenticated_user()
     user_id = user.id if user else None
@@ -386,4 +392,23 @@ def set_bed_maintenance(bed_id):
         'success': True,
         'message': f"Bed '{bed.get('bed_number')}' is now under maintenance",
         'data': bed
+    }), 200
+
+
+# ─────────────────────────────────────────────────────────────
+# 9. GET /beds/{id}/history — Bed Allocation History
+# ─────────────────────────────────────────────────────────────
+@bed_bp.route('/<int:bed_id>/history', methods=['GET'])
+@permission_required('view_patients')
+def get_bed_history(bed_id):
+    """Fetch recent allocation history for a specific bed."""
+    bed = Bed.get_by_id(bed_id)
+    if not bed:
+        return jsonify({'success': False, 'error': f'Bed with ID {bed_id} not found'}), 404
+
+    history = BedManagement.get_bed_allocation_history(bed_id)
+    return jsonify({
+        'success': True,
+        'count': len(history),
+        'data': history
     }), 200

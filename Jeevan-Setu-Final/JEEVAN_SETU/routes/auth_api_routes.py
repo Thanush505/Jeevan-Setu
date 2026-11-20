@@ -251,7 +251,7 @@ def api_get_current_user():
 
     if user.role == 'nurse':
         n_res = db.execute_query(
-            "SELECT nurse_id, specialization, license_number, qualification, ward_assignment, shift, experience_years, phone_number FROM nurses WHERE user_id = %s OR username = %s LIMIT 1",
+            "SELECT nurse_id, specialization, license_number, qualification, ward_assignment, shift, experience_years, phone_number, availability FROM nurses WHERE user_id = %s OR username = %s LIMIT 1",
             (user.id, user.username), fetch=True
         )
         if n_res:
@@ -259,7 +259,7 @@ def api_get_current_user():
 
     elif user.role == 'doctor':
         d_res = db.execute_query(
-            "SELECT doctor_id, specialization, license_number, qualification, experience_years FROM doctors WHERE user_id = %s OR username = %s LIMIT 1",
+            "SELECT doctor_id, specialization, license_number, qualification, experience_years, availability FROM doctors WHERE user_id = %s OR username = %s LIMIT 1",
             (user.id, user.username), fetch=True
         )
         if d_res:
@@ -302,6 +302,12 @@ def api_get_current_user():
 
     phone_number = (nurse_details.get('phone_number') if nurse_details else None) or getattr(user, 'contact_number', None)
 
+    user_availability = 'active'
+    if user.role == 'doctor' and doctor_details:
+        user_availability = doctor_details.get('availability', 'active')
+    elif user.role == 'nurse' and nurse_details:
+        user_availability = nurse_details.get('availability', 'active')
+
     return jsonify({
         'success': True,
         'data': {
@@ -318,6 +324,7 @@ def api_get_current_user():
             'specialization': specialization,
             'qualification': qualification,
             'avatar': avatar,
+            'availability': user_availability,
             'is_active': user.is_active,
             'permissions': permissions,
             'nurse_details': nurse_details,
@@ -594,4 +601,183 @@ def api_user_preferences():
             'theme': theme
         }
     }), 200
+
+
+# ─────────────────────────────────────────────────────────────
+# 11. Doctor & Nurse Working Availability Endpoints
+# ─────────────────────────────────────────────────────────────
+
+@auth_api_bp.route('/doctor/availability', methods=['GET', 'POST', 'PATCH', 'PUT'])
+@auth_required
+def api_doctor_availability():
+    """
+    Get or update the authenticated doctor's working availability status (Active / Inactive).
+    Strictly isolated: Availability represents working duty, NOT account login activation.
+    Doctors can only update their own availability.
+    """
+    user = getattr(g, 'current_user', None)
+    if not user or getattr(user, 'role', '').lower() != 'doctor':
+        return jsonify({'success': False, 'error': 'Doctor authentication required.'}), 403
+
+    if request.method == 'GET':
+        row = db.execute_query(
+            "SELECT availability FROM doctors WHERE user_id = %s LIMIT 1",
+            (user.id,), fetch=True
+        )
+        avail = row[0].get('availability', 'active') if row else 'active'
+        return jsonify({
+            'success': True,
+            'user_id': user.id,
+            'role': 'doctor',
+            'availability': avail,
+            'data': {
+                'availability': avail,
+                'user_id': user.id,
+                'role': 'doctor'
+            }
+        }), 200
+
+    # POST / PATCH / PUT
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    new_avail = (data.get('availability') or data.get('status') or '').strip().lower()
+
+    if new_avail not in ('active', 'inactive'):
+        return jsonify({
+            'success': False,
+            'error': "Invalid availability status. Must be 'active' or 'inactive'."
+        }), 400
+
+    # Ensure authoritative doctor record exists and update availability
+    existing = db.execute_query(
+        "SELECT doctor_id FROM doctors WHERE user_id = %s LIMIT 1",
+        (user.id,), fetch=True
+    )
+    if existing:
+        db.execute_query(
+            "UPDATE doctors SET availability = %s WHERE user_id = %s",
+            (new_avail, user.id)
+        )
+    else:
+        db.execute_query(
+            """INSERT INTO doctors (user_id, username, password_hash, full_name, email,
+                                    specialization, availability, is_active)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, 1)""",
+            (user.id, user.username, getattr(user, 'password_hash', 'dummy'),
+             user.full_name, user.email, getattr(user, 'department', 'General Medicine') or 'General Medicine',
+             new_avail)
+        )
+
+    try:
+        from models.audit_log_model import AuditLog
+        AuditLog.log(
+            action='DOCTOR_AVAILABILITY_CHANGED',
+            user_id=user.id,
+            entity_type='doctor',
+            entity_id=user.id,
+            new_value={'availability': new_avail},
+            description=f"Dr. {user.full_name} changed duty availability to '{new_avail.capitalize()}'"
+        )
+    except Exception:
+        pass
+
+    return jsonify({
+        'success': True,
+        'user_id': user.id,
+        'role': 'doctor',
+        'availability': new_avail,
+        'data': {
+            'availability': new_avail,
+            'user_id': user.id,
+            'role': 'doctor'
+        },
+        'message': f"Doctor availability updated to {new_avail.capitalize()}."
+    }), 200
+
+
+@auth_api_bp.route('/nurse/availability', methods=['GET', 'POST', 'PATCH', 'PUT'])
+@auth_required
+def api_nurse_availability():
+    """
+    Get or update the authenticated nurse's working availability status (Active / Inactive).
+    Strictly isolated: Availability represents working duty, NOT account login activation.
+    Nurses can only update their own availability.
+    """
+    user = getattr(g, 'current_user', None)
+    if not user or getattr(user, 'role', '').lower() != 'nurse':
+        return jsonify({'success': False, 'error': 'Nurse authentication required.'}), 403
+
+    if request.method == 'GET':
+        row = db.execute_query(
+            "SELECT availability FROM nurses WHERE user_id = %s LIMIT 1",
+            (user.id,), fetch=True
+        )
+        avail = row[0].get('availability', 'active') if row else 'active'
+        return jsonify({
+            'success': True,
+            'user_id': user.id,
+            'role': 'nurse',
+            'availability': avail,
+            'data': {
+                'availability': avail,
+                'user_id': user.id,
+                'role': 'nurse'
+            }
+        }), 200
+
+    # POST / PATCH / PUT
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    new_avail = (data.get('availability') or data.get('status') or '').strip().lower()
+
+    if new_avail not in ('active', 'inactive'):
+        return jsonify({
+            'success': False,
+            'error': "Invalid availability status. Must be 'active' or 'inactive'."
+        }), 400
+
+    # Ensure authoritative nurse record exists and update availability
+    existing = db.execute_query(
+        "SELECT nurse_id FROM nurses WHERE user_id = %s LIMIT 1",
+        (user.id,), fetch=True
+    )
+    if existing:
+        db.execute_query(
+            "UPDATE nurses SET availability = %s WHERE user_id = %s",
+            (new_avail, user.id)
+        )
+    else:
+        db.execute_query(
+            """INSERT INTO nurses (user_id, username, password_hash, full_name, email,
+                                   specialization, ward_assignment, shift, availability, is_active)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 1)""",
+            (user.id, user.username, getattr(user, 'password_hash', 'dummy'),
+             user.full_name, user.email, 'Critical Care',
+             getattr(user, 'department', 'ICU') or 'ICU', 'Rotating', new_avail)
+        )
+
+    try:
+        from models.audit_log_model import AuditLog
+        AuditLog.log(
+            action='NURSE_AVAILABILITY_CHANGED',
+            user_id=user.id,
+            entity_type='nurse',
+            entity_id=user.id,
+            new_value={'availability': new_avail},
+            description=f"Nurse {user.full_name} changed duty availability to '{new_avail.capitalize()}'"
+        )
+    except Exception:
+        pass
+
+    return jsonify({
+        'success': True,
+        'user_id': user.id,
+        'role': 'nurse',
+        'availability': new_avail,
+        'data': {
+            'availability': new_avail,
+            'user_id': user.id,
+            'role': 'nurse'
+        },
+        'message': f"Nurse availability updated to {new_avail.capitalize()}."
+    }), 200
+
 

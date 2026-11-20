@@ -585,10 +585,10 @@
     document.addEventListener('DOMContentLoaded', () => {
       populatePatientDropdowns();
       if (window.AutoRefreshManager) {
-        window.AutoRefreshManager.start('nurse_alerts_live', refreshAlertsData, 10000);
+        window.AutoRefreshManager.start('nurse_alerts_live', refreshAlertsData, 5000);
       } else {
         refreshAlertsData();
-        setInterval(refreshAlertsData, 10000);
+        setInterval(refreshAlertsData, 5000);
       }
     });
 

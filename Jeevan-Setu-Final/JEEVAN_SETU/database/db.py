@@ -32,23 +32,35 @@ class Database:
             with self._lock:
                 if self._pool is None:
                     config = get_config()
+                    # Resolve 'localhost' to '127.0.0.1' on Windows/IPv4 to prevent IPv6 DNS fallback delays
+                    host = '127.0.0.1' if config.DB_HOST in ('localhost', '127.0.0.1', None) else config.DB_HOST
                     try:
                         self._pool = pooling.MySQLConnectionPool(
                             pool_name="jeevan_setu_pool",
-                            pool_size=16,
+                            pool_size=32,
                             pool_reset_session=True,
-                            host=config.DB_HOST,
+                            host=host,
                             port=config.DB_PORT,
                             user=config.DB_USER,
                             password=config.DB_PASSWORD,
                             database=config.DB_NAME,
                             autocommit=False,
-                            connect_timeout=10
+                            connect_timeout=5
                         )
                     except Error as e:
                         print(f"[DB POOL INIT WARN] Pool initialization deferred: {e}")
                         self._pool = None
         return self._pool
+
+    def warm_up(self):
+        """Pre-warm connection pool during application boot so users experience zero delay."""
+        try:
+            pool = self._get_connection_pool()
+            if pool:
+                conn = pool.get_connection()
+                conn.close()
+        except Exception as e:
+            print(f"[DB WARMUP WARN] Pool warm-up deferred: {e}")
 
     def get_connection(self):
         """Get a validated database connection from pool or direct connect."""
@@ -60,7 +72,7 @@ class Database:
                 conn = pool.get_connection()
                 # Test connection liveness
                 if not conn.is_connected():
-                    conn.ping(reconnect=True, attempts=3, delay=1)
+                    conn.ping(reconnect=True, attempts=2, delay=0)
                 return conn
             except Error as e:
                 # If pool exhausted or dropped, fall back to direct connection
@@ -68,14 +80,15 @@ class Database:
 
         # Direct fresh connection fallback
         try:
+            host = '127.0.0.1' if config.DB_HOST in ('localhost', '127.0.0.1', None) else config.DB_HOST
             conn = mysql.connector.connect(
-                host=config.DB_HOST,
+                host=host,
                 port=config.DB_PORT,
                 user=config.DB_USER,
                 password=config.DB_PASSWORD,
                 database=config.DB_NAME,
                 autocommit=False,
-                connect_timeout=10
+                connect_timeout=3
             )
             return conn
         except Error as e:

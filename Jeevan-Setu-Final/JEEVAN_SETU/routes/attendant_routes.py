@@ -694,7 +694,7 @@ def api_attendant_manual_login():
     """Public: Manual Attendant Login without scanning QR."""
     data = request.get_json(silent=True) or request.form.to_dict() or {}
     attendant_name = (data.get('attendant_name') or '').strip()
-    patient_query = (data.get('patient_query') or data.get('patient_name') or data.get('uhid') or '').strip()
+    patient_query = (data.get('patient_query') or data.get('patient_name') or data.get('uhid') or data.get('patient_identifier') or (str(data.get('patient_id')) if data.get('patient_id') else '') or '').strip()
     relationship = (data.get('relationship') or 'Family').strip()
 
     if not attendant_name:
@@ -708,39 +708,52 @@ def api_attendant_manual_login():
         return jsonify({'success': False, 'error': 'Invalid characters in attendant name.'}), 400
 
     if not patient_query:
-        return jsonify({'success': False, 'error': "Please enter the patient's full name or UHID."}), 400
+        return jsonify({'success': False, 'error': "Please enter the patient's full name, UHID, or ID."}), 400
 
     clean_patient_query = re.sub(r'[<>{}[\]\\]', '', patient_query).strip()
-    if len(clean_patient_query) < 2:
-        return jsonify({'success': False, 'error': 'Patient search term must be at least 2 characters.'}), 400
+    if len(clean_patient_query) < 1 or (not clean_patient_query.isdigit() and len(clean_patient_query) < 2):
+        return jsonify({'success': False, 'error': "Patient search term must be at least 2 characters or a patient ID."}), 400
 
-    like_term = f"%{clean_patient_query}%"
-    rows = db.execute_query(
-        """
-        SELECT patient_id, name, patient_code, ward_type, bed_number, age, gender, status
-        FROM patients
-        WHERE (
-            LOWER(patient_code) = LOWER(%s)
-            OR LOWER(name) = LOWER(%s)
-            OR LOWER(name) LIKE LOWER(%s)
-            OR CAST(patient_id AS CHAR) = %s
-        )
-        ORDER BY 
-            CASE 
-                WHEN status = 'admitted' THEN 1 
-                ELSE 2 
-            END,
-            CASE 
-                WHEN LOWER(patient_code) = LOWER(%s) THEN 1
-                WHEN LOWER(name) = LOWER(%s) THEN 2
-                ELSE 3
-            END,
-            patient_id ASC
-        """,
-        (clean_patient_query, clean_patient_query, like_term, clean_patient_query,
-         clean_patient_query, clean_patient_query),
-        fetch=True
-    ) or []
+    # Fast path: Try direct index lookup on patient_code or patient_id first
+    rows = []
+    if clean_patient_query.upper().startswith('UHID-') or clean_patient_query.isdigit():
+        pid_val = int(clean_patient_query) if clean_patient_query.isdigit() else 0
+        rows = db.execute_query(
+            """SELECT patient_id, name, patient_code, ward_type, bed_number, age, gender, status
+               FROM patients
+               WHERE patient_code = %s OR patient_id = %s LIMIT 1""",
+            (clean_patient_query, pid_val),
+            fetch=True
+        ) or []
+
+    if not rows:
+        like_term = f"%{clean_patient_query}%"
+        rows = db.execute_query(
+            """
+            SELECT patient_id, name, patient_code, ward_type, bed_number, age, gender, status
+            FROM patients
+            WHERE (
+                LOWER(patient_code) = LOWER(%s)
+                OR LOWER(name) = LOWER(%s)
+                OR LOWER(name) LIKE LOWER(%s)
+                OR CAST(patient_id AS CHAR) = %s
+            )
+            ORDER BY 
+                CASE 
+                    WHEN status = 'admitted' THEN 1 
+                    ELSE 2 
+                END,
+                CASE 
+                    WHEN LOWER(patient_code) = LOWER(%s) THEN 1
+                    WHEN LOWER(name) = LOWER(%s) THEN 2
+                    ELSE 3
+                END,
+                patient_id ASC
+            """,
+            (clean_patient_query, clean_patient_query, like_term, clean_patient_query,
+             clean_patient_query, clean_patient_query),
+            fetch=True
+        ) or []
 
     if not rows:
         return jsonify({
@@ -807,7 +820,7 @@ def api_attendant_manual_login():
         description=f"Attendant '{clean_attendant_name}' (rel: {relationship or 'Family'}) logged in manually for Patient '{selected_patient['name']}' ({selected_patient.get('patient_code')})"
     )
 
-    redirect_url = f"/Attendant/patient_update_mobile_view_replica/patient_update_mobile_view_replica.html?patient_id={patient_id}"
+    redirect_url = f"/Attendant/patient_update_mobile_view_replica/patient_update_mobile_view_replica.html?patient_id={patient_id}&token={session_data['access_token']}"
 
     resp = jsonify({
         'success': True,
@@ -835,8 +848,8 @@ def api_attendant_manual_login():
 def api_attendant_search_patients():
     """Public: Live search for admitted patients."""
     q = request.args.get('q', '').strip()
-    if not q or len(q) < 2:
-        return jsonify({'success': True, 'patients': []}), 200
+    if not q or (not q.isdigit() and len(q) < 2):
+        return jsonify({'success': True, 'patients': [], 'data': []}), 200
 
     like_term = f"%{q}%"
     rows = db.execute_query(
@@ -844,17 +857,18 @@ def api_attendant_search_patients():
         SELECT patient_id, name, patient_code, ward_type, bed_number
         FROM patients
         WHERE status = 'admitted'
-          AND (LOWER(name) LIKE LOWER(%s) OR LOWER(patient_code) LIKE LOWER(%s))
+          AND (LOWER(name) LIKE LOWER(%s) OR LOWER(patient_code) LIKE LOWER(%s) OR CAST(patient_id AS CHAR) = %s)
         ORDER BY name ASC
         LIMIT 8
         """,
-        (like_term, like_term),
+        (like_term, like_term, q),
         fetch=True
     ) or []
 
     return jsonify({
         'success': True,
-        'patients': rows
+        'patients': rows,
+        'data': rows
     }), 200
 
 
@@ -947,46 +961,56 @@ def api_get_attendant_patient_data():
         return jsonify({'success': False, 'error': f'Patient #{patient_id} not found'}), 404
 
     try:
+        import threading
         from models.audit_log_model import AuditLog
-        AuditLog.log(action='view_attendant_api', entity_type='patient', entity_id=patient_id, description=f'Attendant view for patient {patient_id}')
+        threading.Thread(
+            target=AuditLog.log,
+            kwargs={'action': 'view_attendant_api', 'entity_type': 'patient', 'entity_id': patient_id, 'description': f'Attendant view for patient {patient_id}'},
+            daemon=True
+        ).start()
     except Exception:
         pass
 
-    vitals = Vitals.get_latest(patient_id)
+    # Re-use already fetched latest vitals and EWS from Patient model to eliminate duplicate DB queries
+    vitals = patient.get('latest_vitals')
     vitals_history = Vitals.get_history(patient_id, limit=5)
 
     # Format vitals summary
     vitals_summary = None
     if vitals:
-        bp_sys = vitals.get('blood_pressure_sys')
-        bp_dia = vitals.get('blood_pressure_dia')
+        bp_sys = vitals.get('blood_pressure_sys') or vitals.get('systolic_bp')
+        bp_dia = vitals.get('blood_pressure_dia') or vitals.get('diastolic_bp')
         bp_str = f"{float(bp_sys):.0f}/{float(bp_dia):.0f}" if (bp_sys is not None and bp_dia is not None) else (f"{float(bp_sys):.0f}" if bp_sys is not None else "--")
+
+        rec_at = vitals.get('recorded_at')
+        if hasattr(rec_at, 'isoformat'):
+            rec_at_str = rec_at.isoformat()
+        else:
+            rec_at_str = str(rec_at) if rec_at else None
 
         vitals_summary = {
             'heart_rate': vitals.get('heart_rate'),
-            'systolic_bp': vitals.get('blood_pressure_sys'),
-            'diastolic_bp': vitals.get('blood_pressure_dia'),
+            'systolic_bp': bp_sys,
+            'diastolic_bp': bp_dia,
             'blood_pressure': bp_str,
             'temperature': vitals.get('temperature'),
             'respiratory_rate': vitals.get('respiratory_rate'),
             'spo2': vitals.get('spo2'),
             'ews_score': vitals.get('ews_score', 0),
-            'recorded_at': vitals.get('recorded_at').isoformat() if vitals.get('recorded_at') else None
+            'recorded_at': rec_at_str
         }
 
-    # Latest EWS
-    ews_row = db.execute_query(
-        "SELECT * FROM ews_scores WHERE patient_id = %s ORDER BY calculated_at DESC, ews_id DESC LIMIT 1",
-        (patient_id,), fetch=True
-    )
-    total_score = ews_row[0]['total_score'] if ews_row else (vitals.get('ews_score', 0) if vitals else 0)
-    risk_level = ews_row[0]['risk_level'] if ews_row else ('CRITICAL' if total_score >= 7 else ('HIGH' if total_score >= 5 else ('MEDIUM' if total_score >= 3 else 'LOW')))
-
-    condition = "Stable"
-    if total_score >= 7 or risk_level == 'CRITICAL':
-        condition = "Critical Care"
-    elif total_score >= 4 or risk_level in ('HIGH', 'MEDIUM'):
-        condition = "Moderate Risk"
+    # Latest EWS — precalculated in Patient model, no redundant SELECT
+    total_score = patient.get('ews_score', 0)
+    risk_level = patient.get('ews_risk_level', 'LOW')
+    from services.decision_service import evaluate
+    clinical_eval = evaluate(total_score)
+    condition = patient.get('condition') or clinical_eval['condition']
+    if total_score >= 5 and condition != 'Critical':
+        condition = 'Critical'
+    elif total_score >= 3 and condition == 'Stable':
+        condition = 'Moderate Risk'
+    recommendation = patient.get('recommendation') or clinical_eval['recommendation']
 
     # Assigned Nurse Contact Resolution
     assigned_nurse_obj = {
@@ -1041,6 +1065,7 @@ def api_get_attendant_patient_data():
             'total_score': total_score,
             'risk_level': risk_level,
             'condition': condition,
+            'recommendation': recommendation,
             'attendant_name': attendant_name,
             'assigned_nurse': assigned_nurse_obj,
             'latest_vitals': vitals_summary,
@@ -1140,11 +1165,18 @@ def api_get_assigned_nurse():
             'error': "Attendant access required. Please scan the patient's QR code."
         }), 401
 
-    patient = Patient.get_by_id(patient_id)
-    if not patient:
+    # Lightweight query for assigned nurse user_id and ward
+    p_rows = db.execute_query(
+        "SELECT patient_id, assigned_nurse, ward_type FROM patients WHERE patient_id = %s LIMIT 1",
+        (patient_id,),
+        fetch=True
+    )
+    if not p_rows:
         return jsonify({'success': False, 'error': f"Patient #{patient_id} not found."}), 404
 
-    assigned_nurse_user_id = patient.get('assigned_nurse')
+    patient_rec = p_rows[0]
+    assigned_nurse_user_id = patient_rec.get('assigned_nurse')
+    ward_type = patient_rec.get('ward_type')
     if not assigned_nurse_user_id:
         return jsonify({
             'success': True,
@@ -1153,7 +1185,7 @@ def api_get_assigned_nurse():
             'nurse_name': None,
             'phone_number': None,
             'tel_uri': None,
-            'ward': patient.get('ward_type'),
+            'ward': ward_type,
             'message': 'No nurse is currently assigned to this patient.'
         }), 200
 

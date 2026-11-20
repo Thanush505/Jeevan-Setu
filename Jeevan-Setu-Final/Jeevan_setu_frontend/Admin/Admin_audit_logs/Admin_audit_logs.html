@@ -286,12 +286,27 @@
 </div>
 <script>
   const AUDIT_API = '/api/v1/reports/audit-logs';
-  const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
   let currentAdminAuditSearch = '';
 
-  function getAuthHeaders() {
-    const headers = { 'Content-Type': 'application/json' };
-    if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+  function getAuthToken() {
+    if (typeof window.getAdminAuthToken === 'function') {
+      const t = window.getAdminAuthToken();
+      if (t) return t;
+    }
+    return localStorage.getItem('jeevan_setu_token') ||
+           sessionStorage.getItem('jeevan_setu_token') ||
+           localStorage.getItem('token') ||
+           sessionStorage.getItem('token') ||
+           '';
+  }
+
+  function getAuthHeaders(extra = {}) {
+    if (typeof window.getAdminAuthHeaders === 'function') {
+      return window.getAdminAuthHeaders(extra);
+    }
+    const token = getAuthToken();
+    const headers = { 'Content-Type': 'application/json', ...extra };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
     return headers;
   }
 
@@ -305,8 +320,19 @@
         url += `&search=${encodeURIComponent(currentAdminAuditSearch.trim())}`;
       }
 
-      const res = await fetch(url, { headers: getAuthHeaders() });
-      if (!res.ok) return;
+      let res = await fetch(url, { headers: getAuthHeaders() });
+      if (!res.ok && res.status === 404) {
+        // Fallback to alias
+        res = await fetch(`/api/v1/audit-logs?limit=50${currentAdminAuditSearch ? `&search=${encodeURIComponent(currentAdminAuditSearch.trim())}` : ''}`, { headers: getAuthHeaders() });
+      }
+      if (!res.ok) {
+        console.error('Failed to load audit logs:', res.status, res.statusText);
+        const tbody = document.getElementById('admin-audit-tbody');
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-500 font-semibold">Failed to load audit logs (HTTP ${res.status}). Please check administrator permissions.</td></tr>`;
+        }
+        return;
+      }
       const json = await res.json();
       if (!json.success || !json.data) return;
 

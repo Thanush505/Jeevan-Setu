@@ -102,7 +102,12 @@ class Patient:
                 'heart_rate': v_rec.get('heart_rate'),
                 'respiratory_rate': v_rec.get('respiratory_rate'),
                 'systolic_bp': v_rec.get('blood_pressure_sys'),
+                'diastolic_bp': v_rec.get('blood_pressure_dia'),
+                'blood_pressure_sys': v_rec.get('blood_pressure_sys'),
+                'blood_pressure_dia': v_rec.get('blood_pressure_dia'),
                 'temperature': v_rec.get('temperature'),
+                'spo2': v_rec.get('spo2'),
+                'ews_score': v_rec.get('ews_score', 0) or 0,
                 'recorded_at': str(v_rec.get('recorded_at', ''))
             }
             patient['ews_score'] = v_rec.get('ews_score', 0) or 0

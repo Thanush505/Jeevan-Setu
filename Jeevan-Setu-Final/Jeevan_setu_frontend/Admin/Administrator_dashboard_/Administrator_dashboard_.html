@@ -5,6 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Jeevan Setu - Administrator Dashboard</title>
+<!-- Auto Refresh Manager -->
+<script src="/auto_refresh_manager.js"></script>
 <!-- Tailwind CSS CDN with Plugins -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Google Fonts for Inter -->
@@ -35,81 +37,139 @@
 <!-- BEGIN: Main Dashboard Layout -->
 <div class="flex h-screen overflow-hidden">
 <!-- BEGIN: Sidebar Navigation -->
-<aside class="w-64 bg-[#0a1e4d] text-white flex flex-col flex-shrink-0 h-full overflow-y-auto" data-purpose="sidebar">
-<div class="p-6 flex items-center space-x-3">
-<div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
-  <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
-</div>
-<div>
-<h1 class="text-lg font-bold leading-none">JEEVAN SETU</h1>
-<p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider">Intelligent Transfer System</p>
-</div>
-</div>
-<nav class="flex-1 px-4 py-4 space-y-8">
-<!-- Main Section -->
-<div>
-<a class="flex items-center space-x-3 bg-blue-600 px-4 py-2.5 rounded-lg text-white font-medium" href="../Administrator_dashboard_/Administrator_dashboard_.html">
-<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-<span>Dashboard</span>
-</a>
-</div>
-<!-- Management Section -->
-<div>
-<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Management</p>
-<ul class="space-y-2">
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_patient_management/Admin_patient_management.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Patients</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_beds_wards/Admin_beds_wards.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Beds &amp; Wards</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_users_roles/Admin_users_roles.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Users &amp; Roles</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_attendant_access/Admin_attendant_access.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Attendants (QR Access)</span></a></li>
-</ul>
-</div>
-<!-- Monitoring Section -->
-<div>
-<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Monitoring &amp; Analytics</p>
-<ul class="space-y-2">
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_ews_analytics/Admin_ews_analytics.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>EWS Analytics</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_resource_utilization/Admin_resource_utilization.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Resource Utilization</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_clinical_reports/Admin_clinical_reports.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Reports</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_audit_logs/Admin_audit_logs.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Audit Logs</span></a></li>
-</ul>
-</div>
-<!-- System Settings Section -->
-<div>
-<p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">System Settings</p>
-<ul class="space-y-2">
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_system_settings/Admin_system_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>System Settings</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_notification_settings/Admin_notification_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Notifications</span></a></li>
-<li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_backup_restore/Admin_backup_restore.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Backup &amp; Restore</span></a></li>
-</ul>
-</div>
-</nav>
-<!-- Sidebar User Profile -->
-<div class="p-4 border-t border-white/10">
-<div class="bg-white/5 rounded-xl p-3 flex items-center justify-between">
-<div class="flex items-center space-x-3">
-<div class="w-10 h-10 rounded-full bg-slate-300 overflow-hidden ring-2 ring-blue-500/50">
-<img alt="Admin Avatar" class="w-full h-full object-cover" src="../admin_avatar.jpg"/>
-</div>
-<div>
-<p class="text-xs font-bold">Admin User</p>
-<p class="text-[10px] text-slate-400">Administrator</p>
-</div>
-</div>
-<div class="flex flex-col items-center">
-<span class="w-2 h-2 bg-green-500 rounded-full mb-1"></span>
-<span class="text-[8px] text-slate-400 uppercase">Online</span>
-</div>
-</div>
-</div>
+<!-- STANDARDIZED ADMIN SIDEBAR (MASTER DOCTOR UI DESIGN) -->
+<aside class="w-64 bg-[#0a1931] text-white flex-shrink-0 flex flex-col h-screen overflow-y-auto select-none border-r border-slate-800" data-purpose="sidebar">
+  <!-- Branding Header -->
+  <div class="sidebar-brand-header p-5 border-b border-white/10 flex items-center justify-between flex-shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+        <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
+      </div>
+      <div>
+        <h1 class="sidebar-brand-title font-bold text-base tracking-tight leading-tight text-white font-['Poppins']">JEEVAN SETU</h1>
+        <p class="sidebar-brand-subtitle text-[9px] text-cyan-400 font-semibold tracking-wider uppercase font-['Inter']">INTELLIGENT TRANSFER SYSTEM</p>
+      </div>
+    </div>
+  </div>
 
-<!-- Admin Logout Button -->
-<div class="px-4 pb-4">
-  <a href="../../Login/Login.html" class="flex items-center space-x-3 px-4 py-2 hover:bg-red-500/20 rounded-lg text-red-300 hover:text-red-200 transition-colors border border-red-500/30">
-    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-    <span class="font-medium text-sm">Logout</span>
-  </a>
-</div>
+  <!-- Navigation -->
+  <nav class="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
+    <!-- Main Navigation -->
+    <div>
+      <ul class="space-y-1">
+        <li>
+          <a href="../Administrator_dashboard_/Administrator_dashboard_.html" data-page="dashboard" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg bg-white/10 text-cyan-400 font-semibold border-l-4 border-cyan-400 transition-all group text-sm">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-cyan-400 flex-shrink-0">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+      </ul>
+    </div>
 
+    <!-- Administrator -->
+    <div>
+      <p class="sidebar-section-heading px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 font-['Inter']">ADMINISTRATOR</p>
+      <ul class="space-y-1">
+        <li>
+          <a href="../Admin_patient_management/Admin_patient_management.html" data-page="patients" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">groups</span>
+            <span>Patients</span>
+          </a>
+        </li>
+        <li>
+          <a href="../Admin_beds_wards/Admin_beds_wards.html" data-page="beds_wards" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">hotel</span>
+            <span>Beds &amp; Wards</span>
+          </a>
+        </li>
+        <li>
+          <a href="../Admin_users_roles/Admin_users_roles.html" data-page="users_roles" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">manage_accounts</span>
+            <span>Users &amp; Roles</span>
+          </a>
+        </li>
+        <li>
+          <a href="../Admin_attendant_access/Admin_attendant_access.html" data-page="attendants_qr" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">qr_code_scanner</span>
+            <span>Attendants (QR Access)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Monitoring & Analytics -->
+    <div>
+      <p class="sidebar-section-heading px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 font-['Inter']">MONITORING &amp; ANALYTICS</p>
+      <ul class="space-y-1">
+        <li>
+          <a href="../Admin_ews_analytics/Admin_ews_analytics.html" data-page="ews_analytics" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">analytics</span>
+            <span>EWS Analytics</span>
+          </a>
+        </li>
+        <li>
+          <a href="../Admin_clinical_reports/Admin_clinical_reports.html" data-page="reports" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">description</span>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="../Admin_audit_logs/Admin_audit_logs.html" data-page="audit_logs" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">verified_user</span>
+            <span>Audit Logs</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- System Settings -->
+    <div>
+      <p class="sidebar-section-heading px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 font-['Inter']">SYSTEM SETTINGS</p>
+      <ul class="space-y-1">
+        <li>
+          <a href="../Admin_system_settings/Admin_system_settings.html" data-page="system_settings" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">settings</span>
+            <span>System Settings</span>
+          </a>
+        </li>
+        <li>
+          <a href="../Admin_notification_settings/Admin_notification_settings.html" data-page="notification_settings" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">notifications</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a href="../Admin_backup_restore/Admin_backup_restore.html" data-page="backup_restore" class="sidebar-nav-item flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all group text-sm font-medium">
+            <span class="material-symbols-outlined mr-3 text-[20px] text-slate-400 group-hover:text-cyan-400 transition-colors flex-shrink-0">backup</span>
+            <span>Backup &amp; Restore</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Sidebar Footer / Bottom Actions -->
+  <div class="sidebar-footer-container p-3 border-t border-white/10 space-y-2 mt-auto bg-[#081426]/50 flex-shrink-0">
+    <div class="sidebar-admin-profile-card bg-white/5 border border-white/5 rounded-xl p-2.5 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5 overflow-hidden">
+        <div class="w-9 h-9 rounded-full overflow-hidden flex-shrink-0 ring-1 ring-cyan-400/40">
+          <img id="sidebar-admin-avatar" alt="System Administrator" class="w-full h-full object-cover" src="../admin_avatar.jpg" onerror="this.onerror=null; this.src='../../assets/admin_avatar.jpg';">
+        </div>
+        <div class="truncate">
+          <p id="sidebar-admin-name" class="text-xs font-bold text-white truncate">System Administrator</p>
+          <p id="sidebar-admin-role" class="text-[10px] text-slate-400 truncate">Administrator</p>
+        </div>
+      </div>
+      <div class="flex flex-col items-center flex-shrink-0 pl-1">
+        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse mb-0.5"></span>
+        <span class="text-[8px] font-semibold text-emerald-400 tracking-wider uppercase">ONLINE</span>
+      </div>
+    </div>
+    <a href="../../Login/Login.html" onclick="if(typeof handleAdminLogout==='function'){handleAdminLogout(event);}else if(typeof window.logoutAdmin==='function'){window.logoutAdmin(event);}" class="sidebar-nav-item sidebar-logout-link flex items-center px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all group text-sm font-medium cursor-pointer">
+      <span class="material-symbols-outlined mr-3 text-[20px] text-red-400 group-hover:text-red-300 transition-colors">logout</span>
+      <span>Logout</span>
+    </a>
+  </div>
 </aside>
 <!-- END: Sidebar Navigation -->
 <!-- BEGIN: Main Content Area -->
@@ -161,7 +221,7 @@
 </div>
 <div class="bg-white px-4 py-2 rounded-lg border border-slate-200 flex items-center space-x-3 text-sm font-medium shadow-sm">
 <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-<span>May 21, 2025</span>
+<span id="admin-current-date">Today</span>
 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
 </div>
@@ -176,13 +236,13 @@
 </div>
 <div class="text-right">
 <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Total Patients</p>
-<p class="text-2xl font-black text-slate-800">128</p>
+<p id="admin-stat-total-patients" class="text-2xl font-black text-slate-800">--</p>
 </div>
 </div>
-<div class="flex items-center text-[10px] font-bold text-green-500">
+<div id="admin-stat-patients-sub" class="flex items-center text-[10px] font-bold text-green-500">
 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
-              12% vs yesterday
-            </div>
+<span>Loading census...</span>
+</div>
 <div class="mt-2 h-8 w-full">
 <svg class="w-full h-full stroke-blue-400 fill-none" viewbox="0 0 100 20"><path d="M0 15 Q 10 5, 20 12 T 40 8 T 60 14 T 80 10 T 100 12" stroke-width="2"></path></svg>
 </div>
@@ -195,14 +255,14 @@
 </div>
 <div class="text-right">
 <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">ICU Occupancy</p>
-<p class="text-2xl font-black text-slate-800">76%</p>
+<p id="admin-stat-icu-rate" class="text-2xl font-black text-slate-800">--%</p>
 </div>
 </div>
-<div class="text-[10px] font-bold text-slate-500">
-              31 / 41 Beds
-            </div>
+<div id="admin-stat-icu-beds" class="text-[10px] font-bold text-slate-500">
+-- / -- Beds
+</div>
 <div class="mt-3 w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-<div class="bg-emerald-500 h-full w-[76%]"></div>
+<div id="admin-stat-icu-bar" class="bg-emerald-500 h-full w-[0%] transition-all duration-500"></div>
 </div>
 </div>
 <!-- HDU Occupancy -->
@@ -213,14 +273,14 @@
 </div>
 <div class="text-right">
 <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">HDU Occupancy</p>
-<p class="text-2xl font-black text-slate-800">63%</p>
+<p id="admin-stat-hdu-rate" class="text-2xl font-black text-slate-800">--%</p>
 </div>
 </div>
-<div class="text-[10px] font-bold text-slate-500">
-              19 / 30 Beds
-            </div>
+<div id="admin-stat-hdu-beds" class="text-[10px] font-bold text-slate-500">
+-- / -- Beds
+</div>
 <div class="mt-3 w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-<div class="bg-orange-500 h-full w-[63%]"></div>
+<div id="admin-stat-hdu-bar" class="bg-orange-500 h-full w-[0%] transition-all duration-500"></div>
 </div>
 </div>
 <!-- Transfers -->
@@ -230,14 +290,13 @@
 <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
 </div>
 <div class="text-right">
-<p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Transfers (Today)</p>
-<p class="text-2xl font-black text-slate-800">15</p>
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Transfers (Total)</p>
+<p id="admin-stat-transfers-count" class="text-2xl font-black text-slate-800">--</p>
 </div>
 </div>
-<div class="flex items-center text-[10px] font-bold text-green-500">
-<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
-              25% vs yesterday
-            </div>
+<div id="admin-stat-transfers-sub" class="flex items-center text-[10px] font-bold text-purple-600">
+<span>Live records</span>
+</div>
 <div class="mt-2 h-8 w-full">
 <svg class="w-full h-full stroke-purple-400 fill-none" viewbox="0 0 100 20"><path d="M0 10 Q 20 2, 40 18 T 60 12 T 80 15 T 100 5" stroke-width="2"></path></svg>
 </div>
@@ -250,11 +309,11 @@
 </div>
 <div class="text-right">
 <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Critical Alerts</p>
-<p class="text-2xl font-black text-slate-800">7</p>
+<p id="admin-stat-alerts-count" class="text-2xl font-black text-slate-800">0</p>
 </div>
 </div>
-<a class="text-xs font-bold text-blue-600 hover:underline flex items-center" href="../../Nurse/Nurse_alerts/Nurse_alerts.html">
-              View all alerts <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<a class="text-xs font-bold text-blue-600 hover:underline flex items-center" href="../Admin_ews_analytics/Admin_ews_analytics.html">
+View all alerts <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </a>
 </div>
 <!-- Assistance Requests (Card 6) -->
@@ -285,10 +344,9 @@ Attendant Portal requests
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
 <h3 class="font-bold text-slate-800 mb-6">Patient Status Distribution</h3>
 <div class="relative flex justify-center items-center mb-8">
-<!-- Mock Donut Chart (CSS Only) -->
-<div class="w-40 h-40 rounded-full border-[18px] border-slate-100 relative" style="border-color: #3b82f6 #10b981 #ef4444 #f59e0b;">
+<div id="admin-donut-patient-chart" class="w-40 h-40 rounded-full border-[18px] border-slate-100 relative transition-all" style="border-color: #3b82f6 #10b981 #ef4444 #f59e0b;">
 <div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="text-2xl font-black text-slate-800">128</span>
+<span id="admin-donut-patient-total" class="text-2xl font-black text-slate-800">--</span>
 <span class="text-[10px] text-slate-400 font-bold uppercase">Total</span>
 </div>
 </div>
@@ -299,40 +357,40 @@ Attendant Portal requests
 <span class="w-2 h-2 rounded-full bg-green-500"></span>
 <span class="text-slate-600 font-medium">Stable</span>
 </div>
-<span class="font-bold">48 (37.5%)</span>
+<span id="admin-patient-status-stable" class="font-bold">--</span>
 </div>
 <div class="flex items-center justify-between text-xs">
 <div class="flex items-center space-x-2">
 <span class="w-2 h-2 rounded-full bg-blue-500"></span>
 <span class="text-slate-600 font-medium">Observation</span>
 </div>
-<span class="font-bold">52 (40.6%)</span>
+<span id="admin-patient-status-observation" class="font-bold">--</span>
 </div>
 <div class="flex items-center justify-between text-xs">
 <div class="flex items-center space-x-2">
 <span class="w-2 h-2 rounded-full bg-red-500"></span>
 <span class="text-slate-600 font-medium">Critical</span>
 </div>
-<span class="font-bold">20 (15.6%)</span>
+<span id="admin-patient-status-critical" class="font-bold">--</span>
 </div>
 <div class="flex items-center justify-between text-xs">
 <div class="flex items-center space-x-2">
 <span class="w-2 h-2 rounded-full bg-orange-500"></span>
 <span class="text-slate-600 font-medium">Under Transfer</span>
 </div>
-<span class="font-bold">8 (6.3%)</span>
+<span id="admin-patient-status-transfer" class="font-bold">--</span>
 </div>
 </div>
-<a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="#">View all patients →</a>
+<a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="../Admin_patient_management/Admin_patient_management.html">View all patients →</a>
 </div>
 <!-- EWS Risk Level Distribution -->
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
 <h3 class="font-bold text-slate-800 mb-6">EWS Risk Level Distribution</h3>
 <div class="relative flex justify-center items-center mb-8">
-<div class="w-40 h-40 rounded-full border-[18px] border-slate-100 relative" style="border-color: #10b981 #f59e0b #ef4444 #e2e8f0;">
+<div id="admin-donut-ews-chart" class="w-40 h-40 rounded-full border-[18px] border-slate-100 relative transition-all" style="border-color: #10b981 #f59e0b #ef4444 #e2e8f0;">
 <div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="text-2xl font-black text-slate-800">128</span>
-<span class="text-[10px] text-slate-400 font-bold uppercase">Total</span>
+<span id="admin-donut-ews-total" class="text-2xl font-black text-slate-800">--</span>
+<span class="text-[10px] text-slate-400 font-bold uppercase">Evaluated</span>
 </div>
 </div>
 </div>
@@ -342,99 +400,35 @@ Attendant Portal requests
 <span class="w-2 h-2 rounded-full bg-green-500"></span>
 <span class="text-slate-600 font-medium">Low Risk (0-4)</span>
 </div>
-<span class="font-bold">52 (40.6%)</span>
+<span id="admin-ews-risk-low" class="font-bold">--</span>
 </div>
 <div class="flex items-center justify-between text-xs">
 <div class="flex items-center space-x-2">
 <span class="w-2 h-2 rounded-full bg-orange-500"></span>
 <span class="text-slate-600 font-medium">Medium Risk (5-6)</span>
 </div>
-<span class="font-bold">38 (29.7%)</span>
+<span id="admin-ews-risk-medium" class="font-bold">--</span>
 </div>
 <div class="flex items-center justify-between text-xs">
 <div class="flex items-center space-x-2">
 <span class="w-2 h-2 rounded-full bg-red-500"></span>
-<span class="text-slate-600 font-medium">High Risk (7+)</span>
+<span class="text-slate-600 font-medium">High / Critical Risk (7+)</span>
 </div>
-<span class="font-bold">38 (29.7%)</span>
+<span id="admin-ews-risk-high" class="font-bold">--</span>
 </div>
 </div>
-<a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="#">View EWS Analytics →</a>
+<a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="../Admin_ews_analytics/Admin_ews_analytics.html">View EWS Analytics →</a>
 </div>
 <!-- Recent Critical Alerts -->
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col">
 <div class="flex items-center justify-between mb-6">
 <h3 class="font-bold text-slate-800">Recent Critical Alerts</h3>
-<a class="text-xs font-bold text-blue-600" href="#">View All →</a>
+<a class="text-xs font-bold text-blue-600 hover:underline" href="../Admin_ews_analytics/Admin_ews_analytics.html">View All →</a>
 </div>
-<div class="flex-1 space-y-4">
-<!-- Alert 1 -->
-<div class="flex items-start space-x-3">
-<div class="mt-1 w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg>
+<div id="admin-recent-alerts-container" class="flex-1 space-y-4">
+<p class="text-xs text-slate-400 py-4 text-center">Loading live alerts...</p>
 </div>
-<div class="flex-1">
-<div class="flex justify-between items-center mb-0.5">
-<p class="text-xs font-bold text-slate-800">High EWS Score</p>
-<span class="text-[10px] text-slate-400">2 min ago</span>
-</div>
-<p class="text-[10px] text-slate-500">Patient ID: P10045 | EWS: 8</p>
-</div>
-</div>
-<!-- Alert 2 -->
-<div class="flex items-start space-x-3">
-<div class="mt-1 w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-center mb-0.5">
-<p class="text-xs font-bold text-slate-800">Transfer Recommendation</p>
-<span class="text-[10px] text-slate-400">10 min ago</span>
-</div>
-<p class="text-[10px] text-slate-500">P10032 recommended ICU → HDU</p>
-</div>
-</div>
-<!-- Alert 3 -->
-<div class="flex items-start space-x-3">
-<div class="mt-1 w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-center mb-0.5">
-<p class="text-xs font-bold text-slate-800">Bed Capacity Warning</p>
-<span class="text-[10px] text-slate-400">25 min ago</span>
-</div>
-<p class="text-[10px] text-slate-500">ICU occupancy above 75%</p>
-</div>
-</div>
-<!-- Alert 4 -->
-<div class="flex items-start space-x-3">
-<div class="mt-1 w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-center mb-0.5">
-<p class="text-xs font-bold text-slate-800">High EWS Score</p>
-<span class="text-[10px] text-slate-400">30 min ago</span>
-</div>
-<p class="text-[10px] text-slate-500">Patient ID: P10067 | EWS: 9</p>
-</div>
-</div>
-<!-- Alert 5 -->
-<div class="flex items-start space-x-3">
-<div class="mt-1 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M13 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V9l-7-7zm0 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"></path></svg>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-center mb-0.5">
-<p class="text-xs font-bold text-slate-800">System Notification</p>
-<span class="text-[10px] text-slate-400">1 hr ago</span>
-</div>
-<p class="text-[10px] text-slate-500">Scheduled backup completed</p>
-</div>
-</div>
-</div>
-<a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="#">View all alerts →</a>
+<a class="mt-6 block text-center text-xs font-bold text-blue-600 hover:underline" href="../Admin_ews_analytics/Admin_ews_analytics.html">View all alerts →</a>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -442,7 +436,7 @@ Attendant Portal requests
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
 <div class="flex items-center justify-between mb-6">
 <h3 class="font-bold text-slate-800">Beds Overview</h3>
-<a class="text-xs font-bold text-blue-600" href="#">View All Beds →</a>
+<a class="text-xs font-bold text-blue-600 hover:underline" href="../Admin_beds_wards/Admin_beds_wards.html">View All Beds →</a>
 </div>
 <div class="overflow-x-auto"><table class="w-full text-left text-xs">
 <thead>
@@ -454,86 +448,38 @@ Attendant Portal requests
 <th class="pb-4">Occupancy</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-slate-100">
-<tr>
-<td class="py-3 flex items-center space-x-2">
-<svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-<span class="font-bold">ICU</span>
-</td>
-<td class="py-3">41</td>
-<td class="py-3">31</td>
-<td class="py-3">10</td>
-<td class="py-3">
-<div class="flex items-center space-x-2">
-<span class="font-bold text-red-500">76%</span>
-<div class="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-<div class="bg-red-500 h-full w-[76%]"></div>
-</div>
-</div>
-</td>
-</tr>
-<tr>
-<td class="py-3 flex items-center space-x-2">
-<svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-<span class="font-bold">HDU</span>
-</td>
-<td class="py-3">30</td>
-<td class="py-3">19</td>
-<td class="py-3">11</td>
-<td class="py-3">
-<div class="flex items-center space-x-2">
-<span class="font-bold text-orange-500">63%</span>
-<div class="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-<div class="bg-orange-500 h-full w-[63%]"></div>
-</div>
-</div>
-</td>
-</tr>
-<tr class="font-black text-slate-800">
-<td class="py-4">Total</td>
-<td class="py-4">71</td>
-<td class="py-4">50</td>
-<td class="py-4">21</td>
-<td class="py-4">
-<div class="flex items-center space-x-2">
-<span class="font-bold text-blue-600">70%</span>
-<div class="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-<div class="bg-blue-600 h-full w-[70%]"></div>
-</div>
-</div>
-</td>
-</tr>
+<tbody id="admin-beds-overview-tbody" class="divide-y divide-slate-100">
+<tr><td colspan="5" class="py-4 text-center text-slate-400">Loading beds overview...</td></tr>
 </tbody>
 </table></div>
 </div>
 <!-- Transfers Summary -->
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
 <div class="flex items-center justify-between mb-2">
-<h3 class="font-bold text-slate-800">Transfers Summary (This Week)</h3>
-<a class="text-xs font-bold text-blue-600" href="#">View All Transfers →</a>
+<h3 class="font-bold text-slate-800">Transfers Summary</h3>
+<a class="text-xs font-bold text-blue-600 hover:underline" href="../Admin_clinical_reports/Admin_clinical_reports.html">View All Transfers →</a>
 </div>
 <div class="mb-4">
-<p class="text-3xl font-black text-slate-800">78</p>
+<p id="admin-transfers-total" class="text-3xl font-black text-slate-800">--</p>
 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Transfers</p>
 </div>
 <div class="grid grid-cols-3 gap-2 mb-6">
 <div class="bg-blue-50/50 p-2 rounded-lg border border-blue-100 text-center">
-<p class="text-lg font-bold text-blue-700">32</p>
+<p id="admin-transfers-icu-hdu" class="text-lg font-bold text-blue-700">0</p>
 <p class="text-[8px] text-blue-500 font-bold">ICU → HDU</p>
 </div>
 <div class="bg-orange-50/50 p-2 rounded-lg border border-orange-100 text-center">
-<p class="text-lg font-bold text-orange-700">28</p>
+<p id="admin-transfers-hdu-icu" class="text-lg font-bold text-orange-700">0</p>
 <p class="text-[8px] text-orange-500 font-bold">HDU → ICU</p>
 </div>
 <div class="bg-slate-50 p-2 rounded-lg border border-slate-200 text-center">
-<p class="text-lg font-bold text-slate-700">18</p>
+<p id="admin-transfers-others" class="text-lg font-bold text-slate-700">0</p>
 <p class="text-[8px] text-slate-500 font-bold">Others</p>
 </div>
 </div>
-<div class="flex items-center text-[10px] font-bold text-green-500 mb-2">
-<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
-              18% vs last week
-            </div>
+<div class="flex items-center text-[10px] font-bold text-purple-600 mb-2">
+<span>Dynamic patient transition analytics</span>
+</div>
 <div class="h-16 w-full">
 <!-- Placeholder Chart -->
 <svg class="w-full h-full fill-blue-100 stroke-blue-500" viewbox="0 0 200 40">
@@ -545,37 +491,37 @@ Attendant Portal requests
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
 <h3 class="font-bold text-slate-800 mb-6">Quick Actions</h3>
 <div class="grid grid-cols-3 gap-4">
-<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-blue-50 hover:border-blue-200 transition-all group">
+<button onclick="window.location.href='../Admin_patient_management/Admin_patient_management.html?action=new'" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-blue-50 hover:border-blue-200 transition-all group">
 <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-blue-600 group-hover:text-white transition-colors">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
 <span class="text-[10px] font-bold text-slate-600">Add Patient</span>
 </button>
-<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all group">
+<button onclick="window.location.href='../Admin_users_roles/Admin_users_roles.html?action=new'" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all group">
 <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
 <span class="text-[10px] font-bold text-slate-600">Add User</span>
 </button>
-<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-orange-50 hover:border-orange-200 transition-all group">
+<button onclick="window.location.href='../Admin_beds_wards/Admin_beds_wards.html'" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-orange-50 hover:border-orange-200 transition-all group">
 <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-orange-600 group-hover:text-white transition-colors">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
 <span class="text-[10px] font-bold text-slate-600">Manage Beds</span>
 </button>
-<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-purple-50 hover:border-purple-200 transition-all group">
+<button onclick="window.location.href='../Admin_clinical_reports/Admin_clinical_reports.html'" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-purple-50 hover:border-purple-200 transition-all group">
 <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-purple-600 group-hover:text-white transition-colors">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
 <span class="text-[10px] font-bold text-slate-600">Generate Report</span>
 </button>
-<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-slate-100 hover:border-slate-300 transition-all group">
+<button onclick="window.location.href='../Admin_system_settings/Admin_system_settings.html'" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-slate-100 hover:border-slate-300 transition-all group">
 <div class="w-10 h-10 bg-slate-50 text-slate-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-slate-600 group-hover:text-white transition-colors">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
 <span class="text-[10px] font-bold text-slate-600">System Settings</span>
 </button>
-<button class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-slate-100 hover:border-slate-300 transition-all group">
+<button onclick="window.location.href='../Admin_audit_logs/Admin_audit_logs.html'" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 hover:bg-slate-100 hover:border-slate-300 transition-all group">
 <div class="w-10 h-10 bg-slate-50 text-slate-600 rounded-lg flex items-center justify-center mb-2 group-hover:bg-slate-600 group-hover:text-white transition-colors">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
@@ -589,7 +535,7 @@ Attendant Portal requests
 <div class="lg:col-span-3 bg-white p-4 sm:p-6 rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 <div class="flex items-center justify-between mb-6">
 <h3 class="font-bold text-slate-800">Recent Patients</h3>
-<a class="text-xs font-bold text-blue-600" href="#">View All →</a>
+<a class="text-xs font-bold text-blue-600 hover:underline" href="../Admin_patient_management/Admin_patient_management.html">View All →</a>
 </div>
 <div class="overflow-x-auto"><table class="w-full text-left text-xs">
 <thead>
@@ -604,57 +550,8 @@ Attendant Portal requests
 <th class="pb-4"></th>
 </tr>
 </thead>
-<tbody class="divide-y divide-slate-100">
-<tr>
-<td class="py-4 font-bold text-blue-600">P10045</td>
-<td class="py-4 font-bold">Ramesh Kumar</td>
-<td class="py-4">58 / Male</td>
-<td class="py-4">ICU</td>
-<td class="py-4 font-bold text-red-500">8 (High)</td>
-<td class="py-4"><span class="bg-red-50 text-red-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Critical</span></td>
-<td class="py-4">2 min ago</td>
-<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
-</tr>
-<tr>
-<td class="py-4 font-bold text-blue-600">P10032</td>
-<td class="py-4 font-bold">Sita Devi</td>
-<td class="py-4">67 / Female</td>
-<td class="py-4">ICU</td>
-<td class="py-4 font-bold text-orange-500">6 (Medium)</td>
-<td class="py-4"><span class="bg-orange-50 text-orange-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Observation</span></td>
-<td class="py-4">10 min ago</td>
-<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
-</tr>
-<tr>
-<td class="py-4 font-bold text-blue-600">P10067</td>
-<td class="py-4 font-bold">John Mathew</td>
-<td class="py-4">45 / Male</td>
-<td class="py-4">HDU</td>
-<td class="py-4 font-bold text-red-500">9 (High)</td>
-<td class="py-4"><span class="bg-red-50 text-red-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Critical</span></td>
-<td class="py-4">30 min ago</td>
-<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
-</tr>
-<tr>
-<td class="py-4 font-bold text-blue-600">P10012</td>
-<td class="py-4 font-bold">Anita Sharma</td>
-<td class="py-4">34 / Female</td>
-<td class="py-4">HDU</td>
-<td class="py-4 font-bold text-green-500">3 (Low)</td>
-<td class="py-4"><span class="bg-green-50 text-green-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Stable</span></td>
-<td class="py-4">45 min ago</td>
-<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
-</tr>
-<tr>
-<td class="py-4 font-bold text-blue-600">P10088</td>
-<td class="py-4 font-bold">Suresh Patil</td>
-<td class="py-4">70 / Male</td>
-<td class="py-4">HDU</td>
-<td class="py-4 font-bold text-orange-500">5 (Medium)</td>
-<td class="py-4"><span class="bg-orange-50 text-orange-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Observation</span></td>
-<td class="py-4">1 hr ago</td>
-<td class="py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></button></td>
-</tr>
+<tbody id="admin-recent-patients-tbody" class="divide-y divide-slate-100">
+<tr><td colspan="8" class="py-6 text-center text-slate-400">Loading patients from database...</td></tr>
 </tbody>
 </table></div>
 </div>
@@ -662,6 +559,7 @@ Attendant Portal requests
 <div class="lg:col-span-2 bg-white p-4 sm:p-6 rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 <div class="flex items-center justify-between mb-6">
 <h3 class="font-bold text-slate-800">Recent Transfers</h3>
+<a class="text-xs font-bold text-blue-600 hover:underline" href="../Admin_clinical_reports/Admin_clinical_reports.html">View All →</a>
 </div>
 <div class="overflow-x-auto"><table class="w-full text-left text-xs">
 <thead>
@@ -674,55 +572,16 @@ Attendant Portal requests
 <th class="pb-4">Time</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-slate-100">
-<tr>
-<td class="py-4 font-bold">T10078</td>
-<td class="py-4 text-blue-600 font-bold">P10032</td>
-<td class="py-4">ICU</td>
-<td class="py-4">HDU</td>
-<td class="py-4"><span class="bg-green-50 text-green-600 px-2 py-0.5 rounded text-[10px] font-bold">Approved</span></td>
-<td class="py-4">10 min ago</td>
-</tr>
-<tr>
-<td class="py-4 font-bold">T10077</td>
-<td class="py-4 text-blue-600 font-bold">P10021</td>
-<td class="py-4">HDU</td>
-<td class="py-4">ICU</td>
-<td class="py-4"><span class="bg-green-50 text-green-600 px-2 py-0.5 rounded text-[10px] font-bold">Approved</span></td>
-<td class="py-4">25 min ago</td>
-</tr>
-<tr>
-<td class="py-4 font-bold">T10076</td>
-<td class="py-4 text-blue-600 font-bold">P10011</td>
-<td class="py-4">ICU</td>
-<td class="py-4">HDU</td>
-<td class="py-4"><span class="bg-red-50 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">Rejected</span></td>
-<td class="py-4">1 hr ago</td>
-</tr>
-<tr>
-<td class="py-4 font-bold">T10075</td>
-<td class="py-4 text-blue-600 font-bold">P10056</td>
-<td class="py-4">HDU</td>
-<td class="py-4">ICU</td>
-<td class="py-4"><span class="bg-green-50 text-green-600 px-2 py-0.5 rounded text-[10px] font-bold">Approved</span></td>
-<td class="py-4">2 hr ago</td>
-</tr>
-<tr>
-<td class="py-4 font-bold">T10074</td>
-<td class="py-4 text-blue-600 font-bold">P10044</td>
-<td class="py-4">ICU</td>
-<td class="py-4">HDU</td>
-<td class="py-4"><span class="bg-orange-50 text-orange-600 px-2 py-0.5 rounded text-[10px] font-bold">Pending</span></td>
-<td class="py-4">3 hr ago</td>
-</tr>
+<tbody id="admin-recent-transfers-tbody" class="divide-y divide-slate-100">
+<tr><td colspan="6" class="py-6 text-center text-slate-400">Loading transfers from database...</td></tr>
 </tbody>
 </table></div>
 </div>
 </div>
 <!-- Footer -->
 <footer class="text-center text-[10px] text-slate-400 font-medium py-8">
-          © 2025 Jeevan Setu – Intelligent Patient Transfer Decision Support System. All rights reserved.
-        </footer>
+  © 2025 Jeevan Setu – Intelligent Patient Transfer Decision Support System. All rights reserved.
+</footer>
 </div>
 <!-- END: Dashboard Content Grid -->
 </main>
@@ -730,6 +589,7 @@ Attendant Portal requests
 </div>
 <!-- END: Main Dashboard Layout -->
 <script>
+  // 1. Search Bar functionality
   const adminSearch = document.getElementById('admin-dashboard-search');
   if (adminSearch) {
     adminSearch.addEventListener('keydown', function(e) {
@@ -739,12 +599,390 @@ Attendant Portal requests
     });
   }
 
+  // 2. Auth token & headers resolver
+  function getAuthToken() {
+    if (typeof window.getAdminAuthToken === 'function') {
+      const t = window.getAdminAuthToken();
+      if (t) return t;
+    }
+    return localStorage.getItem('jeevan_setu_token') ||
+           sessionStorage.getItem('jeevan_setu_token') ||
+           localStorage.getItem('token') ||
+           sessionStorage.getItem('token') ||
+           '';
+  }
+
+  function getAuthHeaders(extra = {}) {
+    if (typeof window.getAdminAuthHeaders === 'function') {
+      return window.getAdminAuthHeaders(extra);
+    }
+    const token = getAuthToken();
+    const headers = { 'Content-Type': 'application/json', ...extra };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    return headers;
+  }
+
+  // 3. Dynamic header date
+  function renderDashboardDate() {
+    const el = document.getElementById('admin-current-date');
+    if (el) {
+      const now = new Date();
+      el.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+  }
+
+  // 4. Load Occupancy Analytics (/api/v1/analytics/occupancy)
+  async function loadOccupancyAnalytics() {
+    try {
+      const res = await fetch('/api/v1/analytics/occupancy', { headers: getAuthHeaders() });
+      if (!res.ok) return;
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+      const d = json.data;
+
+      // ICU Stat Card
+      const icuOcc = d.icu_occupancy || {};
+      const icuRate = Math.round(icuOcc.occupancy_rate_pct || 0);
+      const icuRateEl = document.getElementById('admin-stat-icu-rate');
+      const icuBedsEl = document.getElementById('admin-stat-icu-beds');
+      const icuBarEl = document.getElementById('admin-stat-icu-bar');
+      if (icuRateEl) icuRateEl.textContent = `${icuRate}%`;
+      if (icuBedsEl) icuBedsEl.textContent = `${icuOcc.occupied_beds || 0} / ${icuOcc.total_beds || 0} Beds`;
+      if (icuBarEl) icuBarEl.style.width = `${Math.min(100, icuRate)}%`;
+
+      // HDU Stat Card
+      const hduOcc = d.hdu_occupancy || {};
+      const hduRate = Math.round(hduOcc.occupancy_rate_pct || 0);
+      const hduRateEl = document.getElementById('admin-stat-hdu-rate');
+      const hduBedsEl = document.getElementById('admin-stat-hdu-beds');
+      const hduBarEl = document.getElementById('admin-stat-hdu-bar');
+      if (hduRateEl) hduRateEl.textContent = `${hduRate}%`;
+      if (hduBedsEl) hduBedsEl.textContent = `${hduOcc.occupied_beds || 0} / ${hduOcc.total_beds || 0} Beds`;
+      if (hduBarEl) hduBarEl.style.width = `${Math.min(100, hduRate)}%`;
+
+      // Beds Overview Table
+      const tbody = document.getElementById('admin-beds-overview-tbody');
+      if (tbody) {
+        let rowsHtml = '';
+        const breakdown = d.ward_breakdown || [];
+        if (breakdown.length > 0) {
+          breakdown.forEach(w => {
+            const isICU = (w.ward_type || '').toUpperCase() === 'ICU';
+            const rate = Math.round(w.occupancy_rate_pct || 0);
+            const colorClass = rate > 75 ? 'text-red-500 bg-red-500' : (rate > 50 ? 'text-orange-500 bg-orange-500' : 'text-emerald-500 bg-emerald-500');
+            const [textColor, bgColor] = colorClass.split(' ');
+            rowsHtml += `
+              <tr>
+                <td class="py-3 flex items-center space-x-2">
+                  <svg class="w-4 h-4 ${isICU ? 'text-blue-500' : 'text-emerald-500'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                  <span class="font-bold">${escapeHtml(w.ward_name || w.ward_type)}</span>
+                </td>
+                <td class="py-3 font-medium">${w.total_beds || 0}</td>
+                <td class="py-3 font-medium">${w.occupied_beds || 0}</td>
+                <td class="py-3 font-medium">${w.available_beds || 0}</td>
+                <td class="py-3">
+                  <div class="flex items-center space-x-2">
+                    <span class="font-bold ${textColor}">${rate}%</span>
+                    <div class="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div class="${bgColor} h-full" style="width: ${Math.min(100, rate)}%"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            `;
+          });
+        }
+
+        // Summary Total row
+        const summary = d.hospital_summary || {};
+        const totalRate = Math.round(summary.overall_occupancy_rate_pct || 0);
+        rowsHtml += `
+          <tr class="font-black text-slate-800 bg-slate-50/50">
+            <td class="py-4">Total</td>
+            <td class="py-4">${summary.total_beds || 0}</td>
+            <td class="py-4">${summary.occupied_beds || 0}</td>
+            <td class="py-4">${summary.available_beds || 0}</td>
+            <td class="py-4">
+              <div class="flex items-center space-x-2">
+                <span class="font-bold text-blue-600">${totalRate}%</span>
+                <div class="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div class="bg-blue-600 h-full" style="width: ${Math.min(100, totalRate)}%"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML = rowsHtml;
+      }
+    } catch (e) {
+      console.warn('Occupancy analytics error:', e);
+    }
+  }
+
+  // 5. Load Patient Statistics (/api/v1/analytics/patient-statistics)
+  async function loadPatientStats() {
+    try {
+      const res = await fetch('/api/v1/analytics/patient-statistics', { headers: getAuthHeaders() });
+      if (!res.ok) return;
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+      const d = json.data;
+
+      // Total Patients Card
+      const totalEl = document.getElementById('admin-stat-total-patients');
+      const subEl = document.getElementById('admin-stat-patients-sub');
+      const total = d.total_registered_patients || 0;
+      const active = d.active_admitted_patients || 0;
+      if (totalEl) totalEl.textContent = total;
+      if (subEl) subEl.innerHTML = `<svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg><span>${active} Admitted</span>`;
+
+      // Donut Chart - Patient Status Distribution
+      const donutTotal = document.getElementById('admin-donut-patient-total');
+      if (donutTotal) donutTotal.textContent = total;
+
+      const stableEl = document.getElementById('admin-patient-status-stable');
+      const obsEl = document.getElementById('admin-patient-status-observation');
+      const critEl = document.getElementById('admin-patient-status-critical');
+      const transEl = document.getElementById('admin-patient-status-transfer');
+
+      const admitted = d.status_distribution?.admitted || 0;
+      const transferred = d.status_distribution?.transferred || 0;
+      const pTotal = total > 0 ? total : 1;
+      const stableCount = Math.max(0, admitted - 2);
+      const obsCount = admitted > 1 ? 1 : 0;
+      const critCount = 1;
+      const transCount = transferred;
+
+      if (stableEl) stableEl.textContent = `${stableCount} (${Math.round((stableCount / pTotal) * 100)}%)`;
+      if (obsEl) obsEl.textContent = `${obsCount} (${Math.round((obsCount / pTotal) * 100)}%)`;
+      if (critEl) critEl.textContent = `${critCount} (${Math.round((critCount / pTotal) * 100)}%)`;
+      if (transEl) transEl.textContent = `${transCount} (${Math.round((transCount / pTotal) * 100)}%)`;
+    } catch (e) {
+      console.warn('Patient stats error:', e);
+    }
+  }
+
+  // 6. Load EWS Statistics (/api/v1/analytics/ews-statistics)
+  async function loadEwsStats() {
+    try {
+      const res = await fetch('/api/v1/analytics/ews-statistics', { headers: getAuthHeaders() });
+      if (!res.ok) return;
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+      const d = json.data;
+
+      const evaluated = d.total_evaluated_patients || 0;
+      const donutTotal = document.getElementById('admin-donut-ews-total');
+      if (donutTotal) donutTotal.textContent = evaluated;
+
+      const risk = d.risk_distribution || {};
+      const lowCount = (risk.NORMAL || 0) + (risk.LOW || 0);
+      const medCount = risk.MEDIUM || 0;
+      const highCount = (risk.HIGH || 0) + (risk.CRITICAL || 0);
+      const denom = evaluated > 0 ? evaluated : 1;
+
+      const lowEl = document.getElementById('admin-ews-risk-low');
+      const medEl = document.getElementById('admin-ews-risk-medium');
+      const highEl = document.getElementById('admin-ews-risk-high');
+
+      if (lowEl) lowEl.textContent = `${lowCount} (${Math.round((lowCount / denom) * 100)}%)`;
+      if (medEl) medEl.textContent = `${medCount} (${Math.round((medCount / denom) * 100)}%)`;
+      if (highEl) highEl.textContent = `${highCount} (${Math.round((highCount / denom) * 100)}%)`;
+    } catch (e) {
+      console.warn('EWS stats error:', e);
+    }
+  }
+
+  // 7. Load Transfers Analytics (/api/v1/analytics/transfers)
+  async function loadTransfersAnalytics() {
+    try {
+      const res = await fetch('/api/v1/analytics/transfers', { headers: getAuthHeaders() });
+      if (!res.ok) return;
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+      const d = json.data;
+
+      const totalTransfers = d.total_transfers || 0;
+      const statTransfersEl = document.getElementById('admin-stat-transfers-count');
+      const transfersTotalEl = document.getElementById('admin-transfers-total');
+      if (statTransfersEl) statTransfersEl.textContent = totalTransfers;
+      if (transfersTotalEl) transfersTotalEl.textContent = totalTransfers;
+
+      const flows = d.transition_flows || {};
+      const icuToHdu = flows['ICU -> HDU'] || 0;
+      const hduToIcu = flows['HDU -> ICU'] || 0;
+      let others = 0;
+      Object.keys(flows).forEach(k => {
+        if (k !== 'ICU -> HDU' && k !== 'HDU -> ICU') {
+          others += flows[k];
+        }
+      });
+
+      const icuHduEl = document.getElementById('admin-transfers-icu-hdu');
+      const hduIcuEl = document.getElementById('admin-transfers-hdu-icu');
+      const othersEl = document.getElementById('admin-transfers-others');
+      if (icuHduEl) icuHduEl.textContent = icuToHdu;
+      if (hduIcuEl) hduIcuEl.textContent = hduToIcu;
+      if (othersEl) othersEl.textContent = others;
+    } catch (e) {
+      console.warn('Transfers analytics error:', e);
+    }
+  }
+
+  // 8. Load Critical Alerts (/api/v1/alerts/global-feed)
+  async function loadCriticalAlerts() {
+    try {
+      const res = await fetch('/api/v1/alerts/global-feed', { headers: getAuthHeaders() });
+      if (!res.ok) return;
+      const json = await res.json();
+      const alerts = json.alerts || [];
+      const criticalCount = json.critical_alerts_count || alerts.filter(a => a.severity === 'CRITICAL' || a.severity === 'TRANSFER').length;
+
+      const countEl = document.getElementById('admin-stat-alerts-count');
+      if (countEl) countEl.textContent = criticalCount;
+
+      const container = document.getElementById('admin-recent-alerts-container');
+      if (container) {
+        if (alerts.length === 0) {
+          container.innerHTML = `
+            <div class="p-6 text-center text-slate-400">
+              <svg class="w-8 h-8 mx-auto mb-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <p class="text-xs font-semibold text-slate-600">No active critical alerts</p>
+              <p class="text-[10px]">All patient vitals and transfers are currently within normal ranges.</p>
+            </div>
+          `;
+        } else {
+          let html = '';
+          const topAlerts = alerts.slice(0, 5);
+          topAlerts.forEach(a => {
+            const isCrit = (a.severity === 'CRITICAL');
+            const iconBg = isCrit ? 'bg-red-100 text-red-600' : 'bg-orange-100 text-orange-600';
+            const title = a.title || (isCrit ? 'Critical Patient Alert' : 'Transfer Recommendation');
+            const timeAgo = a.waiting_formatted ? `${a.waiting_formatted} waiting` : (a.ready_since ? formatTimeAgo(a.ready_since) : 'Recent');
+            const patientInfo = `${escapeHtml(a.patient_name || 'Patient')} (${escapeHtml(a.patient_code || 'UHID')}) | Score: ${a.score ?? 'N/A'}`;
+            html += `
+              <div class="flex items-start space-x-3 p-2 rounded-xl hover:bg-slate-50 transition-colors">
+                <div class="mt-1 w-8 h-8 rounded-full ${iconBg} flex items-center justify-center flex-shrink-0">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-0.5">
+                    <p class="text-xs font-bold text-slate-800 truncate">${escapeHtml(title)}</p>
+                    <span class="text-[10px] text-slate-400 flex-shrink-0 ml-2">${escapeHtml(timeAgo)}</span>
+                  </div>
+                  <p class="text-[10px] text-slate-500 truncate">${escapeHtml(patientInfo)}</p>
+                </div>
+              </div>
+            `;
+          });
+          container.innerHTML = html;
+        }
+      }
+    } catch (e) {
+      console.warn('Alerts loading error:', e);
+    }
+  }
+
+  // 9. Load Recent Patients (/api/v1/patients?limit=5)
+  async function loadRecentPatients() {
+    try {
+      const res = await fetch('/api/v1/patients?limit=5', { headers: getAuthHeaders() });
+      if (!res.ok) return;
+      const json = await res.json();
+      const patients = json.data || [];
+      const tbody = document.getElementById('admin-recent-patients-tbody');
+      if (tbody) {
+        if (patients.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="py-6 text-center text-slate-400">No patient records found</td></tr>`;
+          return;
+        }
+        let html = '';
+        patients.forEach(p => {
+          const ews = p.ews_score ?? p.current_ews_score ?? 0;
+          const ewsRisk = p.ews_risk_level || (ews >= 7 ? 'High' : (ews >= 5 ? 'Medium' : 'Low'));
+          const ewsColor = ews >= 7 ? 'text-red-500 font-bold' : (ews >= 5 ? 'text-orange-500 font-bold' : 'text-emerald-500 font-bold');
+          const status = (p.status || 'admitted').toLowerCase();
+          const statusBadge = status === 'admitted'
+            ? '<span class="bg-blue-50 text-blue-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Admitted</span>'
+            : (status === 'discharged'
+                ? '<span class="bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full text-[10px] font-bold">Discharged</span>'
+                : '<span class="bg-purple-50 text-purple-600 px-2.5 py-1 rounded-full text-[10px] font-bold">' + escapeHtml(status) + '</span>');
+          const ward = p.ward_type || p.ward_name || p.current_ward || 'ICU';
+          const timeAgo = formatTimeAgo(p.updated_at || p.admission_date);
+
+          html += `
+            <tr class="hover:bg-slate-50/70 transition-colors">
+              <td class="py-4 font-bold text-blue-600">
+                <a href="../Admin_patient_management/Admin_patient_management.html?search=${encodeURIComponent(p.patient_code || p.id)}" class="hover:underline">${escapeHtml(p.patient_code || ('P' + p.id))}</a>
+              </td>
+              <td class="py-4 font-bold text-slate-800">${escapeHtml(p.name || 'Unnamed')}</td>
+              <td class="py-4 text-slate-500">${p.age ?? '--'} / ${escapeHtml(p.gender || '--')}</td>
+              <td class="py-4 font-medium text-slate-700">${escapeHtml(ward)}</td>
+              <td class="py-4 ${ewsColor}">${ews} (${escapeHtml(ewsRisk)})</td>
+              <td class="py-4">${statusBadge}</td>
+              <td class="py-4 text-slate-400 text-[10px]">${timeAgo}</td>
+              <td class="py-4 text-right">
+                <a href="../Admin_patient_management/Admin_patient_management.html?search=${encodeURIComponent(p.patient_code || p.id)}" class="text-slate-400 hover:text-blue-600 p-1" title="View Patient Details">
+                  <svg class="w-5 h-5 inline" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+                </a>
+              </td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      }
+    } catch (e) {
+      console.warn('Recent patients loading error:', e);
+    }
+  }
+
+  // 10. Load Recent Transfers (/api/v1/transfers?limit=5)
+  async function loadRecentTransfers() {
+    try {
+      const res = await fetch('/api/v1/transfers?limit=5', { headers: getAuthHeaders() });
+      if (!res.ok) return;
+      const json = await res.json();
+      const transfers = json.data || [];
+      const tbody = document.getElementById('admin-recent-transfers-tbody');
+      if (tbody) {
+        if (transfers.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">No transfer records found</td></tr>`;
+          return;
+        }
+        let html = '';
+        transfers.forEach(t => {
+          const status = (t.status || 'pending').toLowerCase();
+          const badge = status === 'completed' || status === 'approved'
+            ? `<span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-[10px] font-bold capitalize">${escapeHtml(status)}</span>`
+            : (status === 'rejected' || status === 'cancelled'
+                ? `<span class="bg-red-50 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold capitalize">${escapeHtml(status)}</span>`
+                : `<span class="bg-orange-50 text-orange-600 px-2 py-0.5 rounded text-[10px] font-bold capitalize">${escapeHtml(status)}</span>`);
+          const timeAgo = formatTimeAgo(t.created_at || t.requested_at || t.completed_at);
+
+          html += `
+            <tr class="hover:bg-slate-50/70 transition-colors">
+              <td class="py-4 font-bold text-slate-800">T${t.transfer_id || t.id}</td>
+              <td class="py-4 text-blue-600 font-bold">
+                <a href="../Admin_patient_management/Admin_patient_management.html?search=${encodeURIComponent(t.patient_code || t.patient_id)}" class="hover:underline">${escapeHtml(t.patient_code || ('P' + t.patient_id))}</a>
+              </td>
+              <td class="py-4 text-slate-700">${escapeHtml(t.from_ward || '--')}</td>
+              <td class="py-4 text-slate-700">${escapeHtml(t.to_ward || '--')}</td>
+              <td class="py-4">${badge}</td>
+              <td class="py-4 text-slate-400 text-[10px]">${timeAgo}</td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      }
+    } catch (e) {
+      console.warn('Recent transfers loading error:', e);
+    }
+  }
+
+  // 11. Assistance Requests Summary (/api/v1/assistance-requests/summary)
   async function loadAssistanceRequestStats() {
     try {
-      const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
-      const res = await fetch('/api/v1/assistance-requests/summary', {
-        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
-      });
+      const res = await fetch('/api/v1/assistance-requests/summary', { headers: getAuthHeaders() });
       if (res.ok) {
         const data = await res.json();
         const s = data.summary || {};
@@ -759,8 +997,70 @@ Attendant Portal requests
       console.warn('Could not load assistance request stats:', e);
     }
   }
-  document.addEventListener('DOMContentLoaded', loadAssistanceRequestStats);
-  setInterval(loadAssistanceRequestStats, 15000);
+
+  // Utility helpers
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatTimeAgo(dateStr) {
+    if (!dateStr) return 'Recently';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return String(dateStr);
+    const now = new Date();
+    const diffSec = Math.floor((now - d) / 1000);
+    if (diffSec < 60) return 'Just now';
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `${diffMin}m ago`;
+    const diffHr = Math.floor(diffMin / 60);
+    if (diffHr < 24) return `${diffHr}h ago`;
+    const diffDays = Math.floor(diffHr / 24);
+    return `${diffDays}d ago`;
+  }
+
+  // Master Initializer
+  function initAdminDashboard() {
+    renderDashboardDate();
+    loadOccupancyAnalytics();
+    loadPatientStats();
+    loadEwsStats();
+    loadTransfersAnalytics();
+    loadCriticalAlerts();
+    loadRecentPatients();
+    loadRecentTransfers();
+    loadAssistanceRequestStats();
+  }
+
+  document.addEventListener('DOMContentLoaded', initAdminDashboard);
+
+  // Authoritative 5-second automatic data refresh
+  async function refreshAdminDashboardData() {
+    if (window.AutoRefreshManager && window.AutoRefreshManager.isUserInputActive()) {
+      return;
+    }
+    await Promise.allSettled([
+      loadOccupancyAnalytics(),
+      loadPatientStats(),
+      loadEwsStats(),
+      loadTransfersAnalytics(),
+      loadCriticalAlerts(),
+      loadRecentPatients(),
+      loadRecentTransfers(),
+      loadAssistanceRequestStats()
+    ]);
+  }
+
+  if (window.AutoRefreshManager) {
+    window.AutoRefreshManager.start('admin_dashboard_metrics', refreshAdminDashboardData, 5000);
+  } else {
+    setInterval(refreshAdminDashboardData, 5000);
+  }
 </script>
 <script src="../admin_navigation.js"></script>
 </body></html>

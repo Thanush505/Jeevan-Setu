@@ -259,16 +259,62 @@ class AnalyticsEngine:
         }
 
     @staticmethod
-    def get_ews_statistics_analytics():
+    def get_ews_statistics_analytics(time_range='7d', start_date=None, end_date=None, ward_filter=None):
         """
-        Calculate Early Warning Score risk distributions, ward score averages, and parameter triggers.
+        Calculate Early Warning Score risk distributions, ward score averages,
+        trends, clinical escalations, response times, and high-risk patient table.
+        Uses only real database records and existing EWS thresholds.
         """
-        # Fetch latest EWS score per admitted patient
-        query = """
-            SELECT p.patient_id, p.name AS patient_name, p.ward_type, p.bed_number,
+        from datetime import timedelta
+        import statistics
+
+        now = datetime.now()
+        tr = (time_range or '7d').strip().lower()
+        start_dt = None
+        end_dt = now
+
+        if tr == '24h':
+            start_dt = now - timedelta(hours=24)
+        elif tr == '30d':
+            start_dt = now - timedelta(days=30)
+        elif tr == 'custom' and start_date and end_date:
+            try:
+                start_dt = datetime.fromisoformat(str(start_date).strip()[:10] + ' 00:00:00')
+                end_dt = datetime.fromisoformat(str(end_date).strip()[:10] + ' 23:59:59')
+            except ValueError:
+                start_dt = now - timedelta(days=7)
+        else:
+            tr = '7d'
+            start_dt = now - timedelta(days=7)
+
+        # Fetch active wards dynamically
+        wards_rows = db.execute_query(
+            "SELECT ward_id, name, ward_type, floor_number FROM wards WHERE is_active = TRUE ORDER BY ward_type, name",
+            fetch=True
+        ) or []
+
+        ward_clause = ""
+        ward_params = []
+        wf = (ward_filter or '').strip()
+        if wf and wf.lower() != 'all':
+            if wf.isdigit():
+                ward_clause = " AND p.ward_id = %s "
+                ward_params.append(int(wf))
+            elif wf.upper() in ('ICU', 'HDU', 'GENERAL'):
+                ward_clause = " AND UPPER(p.ward_type) = %s "
+                ward_params.append(wf.upper())
+            else:
+                ward_clause = " AND (w.name = %s OR p.ward_type = %s) "
+                ward_params.extend([wf, wf])
+
+        # 1. Latest EWS score per admitted patient (filtered by ward)
+        query = f"""
+            SELECT p.patient_id, p.patient_code, p.name AS patient_name, p.ward_id, p.ward_type,
+                   COALESCE(w.name, p.ward_type) AS ward_name, p.bed_number,
                    e.total_score, e.risk_level, e.hr_score, e.bp_score, e.rr_score, e.temp_score,
                    e.calculated_at
             FROM patients p
+            LEFT JOIN wards w ON p.ward_id = w.ward_id
             LEFT JOIN (
                 SELECT e1.*
                 FROM ews_scores e1
@@ -277,9 +323,9 @@ class AnalyticsEngine:
                     FROM ews_scores GROUP BY patient_id
                 ) latest ON e1.ews_id = latest.max_id
             ) e ON p.patient_id = e.patient_id
-            WHERE p.status = 'admitted'
+            WHERE p.status = 'admitted' {ward_clause}
         """
-        records = db.execute_query(query, fetch=True) or []
+        records = db.execute_query(query, tuple(ward_params) if ward_params else None, fetch=True) or []
 
         risk_counts = {
             'NORMAL': 0,   # Score 0
@@ -294,6 +340,7 @@ class AnalyticsEngine:
         hdu_scores = []
         general_scores = []
         critical_alert_patients = []
+        acuity_map = {}
 
         param_contributors = {
             'heart_rate': 0,
@@ -302,21 +349,46 @@ class AnalyticsEngine:
             'temperature': 0
         }
 
+        # Unacknowledged alerts per patient
+        unacked_rows = db.execute_query(
+            "SELECT patient_id, COUNT(*) AS cnt FROM alerts WHERE is_acknowledged = FALSE AND is_dismissed = FALSE GROUP BY patient_id",
+            fetch=True
+        ) or []
+        unacked_by_patient = {r['patient_id']: int(r['cnt']) for r in unacked_rows}
+
+        high_risk_table = []
+
         for r in records:
             score = r.get('total_score') if r.get('total_score') is not None else 0
             all_scores.append(score)
 
-            # Classify risk
+            # Classify risk using existing authoritative thresholds
             if score == 0:
-                risk_counts['NORMAL'] += 1
+                risk_cat = 'NORMAL'
             elif score <= 2:
-                risk_counts['LOW'] += 1
+                risk_cat = 'LOW'
             elif score <= 4:
-                risk_counts['MEDIUM'] += 1
+                risk_cat = 'MEDIUM'
             elif score <= 6:
-                risk_counts['HIGH'] += 1
+                risk_cat = 'HIGH'
             else:
-                risk_counts['CRITICAL'] += 1
+                risk_cat = 'CRITICAL'
+
+            risk_counts[risk_cat] += 1
+
+            w_type = str(r.get('ward_type') or 'General').upper()
+            w_name = r.get('ward_name') or w_type
+            if w_name not in acuity_map:
+                acuity_map[w_name] = {'ward_name': w_name, 'ward_type': w_type, 'low': 0, 'moderate': 0, 'high': 0, 'total': 0}
+            acuity_map[w_name]['total'] += 1
+            if score <= 2:
+                acuity_map[w_name]['low'] += 1
+            elif score <= 4:
+                acuity_map[w_name]['moderate'] += 1
+            else:
+                acuity_map[w_name]['high'] += 1
+
+            if risk_cat == 'CRITICAL':
                 critical_alert_patients.append({
                     'patient_id': r['patient_id'],
                     'patient_name': r['patient_name'],
@@ -326,8 +398,22 @@ class AnalyticsEngine:
                     'risk_level': 'CRITICAL'
                 })
 
-            # Ward averages
-            w_type = str(r.get('ward_type', '')).upper()
+            unacked_cnt = unacked_by_patient.get(r['patient_id'], 0)
+            if score >= 5 or unacked_cnt > 0:
+                calc_at = r.get('calculated_at')
+                high_risk_table.append({
+                    'patient_id': r['patient_id'],
+                    'patient_code': r.get('patient_code') or f"PT-{r['patient_id']}",
+                    'patient_name': r.get('patient_name') or 'Unknown',
+                    'ward_name': w_name,
+                    'ward_type': w_type,
+                    'bed_number': r.get('bed_number') or 'N/A',
+                    'ews_score': score,
+                    'risk_category': risk_cat,
+                    'calculated_at': calc_at.isoformat() if hasattr(calc_at, 'isoformat') else (str(calc_at) if calc_at else None),
+                    'unacked_alerts': unacked_cnt,
+                })
+
             if w_type == 'ICU':
                 icu_scores.append(score)
             elif w_type == 'HDU':
@@ -335,7 +421,6 @@ class AnalyticsEngine:
             else:
                 general_scores.append(score)
 
-            # Parameter contributions
             if (r.get('hr_score') or 0) > 0:
                 param_contributors['heart_rate'] += r.get('hr_score', 0)
             if (r.get('bp_score') or 0) > 0:
@@ -350,8 +435,110 @@ class AnalyticsEngine:
         hdu_avg_ews = round(sum(hdu_scores) / len(hdu_scores), 1) if hdu_scores else 0.0
         general_avg_ews = round(sum(general_scores) / len(general_scores), 1) if general_scores else 0.0
 
+        # 2. Historical EWS Trends in selected range
+        bucket_fmt = '%Y-%m-%d %H:00' if tr == '24h' else '%Y-%m-%d'
+        trend_sql = f"""
+            SELECT DATE_FORMAT(e.calculated_at, %s) AS bucket,
+                   UPPER(COALESCE(p.ward_type, 'GENERAL')) AS ward_type,
+                   ROUND(AVG(e.total_score), 2) AS avg_score,
+                   COUNT(*) AS sample_count
+            FROM ews_scores e
+            JOIN patients p ON e.patient_id = p.patient_id
+            LEFT JOIN wards w ON p.ward_id = w.ward_id
+            WHERE e.calculated_at BETWEEN %s AND %s {ward_clause}
+            GROUP BY bucket, UPPER(COALESCE(p.ward_type, 'GENERAL'))
+            ORDER BY bucket ASC
+        """
+        trend_params = [bucket_fmt, start_dt.strftime('%Y-%m-%d %H:%M:%S'), end_dt.strftime('%Y-%m-%d %H:%M:%S')] + ward_params
+        trend_rows = db.execute_query(trend_sql, tuple(trend_params), fetch=True) or []
+
+        buckets = sorted({r['bucket'] for r in trend_rows if r.get('bucket')})
+        series_map = {'ICU': {}, 'HDU': {}, 'GENERAL': {}}
+        for r in trend_rows:
+            wt = r.get('ward_type', 'GENERAL')
+            if wt not in series_map:
+                wt = 'GENERAL'
+            series_map[wt][r['bucket']] = float(r['avg_score']) if r.get('avg_score') is not None else None
+
+        ews_trends = {
+            'labels': buckets,
+            'series': {
+                'ICU': [series_map['ICU'].get(b) for b in buckets],
+                'HDU': [series_map['HDU'].get(b) for b in buckets],
+                'General': [series_map['GENERAL'].get(b) for b in buckets],
+            }
+        }
+
+        # 3. Clinical Escalations & Response Times (from alerts + decisions in range)
+        alert_sql = f"""
+            SELECT a.alert_id, a.alert_type, a.created_at, a.acknowledged_at, a.is_acknowledged,
+                   UPPER(COALESCE(p.ward_type, 'GENERAL')) AS ward_type,
+                   TIMESTAMPDIFF(SECOND, a.created_at, a.acknowledged_at) AS ack_seconds
+            FROM alerts a
+            JOIN patients p ON a.patient_id = p.patient_id
+            LEFT JOIN wards w ON p.ward_id = w.ward_id
+            WHERE a.created_at BETWEEN %s AND %s {ward_clause}
+        """
+        alert_params = [start_dt.strftime('%Y-%m-%d %H:%M:%S'), end_dt.strftime('%Y-%m-%d %H:%M:%S')] + ward_params
+        alert_rows = db.execute_query(alert_sql, tuple(alert_params), fetch=True) or []
+
+        dec_sql = f"""
+            SELECT d.decision_id, d.recommendation, d.status, d.to_ward, d.created_at, d.decided_at,
+                   UPPER(COALESCE(p.ward_type, 'GENERAL')) AS ward_type,
+                   TIMESTAMPDIFF(SECOND, d.created_at, d.decided_at) AS dec_seconds
+            FROM decisions d
+            JOIN patients p ON d.patient_id = p.patient_id
+            LEFT JOIN wards w ON p.ward_id = w.ward_id
+            WHERE d.created_at BETWEEN %s AND %s {ward_clause}
+        """
+        dec_rows = db.execute_query(dec_sql, tuple(alert_params), fetch=True) or []
+
+        ack_minutes = [
+            round(r['ack_seconds'] / 60.0, 1)
+            for r in alert_rows
+            if r.get('acknowledged_at') is not None and r.get('ack_seconds') is not None and r['ack_seconds'] >= 0
+        ]
+        dec_minutes = [
+            round(r['dec_seconds'] / 60.0, 1)
+            for r in dec_rows
+            if r.get('decided_at') is not None and r.get('dec_seconds') is not None and r['dec_seconds'] >= 0
+        ]
+
+        ward_ack = {'ICU': [], 'HDU': [], 'GENERAL': []}
+        alert_by_type = {}
+        alert_by_ward = {'ICU': 0, 'HDU': 0, 'GENERAL': 0}
+        for r in alert_rows:
+            at = r.get('alert_type') or 'clinical_alert'
+            alert_by_type[at] = alert_by_type.get(at, 0) + 1
+            wt = r.get('ward_type') or 'GENERAL'
+            if wt not in alert_by_ward:
+                wt = 'GENERAL'
+            alert_by_ward[wt] += 1
+            if r.get('acknowledged_at') is not None and r.get('ack_seconds') is not None and r['ack_seconds'] >= 0:
+                ward_ack[wt].append(r['ack_seconds'] / 60.0)
+
+        icu_transfer_escalations = sum(
+            1 for d in dec_rows
+            if 'icu' in str(d.get('to_ward') or '').lower() or 'icu' in str(d.get('recommendation') or '').lower()
+        )
+        physician_reviews = sum(1 for d in dec_rows if d.get('decided_at') is not None)
+
+        high_risk_count = risk_counts['HIGH'] + risk_counts['CRITICAL']
+        total_escalations = len(alert_rows) + len(dec_rows)
+        avg_ack_min = round(sum(ack_minutes) / len(ack_minutes), 1) if ack_minutes else None
+        med_ack_min = round(statistics.median(ack_minutes), 1) if ack_minutes else None
+        avg_dec_min = round(sum(dec_minutes) / len(dec_minutes), 1) if dec_minutes else None
+        med_dec_min = round(statistics.median(dec_minutes), 1) if dec_minutes else None
+
         return {
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': now.isoformat(),
+            'filters': {
+                'range': tr,
+                'start_date': start_dt.strftime('%Y-%m-%d'),
+                'end_date': end_dt.strftime('%Y-%m-%d'),
+                'ward': wf or 'all',
+            },
+            'wards': wards_rows,
             'total_evaluated_patients': len(records),
             'risk_distribution': risk_counts,
             'hospital_average_ews': hospital_avg_ews,
@@ -362,5 +549,43 @@ class AnalyticsEngine:
             },
             'critical_patients_count': len(critical_alert_patients),
             'critical_patients': critical_alert_patients,
-            'parameter_impact_breakdown': param_contributors
+            'parameter_impact_breakdown': param_contributors,
+            'kpis': {
+                'high_risk_patients': high_risk_count,
+                'critical_only_count': risk_counts['CRITICAL'],
+                'high_only_count': risk_counts['HIGH'],
+                'average_ews': hospital_avg_ews,
+                'clinical_escalations': total_escalations,
+                'alerts_count': len(alert_rows),
+                'decisions_count': len(dec_rows),
+                'icu_transfer_escalations': icu_transfer_escalations,
+                'physician_reviews': physician_reviews,
+                'avg_response_time_minutes': avg_ack_min,
+                'patients_requiring_review': len(high_risk_table),
+            },
+            'ews_trends': ews_trends,
+            'acuity_by_ward': list(acuity_map.values()),
+            'escalation_analytics': {
+                'total_escalations': total_escalations,
+                'alerts_count': len(alert_rows),
+                'decisions_count': len(dec_rows),
+                'icu_transfer_escalations': icu_transfer_escalations,
+                'physician_reviews': physician_reviews,
+                'alerts_by_type': alert_by_type,
+                'alerts_by_ward': alert_by_ward,
+            },
+            'response_analytics': {
+                'alert_to_ack_avg_minutes': avg_ack_min,
+                'alert_to_ack_median_minutes': med_ack_min,
+                'alert_ack_samples': len(ack_minutes),
+                'decision_avg_minutes': avg_dec_min,
+                'decision_median_minutes': med_dec_min,
+                'decision_samples': len(dec_minutes),
+                'ward_ack_avg_minutes': {
+                    'ICU': round(sum(ward_ack['ICU']) / len(ward_ack['ICU']), 1) if ward_ack['ICU'] else None,
+                    'HDU': round(sum(ward_ack['HDU']) / len(ward_ack['HDU']), 1) if ward_ack['HDU'] else None,
+                    'General': round(sum(ward_ack['GENERAL']) / len(ward_ack['GENERAL']), 1) if ward_ack['GENERAL'] else None,
+                }
+            },
+            'high_risk_patients_table': sorted(high_risk_table, key=lambda x: (-x['ews_score'], x['patient_name'])),
         }

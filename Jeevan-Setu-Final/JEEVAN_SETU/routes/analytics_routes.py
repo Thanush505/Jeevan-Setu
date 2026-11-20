@@ -9,7 +9,7 @@ Endpoints:
     GET /analytics/ews-statistics        (Risk score distributions, ward averages, parameter impacts)
 """
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request, Response
 from modules.analytics_engine import AnalyticsEngine
 from utils.decorators import permission_required
 
@@ -110,16 +110,82 @@ def get_patient_statistics_analytics():
 @permission_required('view_analytics')
 def get_ews_statistics_analytics():
     """
-    Get Early Warning Score risk distributions, ward score averages, and parameter triggers.
-    Returns:
-        - Risk level distribution (Normal, Low, Medium, High, Critical)
-        - Hospital average EWS and ward-specific averages (ICU, HDU, General)
-        - Active critical patient alerts
-        - Parameter deterioration breakdown
+    Get Early Warning Score risk distributions, ward score averages, trends,
+    clinical escalations, response times, and high-risk patient analytics.
     """
-    data = AnalyticsEngine.get_ews_statistics_analytics()
+    time_range = request.args.get('range', '7d')
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    ward_filter = request.args.get('ward')
+
+    data = AnalyticsEngine.get_ews_statistics_analytics(
+        time_range=time_range,
+        start_date=start_date,
+        end_date=end_date,
+        ward_filter=ward_filter,
+    )
     return jsonify({
         'success': True,
         'metric': 'ews_statistics',
         'data': data
     }), 200
+
+
+@analytics_bp.route('/ews-statistics/export', methods=['GET'])
+@permission_required('view_analytics')
+def export_ews_statistics_csv():
+    """Export EWS Analytics summary and high-risk patient table as CSV."""
+    import csv
+    import io
+
+    time_range = request.args.get('range', '7d')
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    ward_filter = request.args.get('ward')
+
+    data = AnalyticsEngine.get_ews_statistics_analytics(
+        time_range=time_range,
+        start_date=start_date,
+        end_date=end_date,
+        ward_filter=ward_filter,
+    )
+
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(['Jeevan Setu EWS Analytics Report'])
+    writer.writerow(['Generated At', data.get('timestamp')])
+    writer.writerow(['Date Range', f"{data['filters']['range']} ({data['filters']['start_date']} to {data['filters']['end_date']})"])
+    writer.writerow(['Ward Filter', data['filters']['ward']])
+    writer.writerow([])
+    writer.writerow(['KPI Summary'])
+    kpis = data.get('kpis', {})
+    writer.writerow(['Evaluated Patients', data.get('total_evaluated_patients', 0)])
+    writer.writerow(['High-Risk Patients (EWS >= 5)', kpis.get('high_risk_patients', 0)])
+    writer.writerow(['Average EWS Score', kpis.get('average_ews', 0)])
+    writer.writerow(['Clinical Escalations', kpis.get('clinical_escalations', 0)])
+    writer.writerow(['Avg Alert Ack Response (min)', kpis.get('avg_response_time_minutes') if kpis.get('avg_response_time_minutes') is not None else 'N/A'])
+    writer.writerow(['Patients Requiring Review', kpis.get('patients_requiring_review', 0)])
+    writer.writerow([])
+    writer.writerow(['Risk Distribution', 'Count'])
+    for k, v in (data.get('risk_distribution') or {}).items():
+        writer.writerow([k, v])
+    writer.writerow([])
+    writer.writerow(['High-Risk / Review Patients'])
+    writer.writerow(['Patient Code', 'Patient Name', 'Ward', 'Bed', 'EWS Score', 'Risk Category', 'Unacked Alerts', 'Calculated At'])
+    for row in data.get('high_risk_patients_table', []):
+        writer.writerow([
+            row.get('patient_code'),
+            row.get('patient_name'),
+            row.get('ward_name'),
+            row.get('bed_number'),
+            row.get('ews_score'),
+            row.get('risk_category'),
+            row.get('unacked_alerts'),
+            row.get('calculated_at') or '',
+        ])
+
+    return Response(
+        buf.getvalue(),
+        mimetype='text/csv',
+        headers={'Content-Disposition': 'attachment; filename="jeevan_setu_ews_analytics.csv"'}
+    )

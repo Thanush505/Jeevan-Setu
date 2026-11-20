@@ -1,14 +1,16 @@
 """
-chatbot/services/openrouter_service.py — Centralized OpenRouter AI Integration for Jeevan Setu.
+chatbot/services/openrouter_service.py — Centralized OpenRouter AI Integration &
+Two-Key Failover Controller for Jeevan Setu.
 
-Model: google/gemini-2.0-flash-exp:free (via OPENROUTER_MODEL)
+Model: google/gemma-4-31b-it:free (via OPENROUTER_MODEL)
 API Provider: OpenRouter (https://openrouter.ai/api/v1/chat/completions)
 
 Core Principles:
 1. The MySQL Database & Jeevan Setu Decision Engine are the SOLE SOURCE OF TRUTH.
 2. The AI is strictly an explanation and synthesis layer over verified backend data.
 3. The AI never guesses, calculates EWS independently, or approves transfers.
-4. Security: API Key is loaded only from environment variables and never logged or exposed.
+4. Security: Primary and Secondary API keys are loaded strictly from
+   OPENROUTER_PRIMARY_API_KEY and OPENROUTER_SECONDARY_API_KEY and never logged or exposed.
 """
 
 import os
@@ -50,20 +52,127 @@ load_environment()
 
 # Centralized OpenRouter Configuration
 OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
-DEFAULT_MODEL = "google/gemini-2.0-flash-exp:free"
+DEFAULT_MODEL = "google/gemma-4-31b-it:free"
+DEFAULT_TIMEOUT_SECONDS = 15
+DEFAULT_MAX_FAILOVER_RETRIES = 1
+_PLACEHOLDER_KEYS = {"", "your_openrouter_api_key_here"}
+
+
+def _parse_bool_env(name: str, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw is None or not raw.strip():
+        return default
+    return raw.strip().lower() in ("1", "true", "yes", "on")
+
+
+def is_openrouter_enabled() -> bool:
+    """Check whether OpenRouter external AI calls are enabled via OPENROUTER_ENABLED."""
+    return _parse_bool_env("OPENROUTER_ENABLED", False)
+
+
+def is_failover_enabled() -> bool:
+    """Check whether controlled primary->secondary key failover is enabled."""
+    return _parse_bool_env("OPENROUTER_FAILOVER_ENABLED", True)
+
+
+def get_openrouter_timeout(override: Optional[int] = None) -> int:
+    """Retrieve request timeout in seconds (clamped to 1..120)."""
+    if override is not None:
+        try:
+            return max(1, min(120, int(override)))
+        except (TypeError, ValueError):
+            pass
+    raw = os.environ.get("OPENROUTER_TIMEOUT_SECONDS", "").strip()
+    if raw:
+        try:
+            return max(1, min(120, int(raw)))
+        except ValueError:
+            pass
+    return DEFAULT_TIMEOUT_SECONDS
+
+
+def get_openrouter_max_retries() -> int:
+    """Retrieve maximum secondary failover attempts per request (0 or 1; never infinite)."""
+    raw = os.environ.get("OPENROUTER_MAX_RETRIES", "").strip()
+    if raw:
+        try:
+            return max(0, min(1, int(raw)))
+        except ValueError:
+            pass
+    return DEFAULT_MAX_FAILOVER_RETRIES
+
+
+def get_primary_api_key() -> Optional[str]:
+    """Retrieve primary OpenRouter API key strictly from OPENROUTER_PRIMARY_API_KEY."""
+    primary = os.environ.get("OPENROUTER_PRIMARY_API_KEY", "").strip()
+    if primary and primary not in _PLACEHOLDER_KEYS:
+        return primary
+    return None
+
+
+def get_secondary_api_key() -> Optional[str]:
+    """Retrieve secondary OpenRouter API key strictly from OPENROUTER_SECONDARY_API_KEY."""
+    secondary = os.environ.get("OPENROUTER_SECONDARY_API_KEY", "").strip()
+    if not secondary or secondary in _PLACEHOLDER_KEYS:
+        return None
+    primary = get_primary_api_key()
+    if primary and secondary == primary:
+        return None
+    return secondary
+
 
 def get_openrouter_api_key() -> Optional[str]:
-    """Retrieve API key from backend environment only."""
-    return os.environ.get("OPENROUTER_API_KEY", "").strip() or None
+    """Retrieve primary API key from backend environment only."""
+    return get_primary_api_key()
+
 
 def get_openrouter_model() -> str:
     """Retrieve configured model name."""
-    return os.environ.get("OPENROUTER_MODEL", DEFAULT_MODEL).strip() or DEFAULT_MODEL
+    raw = os.environ.get("OPENROUTER_MODEL")
+    if raw is None:
+        return DEFAULT_MODEL
+    return raw.strip()
+
+
+def validate_openrouter_config(model_override: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Centralized, sanitized validation of OpenRouter configuration.
+    Reads only standardized variables and never exposes secret key values.
+    """
+    enabled = is_openrouter_enabled()
+    failover_enabled = is_failover_enabled()
+    model = (model_override if model_override is not None else get_openrouter_model()).strip()
+    has_primary = bool(get_primary_api_key())
+    has_secondary = bool(get_secondary_api_key())
+
+    errors = []
+    warnings = []
+
+    if not model or any(ch.isspace() for ch in model) or "/" not in model:
+        errors.append("invalid_model_config")
+
+    if enabled and not has_primary:
+        errors.append("missing_primary_api_key")
+
+    if enabled and failover_enabled and not has_secondary:
+        warnings.append("secondary_api_key_not_configured")
+
+    return {
+        "valid": len(errors) == 0 and enabled and has_primary,
+        "enabled": enabled,
+        "model": model,
+        "model_valid": "invalid_model_config" not in errors,
+        "has_primary_key": has_primary,
+        "has_secondary_key": has_secondary,
+        "failover_enabled": failover_enabled,
+        "errors": errors,
+        "warnings": warnings,
+    }
+
 
 def is_ai_configured() -> bool:
-    """Check if OpenRouter is configured with a valid key."""
-    key = get_openrouter_api_key()
-    return bool(key and key != "your_openrouter_api_key_here")
+    """Check if OpenRouter is enabled, model is valid, and primary key is configured."""
+    return bool(validate_openrouter_config()["valid"])
 
 
 from chatbot.prompts.prompts import (
@@ -313,6 +422,391 @@ def build_controlled_patient_context(context: Dict[str, Any], user_role: str = "
     return "\n".join(lines)
 
 
+def classify_openrouter_error(
+    status_code: Optional[int] = None,
+    exc: Optional[BaseException] = None,
+    err_detail: str = "",
+    retry_after: Optional[int] = None,
+) -> Dict[str, Any]:
+    """
+    Classify an OpenRouter provider/network failure and determine whether
+    controlled primary->secondary key failover is permitted.
+
+    Policy:
+    - Transient network/connection/timeout/5xx failures -> eligible_for_failover=True
+    - Key-specific auth failure (HTTP 401) -> eligible_for_failover=True
+    - Transient per-key rate-limit (HTTP 429 without account-level quota exhaustion
+      and without long Retry-After cooldown) -> eligible_for_failover=True
+    - Account/policy blocks (402 quota, 403 permission, daily quota 429) -> eligible_for_failover=False
+    - Invalid payloads (400/422), invalid model (404), programming errors -> eligible_for_failover=False
+    """
+    import socket
+    import urllib.error
+
+    detail_lower = (err_detail or "").lower()
+
+    if status_code is not None:
+        if status_code == 429:
+            is_account_limit = any(
+                tok in detail_lower for tok in ("free-models-per-day", "daily", "quota", "credits")
+            )
+            long_cooldown = retry_after is not None and retry_after > 5
+            eligible = not is_account_limit and not long_cooldown
+            return {
+                "category": "rate_limited",
+                "eligible_for_failover": eligible,
+                "http_status": 429,
+                "user_message": "The AI service is temporarily rate-limited. Please try again in a few moments.",
+            }
+        if status_code == 402:
+            return {
+                "category": "quota_exhausted",
+                "eligible_for_failover": False,
+                "http_status": 402,
+                "user_message": "The AI service quota is currently unavailable. Please contact the administrator.",
+            }
+        if status_code == 401:
+            return {
+                "category": "auth_error",
+                "eligible_for_failover": True,
+                "http_status": 401,
+                "user_message": "AI authentication failed. Please check the backend OpenRouter API key.",
+            }
+        if status_code == 403:
+            return {
+                "category": "permission_denied",
+                "eligible_for_failover": False,
+                "http_status": 403,
+                "user_message": "AI request was denied by provider permissions. Please contact the administrator.",
+            }
+        if status_code in (400, 422):
+            return {
+                "category": "invalid_request",
+                "eligible_for_failover": False,
+                "http_status": status_code,
+                "user_message": "The AI request could not be processed due to invalid parameters.",
+            }
+        if status_code == 404:
+            return {
+                "category": "model_not_found",
+                "eligible_for_failover": False,
+                "http_status": 404,
+                "user_message": "The configured AI model is currently unavailable.",
+            }
+        if status_code == 408:
+            return {
+                "category": "timeout",
+                "eligible_for_failover": True,
+                "http_status": 408,
+                "user_message": "The AI service timed out. Please try again shortly.",
+            }
+        if 500 <= status_code < 600:
+            return {
+                "category": "server_error",
+                "eligible_for_failover": True,
+                "http_status": status_code,
+                "user_message": "The AI service is temporarily unavailable. Please try again later.",
+            }
+        return {
+            "category": f"http_error_{status_code}",
+            "eligible_for_failover": False,
+            "http_status": status_code,
+            "user_message": "The AI service could not complete the request.",
+        }
+
+    if exc is not None:
+        if isinstance(exc, (TimeoutError, socket.timeout)):
+            return {
+                "category": "timeout",
+                "eligible_for_failover": True,
+                "http_status": None,
+                "user_message": "The AI service timed out. Please try again shortly.",
+            }
+        if isinstance(exc, urllib.error.URLError):
+            reason = getattr(exc, "reason", None)
+            if isinstance(reason, (TimeoutError, socket.timeout)) or "timed out" in str(exc).lower():
+                return {
+                    "category": "timeout",
+                    "eligible_for_failover": True,
+                    "http_status": None,
+                    "user_message": "The AI service timed out. Please try again shortly.",
+                }
+            return {
+                "category": "network_error",
+                "eligible_for_failover": True,
+                "http_status": None,
+                "user_message": "Unable to reach the AI service endpoint due to a network error.",
+            }
+        if isinstance(exc, (ConnectionError, OSError)):
+            return {
+                "category": "network_error",
+                "eligible_for_failover": True,
+                "http_status": None,
+                "user_message": "Unable to reach the AI service endpoint due to a network error.",
+            }
+        if isinstance(exc, json.JSONDecodeError):
+            return {
+                "category": "provider_response_error",
+                "eligible_for_failover": True,
+                "http_status": None,
+                "user_message": "The AI service returned an unexpected response. Please try again later.",
+            }
+
+    return {
+        "category": f"unexpected_error:{type(exc).__name__}" if exc else "service_unavailable",
+        "eligible_for_failover": False,
+        "http_status": None,
+        "user_message": "The AI service is temporarily unavailable. Please try again later.",
+    }
+
+
+def _log_provider_event(
+    *,
+    request_category: str,
+    key_slot: str,
+    model: str,
+    outcome: str,
+    duration_ms: int,
+    failover_triggered: bool,
+    error_category: Optional[str] = None,
+) -> None:
+    """
+    Emit a strictly sanitized OpenRouter diagnostic log entry.
+    Never logs API keys, Authorization headers, credentials, or patient prompts/PHI.
+    """
+    from datetime import datetime, timezone
+
+    event = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "request_category": request_category,
+        "key_slot": key_slot,
+        "model": model,
+        "error_category": error_category,
+        "failover_triggered": bool(failover_triggered),
+        "outcome": outcome,
+        "duration_ms": int(duration_ms),
+    }
+    if outcome == "success":
+        logger.info("OpenRouter request succeeded: %s", json.dumps(event))
+    else:
+        logger.warning("OpenRouter request failed: %s", json.dumps(event))
+
+
+def _send_single_openrouter_request(
+    payload: Dict[str, Any],
+    api_key: str,
+    timeout: int,
+) -> Tuple[bool, Optional[Dict[str, Any]], Optional[Dict[str, Any]]]:
+    """
+    Execute a single HTTP POST to OPENROUTER_ENDPOINT with the supplied API key.
+    Returns (ok, parsed_json_data, error_classification).
+    """
+    import urllib.request
+    import urllib.error
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://jeevansetu.in",
+        "X-Title": "Jeevan Setu AI Clinical Assistant",
+    }
+
+    try:
+        req = urllib.request.Request(
+            OPENROUTER_ENDPOINT,
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            status_code = resp.status
+            resp_body = resp.read().decode("utf-8")
+            data = json.loads(resp_body)
+            if status_code == 200 and isinstance(data, dict) and data.get("choices"):
+                return True, data, None
+            return False, None, classify_openrouter_error(status_code=status_code if status_code != 200 else None)
+    except urllib.error.HTTPError as e:
+        err_detail = ""
+        retry_after = None
+        try:
+            if e.headers:
+                ra_raw = e.headers.get("Retry-After")
+                if ra_raw and str(ra_raw).strip().isdigit():
+                    retry_after = int(str(ra_raw).strip())
+        except Exception:
+            pass
+        try:
+            err_body = e.read().decode("utf-8", errors="replace")
+            err_json = json.loads(err_body)
+            err_detail = str(err_json.get("error", {}).get("message") or "")
+        except Exception:
+            pass
+        return False, None, classify_openrouter_error(
+            status_code=e.code, exc=e, err_detail=err_detail, retry_after=retry_after
+        )
+    except Exception as exc:
+        return False, None, classify_openrouter_error(exc=exc)
+
+
+def _execute_openrouter_with_failover(
+    payload: Dict[str, Any],
+    request_category: str,
+    timeout: Optional[int] = None,
+) -> Dict[str, Any]:
+    """
+    Controlled Primary -> Secondary OpenRouter failover controller.
+    - Primary key is always attempted first.
+    - Secondary key is attempted at most once, only when the primary failure is
+      classified as eligible, failover is enabled, and a distinct secondary key exists.
+    - Never alters `payload["model"]`, messages, tools, or multimodal blocks.
+    - Never permanently switches the default key away from primary.
+    """
+    import time
+
+    model_name = str(payload.get("model") or get_openrouter_model())
+    cfg = validate_openrouter_config(model_override=model_name)
+    effective_timeout = get_openrouter_timeout(timeout)
+
+    if not cfg["enabled"]:
+        return {
+            "success": False,
+            "data": None,
+            "error_info": {
+                "category": "openrouter_disabled",
+                "eligible_for_failover": False,
+                "http_status": None,
+                "user_message": "External OpenRouter AI integration is currently disabled.",
+            },
+            "key_slot_used": None,
+            "failover_triggered": False,
+            "failover_reason": None,
+        }
+
+    if not cfg["model_valid"]:
+        return {
+            "success": False,
+            "data": None,
+            "error_info": {
+                "category": "invalid_model_config",
+                "eligible_for_failover": False,
+                "http_status": None,
+                "user_message": "The configured OpenRouter model identifier is invalid.",
+            },
+            "key_slot_used": None,
+            "failover_triggered": False,
+            "failover_reason": None,
+        }
+
+    primary_key = get_primary_api_key()
+    if not primary_key:
+        return {
+            "success": False,
+            "data": None,
+            "error_info": {
+                "category": "missing_api_key",
+                "eligible_for_failover": False,
+                "http_status": None,
+                "user_message": "The OpenRouter Primary API key is not configured. Please set OPENROUTER_PRIMARY_API_KEY in the backend environment.",
+            },
+            "key_slot_used": None,
+            "failover_triggered": False,
+            "failover_reason": None,
+        }
+
+    t0 = time.monotonic()
+    ok, data, err_info = _send_single_openrouter_request(payload, primary_key, effective_timeout)
+    dur_ms = int((time.monotonic() - t0) * 1000)
+
+    if ok and data is not None:
+        _log_provider_event(
+            request_category=request_category,
+            key_slot="primary",
+            model=model_name,
+            outcome="success",
+            duration_ms=dur_ms,
+            failover_triggered=False,
+        )
+        return {
+            "success": True,
+            "data": data,
+            "error_info": None,
+            "key_slot_used": "primary",
+            "failover_triggered": False,
+            "failover_reason": None,
+        }
+
+    primary_err = err_info or classify_openrouter_error()
+    _log_provider_event(
+        request_category=request_category,
+        key_slot="primary",
+        model=model_name,
+        outcome="failure",
+        duration_ms=dur_ms,
+        failover_triggered=False,
+        error_category=primary_err["category"],
+    )
+
+    secondary_key = get_secondary_api_key()
+    can_failover = (
+        bool(primary_err.get("eligible_for_failover"))
+        and cfg["failover_enabled"]
+        and get_openrouter_max_retries() >= 1
+        and bool(secondary_key)
+    )
+
+    if not can_failover:
+        return {
+            "success": False,
+            "data": None,
+            "error_info": primary_err,
+            "key_slot_used": "primary",
+            "failover_triggered": False,
+            "failover_reason": None,
+        }
+
+    t1 = time.monotonic()
+    s_ok, s_data, s_err_info = _send_single_openrouter_request(payload, secondary_key, effective_timeout)
+    s_dur_ms = int((time.monotonic() - t1) * 1000)
+
+    if s_ok and s_data is not None:
+        _log_provider_event(
+            request_category=request_category,
+            key_slot="secondary",
+            model=model_name,
+            outcome="success",
+            duration_ms=s_dur_ms,
+            failover_triggered=True,
+            error_category=primary_err["category"],
+        )
+        return {
+            "success": True,
+            "data": s_data,
+            "error_info": None,
+            "key_slot_used": "secondary",
+            "failover_triggered": True,
+            "failover_reason": primary_err["category"],
+        }
+
+    secondary_err = s_err_info or classify_openrouter_error()
+    _log_provider_event(
+        request_category=request_category,
+        key_slot="secondary",
+        model=model_name,
+        outcome="failure",
+        duration_ms=s_dur_ms,
+        failover_triggered=True,
+        error_category=secondary_err["category"],
+    )
+    return {
+        "success": False,
+        "data": None,
+        "error_info": secondary_err,
+        "key_slot_used": "secondary",
+        "failover_triggered": True,
+        "failover_reason": primary_err["category"],
+    }
+
+
 def query_openrouter_gemini(
     user_message: str,
     patient_context: Optional[Dict[str, Any]] = None,
@@ -322,37 +816,11 @@ def query_openrouter_gemini(
     knowledge_context: Optional[str] = None,
 ) -> Tuple[bool, str, Dict[str, Any]]:
     """
-    Calls OpenRouter API (Gemma 4 31B primary) to explain verified clinical data
-    or answer general healthcare inquiries.
-
-    Parameters:
-        user_message: Clinical or medical inquiry text
-        patient_context: Authorized database context dictionary (or None for General Mode)
-        user_role: Current user's authenticated role ('doctor', 'nurse', 'attendant', 'admin')
-        timeout: Network timeout in seconds
-        mode: Chat mode ('patient' or 'general')
-        knowledge_context: Optional supplementary ChromaDB knowledge text for General Mode
-
-    Returns:
-        (success: bool, response_text: str, metadata: dict)
+    Calls OpenRouter API (configured model) to explain verified clinical data
+    or answer general healthcare inquiries, using the controlled Primary/Backup
+    key failover controller.
     """
-    api_key = get_openrouter_api_key()
-    if not api_key:
-        return False, "The OpenRouter API key is not configured. Please set OPENROUTER_API_KEY in the backend environment.", {"error": "missing_api_key"}
-
-    primary_model = get_openrouter_model()
-    # Candidate models for Gemma 4 31B / fast inference on OpenRouter
-    candidate_models = [primary_model]
-    for alt in [
-        'google/gemma-4-31b-it:free',
-        'google/gemma-4-26b-a4b-it:free',
-        'xingchen-agi/xing4.0-29b-a4b:free',
-        'nvidia/nemotron-3.5-lightning:free',
-        'openrouter/free',
-    ]:
-        if alt not in candidate_models:
-            candidate_models.append(alt)
-
+    model = get_openrouter_model()
     is_general_mode = (mode or "").lower() == "general" or patient_context is None
 
     if is_general_mode:
@@ -376,72 +844,47 @@ def query_openrouter_gemini(
         messages = [
             {"role": "system", "content": system_instructions},
             {"role": "system", "content": f"CURRENT AUTHORIZED CLINICAL CONTEXT:\n{context_str}"},
-            {"role": "user", "content": user_message}
+            {"role": "user", "content": user_message},
         ]
 
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://jeevansetu.in",
-        "X-Title": "Jeevan Setu AI Clinical Assistant"
+    payload = {
+        "model": model,
+        "messages": messages,
+        "temperature": 0.2,
+        "max_tokens": 800,
     }
 
-    import urllib.request
-    import urllib.error
+    req_category = "general_chat" if is_general_mode else "patient_chat"
+    result = _execute_openrouter_with_failover(
+        payload=payload,
+        request_category=req_category,
+        timeout=timeout,
+    )
 
-    last_error = None
-    timeout = 8
-    for model in candidate_models:
-        payload = {
-            "model": model,
-            "messages": messages,
-            "temperature": 0.2,
-            "max_tokens": 800
-        }
+    if result["success"] and result["data"]:
+        raw_text = result["data"]["choices"][0].get("message", {}).get("content", "").strip()
+        ai_text = clean_ai_response(raw_text)
+        if ai_text:
+            return True, ai_text, {
+                "model": model,
+                "provider": "openrouter",
+                "status": "success",
+                "mode": "general" if is_general_mode else "patient",
+                "key_slot_used": result["key_slot_used"],
+                "failover_triggered": result["failover_triggered"],
+                "failover_reason": result["failover_reason"],
+            }
 
-        try:
-            req = urllib.request.Request(
-                OPENROUTER_ENDPOINT,
-                data=json.dumps(payload).encode("utf-8"),
-                headers=headers,
-                method="POST"
-            )
-
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                status_code = resp.status
-                resp_body = resp.read().decode("utf-8")
-                data = json.loads(resp_body)
-
-                if status_code == 200 and "choices" in data and len(data["choices"]) > 0:
-                    raw_text = data["choices"][0].get("message", {}).get("content", "").strip()
-                    ai_text = clean_ai_response(raw_text)
-                    if ai_text:
-                        return True, ai_text, {
-                            "model": model,
-                            "provider": "openrouter",
-                            "status": "success",
-                            "mode": "general" if is_general_mode else "patient"
-                        }
-        except urllib.error.HTTPError as e:
-            status = e.code
-            if status == 429:
-                return False, "The AI service is temporarily rate-limited. Please try again in a few moments.", {"error": "rate_limited", "code": 429}
-            elif status == 404:
-                last_error = (status, "model_not_found")
-                continue
-            elif status in (401, 403):
-                return False, "AI authentication failed. Please check the backend OpenRouter API key.", {"error": "auth_error", "code": status}
-            else:
-                last_error = (status, f"http_error_{status}")
-                break
-        except urllib.error.URLError:
-            return False, "Unable to reach the AI service endpoint due to a network error.", {"error": "network_error"}
-        except Exception:
-            break
-
-    if last_error and last_error[0] == 429:
-        return False, "The AI service is temporarily rate-limited. Please try again in a few moments.", {"error": "rate_limited", "code": 429}
-    return False, "The AI service is temporarily unavailable. Please try again later.", {"error": "service_unavailable"}
+    err = result.get("error_info") or {}
+    meta = {
+        "error": err.get("category", "service_unavailable"),
+        "key_slot_used": result.get("key_slot_used"),
+        "failover_triggered": result.get("failover_triggered", False),
+        "failover_reason": result.get("failover_reason"),
+    }
+    if err.get("http_status") is not None:
+        meta["code"] = err["http_status"]
+    return False, err.get("user_message", "The AI service is temporarily unavailable. Please try again later."), meta
 
 
 def call_openrouter_with_tools(
@@ -454,179 +897,98 @@ def call_openrouter_with_tools(
     model_override: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
-    Send a chat completion request to OpenRouter (Gemma 4 31B primary) with
-    optional function-calling `tools` definitions.
-
-    Supports:
-    1. Native OpenRouter tool calling (`tools` + `tool_choice`, returning
-       `message.tool_calls`).
-    2. Automatic fallback to structured JSON output on routes that return HTTP
-       400/422 when `tools` is supplied.
-
-    Returns a dictionary:
-        {
-            "success": bool,
-            "model": str or None,
-            "message": dict (containing "role", "content", and optional "tool_calls"),
-            "raw_response": dict,
-            "native_tools_used": bool,
-            "error": str or None
-        }
+    Send a chat completion request to OpenRouter (preserving model, messages,
+    tools, and multimodal payloads) with controlled Primary/Backup key failover.
     """
-    api_key = get_openrouter_api_key()
-    if not api_key:
-        return {
-            "success": False,
-            "model": None,
-            "message": {},
-            "raw_response": {},
-            "native_tools_used": False,
-            "error": "missing_api_key",
-        }
+    model = model_override or get_openrouter_model()
+    req_category = "tool_calling" if tools else "multimodal_or_chat"
 
-    primary_model = model_override or get_openrouter_model()
-    candidate_models = [primary_model]
-    for alt in [
-        "google/gemma-4-31b-it:free",
-        "google/gemma-4-26b-a4b-it:free",
-        "nvidia/nemotron-3.5-super-vl:free",
-    ]:
-        if alt not in candidate_models:
-            candidate_models.append(alt)
-
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://jeevansetu.in",
-        "X-Title": "Jeevan Setu AI Clinical Assistant",
+    base_payload: Dict[str, Any] = {
+        "model": model,
+        "messages": messages,
+        "temperature": temperature,
+        "max_tokens": max_tokens,
     }
+    if tools:
+        base_payload["tools"] = tools
+        base_payload["tool_choice"] = tool_choice
 
-    import urllib.request
-    import urllib.error
+    last_res: Dict[str, Any] = {}
+    for attempt_native in ([True, False] if tools else [False]):
+        req_payload = dict(base_payload)
+        if not attempt_native and "tools" in req_payload:
+            req_payload.pop("tools", None)
+            req_payload.pop("tool_choice", None)
 
-    last_error = "service_unavailable"
+        res = _execute_openrouter_with_failover(
+            payload=req_payload,
+            request_category=req_category,
+            timeout=timeout,
+        )
+        last_res = res
 
-    for model in candidate_models:
-        payload: Dict[str, Any] = {
-            "model": model,
-            "messages": messages,
-            "temperature": temperature,
-            "max_tokens": max_tokens,
-        }
-        if tools:
-            payload["tools"] = tools
-            payload["tool_choice"] = tool_choice
+        if res["success"] and res["data"]:
+            msg_obj = res["data"]["choices"][0].get("message") or {}
+            if "content" in msg_obj and isinstance(msg_obj["content"], str):
+                msg_obj["content"] = clean_ai_response(msg_obj["content"])
+            return {
+                "success": True,
+                "model": model,
+                "message": msg_obj,
+                "raw_response": res["data"],
+                "native_tools_used": attempt_native,
+                "error": None,
+                "requested_model": model,
+                "actual_model": model,
+                "is_fallback": False,
+                "fallback_reason": None,
+                "provider": "openrouter",
+                "key_slot_used": res["key_slot_used"],
+                "failover_triggered": res["failover_triggered"],
+                "failover_reason": res["failover_reason"],
+            }
 
-        for attempt_native in ([True, False] if tools else [False]):
-            req_payload = dict(payload)
-            if not attempt_native and "tools" in req_payload:
-                req_payload.pop("tools", None)
-                req_payload.pop("tool_choice", None)
+        err_info = res.get("error_info") or {}
+        if attempt_native and err_info.get("http_status") in (400, 422):
+            # Route did not accept native `tools` parameter; retry without `tools` on primary
+            continue
+        break
 
-            try:
-                req = urllib.request.Request(
-                    OPENROUTER_ENDPOINT,
-                    data=json.dumps(req_payload).encode("utf-8"),
-                    headers=headers,
-                    method="POST",
-                )
-                with urllib.request.urlopen(req, timeout=timeout) as resp:
-                    status_code = resp.status
-                    resp_body = resp.read().decode("utf-8")
-                    data = json.loads(resp_body)
-
-                    if status_code == 200 and "choices" in data and len(data["choices"]) > 0:
-                        msg_obj = data["choices"][0].get("message") or {}
-                        if "content" in msg_obj and isinstance(msg_obj["content"], str):
-                            msg_obj["content"] = clean_ai_response(msg_obj["content"])
-                        return {
-                            "success": True,
-                            "model": model,
-                            "message": msg_obj,
-                            "raw_response": data,
-                            "native_tools_used": attempt_native,
-                            "error": None,
-                            "requested_model": primary_model,
-                            "actual_model": model,
-                            "is_fallback": bool(model != primary_model),
-                            "fallback_reason": ("primary_rate_limited_or_error" if model != primary_model else None),
-                            "provider": "openrouter",
-                        }
-            except urllib.error.HTTPError as e:
-                status = e.code
-                err_detail = ""
-                try:
-                    err_body = e.read().decode("utf-8", errors="replace")
-                    err_json = json.loads(err_body)
-                    err_detail = str(err_json.get("error", {}).get("message") or "")
-                except Exception:
-                    pass
-
-                logger.warning(
-                    "OpenRouter API call returned HTTP %d for model '%s': %s",
-                    status,
-                    model,
-                    err_detail[:180] if err_detail else "No error details returned",
-                )
-
-                if status in (400, 422) and attempt_native:
-                    # Provider route did not accept native `tools` parameter; retry without `tools`
-                    last_error = f"http_{status}_native_tools_unsupported"
-                    continue
-                if status == 429:
-                    last_error = "rate_limited"
-                    # If daily free tier quota is exhausted across the account, other free models will also fail
-                    if ":free" in model or "free-models-per-day" in err_detail:
-                        break
-                    continue
-                if status == 404:
-                    if last_error != "rate_limited":
-                        last_error = "model_not_found"
-                    continue
-                if status in (401, 403):
-                    return {
-                        "success": False,
-                        "model": model,
-                        "message": {},
-                        "raw_response": {},
-                        "native_tools_used": False,
-                        "error": f"auth_error_{status}",
-                    }
-                if last_error != "rate_limited":
-                    last_error = f"http_error_{status}"
-                break
-            except urllib.error.URLError:
-                return {
-                    "success": False,
-                    "model": model,
-                    "message": {},
-                    "raw_response": {},
-                    "native_tools_used": False,
-                    "error": "network_error",
-                }
-            except Exception as exc:
-                last_error = f"unexpected_error:{type(exc).__name__}"
-                break
+    err_info = last_res.get("error_info") or {}
+    err_cat = err_info.get("category", "service_unavailable")
+    if err_info.get("http_status") in (401, 403):
+        err_cat = f"auth_error_{err_info['http_status']}"
 
     return {
         "success": False,
-        "model": None,
+        "model": model if last_res.get("key_slot_used") else None,
         "message": {},
         "raw_response": {},
         "native_tools_used": False,
-        "error": last_error,
-        "requested_model": primary_model,
+        "error": err_cat,
+        "requested_model": model,
         "actual_model": None,
         "is_fallback": False,
-        "fallback_reason": last_error,
+        "fallback_reason": err_cat,
         "provider": "openrouter",
+        "key_slot_used": last_res.get("key_slot_used"),
+        "failover_triggered": last_res.get("failover_triggered", False),
+        "failover_reason": last_res.get("failover_reason"),
     }
 
 
 __all__ = [
+    "is_openrouter_enabled",
+    "is_failover_enabled",
+    "get_openrouter_timeout",
+    "get_openrouter_max_retries",
+    "get_primary_api_key",
+    "get_secondary_api_key",
     "get_openrouter_api_key",
     "get_openrouter_model",
+    "validate_openrouter_config",
     "is_ai_configured",
+    "classify_openrouter_error",
     "clean_ai_response",
     "build_controlled_patient_context",
     "query_openrouter_gemini",

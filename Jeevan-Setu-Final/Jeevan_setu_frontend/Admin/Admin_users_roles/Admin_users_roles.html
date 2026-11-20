@@ -1,21 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="/assets/jeevan_setu_logo.png">
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <style>
     @layer base {
-      html, body { margin: 0; padding: 0; }
-      body { overscroll-behavior: none; }
-      main>:first-child { margin-top: 0 !important; }
-      main>:last-child { margin-bottom: 0 !important; }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overscroll-behavior: auto;
+      }
+
+      main>:first-child {
+        margin-top: 0 !important;
+      }
+
+      main>:last-child {
+        margin-bottom: 0 !important;
+      }
     }
-    ::-webkit-scrollbar { display: none; }
-    .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #334155 #0f172a;
+    }
+
+    .sidebar-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
   </style>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="/auto_refresh_manager.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -86,27 +131,38 @@
       }
     };
   </script>
+  <script src="../admin_navigation.js"></script>
 </head>
+
 <body class="bg-background font-body-md text-on-surface">
 
   <!-- =================================================================== -->
   <!-- SIDEBAR NAVIGATION                                                  -->
   <!-- =================================================================== -->
-  <aside class="fixed left-0 top-0 w-64 bg-[#0a1e4d] text-white flex flex-col flex-shrink-0 h-full overflow-y-auto z-50 sidebar-transition" data-purpose="sidebar">
+  <aside
+    class="fixed left-0 top-0 w-64 bg-[#0a1e4d] text-white flex flex-col flex-shrink-0 h-full overflow-y-auto z-50 sidebar-transition"
+    data-purpose="sidebar">
     <div class="p-6 flex items-center space-x-3">
-<div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
-  <img src="/assets/jeevan_setu_logo.png" onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo" class="w-full h-full object-contain">
-</div>
-<div>
-<h1 class="text-lg font-bold leading-none">JEEVAN SETU</h1>
-<p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider">Intelligent Transfer System</p>
-</div>
-</div>
-    
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+        <img src="/assets/jeevan_setu_logo.png"
+          onerror="this.onerror=null; this.src='../../assets/jeevan_setu_logo.png';" alt="Jeevan Setu Logo"
+          class="w-full h-full object-contain">
+      </div>
+      <div>
+        <h1 class="text-lg font-bold leading-none">JEEVAN SETU</h1>
+        <p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider">Intelligent Transfer System</p>
+      </div>
+    </div>
+
     <nav class="flex-1 px-4 py-4 space-y-8">
       <div>
-        <a class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 transition-colors" href="../Administrator_dashboard_/Administrator_dashboard_.html">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        <a class="flex items-center space-x-3 px-4 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 transition-colors"
+          href="../Administrator_dashboard_/Administrator_dashboard_.html">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+          </svg>
           <span>Dashboard</span>
         </a>
       </div>
@@ -114,29 +170,104 @@
       <div>
         <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Management</p>
         <ul class="space-y-2">
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_patient_management/Admin_patient_management.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Patients</span></a></li>
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_beds_wards/Admin_beds_wards.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Beds &amp; Wards</span></a></li>
-          <li><a class="flex items-center space-x-3 bg-blue-600 px-4 py-2.5 rounded-lg text-white font-medium" href="../Admin_users_roles/Admin_users_roles.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Users &amp; Roles</span></a></li>
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_attendant_access/Admin_attendant_access.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Attendants (QR Access)</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_patient_management/Admin_patient_management.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Patients</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_beds_wards/Admin_beds_wards.html"><svg class="w-5 h-5" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Beds &amp; Wards</span></a></li>
+          <li><a class="flex items-center space-x-3 bg-blue-600 px-4 py-2.5 rounded-lg text-white font-medium"
+              href="../Admin_users_roles/Admin_users_roles.html"><svg class="w-5 h-5" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Users &amp; Roles</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_attendant_access/Admin_attendant_access.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Attendants (QR Access)</span></a></li>
         </ul>
       </div>
 
       <div>
-        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Monitoring &amp; Analytics</p>
+        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">Monitoring &amp; Analytics
+        </p>
         <ul class="space-y-2">
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_ews_analytics/Admin_ews_analytics.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>EWS Analytics</span></a></li>
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_resource_utilization/Admin_resource_utilization.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Resource Utilization</span></a></li>
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_clinical_reports/Admin_clinical_reports.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Reports</span></a></li>
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_audit_logs/Admin_audit_logs.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Audit Logs</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_ews_analytics/Admin_ews_analytics.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>EWS Analytics</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_resource_utilization/Admin_resource_utilization.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2"></path>
+              </svg><span>Resource Utilization</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_clinical_reports/Admin_clinical_reports.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Reports</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_audit_logs/Admin_audit_logs.html"><svg class="w-5 h-5" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Audit Logs</span></a></li>
         </ul>
       </div>
 
       <div>
         <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4 px-4">System Settings</p>
         <ul class="space-y-2">
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_system_settings/Admin_system_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>System Settings</span></a></li>
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_notification_settings/Admin_notification_settings.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Notifications</span></a></li>
-          <li><a class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors" href="../Admin_backup_restore/Admin_backup_restore.html"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span>Backup &amp; Restore</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_system_settings/Admin_system_settings.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2"></path>
+              </svg><span>System Settings</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_notification_settings/Admin_notification_settings.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Notifications</span></a></li>
+          <li><a
+              class="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-lg text-slate-300 transition-colors"
+              href="../Admin_backup_restore/Admin_backup_restore.html"><svg class="w-5 h-5" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2"></path>
+              </svg><span>Backup &amp; Restore</span></a></li>
         </ul>
       </div>
     </nav>
@@ -162,8 +293,12 @@
 
     <!-- Admin Logout Button -->
     <div class="px-4 pb-4">
-      <a href="../../Login/Login.html" class="flex items-center space-x-3 px-4 py-2 hover:bg-red-500/20 rounded-lg text-red-300 hover:text-red-200 transition-colors border border-red-500/30">
-        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+      <a href="../../Login/Login.html"
+        class="flex items-center space-x-3 px-4 py-2 hover:bg-red-500/20 rounded-lg text-red-300 hover:text-red-200 transition-colors border border-red-500/30">
+        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+        </svg>
         <span class="font-medium text-sm">Logout</span>
       </a>
     </div>
@@ -172,17 +307,21 @@
   <!-- =================================================================== -->
   <!-- MAIN CONTENT                                                        -->
   <!-- =================================================================== -->
-  <div class="pl-64">
+  <div class="pl-64 flex flex-col min-h-screen min-w-0">
     <!-- Header bar -->
-    <header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl z-40 flex items-center justify-between px-8 border-b border-surface-variant/30">
+    <header
+      class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl z-40 flex items-center justify-between px-8 border-b border-surface-variant/30">
       <div class="flex items-center flex-1 max-w-md bg-surface-container px-4 py-2 rounded-full">
         <span class="material-symbols-outlined text-outline text-[20px] mr-2">search</span>
-        <input class="bg-transparent border-none outline-none w-full text-body-sm text-on-surface placeholder:text-outline-variant" placeholder="Search patients, beds, or staff..." type="text">
+        <input
+          class="bg-transparent border-none outline-none w-full text-body-sm text-on-surface placeholder:text-outline-variant"
+          placeholder="Search patients, beds, or staff..." type="text">
       </div>
       <div class="flex items-center gap-6">
         <button class="relative p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors">
           <span class="material-symbols-outlined">notifications</span>
-          <span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface-container-lowest"></span>
+          <span
+            class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface-container-lowest"></span>
         </button>
         <div class="flex items-center gap-3 pl-4 border-l border-surface-variant/50">
           <div class="text-right hidden sm:block">
@@ -196,186 +335,161 @@
       </div>
     </header>
 
-    <main class="pt-16 min-h-screen bg-background">
+    <main class="flex-1 bg-background">
       <div class="flex flex-col w-full">
-        <div class="px-8 py-8 flex flex-col gap-6">
-          
+        <div class="px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6 w-full">
+
           <!-- Page Title & Actions -->
           <div class="flex items-center justify-between flex-wrap gap-4">
             <div>
               <h1 class="font-headline-lg text-headline-lg text-on-surface">User &amp; Role Management</h1>
-              <p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage hospital staff access, RBAC roles, clinical availability, and permissions.</p>
+              <p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage hospital staff access, RBAC
+                roles, clinical availability, and permissions.</p>
             </div>
             <div class="flex items-center gap-3 flex-shrink-0">
-              <button id="btn-refresh-users" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-variant transition-colors group shadow-sm font-label-md text-sm border border-surface-variant/40">
-                <span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors" id="icon-refresh-users">refresh</span>
+              <button id="btn-refresh-users"
+                class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-variant transition-colors group shadow-sm font-label-md text-sm border border-surface-variant/40">
+                <span
+                  class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors"
+                  id="icon-refresh-users">refresh</span>
                 <span>Refresh</span>
               </button>
-              <button id="btn-open-add-user-modal" class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm font-label-md text-sm cursor-pointer">
+              <button id="btn-open-add-user-modal"
+                class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm font-label-md text-sm cursor-pointer">
                 <span class="material-symbols-outlined text-[20px]">person_add</span>
                 <span>+ Add User</span>
               </button>
             </div>
           </div>
 
-          <!-- Main Layout Grid -->
-          <div class="grid grid-cols-12 gap-6">
-            
-            <!-- Left Table Column (8 Cols) -->
-            <div class="col-span-12 xl:col-span-8 flex flex-col gap-6">
-              <div class="bg-surface-container-lowest rounded-xl shadow-sm p-6 flex flex-col gap-4 relative overflow-hidden border border-surface-variant/30">
-                
-                <div class="flex items-center justify-between pb-2 gap-4 flex-wrap">
-                  <h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
-                    <span class="material-symbols-outlined text-primary text-[22px]">groups</span>
-                    Active Staff Directory
-                  </h2>
-                  <div class="flex items-center gap-3 flex-wrap">
-                    <div class="relative w-64">
-                      <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">search</span>
-                      <input id="admin-user-search-input" class="w-full bg-surface-container pl-8 pr-3 py-2 rounded-lg text-xs text-on-surface placeholder:text-outline-variant outline-none border border-surface-variant/50 focus:ring-2 focus:ring-primary/20" placeholder="Search name, email, department..." type="text">
-                    </div>
-                    <div>
-                      <select id="admin-user-role-filter" class="bg-surface-container px-3 py-2 rounded-lg text-xs text-on-surface border border-surface-variant/50 focus:ring-2 focus:ring-primary/20 outline-none">
-                        <option value="">All Roles</option>
-                        <option value="doctor">Doctors</option>
-                        <option value="nurse">Nurses</option>
-                        <option value="admin">Administrators</option>
-                        <option value="attendant">Attendants</option>
-                      </select>
-                    </div>
+          <!-- Full-Width Active Staff Directory -->
+          <div class="w-full flex flex-col gap-6 min-w-0">
+            <div
+              class="bg-surface-container-lowest rounded-xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 border border-surface-variant/30">
+
+              <div class="flex items-center justify-between pb-2 gap-4 flex-wrap">
+                <h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary text-[22px]">groups</span>
+                  Active Staff Directory
+                </h2>
+                <div class="flex items-center gap-3 flex-wrap w-full sm:w-auto">
+                  <div class="relative w-full sm:w-72">
+                    <span
+                      class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">search</span>
+                    <input id="admin-user-search-input"
+                      class="w-full bg-surface-container pl-8 pr-3 py-2 rounded-lg text-xs text-on-surface placeholder:text-outline-variant outline-none border border-surface-variant/50 focus:ring-2 focus:ring-primary/20"
+                      placeholder="Search name, email, username, department..." type="text">
                   </div>
-                </div>
-
-                <!-- Users Table -->
-                <div class="w-full overflow-x-auto">
-                  <table class="w-full text-left border-collapse">
-                    <thead>
-                      <tr class="border-b border-surface-variant/40 bg-surface-container/40">
-                        <th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant whitespace-nowrap">User</th>
-                        <th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Role</th>
-                        <th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Department / Spec</th>
-                        <th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Status</th>
-                        <th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Created</th>
-                        <th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody id="admin-user-tbody" class="divide-y divide-surface-variant/20 font-body-sm text-body-sm">
-                      <tr>
-                        <td colspan="6" class="p-8 text-center text-on-surface-variant">
-                          <span class="material-symbols-outlined text-[32px] text-primary animate-spin block mx-auto mb-2">sync</span>
-                          <p class="font-label-md">Loading hospital staff directory...</p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="flex items-center justify-between pt-4 mt-2 border-t border-surface-variant/20">
-                  <p id="admin-user-count-text" class="font-body-sm text-body-sm text-on-surface-variant">Showing active users</p>
-                  <div class="flex items-center gap-1">
-                    <button class="w-8 h-8 flex items-center justify-center rounded-md text-on-surface-variant hover:bg-surface-container disabled:opacity-50"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-on-primary font-label-sm text-label-sm">1</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-md text-on-surface-variant hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button>
+                  <div class="w-full sm:w-auto">
+                    <select id="admin-user-role-filter"
+                      class="w-full sm:w-auto bg-surface-container px-3 py-2 rounded-lg text-xs text-on-surface border border-surface-variant/50 focus:ring-2 focus:ring-primary/20 outline-none">
+                      <option value="">All Roles</option>
+                      <option value="doctor">Doctors</option>
+                      <option value="nurse">Nurses</option>
+                      <option value="admin">Administrators</option>
+                      <option value="attendant">Attendants</option>
+                    </select>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Right Roles Summary Column (4 Cols) -->
-            <div class="col-span-12 xl:col-span-4 flex flex-col gap-6">
-              
-              <!-- Role-Based Access Cards -->
-              <div class="bg-surface-container-lowest rounded-xl shadow-sm p-6 flex flex-col gap-5 border border-surface-variant/30">
-                <h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2 pb-2 border-b border-surface-variant/30">
-                  <span class="material-symbols-outlined text-secondary text-[22px]">security</span>
-                  Role-Based Access (RBAC)
-                </h3>
-                
-                <div class="flex flex-col gap-3">
-                  <!-- Doctor Role -->
-                  <div class="p-4 rounded-xl bg-surface-container-low group hover:bg-surface-container transition-all border border-surface-variant/40 relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary"></div>
-                    <div class="flex justify-between items-start mb-1.5">
-                      <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary text-[20px]">stethoscope</span>
-                        <h4 class="font-label-md text-label-md text-on-surface font-bold">Doctor / Physician</h4>
-                      </div>
-                      <span id="role-count-doctor" class="font-label-sm text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">-- Users</span>
-                    </div>
-                    <p class="font-body-sm text-xs text-on-surface-variant mb-2">Clinical decision support, EWS evaluation, diagnostic review, and admission management.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                      <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/15"><span class="material-symbols-outlined text-[12px]">check</span> Clinical Decision</span>
-                      <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/15"><span class="material-symbols-outlined text-[12px]">check</span> EWS Calculator</span>
-                    </div>
-                  </div>
-
-                  <!-- Nurse Role -->
-                  <div class="p-4 rounded-xl bg-surface-container-low group hover:bg-surface-container transition-all border border-surface-variant/40 relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary"></div>
-                    <div class="flex justify-between items-start mb-1.5">
-                      <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-secondary text-[20px]">monitor_heart</span>
-                        <h4 class="font-label-md text-label-md text-on-surface font-bold">Nursing Staff</h4>
-                      </div>
-                      <span id="role-count-nurse" class="font-label-sm text-xs font-bold text-secondary bg-secondary/10 px-2.5 py-0.5 rounded-full">-- Users</span>
-                    </div>
-                    <p class="font-body-sm text-xs text-on-surface-variant mb-2">Real-time vital signs entry, continuous bedside tracking, rapid alerts, and patient triage.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                      <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-secondary bg-secondary/5 px-2 py-0.5 rounded border border-secondary/15"><span class="material-symbols-outlined text-[12px]">check</span> Vitals Entry</span>
-                      <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-secondary bg-secondary/5 px-2 py-0.5 rounded border border-secondary/15"><span class="material-symbols-outlined text-[12px]">check</span> Bedside Alerts</span>
-                    </div>
-                  </div>
-
-                  <!-- Admin Role -->
-                  <div class="p-4 rounded-xl bg-surface-container-low group hover:bg-surface-container transition-all border border-surface-variant/40 relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-tertiary-container"></div>
-                    <div class="flex justify-between items-start mb-1.5">
-                      <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-tertiary text-[20px]">admin_panel_settings</span>
-                        <h4 class="font-label-md text-label-md text-on-surface font-bold">Administrator</h4>
-                      </div>
-                      <span id="role-count-admin" class="font-label-sm text-xs font-bold text-tertiary bg-tertiary/10 px-2.5 py-0.5 rounded-full">-- Users</span>
-                    </div>
-                    <p class="font-body-sm text-xs text-on-surface-variant mb-2">Full hospital system access, patient intake, ward/bed occupancy, user administration, and audit logs.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                      <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-tertiary bg-tertiary/5 px-2 py-0.5 rounded border border-tertiary/15"><span class="material-symbols-outlined text-[12px]">check</span> Full RBAC</span>
-                      <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-tertiary bg-tertiary/5 px-2 py-0.5 rounded border border-tertiary/15"><span class="material-symbols-outlined text-[12px]">check</span> Patient Admission</span>
-                    </div>
-                  </div>
-
-                  <!-- Attendant Role -->
-                  <div class="p-4 rounded-xl bg-surface-container-low group hover:bg-surface-container transition-all border border-surface-variant/40 relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-amber-500"></div>
-                    <div class="flex justify-between items-start mb-1.5">
-                      <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-amber-600 text-[20px]">family_restroom</span>
-                        <h4 class="font-label-md text-label-md text-on-surface font-bold">Patient Attendant</h4>
-                      </div>
-                      <span id="role-count-attendant" class="font-label-sm text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full">-- Users</span>
-                    </div>
-                    <p class="font-body-sm text-xs text-on-surface-variant mb-2">Restricted read-only access to assigned patient condition, recovery progress, and clinical updates via QR code.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                      <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200"><span class="material-symbols-outlined text-[12px]">check</span> QR Access</span>
-                      <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200"><span class="material-symbols-outlined text-[12px]">check</span> Status Portal</span>
-                    </div>
-                  </div>
-
-                </div>
+              <!-- Users Table -->
+              <div class="w-full overflow-x-auto">
+                <table id="admin-users-table"
+                  class="w-full lg:table-fixed text-left border-collapse mobile-cards admin-staff-table">
+                  <thead>
+                    <tr class="border-b border-surface-variant/40 bg-surface-container/40">
+                      <th
+                        class="py-3 px-2.5 lg:w-[28%] font-label-md text-label-md text-on-surface-variant whitespace-nowrap"
+                        aria-sort="none">
+                        <button type="button" data-sort="user"
+                          class="staff-sort-btn inline-flex items-center gap-1 font-semibold hover:text-cyan-400 transition-colors cursor-pointer">
+                          <span>User</span>
+                          <span
+                            class="material-symbols-outlined text-[16px] sort-icon text-slate-400">unfold_more</span>
+                        </button>
+                      </th>
+                      <th
+                        class="py-3 px-2.5 lg:w-[13%] font-label-md text-label-md text-on-surface-variant whitespace-nowrap"
+                        aria-sort="none">
+                        <button type="button" data-sort="role"
+                          class="staff-sort-btn inline-flex items-center gap-1 font-semibold hover:text-cyan-400 transition-colors cursor-pointer">
+                          <span>Role</span>
+                          <span
+                            class="material-symbols-outlined text-[16px] sort-icon text-slate-400">unfold_more</span>
+                        </button>
+                      </th>
+                      <th
+                        class="py-3 px-2.5 lg:w-[17%] font-label-md text-label-md text-on-surface-variant whitespace-nowrap"
+                        aria-sort="none">
+                        <button type="button" data-sort="department"
+                          class="staff-sort-btn inline-flex items-center gap-1 font-semibold hover:text-cyan-400 transition-colors cursor-pointer">
+                          <span>Department</span>
+                          <span
+                            class="material-symbols-outlined text-[16px] sort-icon text-slate-400">unfold_more</span>
+                        </button>
+                      </th>
+                      <th
+                        class="py-3 px-2.5 lg:w-[12%] font-label-md text-label-md text-on-surface-variant whitespace-nowrap"
+                        aria-sort="none">
+                        <button type="button" data-sort="status"
+                          class="staff-sort-btn inline-flex items-center gap-1 font-semibold hover:text-cyan-400 transition-colors cursor-pointer">
+                          <span>Status</span>
+                          <span
+                            class="material-symbols-outlined text-[16px] sort-icon text-slate-400">unfold_more</span>
+                        </button>
+                      </th>
+                      <th
+                        class="py-3 px-2.5 lg:w-[13%] font-label-md text-label-md text-on-surface-variant whitespace-nowrap"
+                        aria-sort="none">
+                        <button type="button" data-sort="availability"
+                          class="staff-sort-btn inline-flex items-center gap-1 font-semibold hover:text-cyan-400 transition-colors cursor-pointer">
+                          <span>Availability</span>
+                          <span
+                            class="material-symbols-outlined text-[16px] sort-icon text-slate-400">unfold_more</span>
+                        </button>
+                      </th>
+                      <th
+                        class="py-3 px-2.5 lg:w-[10%] font-label-md text-label-md text-on-surface-variant whitespace-nowrap"
+                        aria-sort="none">
+                        <button type="button" data-sort="created"
+                          class="staff-sort-btn inline-flex items-center gap-1 font-semibold hover:text-cyan-400 transition-colors cursor-pointer">
+                          <span>Created</span>
+                          <span
+                            class="material-symbols-outlined text-[16px] sort-icon text-slate-400">unfold_more</span>
+                        </button>
+                      </th>
+                      <th
+                        class="py-3 px-2.5 lg:w-[7%] font-label-md text-label-md text-on-surface-variant text-right whitespace-nowrap">
+                        Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-user-tbody" class="divide-y divide-surface-variant/20 font-body-sm text-body-sm">
+                    <tr>
+                      <td colspan="7" class="p-8 text-center text-on-surface-variant">
+                        <span
+                          class="material-symbols-outlined text-[32px] text-primary animate-spin block mx-auto mb-2">sync</span>
+                        <p class="font-label-md">Loading hospital staff directory...</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
 
-              <!-- Security & Audit Info -->
-              <div class="bg-surface-container-lowest rounded-xl shadow-sm p-6 relative overflow-hidden border border-surface-variant/30">
-                <div class="relative z-10 flex flex-col items-center text-center">
-                  <div class="w-14 h-14 bg-surface-variant rounded-full flex items-center justify-center mb-3 text-primary">
-                    <span class="material-symbols-outlined text-[28px]">shield_person</span>
-                  </div>
-                  <h4 class="font-headline-sm text-base text-on-surface mb-1 font-bold">Role Access Enforcement</h4>
-                  <p class="font-body-sm text-xs text-on-surface-variant mb-4">Every user account is encrypted and guarded with JWT token verification and strict server-side RBAC.</p>
-                  <a href="../Admin_audit_logs/Admin_audit_logs.html" class="px-4 py-2 bg-surface-container text-on-surface rounded-lg font-label-md text-xs hover:bg-surface-variant transition-colors border border-surface-variant/40">View Audit Logs</a>
+              <div class="flex items-center justify-between pt-4 mt-2 border-t border-surface-variant/20">
+                <p id="admin-user-count-text" class="font-body-sm text-body-sm text-on-surface-variant">Showing active
+                  users</p>
+                <div id="admin-user-pagination" class="flex items-center gap-1">
+                  <button
+                    class="w-8 h-8 flex items-center justify-center rounded-md text-on-surface-variant hover:bg-surface-container disabled:opacity-50"><span
+                      class="material-symbols-outlined text-[20px]">chevron_left</span></button>
+                  <button
+                    class="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-on-primary font-label-sm text-label-sm">1</button>
+                  <button
+                    class="w-8 h-8 flex items-center justify-center rounded-md text-on-surface-variant hover:bg-surface-container"><span
+                      class="material-symbols-outlined text-[20px]">chevron_right</span></button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -386,9 +500,11 @@
   <!-- =================================================================== -->
   <!-- ADD USER MODAL                                                      -->
   <!-- =================================================================== -->
-  <div id="add-user-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
-    <div class="bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl max-w-3xl w-full border border-surface-variant/40 overflow-hidden transform transition-all my-8">
-      
+  <div id="add-user-modal"
+    class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 transition-all duration-300">
+    <div
+      class="bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl max-w-3xl w-full border border-surface-variant/40 overflow-hidden transform transition-all my-8">
+
       <!-- Modal Header -->
       <div class="px-6 py-4 bg-[#0a1e4d] text-white flex items-center justify-between border-b border-white/10">
         <div class="flex items-center space-x-3">
@@ -400,16 +516,18 @@
             <p class="text-xs text-blue-200">Provision hospital staff account & configure role-based access</p>
           </div>
         </div>
-        <button id="btn-close-add-user-modal" type="button" class="text-white/70 hover:text-white hover:bg-white/10 p-2 rounded-full transition-colors">
+        <button id="btn-close-add-user-modal" type="button"
+          class="text-white/70 hover:text-white hover:bg-white/10 p-2 rounded-full transition-colors">
           <span class="material-symbols-outlined text-[22px]">close</span>
         </button>
       </div>
 
       <!-- Modal Form -->
       <form id="add-user-form" class="p-6 space-y-6 max-h-[calc(85vh-140px)] overflow-y-auto">
-        
+
         <!-- Error / Alert Banner -->
-        <div id="add-user-form-error" class="hidden p-3.5 rounded-xl bg-error-container text-on-error-container text-sm flex items-start space-x-2 border border-error/20">
+        <div id="add-user-form-error"
+          class="hidden p-3.5 rounded-xl bg-error-container text-on-error-container text-sm flex items-start space-x-2 border border-error/20">
           <span class="material-symbols-outlined text-[20px] text-error flex-shrink-0">error</span>
           <span id="add-user-form-error-msg" class="leading-snug"></span>
         </div>
@@ -425,23 +543,29 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Full Name <span class="text-error">*</span></label>
-              <input type="text" id="user-fullname" required placeholder="e.g. Dr. Rajesh Sharma" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Full Name <span
+                  class="text-error">*</span></label>
+              <input type="text" id="user-fullname" required placeholder="e.g. Dr. Rajesh Sharma"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Email Address <span class="text-error">*</span></label>
-              <input type="email" id="user-email" required placeholder="e.g. rajesh.sharma@jeevansetu.in" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Email Address <span
+                  class="text-error">*</span></label>
+              <input type="email" id="user-email" required placeholder="e.g. rajesh.sharma@jeevansetu.in"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-semibold text-on-surface-variant mb-1">Phone / Contact Number</label>
-              <input type="tel" id="user-contact" placeholder="e.g. +91 98765 43210" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+              <input type="tel" id="user-contact" placeholder="e.g. +91 98765 43210"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-on-surface-variant mb-1">Department</label>
-              <select id="user-department" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+              <select id="user-department"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
                 <option value="Cardiology">Cardiology</option>
                 <option value="Pulmonology">Pulmonology</option>
                 <option value="Critical Care / ICU">Critical Care / ICU</option>
@@ -467,30 +591,39 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Username <span class="text-error">*</span></label>
-              <input type="text" id="user-username" required placeholder="e.g. dr_rajesh" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 font-mono text-xs" />
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Username <span
+                  class="text-error">*</span></label>
+              <input type="text" id="user-username" required placeholder="e.g. dr_rajesh"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 font-mono text-xs" />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Password <span class="text-error">*</span></label>
-              <input type="password" id="user-password" required minlength="6" placeholder="Min 6 characters" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Password <span
+                  class="text-error">*</span></label>
+              <input type="password" id="user-password" required minlength="6" placeholder="Min 6 characters"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Confirm Password <span class="text-error">*</span></label>
-              <input type="password" id="user-confirm-password" required minlength="6" placeholder="Re-type password" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">Confirm Password <span
+                  class="text-error">*</span></label>
+              <input type="password" id="user-confirm-password" required minlength="6" placeholder="Re-type password"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
             <div>
               <label class="block text-xs font-semibold text-on-surface-variant mb-1">Account Status</label>
-              <select id="user-status" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+              <select id="user-status"
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
                 <option value="1">Active (Can log in)</option>
                 <option value="0">Inactive (Suspended)</option>
               </select>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-on-surface-variant mb-1">System Role <span class="text-error">*</span></label>
-              <select id="user-role-select" required class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-primary/40 text-sm font-semibold text-primary focus:outline-none focus:ring-2 focus:ring-primary/30">
+              <label class="block text-xs font-semibold text-on-surface-variant mb-1">System Role <span
+                  class="text-error">*</span></label>
+              <select id="user-role-select" required
+                class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-primary/40 text-sm font-semibold text-primary focus:outline-none focus:ring-2 focus:ring-primary/30">
                 <option value="doctor">Doctor (Clinical &amp; Decisions)</option>
                 <option value="nurse">Nurse (Vitals &amp; Monitoring)</option>
                 <option value="admin">Administrator (Full Access)</option>
@@ -501,8 +634,9 @@
         </div>
 
         <!-- SECTION C: Role-Specific Configuration (Dynamic) -->
-        <div id="role-fields-container" class="bg-surface-container-low p-4 rounded-xl border border-surface-variant/40 space-y-4">
-          
+        <div id="role-fields-container"
+          class="bg-surface-container-low p-4 rounded-xl border border-surface-variant/40 space-y-4">
+
           <!-- DOCTOR FIELDS -->
           <div id="role-fields-doctor" class="space-y-4">
             <div class="flex items-center justify-between border-b border-surface-variant/30 pb-2">
@@ -510,28 +644,35 @@
                 <span class="material-symbols-outlined text-[18px]">stethoscope</span>
                 Doctor Configuration &amp; Availability
               </h3>
-              <span class="text-[11px] text-on-surface-variant bg-primary/10 px-2 py-0.5 rounded text-primary font-semibold">Doctor Portal Access</span>
+              <span
+                class="text-[11px] text-on-surface-variant bg-primary/10 px-2 py-0.5 rounded text-primary font-semibold">Doctor
+                Portal Access</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-on-surface-variant mb-1">Medical Specialization</label>
-                <input type="text" id="doc-specialization" placeholder="e.g. Critical Care / Cardiology" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="text" id="doc-specialization" placeholder="e.g. Critical Care / Cardiology"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-on-surface-variant mb-1">License / Registration Number</label>
-                <input type="text" id="doc-license" placeholder="e.g. MCI-2024-8849" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">License / Registration
+                  Number</label>
+                <input type="text" id="doc-license" placeholder="e.g. MCI-2024-8849"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div class="sm:col-span-2">
                 <label class="block text-xs font-semibold text-on-surface-variant mb-1">Qualifications</label>
-                <input type="text" id="doc-qualification" placeholder="e.g. MBBS, MD (General Medicine), DM" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="text" id="doc-qualification" placeholder="e.g. MBBS, MD (General Medicine), DM"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div>
                 <label class="block text-xs font-semibold text-on-surface-variant mb-1">Experience (Years)</label>
-                <input type="number" id="doc-experience" min="0" max="60" value="5" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="number" id="doc-experience" min="0" max="60" value="5"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
             </div>
 
@@ -540,11 +681,13 @@
               <div class="flex items-center gap-4 pt-1">
                 <label class="flex items-center gap-2 text-sm cursor-pointer">
                   <input type="radio" name="doc-availability" value="1" checked class="text-primary focus:ring-primary">
-                  <span class="text-secondary font-medium flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> Available for patient assignment</span>
+                  <span class="text-secondary font-medium flex items-center gap-1"><span
+                      class="w-2 h-2 rounded-full bg-secondary"></span> Available for patient assignment</span>
                 </label>
                 <label class="flex items-center gap-2 text-sm cursor-pointer">
                   <input type="radio" name="doc-availability" value="0" class="text-primary focus:ring-primary">
-                  <span class="text-on-surface-variant flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-outline"></span> Unavailable / On Leave</span>
+                  <span class="text-on-surface-variant flex items-center gap-1"><span
+                      class="w-2 h-2 rounded-full bg-outline"></span> Unavailable / On Leave</span>
                 </label>
               </div>
             </div>
@@ -557,24 +700,29 @@
                 <span class="material-symbols-outlined text-[18px]">monitor_heart</span>
                 Nurse Configuration &amp; Ward Assignment
               </h3>
-              <span class="text-[11px] text-on-surface-variant bg-secondary/10 px-2 py-0.5 rounded text-secondary font-semibold">Nurse Portal Access</span>
+              <span
+                class="text-[11px] text-on-surface-variant bg-secondary/10 px-2 py-0.5 rounded text-secondary font-semibold">Nurse
+                Portal Access</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-on-surface-variant mb-1">Clinical Specialization</label>
-                <input type="text" id="nurse-specialization" placeholder="e.g. Critical Care Nursing / ICU" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="text" id="nurse-specialization" placeholder="e.g. Critical Care Nursing / ICU"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div>
                 <label class="block text-xs font-semibold text-on-surface-variant mb-1">Nursing License Number</label>
-                <input type="text" id="nurse-license" placeholder="e.g. INC-2024-5512" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="text" id="nurse-license" placeholder="e.g. INC-2024-5512"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-on-surface-variant mb-1">Ward Assignment</label>
-                <select id="nurse-ward-select" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                <select id="nurse-ward-select"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
                   <option value="ICU">ICU Ward</option>
                   <option value="HDU">HDU Ward</option>
                   <option value="General">General Ward</option>
@@ -582,7 +730,8 @@
               </div>
               <div>
                 <label class="block text-xs font-semibold text-on-surface-variant mb-1">Assigned Shift</label>
-                <select id="nurse-shift" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                <select id="nurse-shift"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
                   <option value="Day">Day Shift</option>
                   <option value="Night">Night Shift</option>
                   <option value="Rotating" selected>Rotating Shift</option>
@@ -590,7 +739,8 @@
               </div>
               <div>
                 <label class="block text-xs font-semibold text-on-surface-variant mb-1">Experience (Years)</label>
-                <input type="number" id="nurse-experience" min="0" max="50" value="3" class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="number" id="nurse-experience" min="0" max="50" value="3"
+                  class="w-full px-3 py-2 bg-surface-container-lowest rounded-lg border border-surface-variant/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
             </div>
 
@@ -598,12 +748,15 @@
               <label class="block text-xs font-semibold text-on-surface-variant mb-1">Duty Availability</label>
               <div class="flex items-center gap-4 pt-1">
                 <label class="flex items-center gap-2 text-sm cursor-pointer">
-                  <input type="radio" name="nurse-availability" value="1" checked class="text-secondary focus:ring-secondary">
-                  <span class="text-secondary font-medium flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> Available for patient assignment</span>
+                  <input type="radio" name="nurse-availability" value="1" checked
+                    class="text-secondary focus:ring-secondary">
+                  <span class="text-secondary font-medium flex items-center gap-1"><span
+                      class="w-2 h-2 rounded-full bg-secondary"></span> Available for patient assignment</span>
                 </label>
                 <label class="flex items-center gap-2 text-sm cursor-pointer">
                   <input type="radio" name="nurse-availability" value="0" class="text-secondary focus:ring-secondary">
-                  <span class="text-on-surface-variant flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-outline"></span> Unavailable / Off Duty</span>
+                  <span class="text-on-surface-variant flex items-center gap-1"><span
+                      class="w-2 h-2 rounded-full bg-outline"></span> Unavailable / Off Duty</span>
                 </label>
               </div>
             </div>
@@ -617,9 +770,13 @@
                 Administrator Privileges
               </h3>
             </div>
-            <div class="p-3 bg-tertiary-container/10 rounded-lg border border-tertiary-container/30 text-xs text-on-surface-variant space-y-1">
-              <p class="font-semibold text-on-surface flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-tertiary">verified_user</span> Full Administrative Control Granted</p>
-              <p>This user will have unrestricted access to Patient Admissions, Wards/Beds Management, Staff Provisioning, and Audit Trail logs.</p>
+            <div
+              class="p-3 bg-tertiary-container/10 rounded-lg border border-tertiary-container/30 text-xs text-on-surface-variant space-y-1">
+              <p class="font-semibold text-on-surface flex items-center gap-1.5"><span
+                  class="material-symbols-outlined text-[16px] text-tertiary">verified_user</span> Full Administrative
+                Control Granted</p>
+              <p>This user will have unrestricted access to Patient Admissions, Wards/Beds Management, Staff
+                Provisioning, and Audit Trail logs.</p>
             </div>
           </div>
 
@@ -632,8 +789,10 @@
               </h3>
             </div>
             <div class="p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-800 space-y-1">
-              <p class="font-semibold flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">info</span> Read-Only Patient Status Access</p>
-              <p>This attendant account can be linked to a patient during the <strong>Admit Patient</strong> process or via QR access code.</p>
+              <p class="font-semibold flex items-center gap-1.5"><span
+                  class="material-symbols-outlined text-[16px]">info</span> Read-Only Patient Status Access</p>
+              <p>This attendant account can be linked to a patient during the <strong>Admit Patient</strong> process or
+                via QR access code.</p>
             </div>
           </div>
 
@@ -642,11 +801,14 @@
       </form>
 
       <!-- Modal Footer -->
-      <div class="px-6 py-4 bg-surface-container-low border-t border-surface-variant/40 flex items-center justify-between gap-3">
-        <button id="btn-cancel-add-user" type="button" class="px-5 py-2.5 rounded-lg border border-surface-variant/60 text-on-surface-variant hover:bg-surface-container transition-colors text-sm font-semibold">
+      <div
+        class="px-6 py-4 bg-surface-container-low border-t border-surface-variant/40 flex items-center justify-between gap-3">
+        <button id="btn-cancel-add-user" type="button"
+          class="px-5 py-2.5 rounded-lg border border-surface-variant/60 text-on-surface-variant hover:bg-surface-container transition-colors text-sm font-semibold">
           Cancel
         </button>
-        <button id="btn-submit-add-user" type="button" class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary/90 transition-colors text-sm font-semibold shadow-md shadow-primary/20">
+        <button id="btn-submit-add-user" type="button"
+          class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary/90 transition-colors text-sm font-semibold shadow-md shadow-primary/20">
           <span class="material-symbols-outlined text-[18px]" id="submit-user-icon">person_add</span>
           <span id="submit-user-text">Create User</span>
         </button>
@@ -658,17 +820,22 @@
   <!-- =================================================================== -->
   <!-- SUCCESS CONFIRMATION MODAL                                          -->
   <!-- =================================================================== -->
-  <div id="user-success-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl max-w-md w-full border border-surface-variant/40 overflow-hidden text-center p-6 space-y-4">
-      <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
+  <div id="user-success-modal"
+    class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div
+      class="bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl max-w-md w-full border border-surface-variant/40 overflow-hidden text-center p-6 space-y-4">
+      <div
+        class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
         <span class="material-symbols-outlined text-[36px]">check_circle</span>
       </div>
       <div>
         <h3 class="text-lg font-bold font-headline-md text-on-surface">User Created Successfully!</h3>
-        <p id="user-success-desc" class="text-xs text-on-surface-variant mt-1">Staff credentials and RBAC permissions have been saved.</p>
+        <p id="user-success-desc" class="text-xs text-on-surface-variant mt-1">Staff credentials and RBAC permissions
+          have been saved.</p>
       </div>
-      
-      <div class="bg-surface-container-low p-4 rounded-xl border border-surface-variant/40 text-left text-xs space-y-2 font-mono">
+
+      <div
+        class="bg-surface-container-low p-4 rounded-xl border border-surface-variant/40 text-left text-xs space-y-2 font-mono">
         <div class="flex justify-between pb-1 border-b border-surface-variant/30">
           <span class="text-on-surface-variant">Full Name:</span>
           <span id="success-user-fullname" class="font-bold text-on-surface">--</span>
@@ -687,38 +854,378 @@
         </div>
       </div>
 
-      <button id="btn-user-success-close" type="button" class="w-full py-2.5 rounded-lg bg-primary text-on-primary font-semibold text-sm hover:bg-primary/90 transition-colors shadow-md">
+      <button id="btn-user-success-close" type="button"
+        class="w-full py-2.5 rounded-lg bg-primary text-on-primary font-semibold text-sm hover:bg-primary/90 transition-colors shadow-md">
         Continue to Staff Directory
       </button>
     </div>
   </div>
 
   <!-- =================================================================== -->
+
+  <!-- =================================================================== -->
+  <!-- FLOATING USER ACTIONS MENU                                          -->
+  <!-- =================================================================== -->
+  <div id="user-actions-dropdown"
+    class="fixed hidden z-50 bg-surface-container-lowest text-on-surface rounded-xl shadow-2xl border border-surface-variant/40 py-1.5 min-w-[210px] text-xs transition-all duration-150">
+    <div id="user-actions-header"
+      class="px-3.5 py-1.5 border-b border-surface-variant/30 text-[11px] font-semibold text-on-surface-variant">
+      <span id="user-actions-username" class="truncate block font-mono text-primary">@user</span>
+    </div>
+    <button id="action-btn-view" type="button"
+      class="w-full text-left px-3.5 py-2 hover:bg-surface-container-high/60 flex items-center gap-2.5 text-on-surface transition-colors cursor-pointer">
+      <span class="material-symbols-outlined text-[17px] text-primary">visibility</span>
+      <span>View User Details</span>
+    </button>
+    <button id="action-btn-edit" type="button"
+      class="w-full text-left px-3.5 py-2 hover:bg-surface-container-high/60 flex items-center gap-2.5 text-on-surface transition-colors cursor-pointer">
+      <span class="material-symbols-outlined text-[17px] text-secondary">edit</span>
+      <span>Edit User Details</span>
+    </button>
+    <div class="h-px bg-surface-variant/30 my-1"></div>
+    <button id="action-btn-status" type="button"
+      class="w-full text-left px-3.5 py-2 flex items-center gap-2.5 transition-colors cursor-pointer">
+      <span id="action-icon-status" class="material-symbols-outlined text-[17px]">person_off</span>
+      <span id="action-text-status">Deactivate User</span>
+    </button>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- STATUS CONFIRMATION MODAL                                           -->
+  <!-- =================================================================== -->
+  <div id="status-confirm-modal"
+    class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div
+      class="bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl max-w-md w-full border border-surface-variant/40 overflow-hidden p-6 space-y-4">
+      <div class="flex items-start gap-4">
+        <div id="status-confirm-icon-box" class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0">
+          <span id="status-confirm-icon" class="material-symbols-outlined text-[28px]"></span>
+        </div>
+        <div>
+          <h3 id="status-confirm-title" class="text-base font-bold font-headline-sm text-on-surface">Confirm Account
+            Status Change</h3>
+          <p id="status-confirm-subtitle" class="text-xs text-on-surface-variant mt-0.5">Please confirm the requested
+            user status update.</p>
+        </div>
+      </div>
+
+      <!-- User Card Preview -->
+      <div class="bg-surface-container-low p-3.5 rounded-xl border border-surface-variant/30 space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div id="status-confirm-avatar"
+              class="w-7 h-7 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold text-xs">
+              US</div>
+            <div>
+              <p id="status-confirm-fullname" class="font-semibold text-xs text-on-surface">Full Name</p>
+              <p id="status-confirm-username" class="font-mono text-[11px] text-outline">@username</p>
+            </div>
+          </div>
+          <span id="status-confirm-role-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase">ROLE</span>
+        </div>
+        <div class="pt-2 border-t border-surface-variant/20 flex items-center justify-between text-xs">
+          <span class="text-on-surface-variant">Current Status:</span>
+          <span id="status-confirm-curr-status" class="font-bold">Active</span>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-on-surface-variant">Target Status:</span>
+          <span id="status-confirm-next-status" class="font-bold">Inactive</span>
+        </div>
+      </div>
+
+      <!-- Impact warning description -->
+      <p id="status-confirm-desc" class="text-xs text-on-surface-variant leading-relaxed">
+        Are you sure you want to deactivate this account?
+      </p>
+
+      <!-- Self Deactivation Alert Box -->
+      <div id="status-confirm-self-alert"
+        class="hidden p-3 rounded-lg bg-error-container text-on-error-container text-xs flex items-center gap-2 border border-error/30 font-medium">
+        <span class="material-symbols-outlined text-[18px]">warning</span>
+        <span>You cannot deactivate your own administrator account.</span>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button id="btn-status-confirm-cancel" type="button"
+          class="px-4 py-2 rounded-lg text-xs font-semibold text-on-surface-variant hover:bg-surface-container transition-colors cursor-pointer">
+          Cancel
+        </button>
+        <button id="btn-status-confirm-submit" type="button"
+          class="flex items-center gap-1.5 px-5 py-2 rounded-lg text-xs font-semibold text-white transition-all shadow-md cursor-pointer">
+          <span id="status-confirm-spinner"
+            class="material-symbols-outlined text-[16px] animate-spin hidden">sync</span>
+          <span id="btn-status-confirm-text">Confirm</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- USER DETAILS VIEW MODAL                                             -->
+  <!-- =================================================================== -->
+  <div id="view-user-modal"
+    class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div
+      class="bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl max-w-lg w-full border border-surface-variant/40 overflow-hidden p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-surface-variant/30">
+        <div class="flex items-center gap-3">
+          <div id="view-user-avatar"
+            class="w-10 h-10 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold text-sm">
+            US</div>
+          <div>
+            <h3 id="view-user-fullname" class="font-headline-sm font-bold text-base text-on-surface">Staff Member</h3>
+            <p id="view-user-username" class="font-mono text-xs text-primary">@username</p>
+          </div>
+        </div>
+        <button id="btn-view-user-close" type="button"
+          class="text-outline hover:text-on-surface p-1.5 rounded-full hover:bg-surface-container transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 text-xs">
+        <div class="bg-surface-container-low p-3 rounded-xl border border-surface-variant/30">
+          <p class="text-on-surface-variant font-medium">Assigned Role</p>
+          <p id="view-user-role" class="font-bold text-sm mt-0.5 text-on-surface">--</p>
+        </div>
+        <div class="bg-surface-container-low p-3 rounded-xl border border-surface-variant/30">
+          <p class="text-on-surface-variant font-medium">Account Status</p>
+          <p id="view-user-status" class="font-bold text-sm mt-0.5">--</p>
+        </div>
+        <div class="bg-surface-container-low p-3 rounded-xl border border-surface-variant/30">
+          <p class="text-on-surface-variant font-medium">Duty Availability</p>
+          <p id="view-user-availability" class="font-bold text-sm mt-0.5">--</p>
+        </div>
+        <div class="bg-surface-container-low p-3 rounded-xl border border-surface-variant/30">
+          <p class="text-on-surface-variant font-medium">Department / Spec</p>
+          <p id="view-user-dept" class="font-bold text-sm mt-0.5 text-on-surface">--</p>
+        </div>
+        <div class="bg-surface-container-low p-3 rounded-xl border border-surface-variant/30">
+          <p class="text-on-surface-variant font-medium">Contact Number</p>
+          <p id="view-user-contact" class="font-bold text-sm mt-0.5 font-mono text-on-surface">--</p>
+        </div>
+        <div class="col-span-2 bg-surface-container-low p-3 rounded-xl border border-surface-variant/30">
+          <p class="text-on-surface-variant font-medium">Email Address</p>
+          <p id="view-user-email" class="font-bold text-sm mt-0.5 text-on-surface font-mono">--</p>
+        </div>
+        <div class="bg-surface-container-low p-3 rounded-xl border border-surface-variant/30">
+          <p class="text-on-surface-variant font-medium">System User ID</p>
+          <p id="view-user-id" class="font-bold text-sm mt-0.5 font-mono text-on-surface">#--</p>
+        </div>
+        <div class="bg-surface-container-low p-3 rounded-xl border border-surface-variant/30">
+          <p class="text-on-surface-variant font-medium">Created Date</p>
+          <p id="view-user-created" class="font-bold text-sm mt-0.5 text-on-surface">--</p>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button id="btn-view-user-done" type="button"
+          class="px-5 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container text-xs font-semibold text-on-surface transition-colors cursor-pointer">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- EDIT USER MODAL                                                     -->
+  <!-- =================================================================== -->
+  <div id="edit-user-modal"
+    class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div
+      class="bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl max-w-lg w-full border border-surface-variant/40 overflow-hidden p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-surface-variant/30">
+        <div>
+          <h3 class="font-headline-sm font-bold text-base text-on-surface">Edit Staff Member</h3>
+          <p id="edit-user-header-sub" class="font-mono text-xs text-primary">@username</p>
+        </div>
+        <button id="btn-edit-user-close" type="button"
+          class="text-outline hover:text-on-surface p-1.5 rounded-full hover:bg-surface-container transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div id="edit-user-error"
+        class="hidden p-3 rounded-lg bg-error-container text-on-error-container text-xs flex items-center gap-2 border border-error/30 font-medium">
+        <span class="material-symbols-outlined text-[16px]">error</span>
+        <span id="edit-user-error-msg"></span>
+      </div>
+
+      <form id="edit-user-form" class="space-y-3.5 text-xs">
+        <input type="hidden" id="edit-user-id-val">
+        <div>
+          <label class="block font-medium text-on-surface-variant mb-1">Full Name</label>
+          <input id="edit-user-fullname-val" type="text"
+            class="w-full bg-surface-container px-3 py-2 rounded-lg text-xs text-on-surface border border-surface-variant/50 focus:ring-2 focus:ring-primary/20 outline-none"
+            required>
+        </div>
+        <div>
+          <label class="block font-medium text-on-surface-variant mb-1">Email Address</label>
+          <input id="edit-user-email-val" type="email"
+            class="w-full bg-surface-container px-3 py-2 rounded-lg text-xs text-on-surface border border-surface-variant/50 focus:ring-2 focus:ring-primary/20 outline-none"
+            required>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-medium text-on-surface-variant mb-1">Department</label>
+            <input id="edit-user-dept-val" type="text"
+              class="w-full bg-surface-container px-3 py-2 rounded-lg text-xs text-on-surface border border-surface-variant/50 focus:ring-2 focus:ring-primary/20 outline-none">
+          </div>
+          <div>
+            <label class="block font-medium text-on-surface-variant mb-1">Contact Number</label>
+            <input id="edit-user-contact-val" type="text" placeholder="+91 98765 43210"
+              class="w-full bg-surface-container px-3 py-2 rounded-lg text-xs text-on-surface border border-surface-variant/50 focus:ring-2 focus:ring-primary/20 outline-none">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-medium text-on-surface-variant mb-1">Assigned Role</label>
+            <select id="edit-user-role-val"
+              class="w-full bg-surface-container px-3 py-2 rounded-lg text-xs text-on-surface border border-surface-variant/50 focus:ring-2 focus:ring-primary/20 outline-none">
+              <option value="doctor">Doctor</option>
+              <option value="nurse">Nurse</option>
+              <option value="admin">Administrator</option>
+              <option value="attendant">Attendant</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium text-on-surface-variant mb-1">Account Status</label>
+            <select id="edit-user-status-val"
+              class="w-full bg-surface-container px-3 py-2 rounded-lg text-xs text-on-surface border border-surface-variant/50 focus:ring-2 focus:ring-primary/20 outline-none font-semibold">
+              <option value="1" class="text-green-600 font-bold">Active</option>
+              <option value="0" class="text-outline font-bold">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-3 border-t border-surface-variant/30">
+          <button id="btn-edit-user-cancel" type="button"
+            class="px-4 py-2 rounded-lg text-xs font-semibold text-on-surface-variant hover:bg-surface-container transition-colors cursor-pointer">
+            Cancel
+          </button>
+          <button id="btn-edit-user-submit" type="button"
+            class="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:bg-primary/90 transition-colors shadow-md cursor-pointer">
+            <span id="edit-user-spinner" class="material-symbols-outlined text-[16px] animate-spin hidden">sync</span>
+            <span>Save Changes</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="admin-toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
   <!-- JAVASCRIPT LOGIC                                                    -->
   <!-- =================================================================== -->
   <script>
     const USERS_API = '/api/v1/users';
-    const AUTH_TOKEN = localStorage.getItem('jeevan_setu_token') || '';
     let currentAdminUserSearch = '';
     let currentAdminUserRole = '';
+    let currentAdminUserPage = 1;
+    let currentAdminUserLimit = 100;
+    let cachedAdminUsers = [];
+    let currentSortField = '';
+    let currentSortDir = 'asc';
 
-    function getAuthHeaders() {
-      const headers = { 'Content-Type': 'application/json' };
-      if (AUTH_TOKEN) headers['Authorization'] = 'Bearer ' + AUTH_TOKEN;
+    function getAuthHeaders(extra = {}) {
+      if (typeof window.getAdminAuthHeaders === 'function') {
+        return window.getAdminAuthHeaders(extra);
+      }
+      const token = localStorage.getItem('jeevan_setu_admin_token') ||
+        localStorage.getItem('jeevan_setu_token') ||
+        sessionStorage.getItem('jeevan_setu_token') ||
+        localStorage.getItem('token') || '';
+      const headers = { 'Content-Type': 'application/json', ...extra };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
       return headers;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 0. ESCAPE HTML HELPER
+    // ─────────────────────────────────────────────────────────────
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/[&<>"']/g, function (m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+      });
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // PAGINATION CONTROLS RENDERER
+    // ─────────────────────────────────────────────────────────────
+    function renderPaginationControls(total, page, pages) {
+      const container = document.getElementById('admin-user-pagination');
+      if (!container) return;
+      if (pages <= 1) {
+        container.innerHTML = `
+          <button disabled class="w-8 h-8 flex items-center justify-center rounded-md text-on-surface-variant opacity-40 cursor-not-allowed">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+          </button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-on-primary font-label-sm text-label-sm font-bold">1</button>
+          <button disabled class="w-8 h-8 flex items-center justify-center rounded-md text-on-surface-variant opacity-40 cursor-not-allowed">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+          </button>
+        `;
+        return;
+      }
+
+      let html = '';
+      // Previous button
+      html += `
+        <button type="button" ${page <= 1 ? 'disabled' : ''} onclick="refreshAdminUsers(undefined, ${page - 1})" 
+          class="w-8 h-8 flex items-center justify-center rounded-md text-on-surface-variant hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition">
+          <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+        </button>
+      `;
+
+      // Page numbers
+      for (let p = 1; p <= pages; p++) {
+        if (p === page) {
+          html += `<button type="button" class="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-on-primary font-label-sm text-label-sm font-bold shadow-sm">${p}</button>`;
+        } else {
+          html += `<button type="button" onclick="refreshAdminUsers(undefined, ${p})" class="w-8 h-8 flex items-center justify-center rounded-md text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm cursor-pointer transition">${p}</button>`;
+        }
+      }
+
+      // Next button
+      html += `
+        <button type="button" ${page >= pages ? 'disabled' : ''} onclick="refreshAdminUsers(undefined, ${page + 1})" 
+          class="w-8 h-8 flex items-center justify-center rounded-md text-on-surface-variant hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition">
+          <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+        </button>
+      `;
+
+      container.innerHTML = html;
     }
 
     // ─────────────────────────────────────────────────────────────
     // 1. REFRESH USERS TABLE & ROLE SUMMARY
     // ─────────────────────────────────────────────────────────────
-    async function refreshAdminUsers(searchQuery) {
-      if (searchQuery !== undefined) currentAdminUserSearch = searchQuery;
-      
+    async function refreshAdminUsers(searchQuery, targetPage = 1) {
+      if (searchQuery !== undefined) {
+        currentAdminUserSearch = searchQuery;
+        currentAdminUserPage = 1;
+      } else {
+        currentAdminUserPage = targetPage;
+      }
+
       const roleFilter = document.getElementById('admin-user-role-filter');
       if (roleFilter) currentAdminUserRole = roleFilter.value;
 
+      const tbody = document.getElementById('admin-user-tbody');
+
+      // Proactively ensure valid Administrator JWT session
+      if (typeof window.ensureAdminSession === 'function') {
+        const token = window.getAdminAuthToken();
+        if (!token) {
+          await window.ensureAdminSession();
+        }
+      }
+
       try {
-        let url = `${USERS_API}?limit=50`;
+        let url = `${USERS_API}?limit=${currentAdminUserLimit}&page=${currentAdminUserPage}`;
         if (currentAdminUserSearch && currentAdminUserSearch.trim()) {
           url += `&search=${encodeURIComponent(currentAdminUserSearch.trim())}`;
         }
@@ -727,18 +1234,57 @@
         }
 
         const res = await fetch(url, { headers: getAuthHeaders() });
-        if (!res.ok) return;
+        if (!res.ok) {
+          if (tbody) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="7" class="p-8 text-center bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/30 rounded-xl">
+                  <div class="max-w-md mx-auto flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-600 flex items-center justify-center mb-2.5">
+                      <span class="material-symbols-outlined text-[28px]">admin_panel_settings</span>
+                    </div>
+                    <p class="font-bold text-sm text-rose-700 dark:text-rose-400">Failed to retrieve staff directory (${res.status})</p>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 mb-3.5 text-center">
+                      ${res.status === 403
+                ? 'Administrative privileges are required. An active session from another portal (Doctor/Nurse/Attendant) was detected.'
+                : 'Your session has expired. Please re-authenticate as an administrator.'}
+                    </p>
+                    <button type="button" id="btn-reauth-admin-now" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary/90 text-white text-xs font-semibold shadow-md transition-all cursor-pointer">
+                      <span class="material-symbols-outlined text-[16px]">verified_user</span>
+                      <span>Authenticate as Administrator</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            `;
+            const reauthBtn = document.getElementById('btn-reauth-admin-now');
+            if (reauthBtn) {
+              reauthBtn.addEventListener('click', async () => {
+                reauthBtn.disabled = true;
+                reauthBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Authenticating...</span>';
+                if (typeof window.ensureAdminSession === 'function') {
+                  await window.ensureAdminSession(true);
+                }
+                showToast('Administrator session established.', 'success');
+                await refreshAdminUsers(currentAdminUserSearch, currentAdminUserPage);
+                await loadRolesSummary();
+              });
+            }
+          }
+          return;
+        }
+
         const json = await res.json();
         if (!json.success || !json.data) return;
 
-        const tbody = document.getElementById('admin-user-tbody');
+        cachedAdminUsers = Array.isArray(json.data) ? json.data : [];
+
         if (!tbody) return;
 
-        tbody.innerHTML = '';
-        if (json.data.length === 0) {
+        if (cachedAdminUsers.length === 0) {
           tbody.innerHTML = `
             <tr>
-              <td colspan="6" class="p-8 text-center text-on-surface-variant">
+              <td colspan="7" class="p-8 text-center text-on-surface-variant">
                 <span class="material-symbols-outlined text-[36px] text-outline-variant block mb-2">person_search</span>
                 <p class="font-label-md">No staff members found</p>
                 <p class="text-xs text-outline mt-1">Try searching with different keywords or role filters.</p>
@@ -746,73 +1292,209 @@
             </tr>
           `;
           document.getElementById('admin-user-count-text').textContent = 'Showing 0 users';
+          renderPaginationControls(0, 1, 1);
           return;
         }
 
-        document.getElementById('admin-user-count-text').textContent = `Showing ${json.data.length} registered users`;
+        const totalUsers = json.pagination?.total || cachedAdminUsers.length;
+        const totalPages = json.pagination?.pages || 1;
+        document.getElementById('admin-user-count-text').textContent = `Showing ${cachedAdminUsers.length} of ${totalUsers} registered staff members`;
+        renderPaginationControls(totalUsers, currentAdminUserPage, totalPages);
 
-        json.data.forEach(u => {
-          const initials = u.full_name ? u.full_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : (u.username ? u.username.substring(0, 2).toUpperCase() : 'US');
-          const roleStr = (u.role || 'staff').toLowerCase();
-          const deptStr = u.department || (roleStr === 'doctor' ? 'Clinical Care' : (roleStr === 'nurse' ? 'Inpatient Ward' : 'General'));
-          const statusStr = u.is_active !== false ? 'Active' : 'Inactive';
-          const emailStr = u.email || `${u.username || 'user'}@jeevansetu.in`;
-          const createdStr = u.created_at ? new Date(u.created_at).toLocaleDateString() : 'Today';
-
-          let roleBadge = 'bg-surface-variant text-on-surface';
-          let roleDisplayName = u.role ? u.role.toUpperCase() : 'STAFF';
-          if (roleStr === 'doctor') {
-            roleBadge = 'bg-primary-container/15 text-primary font-semibold border border-primary/20';
-            roleDisplayName = 'Doctor';
-          } else if (roleStr === 'nurse') {
-            roleBadge = 'bg-secondary-container/25 text-secondary font-semibold border border-secondary/20';
-            roleDisplayName = 'Nurse';
-          } else if (roleStr === 'admin') {
-            roleBadge = 'bg-blue-950 text-blue-200 font-semibold border border-blue-800';
-            roleDisplayName = 'Administrator';
-          } else if (roleStr === 'attendant') {
-            roleBadge = 'bg-amber-100 text-amber-800 font-semibold border border-amber-300';
-            roleDisplayName = 'Attendant';
-          }
-
-          const tr = document.createElement('tr');
-          tr.className = 'hover:bg-surface-container-low/50 transition-colors group';
-          tr.innerHTML = `
-            <td class="py-3 px-4">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-label-md text-label-md shrink-0 font-bold">
-                  ${initials}
-                </div>
-                <div>
-                  <p class="font-body-md text-sm text-on-surface font-semibold">${u.full_name || u.username}</p>
-                  <p class="font-body-sm text-xs text-on-surface-variant">${emailStr} • <span class="font-mono text-outline">@${u.username}</span></p>
-                </div>
-              </div>
-            </td>
-            <td class="py-3 px-4">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full ${roleBadge} text-xs">
-                ${roleDisplayName}
-              </span>
-            </td>
-            <td class="py-3 px-4 font-body-sm text-xs text-on-surface">${deptStr}</td>
-            <td class="py-3 px-4">
-              <span class="inline-flex items-center gap-1.5 text-xs font-semibold ${statusStr === 'Active' ? 'text-green-600' : 'text-outline'}">
-                <span class="w-2 h-2 rounded-full ${statusStr === 'Active' ? 'bg-green-500' : 'bg-outline'}"></span>
-                ${statusStr}
-              </span>
-            </td>
-            <td class="py-3 px-4 font-body-sm text-xs text-on-surface-variant">${createdStr}</td>
-            <td class="py-3 px-4 text-right">
-              <button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-full transition-colors" title="Manage User">
-                <span class="material-symbols-outlined text-[18px]">badge</span>
-              </button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
+        renderAdminUsersRows(getSortedAdminUsers(cachedAdminUsers));
       } catch (e) {
         console.error('[Jeevan Setu] Admin users search error:', e);
       }
+    }
+
+    function getSortedAdminUsers(users) {
+      if (!currentSortField) return users;
+      const dir = currentSortDir === 'desc' ? -1 : 1;
+      const copy = [...users];
+      copy.sort((a, b) => {
+        if (currentSortField === 'user') {
+          const av = `${a.full_name || a.username || ''} ${a.email || ''} ${a.username || ''}`.toLowerCase();
+          const bv = `${b.full_name || b.username || ''} ${b.email || ''} ${b.username || ''}`.toLowerCase();
+          return av.localeCompare(bv) * dir;
+        }
+        if (currentSortField === 'role') {
+          return String(a.role || '').toLowerCase().localeCompare(String(b.role || '').toLowerCase()) * dir;
+        }
+        if (currentSortField === 'department') {
+          const aDept = (a.department || ((a.role || '').toLowerCase() === 'doctor' ? 'Clinical Care' : ((a.role || '').toLowerCase() === 'nurse' ? 'Inpatient Ward' : 'General'))).toLowerCase();
+          const bDept = (b.department || ((b.role || '').toLowerCase() === 'doctor' ? 'Clinical Care' : ((b.role || '').toLowerCase() === 'nurse' ? 'Inpatient Ward' : 'General'))).toLowerCase();
+          return aDept.localeCompare(bDept) * dir;
+        }
+        if (currentSortField === 'status') {
+          const aAct = a.is_active !== false ? 0 : 1;
+          const bAct = b.is_active !== false ? 0 : 1;
+          return (aAct - bAct) * dir;
+        }
+        if (currentSortField === 'availability') {
+          const rank = (u) => {
+            const r = (u.role || '').toLowerCase();
+            if (r !== 'doctor' && r !== 'nurse') return 2;
+            return (u.availability || 'active').toLowerCase() === 'active' ? 0 : 1;
+          };
+          return (rank(a) - rank(b)) * dir;
+        }
+        if (currentSortField === 'created') {
+          const at = a.created_at ? Date.parse(a.created_at) || 0 : 0;
+          const bt = b.created_at ? Date.parse(b.created_at) || 0 : 0;
+          return (at - bt) * dir;
+        }
+        return 0;
+      });
+      return copy;
+    }
+
+    function updateSortHeaderIndicators() {
+      document.querySelectorAll('.staff-sort-btn').forEach(btn => {
+        const field = btn.getAttribute('data-sort');
+        const th = btn.closest('th');
+        const icon = btn.querySelector('.sort-icon');
+        if (field === currentSortField) {
+          if (th) th.setAttribute('aria-sort', currentSortDir === 'asc' ? 'ascending' : 'descending');
+          if (icon) {
+            icon.textContent = currentSortDir === 'asc' ? 'arrow_upward' : 'arrow_downward';
+            icon.classList.remove('text-slate-400');
+            icon.classList.add('text-cyan-400');
+          }
+        } else {
+          if (th) th.setAttribute('aria-sort', 'none');
+          if (icon) {
+            icon.textContent = 'unfold_more';
+            icon.classList.remove('text-cyan-400');
+            icon.classList.add('text-slate-400');
+          }
+        }
+      });
+    }
+
+    function sortAdminUsersBy(field) {
+      if (currentSortField === field) {
+        currentSortDir = currentSortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        currentSortField = field;
+        currentSortDir = 'asc';
+      }
+      updateSortHeaderIndicators();
+      if (cachedAdminUsers.length > 0) {
+        renderAdminUsersRows(getSortedAdminUsers(cachedAdminUsers));
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.staff-sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const field = btn.getAttribute('data-sort');
+          if (field) sortAdminUsersBy(field);
+        });
+      });
+    });
+
+    function renderAdminUsersRows(users) {
+      const tbody = document.getElementById('admin-user-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      users.forEach(u => {
+        const initials = u.full_name ? u.full_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : (u.username ? u.username.substring(0, 2).toUpperCase() : 'US');
+        const roleStr = (u.role || 'staff').toLowerCase();
+        const deptStr = u.department || (roleStr === 'doctor' ? 'Clinical Care' : (roleStr === 'nurse' ? 'Inpatient Ward' : 'General'));
+        const statusStr = u.is_active !== false ? 'Active' : 'Inactive';
+        const emailStr = u.email || `${u.username || 'user'}@jeevansetu.in`;
+        const createdStr = u.created_at ? new Date(u.created_at).toLocaleDateString() : 'Today';
+
+        // Working / Clinical Duty Availability (Independent from Account Status)
+        const availStr = (u.availability || 'active').toLowerCase();
+        const isDocOrNurse = roleStr === 'doctor' || roleStr === 'nurse';
+        let availBadge = '';
+        if (isDocOrNurse) {
+          if (availStr === 'active') {
+            availBadge = `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 user-avail-badge">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span class="avail-text">Active</span>
+                </span>`;
+          } else {
+            availBadge = `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-600 border border-rose-500/20 user-avail-badge">
+                  <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                  <span class="avail-text">Inactive</span>
+                </span>`;
+          }
+        } else {
+          availBadge = `<span class="text-xs text-outline font-mono">—</span>`;
+        }
+
+        let roleBadge = 'bg-surface-variant text-on-surface';
+        let roleDisplayName = u.role ? u.role.toUpperCase() : 'STAFF';
+        if (roleStr === 'doctor') {
+          roleBadge = 'bg-primary-container/15 text-primary font-semibold border border-primary/20';
+          roleDisplayName = 'Doctor';
+        } else if (roleStr === 'nurse') {
+          roleBadge = 'bg-secondary-container/25 text-secondary font-semibold border border-secondary/20';
+          roleDisplayName = 'Nurse';
+        } else if (roleStr === 'admin') {
+          roleBadge = 'bg-blue-950 text-blue-200 font-semibold border border-blue-800';
+          roleDisplayName = 'Administrator';
+        } else if (roleStr === 'attendant') {
+          roleBadge = 'bg-amber-100 text-amber-800 font-semibold border border-amber-300';
+          roleDisplayName = 'Attendant';
+        }
+
+        const tr = document.createElement('tr');
+        tr.id = `user-row-${u.user_id}`;
+        tr.className = 'hover:bg-surface-container-low/50 transition-colors group';
+        tr.innerHTML = `
+            <td class="py-3 px-2.5 user-info-cell" data-col="User">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-label-md text-label-md shrink-0 font-bold">
+                  ${initials}
+                </div>
+                <div class="min-w-0">
+                  <p class="font-body-md text-sm text-on-surface font-semibold user-fullname truncate">${escapeHtml(u.full_name || u.username)}</p>
+                  <p class="font-body-sm text-xs text-on-surface-variant break-all">${escapeHtml(emailStr)} • <span class="font-mono text-outline">@${escapeHtml(u.username)}</span></p>
+                </div>
+              </div>
+            </td>
+            <td class="py-3 px-2.5 user-role-cell whitespace-nowrap" data-col="Role">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full ${roleBadge} text-xs font-semibold user-role-badge">
+                ${roleDisplayName}
+              </span>
+            </td>
+            <td class="py-3 px-2.5 font-body-sm text-xs text-on-surface user-dept break-words" data-col="Department">${escapeHtml(deptStr)}</td>
+            <td class="py-3 px-2.5 user-status-cell whitespace-nowrap" data-col="Account Status">
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold ${statusStr === 'Active' ? 'text-green-600' : 'text-outline'}">
+                <span class="w-2 h-2 rounded-full ${statusStr === 'Active' ? 'bg-green-500' : 'bg-outline'}"></span>
+                <span class="status-text">${statusStr}</span>
+              </span>
+            </td>
+            <td class="py-3 px-2.5 user-avail-cell whitespace-nowrap" data-col="Duty Availability">
+              ${availBadge}
+            </td>
+            <td class="py-3 px-2.5 font-body-sm text-xs text-on-surface-variant user-created-cell whitespace-nowrap" data-col="Created">${createdStr}</td>
+            <td class="py-3 px-2.5 text-right whitespace-nowrap">
+              <button type="button" 
+                      class="btn-user-action p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-full transition-colors cursor-pointer" 
+                      data-user-id="${u.user_id}"
+                      data-username="${escapeHtml(u.username)}"
+                      data-fullname="${escapeHtml(u.full_name || u.username)}"
+                      data-role="${escapeHtml(u.role || '')}"
+                      data-department="${escapeHtml(u.department || '')}"
+                      data-email="${escapeHtml(u.email || '')}"
+                      data-contact="${escapeHtml(u.contact_number || '')}"
+                      data-active="${u.is_active !== false ? '1' : '0'}"
+                      data-availability="${escapeHtml(availStr)}"
+                      data-created="${escapeHtml(createdStr)}"
+                      title="Actions for ${escapeHtml(u.full_name || u.username)}">
+                <span class="material-symbols-outlined text-[20px] pointer-events-none">more_vert</span>
+              </button>
+            </td>
+          `;
+        tbody.appendChild(tr);
+      });
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -1064,13 +1746,13 @@
     const userSearchInput = document.getElementById('admin-user-search-input');
     if (userSearchInput) {
       let debounceTimer;
-      userSearchInput.addEventListener('input', function(e) {
+      userSearchInput.addEventListener('input', function (e) {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
           refreshAdminUsers(e.target.value);
         }, 300);
       });
-      userSearchInput.addEventListener('keydown', function(e) {
+      userSearchInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
           clearTimeout(debounceTimer);
           refreshAdminUsers(this.value);
@@ -1085,10 +1767,518 @@
       });
     }
 
-    // Initial Load
-    refreshAdminUsers();
-    loadRolesSummary();
+
+
+    // ─────────────────────────────────────────────────────────────
+    // CURRENT ADMIN IDENTIFICATION
+    // ─────────────────────────────────────────────────────────────
+    function getCurrentAdminId() {
+      try {
+        const rawUser = localStorage.getItem('jeevan_setu_user') || sessionStorage.getItem('jeevan_setu_user');
+        if (rawUser) {
+          const u = JSON.parse(rawUser);
+          if (u.id || u.user_id) return parseInt(u.id || u.user_id, 10);
+        }
+        const token = localStorage.getItem('jeevan_setu_token') || sessionStorage.getItem('jeevan_setu_token');
+        if (token) {
+          const parts = token.split('.');
+          if (parts.length === 3) {
+            const payload = JSON.parse(atob(parts[1]));
+            if (payload.sub) return parseInt(payload.sub, 10);
+          }
+        }
+      } catch (e) {
+        console.warn('[Jeevan Setu] Admin ID decode notice:', e);
+      }
+      return null;
+    }
+
+    function getRoleBadgeClass(role) {
+      const r = (role || '').toLowerCase();
+      if (r === 'doctor') return 'bg-primary-container/15 text-primary border border-primary/20';
+      if (r === 'nurse') return 'bg-secondary-container/25 text-secondary border border-secondary/20';
+      if (r === 'admin') return 'bg-blue-950 text-blue-200 border border-blue-800';
+      if (r === 'attendant') return 'bg-amber-100 text-amber-800 border border-amber-300';
+      return 'bg-surface-variant text-on-surface';
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // TOAST NOTIFICATIONS
+    // ─────────────────────────────────────────────────────────────
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('admin-toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-2xl text-xs font-semibold border transition-all duration-300 transform translate-y-2 opacity-0 ${type === 'success'
+        ? 'bg-surface-container-lowest text-on-surface border-green-500/40'
+        : 'bg-surface-container-lowest text-on-surface border-red-500/40 text-red-600'
+        }`;
+      const icon = type === 'success' ? 'check_circle' : 'error';
+      toast.innerHTML = `
+        <span class="material-symbols-outlined text-[18px] ${type === 'success' ? 'text-green-600' : 'text-red-600'}">${icon}</span>
+        <span class="text-on-surface">${escapeHtml(message)}</span>
+      `;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // ACTIONS MENU & EVENT HANDLING
+    // ─────────────────────────────────────────────────────────────
+    let currentSelectedUser = null;
+    const actionsDropdown = document.getElementById('user-actions-dropdown');
+    const actionsUsername = document.getElementById('user-actions-username');
+    const actionBtnView = document.getElementById('action-btn-view');
+    const actionBtnEdit = document.getElementById('action-btn-edit');
+    const actionBtnStatus = document.getElementById('action-btn-status');
+    const actionIconStatus = document.getElementById('action-icon-status');
+    const actionTextStatus = document.getElementById('action-text-status');
+
+    function openActionsDropdown(btnEl, userData) {
+      currentSelectedUser = userData;
+      if (actionsUsername) actionsUsername.textContent = `@${userData.username} • ${userData.fullname}`;
+
+      const isActive = userData.active === '1' || userData.active === true;
+      if (isActive) {
+        actionTextStatus.textContent = 'Deactivate User';
+        actionIconStatus.textContent = 'person_off';
+        actionBtnStatus.className = 'w-full text-left px-3.5 py-2 hover:bg-red-50 flex items-center gap-2.5 transition-colors cursor-pointer text-red-600 font-medium';
+      } else {
+        actionTextStatus.textContent = 'Activate User';
+        actionIconStatus.textContent = 'person_check';
+        actionBtnStatus.className = 'w-full text-left px-3.5 py-2 hover:bg-green-50 flex items-center gap-2.5 transition-colors cursor-pointer text-green-600 font-medium';
+      }
+
+      // Position dropdown floating near clicked button
+      const rect = btnEl.getBoundingClientRect();
+      actionsDropdown.classList.remove('hidden');
+
+      const menuWidth = 210;
+      let left = rect.right - menuWidth;
+      if (left < 10) left = 10;
+      let top = rect.bottom + 6;
+      if (top + 180 > window.innerHeight) {
+        top = Math.max(10, rect.top - 160);
+      }
+
+      actionsDropdown.style.top = `${top}px`;
+      actionsDropdown.style.left = `${left}px`;
+    }
+
+    function closeActionsDropdown() {
+      if (actionsDropdown && !actionsDropdown.classList.contains('hidden')) {
+        actionsDropdown.classList.add('hidden');
+      }
+    }
+
+    // Close on outside clicks, scroll, resize, or escape
+    document.addEventListener('click', (e) => {
+      if (actionsDropdown && !actionsDropdown.contains(e.target) && !e.target.closest('.btn-user-action')) {
+        closeActionsDropdown();
+      }
+    });
+    window.addEventListener('scroll', closeActionsDropdown, true);
+    window.addEventListener('resize', closeActionsDropdown);
+
+    // Event delegation on table body for .btn-user-action
+    const userTbody = document.getElementById('admin-user-tbody');
+    if (userTbody) {
+      userTbody.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-user-action');
+        if (!btn) return;
+        e.stopPropagation();
+
+        const userData = {
+          userId: parseInt(btn.dataset.userId, 10),
+          username: btn.dataset.username,
+          fullname: btn.dataset.fullname,
+          role: btn.dataset.role,
+          department: btn.dataset.department,
+          email: btn.dataset.email,
+          contact: btn.dataset.contact,
+          active: btn.dataset.active,
+          availability: btn.dataset.availability || 'active',
+          created: btn.dataset.created
+        };
+
+        if (actionsDropdown && !actionsDropdown.classList.contains('hidden') && currentSelectedUser && currentSelectedUser.userId === userData.userId) {
+          closeActionsDropdown();
+        } else {
+          openActionsDropdown(btn, userData);
+        }
+      });
+    }
+
+    if (actionBtnView) {
+      actionBtnView.addEventListener('click', () => {
+        if (currentSelectedUser) openUserDetailsModal(currentSelectedUser);
+      });
+    }
+
+    if (actionBtnEdit) {
+      actionBtnEdit.addEventListener('click', () => {
+        if (currentSelectedUser) openEditUserModal(currentSelectedUser);
+      });
+    }
+
+    if (actionBtnStatus) {
+      actionBtnStatus.addEventListener('click', () => {
+        if (currentSelectedUser) openStatusConfirmModal(currentSelectedUser);
+      });
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // STATUS CONFIRMATION MODAL WORKFLOW
+    // ─────────────────────────────────────────────────────────────
+    const statusConfirmModal = document.getElementById('status-confirm-modal');
+    const btnStatusConfirmCancel = document.getElementById('btn-status-confirm-cancel');
+    const btnStatusConfirmSubmit = document.getElementById('btn-status-confirm-submit');
+
+    function openStatusConfirmModal(userData) {
+      closeActionsDropdown();
+      currentSelectedUser = userData;
+
+      const iconBox = document.getElementById('status-confirm-icon-box');
+      const icon = document.getElementById('status-confirm-icon');
+      const title = document.getElementById('status-confirm-title');
+      const subtitle = document.getElementById('status-confirm-subtitle');
+      const avatar = document.getElementById('status-confirm-avatar');
+      const fullname = document.getElementById('status-confirm-fullname');
+      const username = document.getElementById('status-confirm-username');
+      const roleBadge = document.getElementById('status-confirm-role-badge');
+      const currStatus = document.getElementById('status-confirm-curr-status');
+      const nextStatus = document.getElementById('status-confirm-next-status');
+      const desc = document.getElementById('status-confirm-desc');
+      const selfAlert = document.getElementById('status-confirm-self-alert');
+      const btnSubmit = document.getElementById('btn-status-confirm-submit');
+      const btnText = document.getElementById('btn-status-confirm-text');
+
+      const isActive = userData.active === '1' || userData.active === true;
+      const initials = userData.fullname ? userData.fullname.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'US';
+
+      avatar.textContent = initials;
+      fullname.textContent = userData.fullname || userData.username;
+      username.textContent = `@${userData.username}`;
+      roleBadge.textContent = (userData.role || 'STAFF').toUpperCase();
+      roleBadge.className = `px-2 py-0.5 rounded text-[10px] font-bold uppercase ${getRoleBadgeClass(userData.role)}`;
+
+      const currentAdminId = getCurrentAdminId();
+      const isSelf = currentAdminId && currentAdminId === userData.userId;
+
+      if (isActive) {
+        // Deactivate flow
+        title.textContent = 'Deactivate Staff Account';
+        subtitle.textContent = `Revoke access for ${userData.fullname}`;
+        iconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-red-100 text-red-600';
+        icon.textContent = 'person_off';
+        currStatus.textContent = 'Active';
+        currStatus.className = 'font-bold text-green-600';
+        nextStatus.textContent = 'Inactive';
+        nextStatus.className = 'font-bold text-red-600';
+        desc.innerHTML = `Are you sure you want to <strong>deactivate</strong> this account? <strong>${escapeHtml(userData.fullname)}</strong> will immediately be unable to log in and their access to hospital dashboards will be blocked.`;
+
+        btnSubmit.className = 'flex items-center gap-1.5 px-5 py-2 rounded-lg text-xs font-semibold text-white transition-all shadow-md bg-red-600 hover:bg-red-700 cursor-pointer';
+        btnText.textContent = 'Confirm Deactivation';
+
+        if (isSelf) {
+          selfAlert.classList.remove('hidden');
+          btnSubmit.disabled = true;
+          btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+          selfAlert.classList.add('hidden');
+          btnSubmit.disabled = false;
+          btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+      } else {
+        // Activate flow
+        title.textContent = 'Activate Staff Account';
+        subtitle.textContent = `Restore access for ${userData.fullname}`;
+        iconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-green-100 text-green-600';
+        icon.textContent = 'person_check';
+        currStatus.textContent = 'Inactive';
+        currStatus.className = 'font-bold text-outline';
+        nextStatus.textContent = 'Active';
+        nextStatus.className = 'font-bold text-green-600';
+        desc.innerHTML = `Are you sure you want to <strong>activate</strong> this account? <strong>${escapeHtml(userData.fullname)}</strong> will immediately regain access to log in and use the system according to their assigned role.`;
+
+        selfAlert.classList.add('hidden');
+        btnSubmit.disabled = false;
+        btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+        btnSubmit.className = 'flex items-center gap-1.5 px-5 py-2 rounded-lg text-xs font-semibold text-white transition-all shadow-md bg-green-600 hover:bg-green-700 cursor-pointer';
+        btnText.textContent = 'Confirm Activation';
+      }
+
+      statusConfirmModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeStatusConfirmModal() {
+      if (statusConfirmModal) {
+        statusConfirmModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    if (btnStatusConfirmCancel) {
+      btnStatusConfirmCancel.addEventListener('click', closeStatusConfirmModal);
+    }
+
+    async function submitStatusChange() {
+      if (!currentSelectedUser) return;
+      const userId = currentSelectedUser.userId;
+      const isActive = currentSelectedUser.active === '1' || currentSelectedUser.active === true;
+      const targetStatus = isActive ? 'inactive' : 'active';
+
+      const spinner = document.getElementById('status-confirm-spinner');
+      const btnSubmit = document.getElementById('btn-status-confirm-submit');
+
+      if (spinner) spinner.classList.remove('hidden');
+      if (btnSubmit) btnSubmit.disabled = true;
+
+      try {
+        const res = await fetch(`${USERS_API}/${userId}/status`, {
+          method: 'PATCH',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ status: targetStatus })
+        });
+        const json = await res.json();
+
+        if (res.ok && json.success) {
+          closeStatusConfirmModal();
+          showToast(json.message || `User status updated successfully.`, 'success');
+
+          // Dynamically update corresponding table row
+          const row = document.getElementById(`user-row-${userId}`);
+          const newIsActive = targetStatus === 'active';
+          const newStatusStr = newIsActive ? 'Active' : 'Inactive';
+          if (row) {
+            const statusCell = row.querySelector('.user-status-cell');
+            if (statusCell) {
+              statusCell.innerHTML = `
+                <span class="inline-flex items-center gap-1.5 text-xs font-semibold ${newIsActive ? 'text-green-600' : 'text-outline'}">
+                  <span class="w-2 h-2 rounded-full ${newIsActive ? 'bg-green-500' : 'bg-outline'}"></span>
+                  <span class="status-text">${newStatusStr}</span>
+                </span>
+              `;
+            }
+            const btn = row.querySelector('.btn-user-action');
+            if (btn) {
+              btn.dataset.active = newIsActive ? '1' : '0';
+            }
+          }
+
+          currentSelectedUser.active = newIsActive ? '1' : '0';
+          loadRolesSummary();
+        } else {
+          showToast(json.error || 'Failed to update user status.', 'error');
+        }
+      } catch (err) {
+        console.error('[Jeevan Setu] Status update exception:', err);
+        showToast('Network error while updating user status.', 'error');
+      } finally {
+        if (spinner) spinner.classList.add('hidden');
+        if (btnSubmit) btnSubmit.disabled = false;
+      }
+    }
+
+    if (btnStatusConfirmSubmit) {
+      btnStatusConfirmSubmit.addEventListener('click', submitStatusChange);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // VIEW USER DETAILS MODAL
+    // ─────────────────────────────────────────────────────────────
+    const viewUserModal = document.getElementById('view-user-modal');
+    const btnViewUserClose = document.getElementById('btn-view-user-close');
+    const btnViewUserDone = document.getElementById('btn-view-user-done');
+
+    function openUserDetailsModal(userData) {
+      closeActionsDropdown();
+      const initials = userData.fullname ? userData.fullname.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'US';
+      const isActive = userData.active === '1' || userData.active === true;
+
+      document.getElementById('view-user-avatar').textContent = initials;
+      document.getElementById('view-user-fullname').textContent = userData.fullname || userData.username;
+      document.getElementById('view-user-username').textContent = `@${userData.username}`;
+      document.getElementById('view-user-role').textContent = (userData.role || 'Staff').toUpperCase();
+      document.getElementById('view-user-dept').textContent = userData.department || 'General';
+      document.getElementById('view-user-contact').textContent = userData.contact || 'Not registered';
+      document.getElementById('view-user-email').textContent = userData.email || `${userData.username}@jeevansetu.in`;
+      document.getElementById('view-user-id').textContent = `#${userData.userId}`;
+      document.getElementById('view-user-created').textContent = userData.created || 'Today';
+
+      const statusEl = document.getElementById('view-user-status');
+      statusEl.textContent = isActive ? 'Active' : 'Inactive';
+      statusEl.className = `font-bold text-sm mt-0.5 ${isActive ? 'text-green-600' : 'text-outline'}`;
+
+      const availEl = document.getElementById('view-user-availability');
+      if (availEl) {
+        const role = (userData.role || '').toLowerCase();
+        if (role === 'doctor' || role === 'nurse') {
+          const isAvail = (userData.availability || 'active').toLowerCase() === 'active';
+          availEl.textContent = isAvail ? 'Active' : 'Inactive';
+          availEl.className = `font-bold text-sm mt-0.5 ${isAvail ? 'text-emerald-600' : 'text-rose-600'}`;
+        } else {
+          availEl.textContent = 'N/A';
+          availEl.className = 'font-bold text-sm mt-0.5 text-outline';
+        }
+      }
+
+      viewUserModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeViewUserModal() {
+      if (viewUserModal) {
+        viewUserModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    if (btnViewUserClose) btnViewUserClose.addEventListener('click', closeViewUserModal);
+    if (btnViewUserDone) btnViewUserDone.addEventListener('click', closeViewUserModal);
+
+    // ─────────────────────────────────────────────────────────────
+    // EDIT USER MODAL
+    // ─────────────────────────────────────────────────────────────
+    const editUserModal = document.getElementById('edit-user-modal');
+    const btnEditUserClose = document.getElementById('btn-edit-user-close');
+    const btnEditUserCancel = document.getElementById('btn-edit-user-cancel');
+    const btnEditUserSubmit = document.getElementById('btn-edit-user-submit');
+
+    function openEditUserModal(userData) {
+      closeActionsDropdown();
+      currentSelectedUser = userData;
+      const errBox = document.getElementById('edit-user-error');
+      if (errBox) errBox.classList.add('hidden');
+
+      document.getElementById('edit-user-header-sub').textContent = `@${userData.username} (ID: #${userData.userId})`;
+      document.getElementById('edit-user-id-val').value = userData.userId;
+      document.getElementById('edit-user-fullname-val').value = userData.fullname || '';
+      document.getElementById('edit-user-email-val').value = userData.email || '';
+      document.getElementById('edit-user-dept-val').value = userData.department || '';
+      document.getElementById('edit-user-contact-val').value = userData.contact || '';
+      document.getElementById('edit-user-role-val').value = (userData.role || 'nurse').toLowerCase();
+      document.getElementById('edit-user-status-val').value = (userData.active === '1' || userData.active === true) ? '1' : '0';
+
+      editUserModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeEditUserModal() {
+      if (editUserModal) {
+        editUserModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    if (btnEditUserClose) btnEditUserClose.addEventListener('click', closeEditUserModal);
+    if (btnEditUserCancel) btnEditUserCancel.addEventListener('click', closeEditUserModal);
+
+    async function submitEditUser() {
+      if (!currentSelectedUser) return;
+      const userId = currentSelectedUser.userId;
+      const fullName = document.getElementById('edit-user-fullname-val').value.trim();
+      const email = document.getElementById('edit-user-email-val').value.trim();
+      const department = document.getElementById('edit-user-dept-val').value.trim();
+      const contactNumber = document.getElementById('edit-user-contact-val').value.trim();
+      const role = document.getElementById('edit-user-role-val').value;
+      const isActiveVal = document.getElementById('edit-user-status-val').value === '1';
+
+      const errBox = document.getElementById('edit-user-error');
+      const errMsg = document.getElementById('edit-user-error-msg');
+      const spinner = document.getElementById('edit-user-spinner');
+      const btnSubmit = document.getElementById('btn-edit-user-submit');
+
+      if (!fullName) {
+        errMsg.textContent = 'Please provide a valid full name.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      if (spinner) spinner.classList.remove('hidden');
+      if (btnSubmit) btnSubmit.disabled = true;
+      if (errBox) errBox.classList.add('hidden');
+
+      try {
+        const putPayload = {
+          full_name: fullName,
+          email: email,
+          department: department,
+          contact_number: contactNumber,
+          role: role
+        };
+
+        const putRes = await fetch(`${USERS_API}/${userId}`, {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify(putPayload)
+        });
+        const putJson = await putRes.json();
+        if (!putRes.ok || !putJson.success) {
+          errMsg.textContent = putJson.error || 'Failed to update user profile.';
+          errBox.classList.remove('hidden');
+          return;
+        }
+
+        const currentActive = currentSelectedUser.active === '1' || currentSelectedUser.active === true;
+        if (isActiveVal !== currentActive) {
+          const patchRes = await fetch(`${USERS_API}/${userId}/status`, {
+            method: 'PATCH',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ status: isActiveVal ? 'active' : 'inactive' })
+          });
+          const patchJson = await patchRes.json();
+          if (!patchRes.ok || !patchJson.success) {
+            errMsg.textContent = patchJson.error || 'User details updated, but status change failed.';
+            errBox.classList.remove('hidden');
+            return;
+          }
+        }
+
+        closeEditUserModal();
+        showToast('Staff member updated successfully.', 'success');
+        refreshAdminUsers();
+        loadRolesSummary();
+      } catch (e) {
+        console.error('[Jeevan Setu] Edit user error:', e);
+        errMsg.textContent = 'Network error while saving user updates.';
+        errBox.classList.remove('hidden');
+      } finally {
+        if (spinner) spinner.classList.add('hidden');
+        if (btnSubmit) btnSubmit.disabled = false;
+      }
+    }
+
+    if (btnEditUserSubmit) btnEditUserSubmit.addEventListener('click', submitEditUser);
+
+    // Authoritative 5-second auto-refresh
+    async function pollAdminUsers() {
+      if (window.AutoRefreshManager && window.AutoRefreshManager.isUserInputActive()) {
+        return;
+      }
+      await Promise.allSettled([
+        refreshAdminUsers(),
+        loadRolesSummary()
+      ]);
+    }
+
+    if (window.AutoRefreshManager) {
+      window.AutoRefreshManager.start('admin_users_roles', pollAdminUsers, 5000);
+    } else {
+      pollAdminUsers();
+      setInterval(pollAdminUsers, 5000);
+    }
   </script>
-  <script src="../admin_navigation.js"></script>
 </body>
+
 </html>
