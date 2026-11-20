@@ -154,12 +154,19 @@
   }
 
   function ensureUnifiedResponsiveCSS() {
-    if (document.getElementById('jeevan-responsive-unified-styles')) return;
-    const link = document.createElement('link');
-    link.id = 'jeevan-responsive-unified-styles';
-    link.rel = 'stylesheet';
-    link.href = '/static/css/responsive_unified.css';
-    document.head.appendChild(link);
+    if (!document.getElementById('jeevan-responsive-unified-styles')) {
+      const link = document.createElement('link');
+      link.id = 'jeevan-responsive-unified-styles';
+      link.rel = 'stylesheet';
+      link.href = '/static/css/responsive_unified.css';
+      document.head.appendChild(link);
+    }
+    if (!document.getElementById('jeevan-dropdown-enhancer-js')) {
+      const scr = document.createElement('script');
+      scr.id = 'jeevan-dropdown-enhancer-js';
+      scr.src = '/static/js/dropdown_enhancer.js';
+      document.head.appendChild(scr);
+    }
   }
 
   function injectAdminStyles() {

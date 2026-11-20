@@ -27,12 +27,19 @@
   }
 
   function ensureDoctorUnifiedResponsiveCSS() {
-    if (document.getElementById('jeevan-responsive-unified-styles')) return;
-    const link = document.createElement('link');
-    link.id = 'jeevan-responsive-unified-styles';
-    link.rel = 'stylesheet';
-    link.href = '/static/css/responsive_unified.css';
-    document.head.appendChild(link);
+    if (!document.getElementById('jeevan-responsive-unified-styles')) {
+      const link = document.createElement('link');
+      link.id = 'jeevan-responsive-unified-styles';
+      link.rel = 'stylesheet';
+      link.href = '/static/css/responsive_unified.css';
+      document.head.appendChild(link);
+    }
+    if (!document.getElementById('jeevan-dropdown-enhancer-js')) {
+      const scr = document.createElement('script');
+      scr.id = 'jeevan-dropdown-enhancer-js';
+      scr.src = '/static/js/dropdown_enhancer.js';
+      document.head.appendChild(scr);
+    }
   }
 
   function injectDoctorResponsiveStyles() {
@@ -333,7 +340,7 @@
       if (cachedUser.availability) currentDoctorAvailability = cachedUser.availability;
       else if (cachedUser.doctor_details && cachedUser.doctor_details.availability) currentDoctorAvailability = cachedUser.doctor_details.availability;
     }
-  } catch (e) {}
+  } catch (e) { }
 
   function showAvailabilityToast(message, type = 'success') {
     let container = document.getElementById('availability-toast-container');
@@ -419,7 +426,7 @@
           availability: avail
         };
       }
-    } catch (e) {}
+    } catch (e) { }
     return {
       name: 'Dr. Thanush H',
       dept: 'General Medicine',
@@ -550,7 +557,7 @@
 
     // Look for doctor profile container on the right side of the header
     const profileContainer = header.querySelector('.border-l, #doctor-profile-container, .doctor-profile-name')?.closest('.flex.items-center') ||
-                             header.querySelector('.doctor-profile-name')?.parentElement?.parentElement;
+      header.querySelector('.doctor-profile-name')?.parentElement?.parentElement;
     if (!profileContainer) return;
 
     const wrapper = document.createElement('div');
@@ -960,9 +967,9 @@
               </span>
             </div>
             <p class="js-avail-modal-status-desc">
-              ${isTargetActive 
-                ? 'You will be marked available for active clinical duties and patient assignment.' 
-                : 'You will be marked off-duty. Existing patient records and transfers remain assigned to you.'}
+              ${isTargetActive
+        ? 'You will be marked available for active clinical duties and patient assignment.'
+        : 'You will be marked off-duty. Existing patient records and transfers remain assigned to you.'}
             </p>
           </div>
 
@@ -1019,7 +1026,7 @@
         document.body.style.overflow = originalBodyOverflow;
         modalBackdrop.remove();
         if (previousFocusedElement && typeof previousFocusedElement.focus === 'function') {
-          try { previousFocusedElement.focus(); } catch (e) {}
+          try { previousFocusedElement.focus(); } catch (e) { }
         }
         if (!confirmedResult && typeof onCancel === 'function') {
           onCancel();
@@ -1135,7 +1142,7 @@
               if (u.doctor_details) u.doctor_details.availability = targetStatus;
               localStorage.setItem('jeevan_setu_user', JSON.stringify(u));
             }
-          } catch (e) {}
+          } catch (e) { }
 
           const targetLabel = targetStatus === 'active' ? 'Active' : 'Inactive';
           showAvailabilityToast(`Doctor availability set to ${targetLabel}.`, 'success');
@@ -1280,7 +1287,7 @@
         const cachedUser = JSON.parse(cached);
         applyDoctorProfileToDOM(cachedUser);
       }
-    } catch (e) {}
+    } catch (e) { }
 
     const token = getAuthToken();
     if (!token) {
@@ -1326,7 +1333,7 @@
           badge.style.display = total > 0 ? 'inline-block' : 'none';
         }
       }
-    } catch (e) {}
+    } catch (e) { }
 
     try {
       const res = await fetch('/api/v1/notifications/unread-count', { headers: getAuthHeaders() });
@@ -1339,7 +1346,7 @@
           badge.style.display = count > 0 ? 'inline-block' : 'none';
         }
       }
-    } catch (e) {}
+    } catch (e) { }
   }
 
   async function syncDoctorAvailability() {
@@ -1363,7 +1370,7 @@
               if (u.doctor_details) u.doctor_details.availability = avail;
               localStorage.setItem('jeevan_setu_user', JSON.stringify(u));
             }
-          } catch (e) {}
+          } catch (e) { }
         }
       }
     } catch (e) {
@@ -1374,8 +1381,8 @@
   window.handleDoctorLogout = async function (event) {
     if (event) event.preventDefault();
     try {
-      await fetch('/api/v1/auth/logout', { method: 'POST', headers: getAuthHeaders() }).catch(() => {});
-    } catch (e) {}
+      await fetch('/api/v1/auth/logout', { method: 'POST', headers: getAuthHeaders() }).catch(() => { });
+    } catch (e) { }
     localStorage.clear();
     sessionStorage.clear();
     window.location.href = '../../Login/Login.html';

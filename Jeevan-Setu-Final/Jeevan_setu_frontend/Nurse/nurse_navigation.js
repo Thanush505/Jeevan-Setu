@@ -182,7 +182,7 @@
       if (u.availability) currentNurseAvailability = u.availability;
       else if (u.nurse_details && u.nurse_details.availability) currentNurseAvailability = u.nurse_details.availability;
     }
-  } catch (e) {}
+  } catch (e) { }
 
   function showNurseAvailabilityToast(message, type = 'success') {
     let container = document.getElementById('nurse-availability-toast-container');
@@ -220,8 +220,8 @@
     if (!container) {
       const header = document.querySelector('header');
       const profileContainer = header?.querySelector('#nurse-profile-container') ||
-                               header?.querySelector('.nurse-profile-name')?.closest('.flex.items-center') ||
-                               header?.querySelector('.border-l');
+        header?.querySelector('.nurse-profile-name')?.closest('.flex.items-center') ||
+        header?.querySelector('.border-l');
       if (profileContainer) {
         const wrapper = document.createElement('div');
         wrapper.id = 'nurse-availability-wrapper';
@@ -616,9 +616,9 @@
               </span>
             </div>
             <p class="js-avail-modal-status-desc">
-              ${isTargetActive 
-                ? 'You will be marked available for active ward monitoring, vitals logging, and nursing care.' 
-                : 'You will be marked off-duty. Existing patient records and bedside tasks remain assigned to you.'}
+              ${isTargetActive
+        ? 'You will be marked available for active ward monitoring, vitals logging, and nursing care.'
+        : 'You will be marked off-duty. Existing patient records and bedside tasks remain assigned to you.'}
             </p>
           </div>
 
@@ -674,7 +674,7 @@
         document.body.style.overflow = originalBodyOverflow;
         modalBackdrop.remove();
         if (previousFocusedElement && typeof previousFocusedElement.focus === 'function') {
-          try { previousFocusedElement.focus(); } catch (e) {}
+          try { previousFocusedElement.focus(); } catch (e) { }
         }
         if (!confirmedResult && typeof onCancel === 'function') {
           onCancel();
@@ -790,7 +790,7 @@
               if (u.nurse_details) u.nurse_details.availability = targetStatus;
               localStorage.setItem('jeevan_setu_user', JSON.stringify(u));
             }
-          } catch (e) {}
+          } catch (e) { }
 
           const targetLabel = targetStatus === 'active' ? 'Active' : 'Inactive';
           showNurseAvailabilityToast(`Nurse availability set to ${targetLabel}.`, 'success');
@@ -833,7 +833,7 @@
               if (u.nurse_details) u.nurse_details.availability = avail;
               localStorage.setItem('jeevan_setu_user', JSON.stringify(u));
             }
-          } catch (e) {}
+          } catch (e) { }
         }
       }
     } catch (e) {
@@ -842,12 +842,19 @@
   }
 
   function ensureNurseUnifiedResponsiveCSS() {
-    if (document.getElementById('jeevan-responsive-unified-styles')) return;
-    const link = document.createElement('link');
-    link.id = 'jeevan-responsive-unified-styles';
-    link.rel = 'stylesheet';
-    link.href = '/static/css/responsive_unified.css';
-    document.head.appendChild(link);
+    if (!document.getElementById('jeevan-responsive-unified-styles')) {
+      const link = document.createElement('link');
+      link.id = 'jeevan-responsive-unified-styles';
+      link.rel = 'stylesheet';
+      link.href = '/static/css/responsive_unified.css';
+      document.head.appendChild(link);
+    }
+    if (!document.getElementById('jeevan-dropdown-enhancer-js')) {
+      const scr = document.createElement('script');
+      scr.id = 'jeevan-dropdown-enhancer-js';
+      scr.src = '/static/js/dropdown_enhancer.js';
+      document.head.appendChild(scr);
+    }
   }
 
   function injectNurseStyles() {
