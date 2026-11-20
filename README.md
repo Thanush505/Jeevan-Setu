@@ -102,7 +102,20 @@ Hospitals face two relentless challenges:
 ### 5. 📱 The Compassionate Attendant Bridge
 - **Permanent Bedside QR Badges**: Each admitted patient receives a cryptographically salted QR token (`JS-QR-P{patient_id}-{entropy}`).
 - **Native Mobile Camera Scanner**: Families scan the badge at the bedside using iOS Safari or Android Chrome via our built-in **HTTPS Secure Context Gateway** (port `5443`), eliminating insecure context camera blocks.
-- **Privacy-Preserving Family Portal**: Displays reassuring, plain-language patient condition updates without exposing clinical jargon, developer diagnostics, or cross-patient records.
+- **Privacy-Preserving Family Portal**: Displays reassuring, plain-language patient condition updates synced with live EWS severity without exposing clinical jargon, developer diagnostics, or cross-patient records.
+
+### 6. 🤖 Dr. Setu AI Clinical Assistant & Two-Key OpenRouter Failover
+- **Agentic Hybrid RAG**: Combines authorized MySQL patient tools (Patient Chat) with ChromaDB hospital/medical knowledge retrieval, while strictly isolating General Chat from MySQL patient records.
+- **Multimodal Vision & OCR**: Supports clinical document/image Q&A (`ALLOW_EXTERNAL_PATIENT_VISION` privacy gate) with strict anti-diagnosis and clinician-verification guardrails.
+- **Standardized Two-Key Failover**: Centralized in `chatbot/services/openrouter_service.py` using `OPENROUTER_PRIMARY_API_KEY` and `OPENROUTER_SECONDARY_API_KEY`, controlled error classification, sanitized diagnostic logging, and `OPENROUTER_ENABLED` / `OPENROUTER_FAILOVER_ENABLED` toggles.
+
+### 7. 🖥️ Responsive Multi-Portal Admin, Doctor & Nurse Experience
+- **Unified Responsive Design & Standardized Sidebars**: Cohesive Deep Navy (`#0a1931`) and Cyan (`#22d3ee`) sidebar system and responsive multi-row mobile/tablet headers across Admin, Doctor, and Nurse portals (`320px` to `1920px`).
+- **5-Second Live Auto-Refresh**: Automatic non-disruptive polling (`auto_refresh_manager.js`) across all four portals, plus independent **Account Status** (Admin-controlled) and **Working Duty Availability** (Doctor/Nurse-controlled via custom UI modal).
+- **Upgraded Admin Consoles**:
+  - **Beds & Wards**: Live capacity KPIs, ward management modals, interactive bed matrix (Available / Occupied / Reserved / Maintenance), bed allocation/release/history workflows, and occupancy visualizations.
+  - **User & Role Management**: Full-width scrollable staff directory with search, role filtering, and 6-column ascending/descending sorting.
+  - **EWS Analytics**: Live EWS trends by ward (`24h` / `7d` / `30d` / `custom`), risk distribution, acuity by ward, escalation & response-time analytics, high-risk patient table, and CSV export.
 
 ---
 
@@ -134,9 +147,9 @@ Jeevan Setu adheres strictly to approved clinical Early Warning Score parameters
 
 ---
 
-## 🏥 Canonical 10-Patient Hospital Census
+## 🏥 Canonical 10-Patient Hospital Census & Demo Bed Capacity
 
-The system maintains a verified baseline of **exactly 10 admitted critical care patients**:
+The system maintains a verified baseline of **10 admitted critical care patients** across a demo capacity of **10 ICU beds (`ICU-A`)** and **10 HDU beds (`HDU-B`)**:
 
 | ID | UHID | Patient Name | Age/Sex | Ward | Bed Code | Bed ID | Assigned Doctor | Assigned Nurse | Status |
 | :-: | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- | :---: |
@@ -175,13 +188,27 @@ cd JEEVAN_SETU
 pip install -r requirements.txt
 ```
 
-### 3. Launch Dual-Protocol Hospital Gateway
+### 3. Configure `.env` (Database, JWT & Two-Key OpenRouter AI)
+Copy `.env.example` to `.env` in `Jeevan-Setu-Final/` and configure your MySQL, JWT, and optional OpenRouter two-key settings:
+```env
+OPENROUTER_MODEL=google/gemma-4-31b-it:free
+ALLOW_EXTERNAL_PATIENT_VISION=true
+OPENROUTER_ENABLED=false
+OPENROUTER_PRIMARY_API_KEY=
+OPENROUTER_SECONDARY_API_KEY=
+OPENROUTER_FAILOVER_ENABLED=true
+```
+
+### 4. Launch Dual-Protocol Hospital Gateway
 ```powershell
 # Starts the Flask Server on 0.0.0.0:5000 and auto-spawns HTTPS gateway on 5443
 python app.py
 ```
 
 - **Clinician Login**: [http://127.0.0.1:5000/Login/Login.html](http://127.0.0.1:5000/Login/Login.html)
+- **Admin Portal**: [http://127.0.0.1:5000/Admin/Administrator_dashboard_/Administrator_dashboard_.html](http://127.0.0.1:5000/Admin/Administrator_dashboard_/Administrator_dashboard_.html)
+- **Doctor Portal**: [http://127.0.0.1:5000/Doctor/Doctor_dashboard_/Doctor_dashboard_.html](http://127.0.0.1:5000/Doctor/Doctor_dashboard_/Doctor_dashboard_.html)
+- **Nurse Portal**: [http://127.0.0.1:5000/Nurse/Nurse_dashboard/Nurse_dashboard.html](http://127.0.0.1:5000/Nurse/Nurse_dashboard/Nurse_dashboard.html)
 - **Developer Telemetry Simulator**: [http://127.0.0.1:5000/Developer/Telemetry_Simulator/Telemetry_Simulator.html](http://127.0.0.1:5000/Developer/Telemetry_Simulator/Telemetry_Simulator.html)
 - **Mobile Attendant Camera Portal**: `https://<YOUR_LAN_IP>:5443/Attendant/attendant_access.html`
 
@@ -192,17 +219,17 @@ python app.py
 ```powershell
 cd Jeevan-Setu-Final\JEEVAN_SETU
 
-# 1. Test Interactive Patient Scenario Transitions (12 tests)
-python -m unittest tests/test_scenario_transitions.py
+# 1. Offline Two-Key OpenRouter Failover, Agentic RAG & Vision Diagnostics
+python -m pytest tests/test_openrouter_failover.py tests/test_vision_diagnostics.py tests/test_agentic_rag.py tests/test_general_chat_gemma_fallback.py -v
 
-# 2. Test Developer Telemetry Simulator Diagnostics & RBAC (10 tests)
-python -m unittest tests/test_developer_telemetry_simulator.py
+# 2. Ward & Bed Management (10-Bed Demo Capacity & RBAC)
+python -m pytest tests/test_phase7_ward_bed_management.py -v
 
-# 3. Test Attendant Mobile Camera & Assistance Requests (14 tests)
-python -m unittest tests/test_attendant_assistance_requests.py
+# 3. General Chat Isolation & Multimodal Image Q&A
+python -m pytest tests/test_general_chat_and_mode_isolation.py tests/test_multimodal_image_qa.py -v
 
-# 4. Verify 10-Patient Baseline Integrity (100% Passing)
-python tests/verify_10_patients.py
+# 4. Interactive Patient Scenario Transitions & Simulator Diagnostics
+python -m unittest tests/test_scenario_transitions.py tests/test_developer_telemetry_simulator.py
 ```
 
 ---
